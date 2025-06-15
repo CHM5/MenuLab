@@ -1,3 +1,3 @@
-# [The Pent](https://thepent.com.ar)
+# [The Pent](https://menulab.com.ar)
 
-[The pent](https://thepent.com.ar)
+[The pent](https://menulab.com.ar)
