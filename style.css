@@ -182,21 +182,21 @@
  
 .thq-heading-1 {
   font-size: 48px;
-  font-family: STIX Two Text;
+  font-family: 'Unbounded', sans-serif;
   font-weight: 700;
   line-height: 1.5;
 }
  
 .thq-heading-2 {
   font-size: 35px;
-  font-family: STIX Two Text;
+  font-family: Noto Sans;
   font-weight: 600;
   line-height: 1.5;
 }
  
 .thq-heading-3 {
   font-size: 26px;
-  font-family: STIX Two Text;
+  font-family: Noto Sans;
   font-weight: 600;
   line-height: 1.5;
 }
@@ -752,4 +752,44 @@
 }
 @media (min-width: 900px) {
   .mobile-menu, .menu-toggle { display: none !important; }
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  padding: 12px 24px;
+}
+
+.title-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  margin-left: auto;
+}
+
+.menulab-title {
+  font-family: 'Unbounded', sans-serif;
+  font-weight: 600;
+  font-size: clamp(32px, 10vw, 80px);
+  margin: 0;
+  background: linear-gradient(90deg, #E639A6, #457B9D);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.thepent {
+  font-family: 'Unbounded', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  color: #888;
+}
+
+@media (max-width: 500px) {
+  .header-container {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
 }
