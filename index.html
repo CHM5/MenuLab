@@ -2,13 +2,11 @@
   <html lang="es">
     <head
       ><title>MenuLab</title
-      ><meta property="og:title" content="MenuLab" /><meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-      /><meta charset="utf-8" /><meta
-        property="twitter:card"
-        content="summary_large_image"
-      />
+      ><meta property="og:title" content="MenuLab" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="utf-8" />
+  <meta property="twitter:card" content="summary_large_image" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2280%22>🧪</text></svg>">
 
       <style data-tag="reset-style-sheet">
         html {  line-height: 1.15;}body {  margin: 0;}* {  box-sizing: border-box;  border-width: 0;  border-style: solid;  -webkit-font-smoothing: antialiased;}p,li,ul,pre,div,h1,h2,h3,h4,h5,h6,figure,blockquote,figcaption {  margin: 0;  padding: 0;}button {  background-color: transparent;}button,input,optgroup,select,textarea {  font-family: 'Unbounded', sans-serif;  font-size: 100%;  line-height: 1.15;  margin: 0;}button,select {  text-transform: none;}button,[type="button"],[type="reset"],[type="submit"] {  -webkit-appearance: button;  appearance: button;  color: inherit;}button::-moz-focus-inner,[type="button"]::-moz-focus-inner,[type="reset"]::-moz-focus-inner,[type="submit"]::-moz-focus-inner {  border-style: none;  padding: 0;}button:-moz-focus,[type="button"]:-moz-focus,[type="reset"]:-moz-focus,[type="submit"]:-moz-focus {  outline: 1px dotted ButtonText;}a {  color: inherit;  text-decoration: inherit;}input {  padding: 2px 4px;}img {  display: block;}details {  display: block;  margin: 0;  padding: 0;}summary::-webkit-details-marker {  display: none;}[data-thq="accordion"] [data-thq="accordion-content"] {  max-height: 0;  overflow: hidden;  transition: max-height 0.3s ease-in-out;  padding: 0;}[data-thq="accordion"] details[data-thq="accordion-trigger"][open] + [data-thq="accordion-content"] {  max-height: 1000vh;}details[data-thq="accordion-trigger"][open] summary [data-thq="accordion-icon"] {  transform: rotate(180deg);}html { scroll-behavior: smooth  }  
@@ -615,10 +613,10 @@
             </div>                     
           </div>
           <div class="toggle-container">
-            <button class="toggle-button active" onclick="filterCategory('Desarrollo de Sitio Web')">Desarrollo de Sitio Web</button>
-            <button class="toggle-button" onclick="filterCategory('Diseño de Carta')">Diseño de Carta</button>
+            <button class="toggle-button active" onclick="filterCategory('Diseño de Carta')">Diseño de Carta</button>
+            <button class="toggle-button" onclick="filterCategory('Desarrollo Web')">Desarrollo Web</button>
             <button class="toggle-button" onclick="filterCategory('Complemento')">Complemento</button>
-            <button class="toggle-button" onclick="filterCategory('Combo')">Combo</button>
+            <button class="toggle-button" onclick="filterCategory('Paquete')">Paquete</button>
           </div>
           <div id="cart-summary" style="text-align:right; margin: 10px 0;">
             🛒 Productos seleccionados: <span id="cart-count">0</span>
@@ -633,7 +631,7 @@
                   </div>
               </div>
               <div class="product-info">
-                  <div class="product-category">Desarrollo de Sitio Web</div>
+                  <div class="product-category">Desarrollo Web</div>
                   <h2 class="product-title">MicroSite</h2>
                   <div class="product-description">
                       <p>Incluye diseño web responsive con tres secciones esenciales: Nosotros, Carta y Contacto.</p>
@@ -670,7 +668,7 @@
                   </div>
               </div>
               <div class="product-info">
-                  <div class="product-category">Desarrollo de Sitio Web</div>
+                  <div class="product-category">Desarrollo Web</div>
                   <h2 class="product-title">ProSite</h2>
                   <div class="product-description">
                       <p>Incluye todo lo del MicroSite más galería de fotos integrada y módulo de pagos con Mercado Pago para recibir pedidos en línea.</p>
@@ -735,9 +733,9 @@
                   </div>
               </div>
           </div>
-          <!-- Carta Doble Faz -->
+          <!-- Carta Doble Faz A4-->
           <div class="product-card">
-              <div class="product-badge">Doble</div>
+              <div class="product-badge">Doble A4</div>
               <div class="product-tilt-effect">
                   <div class="product-image">
                       <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1747094183/menu-de-drinks-a4-plastificado-menu-drinks_etmyvt.webp?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Carta Doble Faz">
@@ -745,7 +743,7 @@
               </div>
               <div class="product-info">
                   <div class="product-category">Diseño de Carta</div>
-                  <h2 class="product-title">Carta Doble Faz</h2>
+                  <h2 class="product-title">Carta Doble Faz A4</h2>
                   <div class="product-description">
                       <p>Diseño pensado para incluir más variedad en un espacio reducido. Al contar con doble faz, permite separar categorías sin perder claridad ni legibilidad.</p>
                   </div>
@@ -772,6 +770,47 @@
                   </div>
               </div>
           </div>
+          
+          <!-- Carta Doble Faz A3 -->
+          <div class="product-card">
+              <div class="product-badge">Doble A3</div>
+              <div class="product-tilt-effect">
+                  <div class="product-image">
+                      <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1750050279/ChatGPT_Image_Jun_16_2025_02_03_59_AM_pwnpce.png" alt="Carta Doble Faz A3">
+                  </div>
+              </div>
+              <div class="product-info">
+                  <div class="product-category">Diseño de Carta</div>
+                  <h2 class="product-title">Carta Doble Faz A3</h2>
+                  <div class="product-description">
+                      <p>
+                          El doble de grande que una carta A4. Perfecta para cartas con <strong>letras más grandes</strong> y <strong>más espacio para imágenes de platos estrella</strong>. Ideal para destacar tu menú y facilitar la lectura a todos tus clientes.
+                      </p>
+                  </div>
+                  <div class="product-features">
+                      <span class="feature">Formato doble cara tamaño A3</span>
+                      <span class="feature">Espacio extra para fotos y descripciones</span>
+                      <span class="feature">Letras grandes y legibles</span>
+                  </div>
+                  <div class="product-bottom">
+                      <div class="product-price">
+                          <span class="price-was">$230.000</span>
+                          <span class="price-now">$210.000</span>
+                      </div>
+                      <label style="display: flex; align-items: center; gap: 8px; margin: 0;">
+                          <input type="checkbox" class="product-checkbox cart-checkbox" data-product="cartadoblefaza3">
+                          <span style="font-size: 20px;">🛒</span>
+                      </label>
+                      <a href="form.html" class="product-button">
+                          <span class="button-text">Contratar</span>
+                      </a>
+                  </div>
+                  <div class="product-meta">
+                      <div class="product-stock">In Stock</div>
+                  </div>
+              </div>
+          </div>
+
           <!-- Carta Tríptico A3 -->
           <div class="product-card">
               <div class="product-badge">Destacado</div>
@@ -784,7 +823,7 @@
                   <div class="product-category">Diseño de Carta</div>
                   <h2 class="product-title">Carta Tríptico A3</h2>
                   <div class="product-description">
-                      <p>Diseño profesional en formato A3 tríptico. Ideal para cartas con múltiples secciones. Perfecta para imprimir o compartir digitalmente.</p>
+                                  <p>Tríptico doble faz: <strong>6 caras en total</strong> para organizar tu menú en secciones bien diferenciadas. Ideal para cartas extensas, con espacio para fotos, promociones y platos destacados. Perfecta para imprimir o compartir digitalmente.</p>
                   </div>
                   <div class="product-features">
                       <span class="feature">Cafeterías</span>
@@ -793,8 +832,8 @@
                   </div>
                   <div class="product-bottom">
                       <div class="product-price">
-                          <span class="price-was">$220.000</span>
-                          <span class="price-now">$200.000</span>
+                          <span class="price-was">$230.000</span>
+                          <span class="price-now">$210.000</span>
                       </div>
                       <label style="display: flex; align-items: center; gap: 8px; margin: 0;">
                         <input type="checkbox" class="product-checkbox cart-checkbox" data-product="cartatriptica">
@@ -809,6 +848,47 @@
                   </div>
               </div>
           </div>
+
+          <!-- Carta Libro 4 Caras -->
+          <div class="product-card">
+              <div class="product-badge">Libro 4 Caras</div>
+              <div class="product-tilt-effect">
+                  <div class="product-image">
+                      <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1750050398/238a2d7c-378f-4fc6-81be-4f676bf8961b_nyzif9.png" alt="Carta Libro 4 Caras">
+                  </div>
+              </div>
+              <div class="product-info">
+                  <div class="product-category">Diseño de Carta</div>
+                  <h2 class="product-title">Carta Libro 4 Caras</h2>
+                  <div class="product-description">
+                      <p>
+                          Formato tipo librito: se pliega al medio y ofrece <strong>4 lados</strong> para organizar tu menú. Perfecta para destacar platos estrella, fotos y secciones bien diferenciadas. Más espacio, más impacto visual.
+                      </p>
+                  </div>
+                  <div class="product-features">
+                      <span class="feature">Díptico doble faz (4 caras)</span>
+                      <span class="feature">Ideal para menús extensos</span>
+                      <span class="feature">Espacio para imágenes y descripciones</span>
+                  </div>
+                  <div class="product-bottom">
+                      <div class="product-price">
+                          <span class="price-was">$230.000</span>
+                          <span class="price-now">$210.000</span>
+                      </div>
+                      <label style="display: flex; align-items: center; gap: 8px; margin: 0;">
+                          <input type="checkbox" class="product-checkbox cart-checkbox" data-product="cartalibro4caras">
+                          <span style="font-size: 20px;">🛒</span>
+                      </label>
+                      <a href="form.html" class="product-button">
+                          <span class="button-text">Contratar</span>
+                      </a>
+                  </div>
+                  <div class="product-meta">
+                      <div class="product-stock">In Stock</div>
+                  </div>
+              </div>
+          </div>
+
           <!-- Carta Anillada -->
           <div class="product-card">
               <div class="product-badge">Gran Volumen</div>
@@ -867,8 +947,8 @@
                   </div>
                   <div class="product-bottom">
                       <div class="product-price">
-                          <span class="price-was">$175.000</span>
-                          <span class="price-now">$150.000</span>
+                          <span class="price-was">$60.000</span>
+                          <span class="price-now">$50.000</span>
                       </div>
                       <label style="display: flex; align-items: center; gap: 8px; margin: 0;">
                         <input type="checkbox" class="product-checkbox cart-checkbox" data-product="individual">
@@ -1144,19 +1224,19 @@
               </div>
           </div>
           -->
-          <!-- Combo Base -->
+          <!-- Paquete Base -->
           <div class="product-card">
-              <div class="product-badge">Combo</div>
+              <div class="product-badge">Paquete</div>
               <div class="product-tilt-effect">
                   <div class="product-image">
-                      <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1747100996/ChatGPT_Image_May_12_2025_10_49_43_PM_hc4pbf.png?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Combo base: Microsite + Carta Doble Faz + Individual">
+                      <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1747100996/ChatGPT_Image_May_12_2025_10_49_43_PM_hc4pbf.png?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Paquete base: Microsite + Carta Doble Faz + Individual">
                   </div>
               </div>
               <div class="product-info">
-                  <div class="product-category">Combo</div>
-                  <h2 class="product-title">Combo Base</h2>
+                  <div class="product-category">Paquete</div>
+                  <h2 class="product-title">Paquete Base</h2>
                   <div class="product-description">
-                      <p>Este combo incluye todo lo necesario para tu primera carta digital y física: un MicroSite, una carta doble faz y diseño de individual de mesa en papel kraft.</p>
+                      <p>Este Paquete incluye todo lo necesario para tu primera carta digital y física: un MicroSite, una carta doble faz y diseño de individual de mesa en papel kraft.</p>
                   </div>
                   <div class="product-features">
                       <span class="feature">MicroSite</span>
@@ -1169,7 +1249,7 @@
                           <span class="price-now">$336.000</span>
                       </div>
                       <label style="display: flex; align-items: center; gap: 8px; margin: 0;">
-                        <input type="checkbox" class="product-checkbox cart-checkbox" data-product="combobase">
+                        <input type="checkbox" class="product-checkbox cart-checkbox" data-product="Paquetebase">
                         <span style="font-size: 20px;">🛒</span>
                       </label>
                       <a href="form.html" class="product-button">
@@ -1181,19 +1261,19 @@
                   </div>
               </div>
           </div>
-          <!-- Combo Pro -->
+          <!-- Paquete Pro -->
           <div class="product-card">
-              <div class="product-badge">Combo</div>
+              <div class="product-badge">Paquete</div>
               <div class="product-tilt-effect">
                   <div class="product-image">
-                      <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1747101155/ChatGPT_Image_May_12_2025_10_52_22_PM_t8upcq.png?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Combo base: ProSite + Anillado + Portavasos + Tarjetas Descuentos">
+                      <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1747101155/ChatGPT_Image_May_12_2025_10_52_22_PM_t8upcq.png?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Paquete base: ProSite + Anillado + Portavasos + Tarjetas Descuentos">
                   </div>
               </div>
               <div class="product-info">
-                  <div class="product-category">Combo</div>
-                  <h2 class="product-title">Combo Pro</h2>
+                  <div class="product-category">Paquete</div>
+                  <h2 class="product-title">Paquete Pro</h2>
                   <div class="product-description">
-                      <p>El combo más completo: presencia digital con ProSite, carta anillada con fotos destacadas, portavasos personalizados y tarjetas de descuento para fidelizar.</p>
+                      <p>El Paquete más completo: presencia digital con ProSite, carta anillada con fotos destacadas, portavasos personalizados y tarjetas de descuento para fidelizar.</p>
                   </div>
                   <div class="product-features">
                       <span class="feature">ProSite con pagos online</span>
@@ -1207,7 +1287,7 @@
                           <span class="price-now">$600.000</span>
                       </div>
                       <label style="display: flex; align-items: center; gap: 8px; margin: 0;">
-                        <input type="checkbox" class="product-checkbox cart-checkbox" data-product="combopro">
+                        <input type="checkbox" class="product-checkbox cart-checkbox" data-product="Paquetepro">
                         <span style="font-size: 20px;">🛒</span>
                       </label>
                       <a href="form.html" class="product-button">
