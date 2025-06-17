@@ -466,23 +466,31 @@
                     formDataObj.redirect = `successpayment.html`;
                     console.log("🔍 formDataObj que se enviará:", formDataObj);
                     console.log("📦 Payload final:", new URLSearchParams(formDataObj).toString());
+                    console.log("a");
 
                     // Enviar datos a Apps Script usando form-urlencoded
-                    fetch("https://script.google.com/macros/s/AKfycbwW-BFKpElz81DtaEkWn3FtWYDj_u75swV_O-SqjfM5D2oO-KUhLnyRLdnTNpMAzpgs/exec", {
-                      method: "POST",
-                      headers: {
-                        "Content-Type": "application/x-www-form-urlencoded"
-                      },
-                      body: new URLSearchParams(formDataObj).toString()
+                    const url = "https://script.google.com/macros/s/AKfycbwW-BFKpElz81DtaEkWn3FtWYDj_u75swV_O-SqjfM5D2oO-KUhLnyRLdnTNpMAzpgs/exec"
+                    fetch(url, {
+                        method: "POST",
+                        mode: "no-cors",
+                        headers: {
+                            "Content-Type": "application/x-www-form-urlencoded",
+                        },
+                        body: new URLSearchParams(formDataObj).toString()
                     })
-                    .then(response => response.text())
+                    .then(response => {
+                        console.log("✅ Respuesta recibida del servidor. Status:", response.status);
+                        return response.text();
+                    })                    
                     .then(text => {
                       console.log("✅ Enviado a Apps Script:", text);
                       // Avanzar al paso 4 (éxito)
                       currentStep = 4;
                       showStep(currentStep);
+                      console.log("➡️ Avanzado al paso 4");
                       // Redirigir a la URL de éxito (si se definió)
                       if (formDataObj.redirect) {
+                        console.log("🔁 Redirigiendo a:", formDataObj.redirect);
                         window.location.href = formDataObj.redirect;
                       } else {
                         alert("Formulario enviado pero sin redirección.");
@@ -490,7 +498,7 @@
                     })
                     .catch(err => {
                       console.error("❌ Error al enviar a Apps Script:", err);
-                      alert("Ocurrió un error al enviar tus datos. Intentá nuevamente.");
+                      alert("Error crítico antes de intentar enviar los datos.");
                     });
                   });
                 }

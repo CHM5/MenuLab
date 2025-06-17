@@ -695,6 +695,7 @@
   align-items: center;
   flex-shrink: 0;
   flex-direction: column;
+  background-color: var(--dl-color-theme-neutral-light);
 }
  
 .hero17-column {

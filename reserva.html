@@ -53,99 +53,108 @@
     </div>
   </section>
 
-<script>
-    const fechaInput = document.getElementById('fechaTurno');
-    const horaInput = document.getElementById('horaTurno');
-    const horaSelect = document.getElementById('horaSelect');
-    document.addEventListener('DOMContentLoaded', () => {
+  <script>
+      const fechaInput = document.getElementById('fechaTurno');
+      const horaInput = document.getElementById('horaTurno');
+      const horaSelect = document.getElementById('horaSelect');
+      document.addEventListener('DOMContentLoaded', () => {
 
-        // Setear fecha mínima y máxima
-        const hoy = new Date();
-        const maxDate = new Date();
-        maxDate.setDate(hoy.getDate() + 30);
+          // Setear fecha mínima y máxima
+          const hoy = new Date();
+          const maxDate = new Date();
+          maxDate.setDate(hoy.getDate() + 30);
 
-        const formatoFecha = (fecha) => fecha.toISOString().split('T')[0];
-        fechaInput.min = formatoFecha(hoy);
-        fechaInput.max = formatoFecha(maxDate);
+          const formatoFecha = (fecha) => fecha.toISOString().split('T')[0];
+          fechaInput.min = formatoFecha(hoy);
+          fechaInput.max = formatoFecha(maxDate);
 
-        // Opciones sábado
-        const opcionesSabado = [
-            '09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00'
-        ];    
-        // Al cambiar la fecha, ajustar el comportamiento del campo hora
-        fechaInput.addEventListener('change', () => {
-        const seleccionada = new Date(fechaInput.value);
-        const dia = seleccionada.getDay(); // 0Lun, 1Mar, 2Mie, 3Jue, 4Vie, 5sab, 6dom
+          // Opciones sábado
+          const opcionesSabado = [
+              '09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00'
+          ];    
+          // Al cambiar la fecha, ajustar el comportamiento del campo hora
+          fechaInput.addEventListener('change', () => {
+          const seleccionada = new Date(fechaInput.value);
+          const dia = seleccionada.getDay(); // 0Lun, 1Mar, 2Mie, 3Jue, 4Vie, 5sab, 6dom
 
-        // Resetear ambos campos
-        horaInput.value = '';
-        horaSelect.innerHTML = '';
-        horaInput.style.display = 'none';
-        horaSelect.style.display = 'none';
+          // Resetear ambos campos
+          horaInput.value = '';
+          horaSelect.innerHTML = '';
+          horaInput.style.display = 'none';
+          horaSelect.style.display = 'none';
 
-        if (dia === 6) {
-        // Domingo
-        alert('Los domingos no están disponibles. Por favor elegí otro día.');
-        fechaInput.value = '';
-        return;
-        } else if (dia === 5) {
-        // Sábado
-        horaInput.style.display = 'none';
-        horaSelect.style.display = 'block';
-        horaSelect.innerHTML = ''; // Limpio antes de poblar
+          if (dia === 6) {
+          // Domingo
+          alert('Los domingos no están disponibles. Por favor elegí otro día.');
+          fechaInput.value = '';
+          return;
+          } else if (dia === 5) {
+          // Sábado
+          horaInput.style.display = 'none';
+          horaSelect.style.display = 'block';
+          horaSelect.innerHTML = ''; // Limpio antes de poblar
 
-        opcionesSabado.forEach(hora => {
-            const option = document.createElement('option');
-            option.value = hora;
-            option.textContent = hora;
-            horaSelect.appendChild(option);
-        });
-        } else {
-        // Lunes a viernes
-        horaSelect.style.display = 'none';
-        horaInput.style.display = 'block';
-        horaInput.value = '19:00';
-        }
-        });
-
-        // Configuración inicial
-        horaInput.value = '';
-        horaInput.disabled = true;
-    });
-
-    // Manejador de envío
-    document.getElementById('formTurno').addEventListener('submit', function (e) {
-      e.preventDefault();
-
-      const data = new URLSearchParams();
-      data.append("nombreCompleto", this.nombre.value);
-      data.append("email", this.email.value);
-      data.append("telefono", this.telefono.value);
-      data.append("negocio", this.nombreNegocio.value);
-      data.append("medio", this.conocio.value);
-      data.append("comentario", this.comentario.value);
-      data.append("plan", "agenda");
-      data.append("pago", "false");
-
-      fetch('https://script.google.com/macros/s/AKfycbzCA9Yhb7zGo9RAJKkIh2tT1m5NRz1db4hrkiwQ-kQTp88OAqC5LeVIsI7CFD_L5DbP/exec', {
-        method: 'POST',
-        body: data // No se define Content-Type, lo hace automáticamente como x-www-form-urlencoded
-      })
-        .then(res => res.text())
-        .then(result => {
-          console.log("Resultado:", result);
-          if (result.includes("ok")) {
-            alert("Cita enviada con éxito.");
+          opcionesSabado.forEach(hora => {
+              const option = document.createElement('option');
+              option.value = hora;
+              option.textContent = hora;
+              horaSelect.appendChild(option);
+          });
           } else {
-            alert("Hubo un error al enviar la cita.");
+          // Lunes a viernes
+          horaSelect.style.display = 'none';
+          horaInput.style.display = 'block';
+          horaInput.value = '19:00';
+          }
+          });
+
+          // Configuración inicial
+          horaInput.value = '';
+          horaInput.disabled = true;
+      });
+
+      // Manejador de envío
+      document.getElementById('formTurno').addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const formDataObj = {
+          nombreCompleto: this.nombre.value,
+          email: this.email.value,
+          telefono: this.telefono.value,
+          tipoNegocio: this.tipoNegocio.value,
+          nombreNegocio: this.nombreNegocio.value,
+          medio: this.conocio.value,
+          comentario: this.comentario.value,
+          plan: "agenda",
+          pago: "false",
+          redirect: "https://menulab.com.ar/reserva-ok.html"
+        };
+        
+        console.log("📦 Payload final:", new URLSearchParams(formDataObj).toString());
+
+        // Enviar datos a Apps Script usando form-urlencoded
+        const url = "https://script.google.com/macros/s/AKfycbyLrzqTDfQfCJr-w0CLTkznBlJeTYnnBbq7lvjFQpoLiDRaPaG9R0Z5-DcK0aFzLSUH/exec"
+        fetch(url, {
+          method: "POST",
+          mode: "no-cors",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+          },
+          body: new URLSearchParams(formDataObj).toString()
+        })
+        .then(() => {
+          console.log("✅ Datos enviados a Apps Script (no-cors, sin respuesta)");
+          if (formDataObj.redirect) {
+            window.location.href = formDataObj.redirect;
+          } else {
+            alert("Formulario enviado pero sin redirección.");
           }
         })
         .catch(err => {
-          console.error("Error:", err);
-          alert("No se pudo enviar la cita. Intente más tarde.");
+          console.error("❌ Error al enviar a Apps Script:", err);
+          alert("Ocurrió un error al enviar tus datos. Intentá nuevamente.");
         });
-    });
-</script>
-
+      });
+  </script>
 </body>
 </html>

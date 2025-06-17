@@ -214,99 +214,99 @@
             </footer>
         </footer4-wrapper>
         <script>
-document.addEventListener('DOMContentLoaded', function () {
-    // --- Sincronizar checkboxes con localStorage (cart) ---
-    function getCart() {
-        return JSON.parse(localStorage.getItem('cart') || '[]');
-    }
-    const cart = getCart();
-    document.querySelectorAll('.cart-checkbox').forEach(checkbox => {
-        if (cart.includes(checkbox.dataset.product)) {
-            checkbox.checked = true;
-        }
-    });
+        document.addEventListener('DOMContentLoaded', function () {
+            // --- Sincronizar checkboxes con localStorage (cart) ---
+            function getCart() {
+                return JSON.parse(localStorage.getItem('cart') || '[]');
+            }
+            const cart = getCart();
+            document.querySelectorAll('.cart-checkbox').forEach(checkbox => {
+                if (cart.includes(checkbox.dataset.product)) {
+                    checkbox.checked = true;
+                }
+            });
 
-    // --- Lógica de productos seleccionados y total ---
-    let selectedProducts = [];
-    let total = 0;
+            // --- Lógica de productos seleccionados y total ---
+            let selectedProducts = [];
+            let total = 0;
 
-    function updateSelectedProducts() {
-        selectedProducts = [];
-        total = 0;
-        document.querySelectorAll('.product-checkbox:checked').forEach(cb => {
-            const label = cb.parentElement.textContent.trim();
-            const price = Number(cb.dataset.price);
-            selectedProducts.push({ name: label, price: price });
-            total += price;
-        });
-        // Guarda en sessionStorage para usar en el paso 4
-        sessionStorage.setItem('selectedProducts', JSON.stringify(selectedProducts));
-        sessionStorage.setItem('selectedTotal', total);
-    }
+            function updateSelectedProducts() {
+                selectedProducts = [];
+                total = 0;
+                document.querySelectorAll('.product-checkbox:checked').forEach(cb => {
+                    const label = cb.parentElement.textContent.trim();
+                    const price = Number(cb.dataset.price);
+                    selectedProducts.push({ name: label, price: price });
+                    total += price;
+                });
+                // Guarda en sessionStorage para usar en el paso 4
+                sessionStorage.setItem('selectedProducts', JSON.stringify(selectedProducts));
+                sessionStorage.setItem('selectedTotal', total);
+            }
 
-    // Actualiza el total en el paso 1 en tiempo real
-    document.querySelectorAll('.product-checkbox').forEach(cb => {
-        cb.addEventListener('change', function () {
+            // Actualiza el total en el paso 1 en tiempo real
+            document.querySelectorAll('.product-checkbox').forEach(cb => {
+                cb.addEventListener('change', function () {
+                    updateSelectedProducts();
+                    document.getElementById('totalAmount').innerHTML = `<strong>Total: $${total.toLocaleString()}</strong>`;
+                });
+            });
+
+            // Al avanzar de paso, guarda la selección
+            document.querySelectorAll('.next-btn').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    updateSelectedProducts();
+                });
+            });
+
+            // Mostrar detalle en el paso 4
+            function showSelectedProductsDetail() {
+                const detailDiv = document.getElementById('selectedProductsDetail');
+                const products = JSON.parse(sessionStorage.getItem('selectedProducts') || '[]');
+                const total = Number(sessionStorage.getItem('selectedTotal') || 0);
+                if (products.length === 0) {
+                    detailDiv.innerHTML = "<em>No seleccionaste productos.</em>";
+                    return;
+                }
+                let html = "<strong>Productos seleccionados:</strong><ul style='margin:8px 0 8px 16px;'>";
+                products.forEach(p => {
+                    html += `<li>${p.name} <span style="color:#888;">$${p.price.toLocaleString()}</span></li>`;
+                });
+                html += `</ul><strong>Total a pagar: $${total.toLocaleString()}</strong>`;
+                detailDiv.innerHTML = html;
+                // También actualiza el total en el span principal
+                const priceValue = document.querySelector('.priceValue');
+                if (priceValue) priceValue.textContent = total.toLocaleString();
+            }
+
+            // Detecta cuando se muestra el paso 4 y actualiza el detalle
+            const observer = new MutationObserver(() => {
+                const step4 = document.querySelector('.form-step[data-step="4"]');
+                if (step4 && step4.classList.contains('active')) {
+                    showSelectedProductsDetail();
+                }
+            });
+            observer.observe(document.body, { subtree: true, attributes: true, attributeFilter: ['class'] });
+
+            // Inicializa el total al cargar
             updateSelectedProducts();
             document.getElementById('totalAmount').innerHTML = `<strong>Total: $${total.toLocaleString()}</strong>`;
+
+            // Validación de términos y condiciones en el paso 3
+            document.querySelectorAll('.form-step[data-step="3"] .next-btn').forEach(btn => {
+                btn.addEventListener('click', function (e) {
+                    const agreeTerms = document.getElementById('agreeTerms');
+                    const termsError = document.getElementById('termsError');
+                    if (!agreeTerms.checked) {
+                        e.preventDefault();
+                        termsError.style.display = "block";
+                        agreeTerms.focus();
+                    } else {
+                        termsError.style.display = "none";
+                    }
+                });
+            });
         });
-    });
-
-    // Al avanzar de paso, guarda la selección
-    document.querySelectorAll('.next-btn').forEach(btn => {
-        btn.addEventListener('click', function () {
-            updateSelectedProducts();
-        });
-    });
-
-    // Mostrar detalle en el paso 4
-    function showSelectedProductsDetail() {
-        const detailDiv = document.getElementById('selectedProductsDetail');
-        const products = JSON.parse(sessionStorage.getItem('selectedProducts') || '[]');
-        const total = Number(sessionStorage.getItem('selectedTotal') || 0);
-        if (products.length === 0) {
-            detailDiv.innerHTML = "<em>No seleccionaste productos.</em>";
-            return;
-        }
-        let html = "<strong>Productos seleccionados:</strong><ul style='margin:8px 0 8px 16px;'>";
-        products.forEach(p => {
-            html += `<li>${p.name} <span style="color:#888;">$${p.price.toLocaleString()}</span></li>`;
-        });
-        html += `</ul><strong>Total a pagar: $${total.toLocaleString()}</strong>`;
-        detailDiv.innerHTML = html;
-        // También actualiza el total en el span principal
-        const priceValue = document.querySelector('.priceValue');
-        if (priceValue) priceValue.textContent = total.toLocaleString();
-    }
-
-    // Detecta cuando se muestra el paso 4 y actualiza el detalle
-    const observer = new MutationObserver(() => {
-        const step4 = document.querySelector('.form-step[data-step="4"]');
-        if (step4 && step4.classList.contains('active')) {
-            showSelectedProductsDetail();
-        }
-    });
-    observer.observe(document.body, { subtree: true, attributes: true, attributeFilter: ['class'] });
-
-    // Inicializa el total al cargar
-    updateSelectedProducts();
-    document.getElementById('totalAmount').innerHTML = `<strong>Total: $${total.toLocaleString()}</strong>`;
-
-    // Validación de términos y condiciones en el paso 3
-    document.querySelectorAll('.form-step[data-step="3"] .next-btn').forEach(btn => {
-        btn.addEventListener('click', function (e) {
-            const agreeTerms = document.getElementById('agreeTerms');
-            const termsError = document.getElementById('termsError');
-            if (!agreeTerms.checked) {
-                e.preventDefault();
-                termsError.style.display = "block";
-                agreeTerms.focus();
-            } else {
-                termsError.style.display = "none";
-            }
-        });
-    });
-});
-</script>
+        </script>
     </body>
 </html>
