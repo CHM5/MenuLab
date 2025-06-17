@@ -83,30 +83,30 @@
         horaInput.style.display = 'none';
         horaSelect.style.display = 'none';
 
-    if (dia === 6) {
-    // Domingo
-    alert('Los domingos no están disponibles. Por favor elegí otro día.');
-    fechaInput.value = '';
-    return;
-    } else if (dia === 5) {
-    // Sábado
-    horaInput.style.display = 'none';
-    horaSelect.style.display = 'block';
-    horaSelect.innerHTML = ''; // Limpio antes de poblar
+        if (dia === 6) {
+        // Domingo
+        alert('Los domingos no están disponibles. Por favor elegí otro día.');
+        fechaInput.value = '';
+        return;
+        } else if (dia === 5) {
+        // Sábado
+        horaInput.style.display = 'none';
+        horaSelect.style.display = 'block';
+        horaSelect.innerHTML = ''; // Limpio antes de poblar
 
-    opcionesSabado.forEach(hora => {
-        const option = document.createElement('option');
-        option.value = hora;
-        option.textContent = hora;
-        horaSelect.appendChild(option);
-    });
-    } else {
-    // Lunes a viernes
-    horaSelect.style.display = 'none';
-    horaInput.style.display = 'block';
-    horaInput.value = '19:00';
-    }
-    });
+        opcionesSabado.forEach(hora => {
+            const option = document.createElement('option');
+            option.value = hora;
+            option.textContent = hora;
+            horaSelect.appendChild(option);
+        });
+        } else {
+        // Lunes a viernes
+        horaSelect.style.display = 'none';
+        horaInput.style.display = 'block';
+        horaInput.value = '19:00';
+        }
+        });
 
         // Configuración inicial
         horaInput.value = '';
@@ -115,48 +115,36 @@
 
     // Manejador de envío
     document.getElementById('formTurno').addEventListener('submit', function (e) {
-    e.preventDefault();
+      e.preventDefault();
 
-    const horaFinal = (horaInput.style.display !== 'none') ? horaInput.value : horaSelect.value;
+      const data = new URLSearchParams();
+      data.append("nombreCompleto", this.nombre.value);
+      data.append("email", this.email.value);
+      data.append("telefono", this.telefono.value);
+      data.append("negocio", this.nombreNegocio.value);
+      data.append("medio", this.conocio.value);
+      data.append("comentario", this.comentario.value);
+      data.append("plan", "agenda");
+      data.append("pago", "false");
 
-    const data = {
-        fecha: document.getElementById('fechaTurno').value,
-        hora: document.getElementById('horaTurno').style.display !== 'none'
-        ? document.getElementById('horaTurno').value
-        : document.getElementById('horaSelect').value,
-        nombre: this.nombre.value,
-        email: this.email.value,
-        telefono: this.telefono.value,
-        tipoNegocio: this.tipoNegocio.value,
-        nombreNegocio: this.nombreNegocio.value,
-        conocio: this.conocio.value,
-        comentario: this.comentario.value,
-        plan: "agenda",
-        pago: false
-    };
-
-    fetch('https://script.google.com/macros/s/AKfycbzCA9Yhb7zGo9RAJKkIh2tT1m5NRz1db4hrkiwQ-kQTp88OAqC5LeVIsI7CFD_L5DbP/exec', {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(data)  // ✅ Así está bien
-    })
-    .then(res => res.json())
-    .then(data => {
-    if (data.result === "ok") {
-        alert("Cita enviada con éxito.");
-    } else {
-        alert("Error: " + JSON.stringify(data));
-    }
-    })
-    .catch(err => {
-    console.error("Error:", err);
-    alert("Hubo un problema al enviar la cita.");
+      fetch('https://script.google.com/macros/s/AKfycbzCA9Yhb7zGo9RAJKkIh2tT1m5NRz1db4hrkiwQ-kQTp88OAqC5LeVIsI7CFD_L5DbP/exec', {
+        method: 'POST',
+        body: data // No se define Content-Type, lo hace automáticamente como x-www-form-urlencoded
+      })
+        .then(res => res.text())
+        .then(result => {
+          console.log("Resultado:", result);
+          if (result.includes("ok")) {
+            alert("Cita enviada con éxito.");
+          } else {
+            alert("Hubo un error al enviar la cita.");
+          }
+        })
+        .catch(err => {
+          console.error("Error:", err);
+          alert("No se pudo enviar la cita. Intente más tarde.");
+        });
     });
-
-});
-
 </script>
 
 </body>
