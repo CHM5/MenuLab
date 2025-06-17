@@ -143,67 +143,6 @@ document.addEventListener('DOMContentLoaded', () => {
       console.log('Elemento clickeado:', this);
     });
   });
-
-    fetch('reserva.html')
-      .then(res => res.text())
-      .then(html => {
-      document.getElementById('reserva-container').innerHTML = html;
-
-      // Ahora que el HTML está en el DOM, asigna el evento al botón
-      const openBtn = document.getElementById('openTurnoPopup');
-      console.log('openBtn encontrado:', openBtn);
-      const popup = document.getElementById('popupTurno');
-      const closeBtn = document.getElementById('closeTurnoPopup');
-      const form = document.getElementById('formTurno');
-
-      if (openBtn && popup) {
-        openBtn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          console.log('Click en Agendá tu Cita');
-          popup.style.display = 'block';
-        });
-      }
-      if (closeBtn && popup) {
-        closeBtn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          popup.style.display = 'none';
-        });
-      }
-      // Cerrar popup al hacer clic afuera
-      window.addEventListener('click', (e) => {
-        if (popup.style.display === 'block' && !popup.contains(e.target) && e.target !== openBtn) {
-          popup.style.display = 'none';
-        }
-      });
-
-      // Envío del formulario
-      if (form) {
-        form.addEventListener('submit', function(e){
-          e.preventDefault();
-          const data = {
-            fecha: document.getElementById("fechaTurno").value,
-            hora: document.getElementById("horaTurno").value,
-            nombre: form.nombre.value,
-            email: form.email.value,
-            telefono: form.telefono.value,
-            tipoNegocio: form.tipoNegocio.value,
-            nombreNegocio: form.nombreNegocio.value,
-            conocio: form.conocio.value,
-            comentario: form.comentario.value,
-          };
-
-          fetch("https://script.google.com/macros/s/AKfycbxssKq1-2jbdRJLCJfYZQTfVp0WeqlBds1R0R97Qe2HfsBQ9OdC1vFyqwT4QkpCc8c/exec", {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(data)
-          }).then(res => {
-            alert("Cita agendada correctamente.");
-            form.reset();
-            popup.style.display = 'none';
-          });
-        });
-      }
-    });
 });
 
 let activeCategory = 'Sitio Web'; // inicial

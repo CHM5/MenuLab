@@ -119,11 +119,39 @@
 
     const horaFinal = (horaInput.style.display !== 'none') ? horaInput.value : horaSelect.value;
 
-    console.log("Fecha:", fechaInput.value);
-    console.log("Hora:", horaFinal);
+    const data = {
+        fecha: document.getElementById('fechaTurno').value,
+        hora: document.getElementById('horaTurno').style.display !== 'none'
+        ? document.getElementById('horaTurno').value
+        : document.getElementById('horaSelect').value,
+        nombre: this.nombre.value,
+        email: this.email.value,
+        telefono: this.telefono.value,
+        tipoNegocio: this.tipoNegocio.value,
+        nombreNegocio: this.nombreNegocio.value,
+        conocio: this.conocio.value,
+        comentario: this.comentario.value,
+        plan: "agenda",
+        pago: false
+    };
 
-    alert('¡Cita enviada con éxito!');
+    fetch("https://script.google.com/macros/s/AKfycbwpUlVozCiBoTPVUx7y4kgv6gq3Bkw8LX1VF3YRGg1ppJF16NKnFdW2VUvCbvQoW8p5/exec", {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+        "Content-Type": "application/json"
+        }
+    })
+    .then(res => res.json())
+    .then(response => {
+        alert("¡Cita enviada con éxito!");
+    })
+    .catch(error => {
+        console.error("Error al enviar:", error);
+        alert("Hubo un problema al enviar la cita.");
     });
+
+});
 
 </script>
 
