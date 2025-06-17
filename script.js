@@ -1,11 +1,75 @@
 // Pricing Toggle Functionality
 document.addEventListener('DOMContentLoaded', () => {
-  
+
+  const plans = [
+    {
+      name: 'Plan Base',
+      prices: { monthly: 'GRATIS', yearly: 'GRATIS' }, ids: { monthly: 0, yearly: 0 },
+      intro:'de por vida',
+      features: [
+        { label: '<br></br>🔄 Actualizaciones', info: 'Actualizá tu carta en tiempo real' },
+        { label: '📱Diseño Responsivo', info: 'Compatible con móviles y tablets' },
+        { label: '🏪 Data Negocio', info: 'Dirección, horarios de atencion, etc' },
+        { label: '🔐 Sitio Seguro SSL', info: 'Certificado SSL incluido' },
+        { label: '🍝 Hasta 25 Ítems', info: 'Podés cargar hasta 25 ítems en tu carta' }
+      ]
+    },
+    {
+      name: 'Plan Emprendedor',
+      prices: { monthly: '$18.000', yearly: '$180.000' }, ids: { monthly: 1, yearly: 4 },
+      intro:'todo lo anterior, más:',
+      features: [
+        { label: '<br></br>🤳 Código QR', info: 'Código QR único para tu carta' },
+        { label: '🪧 Sin Publicidad', info: 'Carta sin banners ni anuncios externos' },
+        { label: '🛏️ Hosting 24/7', info: 'Acceso permanente a la carta online' },
+        { label: '🍝 Ítems Ilimitados', info: 'Sin límite de carga de ítems' },
+        { label: '🔎 Búsqueda de Platos', info: 'Buscar rápidamente platos dentro de tu carta digital' },
+        { label: '📞 Atención Virtual', info: 'Tiempo de respuesta en menos de 72h' },
+        { label: '<div style="text-align:center;"><b><br></br>EXTRA</b></div>' },
+        { label: '<div style="text-align:center;">✅5%OFF en <a href="#productos" style="color:#1976d2;text-decoration:underline;cursor:pointer;">Productos</a></div>', modes: ['monthly']},
+        { label: '<div style="text-align:center;">✅<b>10%OFF</b> en <a href="#productos" style="color:#1976d2;text-decoration:underline;cursor:pointer;">Productos</a></div>', modes: ['yearly']}
+      ]
+    },
+    {
+      name: 'Plan Profesional',
+      prices: { monthly: '$36.000', yearly: '$360.000' }, ids: { monthly: 2, yearly: 5 },
+      intro:'Todo lo anterior, más:',
+      features: [
+        { label: '<br></br>💬 Integración WhatsApp', info: 'Contacto directo vía WhatsApp' },
+        { label: '🛵 Integración Rappi/PedidosYa', info: 'Enlaces a aplicaciones de delivery' },
+        { label: '🗣️ Integración Instagram/Facebook', info: 'Enlaces a redes sociales desde tu carta' },
+        { label: '📍 Integración Google Maps', info: 'Enlace con dirección de tu negocio' },
+        { label: '🎨 Tema Personalizable', info: 'Elegí tipo de letra y paleta de colores' },
+        { label: '📞 Atención Personalizada', info: 'Tiempo de respuesta en menos de 42h' },
+        { label: '<div style="text-align:center;"><b><br></br>EXTRA</b></div>' },
+        { label: '<div style="text-align:center;">✅10%OFF en <a href="#productos" style="color:#1976d2;text-decoration:underline;cursor:pointer;">Productos</a></div>', modes: ['monthly']},
+        { label: '<div style="text-align:center;">✅<b>20%OFF</b> en <a href="#productos" style="color:#1976d2;text-decoration:underline;cursor:pointer;">Productos</a></div>', modes: ['yearly']}
+      ]
+    },
+    {
+      name: 'Plan Corporativo',
+      prices: { monthly: '$72.000', yearly: '$720.000' }, ids: { monthly: 3, yearly: 6 },
+      intro:'todo lo anterior, más:',
+      features: [
+        { label: '<br></br>🌐 Dominio Propio', info: 'URL personalizable www.tunegocio.com.ar' },
+        { label: '📷 Fotos de Platos', info: 'Galería fotográfica para mostrar tus productos' },
+        { label: '📅 Sistema de Reservas', info: 'Permití a tus clientes reservar mesa desde la carta digital' },
+        { label: '🛍️ Promos por Temporada', info: 'Mensajes pop up promocionales' },
+        { label: '📞 Atención Prioritaria', info: 'Tiempo de respuesta en menos de 24h' },
+        { label: '<div style="text-align:center;"><b><br></br>EXTRA</b></div>' },
+        { label: '<div style="text-align:center;">✅15%OFF en <a href="#productos" style="color:#1976d2;text-decoration:underline;cursor:pointer;">Productos</a></div>', modes: ['monthly']},
+        { label: '<div style="text-align:center;">✅<b>30%OFF</b> en <a href="#productos" style="color:#1976d2;text-decoration:underline;cursor:pointer;">Productos</a></div>', modes: ['yearly']}
+      ]
+    }
+  ];
+
+  let currentMode = 'monthly';
+
   function togglePricing(mode) {
+    currentMode = mode;
     document.querySelectorAll('.pricing-toggle button').forEach(btn => {
       btn.classList.remove('active');
     });
-    
     document.getElementById(`${mode}Btn`).classList.add('active');
     renderPricing(mode);
   }
@@ -13,33 +77,47 @@ document.addEventListener('DOMContentLoaded', () => {
   function renderPricing(mode) {
     const container = document.getElementById('pricingContainer');
     container.innerHTML = '';
-    
+
     plans.forEach(plan => {
       const card = document.createElement('div');
       card.className = 'pricing-card';
+
+      const planId = plan.ids[mode];
+
       card.innerHTML = `
         <h3>${plan.name}</h3>
         <div class="price">${plan.prices[mode]}</div>
+        ${plan.intro ? `<div class="plan-intro">${plan.intro}</div>` : ''}
         <ul class="feature-list">
-          ${plan.features.map(f => `
-            <li>
-              ${f.label}
-              <span class="info-icon" title="${f.info}">i</span>
-            </li>
-          `).join('')}
+          ${plan.features
+            .filter(f => !f.modes || f.modes.includes(mode))
+            .map(f => `
+              <li>
+                ${f.label}
+                ${(!f.label.includes('EXTRA') && f.info) ? `<span class="info-icon" tabindex="0" data-tooltip="${f.info}">i</span>` : ''}                        
+              </li>
+            `).join('')}
         </ul>
-        <button class="select-btn">Seleccionar</button>
+        <button class="select-btn" data-plan="${planId}">Seleccionar</button>
       `;
+
       container.appendChild(card);
+    });
+
+    // Agregar redirección a todos los botones
+    document.querySelectorAll('.select-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const planId = e.currentTarget.getAttribute('data-plan');
+        window.location.href = `plansForm.html?plan=${planId}`;
+      });
     });
   }
 
-  // Event listeners for pricing buttons
   document.getElementById('monthlyBtn').addEventListener('click', () => togglePricing('monthly'));
   document.getElementById('yearlyBtn').addEventListener('click', () => togglePricing('yearly'));
-  
-  // Initialize with monthly pricing
+
   togglePricing('monthly');
+
 
   // General button handlers
   document.querySelectorAll('.navbar8-action11, .navbar8-action21, .hero17-button1, .hero17-button2').forEach(button => {
@@ -66,4 +144,160 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+    fetch('reserva.html')
+      .then(res => res.text())
+      .then(html => {
+      document.getElementById('reserva-container').innerHTML = html;
+
+      // Ahora que el HTML está en el DOM, asigna el evento al botón
+      const openBtn = document.getElementById('openTurnoPopup');
+      console.log('openBtn encontrado:', openBtn);
+      const popup = document.getElementById('popupTurno');
+      const closeBtn = document.getElementById('closeTurnoPopup');
+      const form = document.getElementById('formTurno');
+
+      if (openBtn && popup) {
+        openBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          console.log('Click en Agendá tu Cita');
+          popup.style.display = 'block';
+        });
+      }
+      if (closeBtn && popup) {
+        closeBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          popup.style.display = 'none';
+        });
+      }
+      // Cerrar popup al hacer clic afuera
+      window.addEventListener('click', (e) => {
+        if (popup.style.display === 'block' && !popup.contains(e.target) && e.target !== openBtn) {
+          popup.style.display = 'none';
+        }
+      });
+
+      // Envío del formulario
+      if (form) {
+        form.addEventListener('submit', function(e){
+          e.preventDefault();
+          const data = {
+            fecha: document.getElementById("fechaTurno").value,
+            hora: document.getElementById("horaTurno").value,
+            nombre: form.nombre.value,
+            email: form.email.value,
+            telefono: form.telefono.value,
+            tipoNegocio: form.tipoNegocio.value,
+            nombreNegocio: form.nombreNegocio.value,
+            conocio: form.conocio.value,
+            comentario: form.comentario.value,
+          };
+
+          fetch("https://script.google.com/macros/s/AKfycbxssKq1-2jbdRJLCJfYZQTfVp0WeqlBds1R0R97Qe2HfsBQ9OdC1vFyqwT4QkpCc8c/exec", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(data)
+          }).then(res => {
+            alert("Cita agendada correctamente.");
+            form.reset();
+            popup.style.display = 'none';
+          });
+        });
+      }
+    });
+});
+
+let activeCategory = 'Sitio Web'; // inicial
+
+function filterCategory(category) {
+const cards = document.querySelectorAll('.product-card');
+const buttons = document.querySelectorAll('.toggle-button');
+
+// Si el usuario hace clic en el mismo botón activo, lo desactiva
+if (activeCategory === category) {
+    activeCategory = null;
+    buttons.forEach(btn => btn.classList.remove('active'));
+    cards.forEach(card => card.style.display = 'block');
+    return;
+}
+
+// Si hace clic en una nueva categoría
+activeCategory = category;
+buttons.forEach(btn => {
+    btn.classList.toggle('active', btn.textContent === category);
+});
+
+cards.forEach(card => {
+    const cat = card.querySelector('.product-category').textContent;
+    card.style.display = (cat === category) ? 'block' : 'none';
+});
+}
+
+const burger = document.querySelector('[data-thq="thq-burger-menu"]');
+const mobileMenu = document.querySelector('[data-thq="thq-mobile-menu"]');
+const closeMenu = document.querySelector('[data-thq="thq-close-menu"]');
+
+if (burger && mobileMenu && closeMenu) {
+  burger.addEventListener("click", () => {
+    mobileMenu.classList.add("active");
+  });
+
+  closeMenu.addEventListener("click", () => {
+    mobileMenu.classList.remove("active");
+  });
+}
+  
+  // Verificar específicamente los botones de pricing
+  const monthlyBtn = document.getElementById('monthlyBtn');
+  const yearlyBtn = document.getElementById('yearlyBtn');
+  
+  if (monthlyBtn) {
+    monthlyBtn.addEventListener('click', function() {
+      console.log('Monthly button clicked');
+    });
+  }
+  
+  if (yearlyBtn) {
+    yearlyBtn.addEventListener('click', function() {
+      console.log('Yearly button clicked');
+    });
+  }
+
+    // Inicializar carrito desde localStorage
+  function getCart() {
+    return JSON.parse(localStorage.getItem('cart') || '[]');
+  }
+  function setCart(cart) {
+    localStorage.setItem('cart', JSON.stringify(cart));
+  }
+  function updateCartCount() {
+    document.getElementById('cart-count').textContent = getCart().length;
+  }
+
+  // Al cargar la página, marcar los checkboxes ya seleccionados
+  document.addEventListener('DOMContentLoaded', function() {
+    updateCartCount();
+    const cart = getCart();
+    document.querySelectorAll('.cart-checkbox').forEach(checkbox => {
+      if (cart.includes(checkbox.dataset.product)) {
+        checkbox.checked = true;
+      }
+      checkbox.addEventListener('change', function() {
+        let cart = getCart();
+        if (this.checked) {
+          if (!cart.includes(this.dataset.product)) cart.push(this.dataset.product);
+        } else {
+          cart = cart.filter(p => p !== this.dataset.product);
+        }
+        setCart(cart);
+        updateCartCount();
+      });
+    });
+  });
+
+
+// Cierra el menú al hacer clic en cualquier enlace
+document.querySelectorAll('#mobileMenu a').forEach(link => {
+  link.addEventListener('click', function() {
+    document.getElementById('mobileMenu').classList.remove('open');
+  });
 });

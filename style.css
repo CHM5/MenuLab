@@ -207,12 +207,6 @@
   line-height: 1.5;
 }
  
-.thq-body-small {
-  font-size: 16px;
-  font-family: Noto Sans;
-  line-height: 1.5;
-}
- 
 .thq-team-image-round {
   width: 80px;
   height: 80px;
@@ -777,6 +771,11 @@
   background: linear-gradient(90deg, #E639A6, #457B9D);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+.menulab-title::before {
+  display: none !important;
+  content: none !important;
 }
 
 .thepent {

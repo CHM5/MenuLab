@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reserva tu Cita</title>
+  <link rel="stylesheet" href="reserva.css" />
+</head>
+<body>
+  <section class="steps2-wrapper" style="padding: 40px 20px; max-width: 600px; margin: auto;">
+        <h2 class="thq-heading-2" style="text-align: center;">📅 Reservá tu Cita</h2>
+    <p style="text-align: center; margin-bottom: 24px;">
+      Agendá una sesión personalizada y conocé cómo mejorar tu presencia digital y comunicación impresa.
+    </p>
+    <p style="text-align: center; margin-bottom: 24px;">
+      Reservá de lunes a viernes a las 19h o sábados de 9h a 12h.
+    </p>
+
+    <form id="formTurno">
+      <label>Fecha</label>
+      <input type="date" id="fechaTurno" name="fechaTurno" required><br>
+
+      <label>Hora</label>
+      <input type="time" id="horaTurno" name="horaTurno"><br>
+      <select id="horaSelect" name="horaSelect" style="display:none;"></select><br>
+
+      <label>Nombre completo</label>
+      <input type="text" name="nombre" required><br>
+
+      <label>Email</label>
+      <input type="email" name="email" required><br>
+
+      <label>Teléfono</label>
+      <input type="tel" name="telefono" required><br>
+
+      <label>Tipo de negocio</label>
+      <input type="text" name="tipoNegocio"><br>
+
+      <label>Nombre del negocio</label>
+      <input type="text" name="nombreNegocio"><br>
+
+      <label>¿Cómo nos conociste?</label>
+      <input type="text" name="conocio"><br>
+
+      <label>Comentario adicional</label>
+      <textarea name="comentario"></textarea><br>
+
+      <button type="submit" style="margin-top: 20px;">Confirmar cita</button>
+    </form>
+
+    <div style="text-align: center; margin-top: 30px;">
+      <a href="index.html">← Volver al inicio</a>
+    </div>
+  </section>
+
+<script>
+    const fechaInput = document.getElementById('fechaTurno');
+    const horaInput = document.getElementById('horaTurno');
+    const horaSelect = document.getElementById('horaSelect');
+    document.addEventListener('DOMContentLoaded', () => {
+
+        // Setear fecha mínima y máxima
+        const hoy = new Date();
+        const maxDate = new Date();
+        maxDate.setDate(hoy.getDate() + 30);
+
+        const formatoFecha = (fecha) => fecha.toISOString().split('T')[0];
+        fechaInput.min = formatoFecha(hoy);
+        fechaInput.max = formatoFecha(maxDate);
+
+        // Opciones sábado
+        const opcionesSabado = [
+            '09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00'
+        ];    
+        // Al cambiar la fecha, ajustar el comportamiento del campo hora
+        fechaInput.addEventListener('change', () => {
+        const seleccionada = new Date(fechaInput.value);
+        const dia = seleccionada.getDay(); // 0Lun, 1Mar, 2Mie, 3Jue, 4Vie, 5sab, 6dom
+
+        // Resetear ambos campos
+        horaInput.value = '';
+        horaSelect.innerHTML = '';
+        horaInput.style.display = 'none';
+        horaSelect.style.display = 'none';
+
+    if (dia === 6) {
+    // Domingo
+    alert('Los domingos no están disponibles. Por favor elegí otro día.');
+    fechaInput.value = '';
+    return;
+    } else if (dia === 5) {
+    // Sábado
+    horaInput.style.display = 'none';
+    horaSelect.style.display = 'block';
+    horaSelect.innerHTML = ''; // Limpio antes de poblar
+
+    opcionesSabado.forEach(hora => {
+        const option = document.createElement('option');
+        option.value = hora;
+        option.textContent = hora;
+        horaSelect.appendChild(option);
+    });
+    } else {
+    // Lunes a viernes
+    horaSelect.style.display = 'none';
+    horaInput.style.display = 'block';
+    horaInput.value = '19:00';
+    }
+    });
+
+        // Configuración inicial
+        horaInput.value = '';
+        horaInput.disabled = true;
+    });
+
+    // Manejador de envío
+    document.getElementById('formTurno').addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    const horaFinal = (horaInput.style.display !== 'none') ? horaInput.value : horaSelect.value;
+
+    console.log("Fecha:", fechaInput.value);
+    console.log("Hora:", horaFinal);
+
+    alert('¡Cita enviada con éxito!');
+    });
+
+</script>
+
+</body>
+</html>
