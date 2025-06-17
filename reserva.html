@@ -135,21 +135,12 @@
         pago: false
     };
 
-    fetch('https://script.google.com/macros/s/AKfycbzCA9Yhb7zGo9RAJKkIh2tT1m5NRz1db4hrkiwQ-kQTp88OAqC5LeVIsI7CFD_L5DbP/exec', {
+    fetch('https://script.googleusercontent.com/macros/echo?user_content_key=AehSKLiRdRxy9KyhLQotThCAMkG4sJ3E8gcmpjHFSfG9kJHCzvPLyMhNi9GlBVxKCxLjI7unGzzyUdQT7AEhq4pfIklIJXaCSmqxACskmgkkk0k27iW5U3LxOagW6yPBfphISP0qfiB9HkBUte2iesLTUE94VbIQfFCQ6hlKktPH4ftsIgOOXIFb0YQfYeRnLAjnVL-Xg3lUrmXOWH8m-1z6JPi1zAhpWhl7m1QzlwGaAFt176vkcB3DKHTGbsorpsN0-wVLxIaoUX6Ro2sg1kl9wtRdZXap2Q&lib=MlLP3CLwJuEeUsCJ0a1q30WFxbg12PzvG', {
     method: 'POST',
     headers: {
         'Content-Type': 'application/json'
     },
-    body: JSON.stringify({
-        fecha: document.getElementById("fechaTurno").value,
-        nombre: document.querySelector('[name="nombre"]').value,
-        email: document.querySelector('[name="email"]').value,
-        telefono: document.querySelector('[name="telefono"]').value,
-        tipoNegocio: document.querySelector('[name="tipoNegocio"]').value,
-        nombreNegocio: document.querySelector('[name="nombreNegocio"]').value,
-        conocio: document.querySelector('[name="conocio"]').value,
-        comentario: document.querySelector('[name="comentario"]').value
-    })
+    body: JSON.stringify(data)  // ✅ Así está bien
     })
     .then(res => res.json())
     .then(data => {
