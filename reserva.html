@@ -24,13 +24,16 @@
       <input type="time" id="horaTurno" name="horaTurno"><br>
       <select id="horaSelect" name="horaSelect" style="display:none;"></select><br>
 
-      <label>Nombre completo</label>
+      <label>* Nombre</label>
       <input type="text" name="nombre" required><br>
 
-      <label>Email</label>
+      <label>* Apellido</label>
+      <input type="text" name="apellido" required><br>
+
+      <label>* Email</label>
       <input type="email" name="email" required><br>
 
-      <label>Teléfono</label>
+      <label>* Teléfono</label>
       <input type="tel" name="telefono" required><br>
 
       <label>Tipo de negocio</label>
@@ -116,27 +119,29 @@
       // Manejador de envío
       document.getElementById('formTurno').addEventListener('submit', function (e) {
         e.preventDefault();
-
+        
+        const form = document.getElementById('formTurno');
+        const data = new FormData(form); 
         const formDataObj = {
-          nombreCompleto: this.nombre.value,
-          email: this.email.value,
-          telefono: this.telefono.value,
-          tipoNegocio: this.tipoNegocio.value,
-          nombreNegocio: this.nombreNegocio.value,
-          medio: this.conocio.value,
-          comentario: this.comentario.value,
+          fechaTurno: data.get("fechaTurno"),
+          nombreCompleto: data.get("nombre") + " " + (data.get("apellido") || ""),
+          email: data.get("email"),
+          telefono: data.get("telefono"),
+          tipoNegocio: data.get("tipoNegocio"),
+          nombreNegocio: data.get("nombreNegocio"),
+          medio: data.get("conocio"),
+          comentario: data.get("comentario"),
           plan: "agenda",
           pago: "false",
           redirect: "https://menulab.com.ar/reserva-ok.html"
         };
-        
+
         console.log("📦 Payload final:", new URLSearchParams(formDataObj).toString());
 
         // Enviar datos a Apps Script usando form-urlencoded
-        const url = "https://script.google.com/macros/s/AKfycbyLrzqTDfQfCJr-w0CLTkznBlJeTYnnBbq7lvjFQpoLiDRaPaG9R0Z5-DcK0aFzLSUH/exec"
+        const url = "https://script.google.com/macros/s/AKfycbyMTi-SwQJOp6kYf2j8OxjLRMmSFUnCQEV_AQEMSTnUE4vM86xw_uEI3WVNmojG73NQ/exec"
         fetch(url, {
           method: "POST",
-          mode: "no-cors",
           headers: {
             "Content-Type": "application/x-www-form-urlencoded"
           },
