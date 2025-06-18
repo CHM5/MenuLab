@@ -124,6 +124,7 @@
         const data = new FormData(form); 
         const formDataObj = {
           fechaTurno: data.get("fechaTurno"),
+          horaTurno: data.get("horaTurno") || data.get("horaSelect"),
           nombreCompleto: data.get("nombre") + " " + (data.get("apellido") || ""),
           email: data.get("email"),
           telefono: data.get("telefono"),
@@ -139,7 +140,7 @@
         console.log("📦 Payload final:", new URLSearchParams(formDataObj).toString());
 
         // Enviar datos a Apps Script usando form-urlencoded
-        const url = "https://script.google.com/macros/s/AKfycbyMTi-SwQJOp6kYf2j8OxjLRMmSFUnCQEV_AQEMSTnUE4vM86xw_uEI3WVNmojG73NQ/exec"
+        const url = "https://script.google.com/macros/s/AKfycbz7ATic7Huuqk_O0hcUmeJfoYhW5v8JCzMht0dv1bd8426mTunUbyWpr5Yxr9AvnHiG/exec"
         fetch(url, {
           method: "POST",
           headers: {
