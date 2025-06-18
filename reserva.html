@@ -21,8 +21,8 @@
       <input type="date" id="fechaTurno" name="fechaTurno" required><br>
 
       <label>Hora</label>
-      <input type="time" id="horaTurno" name="horaTurno"><br>
-      <select id="horaSelect" name="horaSelect" style="display:none;"></select><br>
+      <input type="text" id="horaVisible" disabled style="background:#eee;" value="Seleccioná una fecha" />
+      <input type="hidden" id="horaTurno" name="horaTurno">
 
       <label>* Nombre</label>
       <input type="text" name="nombre" required><br>
@@ -57,64 +57,69 @@
   </section>
 
   <script>
-      const fechaInput = document.getElementById('fechaTurno');
-      const horaInput = document.getElementById('horaTurno');
-      const horaSelect = document.getElementById('horaSelect');
-      document.addEventListener('DOMContentLoaded', () => {
+  const fechaInput = document.getElementById('fechaTurno');
+  const horaVisible = document.getElementById('horaVisible');
+  const horaHidden = document.getElementById('horaTurno');
+  const horaSelect = document.createElement('select');
+  horaSelect.id = "horaSelect";
+  horaSelect.style.marginBottom = "16px";
+  horaSelect.style.display = "none";
 
-          // Setear fecha mínima y máxima
-          const hoy = new Date();
-          const maxDate = new Date();
-          maxDate.setDate(hoy.getDate() + 30);
+  const opcionesSabado = ['09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00'];
+  opcionesSabado.forEach(h => {
+    const opt = document.createElement('option');
+    opt.value = h;
+    opt.textContent = h;
+    horaSelect.appendChild(opt);
+  });
 
-          const formatoFecha = (fecha) => fecha.toISOString().split('T')[0];
-          fechaInput.min = formatoFecha(hoy);
-          fechaInput.max = formatoFecha(maxDate);
+  // Insertar debajo de horaVisible
+  horaVisible.insertAdjacentElement("afterend", horaSelect);
 
-          // Opciones sábado
-          const opcionesSabado = [
-              '09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00'
-          ];    
-          // Al cambiar la fecha, ajustar el comportamiento del campo hora
-          fechaInput.addEventListener('change', () => {
-          const seleccionada = new Date(fechaInput.value);
-          const dia = seleccionada.getDay(); // 0Lun, 1Mar, 2Mie, 3Jue, 4Vie, 5sab, 6dom
+  document.addEventListener('DOMContentLoaded', () => {
+    const hoy = new Date();
+    const maxDate = new Date();
+    maxDate.setDate(hoy.getDate() + 30);
+    const formatoFecha = (fecha) => fecha.toISOString().split('T')[0];
 
-          // Resetear ambos campos
-          horaInput.value = '';
-          horaSelect.innerHTML = '';
-          horaInput.style.display = 'none';
-          horaSelect.style.display = 'none';
+    fechaInput.min = formatoFecha(hoy);
+    fechaInput.max = formatoFecha(maxDate);
 
-          if (dia === 6) {
-          // Domingo
-          alert('Los domingos no están disponibles. Por favor elegí otro día.');
-          fechaInput.value = '';
-          return;
-          } else if (dia === 5) {
-          // Sábado
-          horaInput.style.display = 'none';
-          horaSelect.style.display = 'block';
-          horaSelect.innerHTML = ''; // Limpio antes de poblar
+    fechaInput.addEventListener('change', () => {
+      const seleccionada = new Date(fechaInput.value);
+      const dia = seleccionada.getDay(); // 0=domingo, 5=sábado
 
-          opcionesSabado.forEach(hora => {
-              const option = document.createElement('option');
-              option.value = hora;
-              option.textContent = hora;
-              horaSelect.appendChild(option);
-          });
-          } else {
-          // Lunes a viernes
-          horaSelect.style.display = 'none';
-          horaInput.style.display = 'block';
-          horaInput.value = '19:00';
-          }
-          });
+      horaHidden.value = '';
+      horaVisible.value = '';
+      horaSelect.style.display = 'none';
 
-          // Configuración inicial
-          horaInput.value = '';
-          horaInput.disabled = true;
-      });
+      if (dia === 6) {
+        alert("Los domingos no están disponibles. Por favor elegí otro día.");
+        fechaInput.value = '';
+        horaVisible.value = 'Seleccioná una fecha';
+        return;
+      }
+
+      if (dia === 5) {
+        // Sábado
+        horaVisible.style.display = 'none';
+        horaSelect.style.display = 'block';
+        horaHidden.value = horaSelect.value; // valor por defecto
+      } else {
+        // Lunes a viernes
+        horaVisible.style.display = 'block';
+        horaVisible.value = "19:00";
+        horaHidden.value = "19:00";
+        horaSelect.style.display = 'none';
+      }
+    });
+
+    // Al cambiar el select, actualizar hidden
+    horaSelect.addEventListener('change', () => {
+      horaHidden.value = horaSelect.value;
+    });
+  });
+
 
       // Manejador de envío
       document.getElementById('formTurno').addEventListener('submit', function (e) {
@@ -124,7 +129,7 @@
         const data = new FormData(form); 
         const formDataObj = {
           fechaTurno: data.get("fechaTurno"),
-          horaTurno: data.get("horaTurno") || data.get("horaSelect"),
+          horaTurno: data.get("horaTurno") || data.get("horaSelect") || "19:00",
           nombreCompleto: data.get("nombre") + " " + (data.get("apellido") || ""),
           email: data.get("email"),
           telefono: data.get("telefono"),
