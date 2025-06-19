@@ -57,6 +57,16 @@
   </section>
 
   <script>
+    let fechasOcupadas = [];
+
+    try {
+      const raw = localStorage.getItem('fechasOcupadas');
+      if (raw) fechasOcupadas = JSON.parse(raw);
+      console.log("📅 Fechas ocupadas cargadas:", fechasOcupadas);
+    } catch (err) {
+      console.warn("⚠️ No se pudieron cargar las fechas ocupadas:", err);
+    }
+
   const fechaInput = document.getElementById('fechaTurno');
   const horaVisible = document.getElementById('horaVisible');
   const horaHidden = document.getElementById('horaTurno');
@@ -123,10 +133,15 @@
 
       // Manejador de envío
       document.getElementById('formTurno').addEventListener('submit', function (e) {
+        
         e.preventDefault();
         
         const form = document.getElementById('formTurno');
         const data = new FormData(form); 
+        const fecha = data.get("fechaTurno");
+        const hora = data.get("horaTurno") || data.get("horaSelect") || "19:00";
+        const clave = `${fecha}|${hora}`;
+
         const formDataObj = {
           fechaTurno: data.get("fechaTurno"),
           horaTurno: data.get("horaTurno") || data.get("horaSelect") || "19:00",
@@ -141,11 +156,16 @@
           pago: "false",
           redirect: "https://menulab.com.ar/reserva-ok.html"
         };
-
+        
+        if (fechasOcupadas.includes(clave)) {
+          alert("Ya hay una reserva para ese día y hora. Elegí otra combinación.");
+          e.preventDefault();
+          return;
+        }       
         console.log("📦 Payload final:", new URLSearchParams(formDataObj).toString());
 
         // Enviar datos a Apps Script usando form-urlencoded
-        const url = "https://script.google.com/macros/s/AKfycbz7ATic7Huuqk_O0hcUmeJfoYhW5v8JCzMht0dv1bd8426mTunUbyWpr5Yxr9AvnHiG/exec"
+        const url = "https://script.google.com/macros/s/AKfycbxy9mTadUlbQlB5NgEfkBnxUulVfNQZL9o_mt2AYhDXo4crzn8cCo2U-uuDjd5tji-2/exec"
         fetch(url, {
           method: "POST",
           headers: {

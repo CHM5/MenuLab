@@ -1,6 +1,5 @@
 // Pricing Toggle Functionality
 document.addEventListener('DOMContentLoaded', () => {
-
   const plans = [
     {
       name: 'Plan Base',
@@ -62,6 +61,37 @@ document.addEventListener('DOMContentLoaded', () => {
       ]
     }
   ];
+
+  // Cargar fechas ocupadas desde el endpoint
+let fechasOcupadas = [];
+
+    // 1. Referencia al botón
+    const btn2 = document.getElementById('btnReserva');
+
+    // 2. Asegurarse de que el botón existe
+    if (!btn2) {
+      console.warn("⚠️ No se encontró el botón #btnReserva");
+      return;
+    }
+    btn2.addEventListener('click', (e) => {
+      e.preventDefault();
+      // 3. Cargar fechas ocupadas y guardar en variable
+      fetch('https://script.google.com/macros/s/AKfycbxy9mTadUlbQlB5NgEfkBnxUulVfNQZL9o_mt2AYhDXo4crzn8cCo2U-uuDjd5tji-2/exec')
+        .then(res => res.json())
+        .then(data => {
+          console.log("📅 Fechas ocupadas:", fechasOcupadas);
+          localStorage.setItem('fechasOcupadas', JSON.stringify(data));
+          window.location.href = "reserva.html";
+        })
+        .catch(err => {
+          console.error("❌ Error al cargar fechas ocupadas:", err);
+          // Consider adding the event listener here as well if navigation should still work on fetch error
+          btn2.addEventListener('click', (e) => {
+            e.preventDefault();
+            // Maybe show an error message or navigate directly
+          });
+        });
+      })
 
   let currentMode = 'monthly';
 
@@ -143,7 +173,6 @@ document.addEventListener('DOMContentLoaded', () => {
       console.log('Elemento clickeado:', this);
     });
   });
-});
 
 let activeCategory = 'Sitio Web'; // inicial
 
@@ -200,6 +229,7 @@ if (burger && mobileMenu && closeMenu) {
       console.log('Yearly button clicked');
     });
   }
+});
 
     // Inicializar carrito desde localStorage
   function getCart() {
@@ -213,7 +243,6 @@ if (burger && mobileMenu && closeMenu) {
   }
 
   // Al cargar la página, marcar los checkboxes ya seleccionados
-  document.addEventListener('DOMContentLoaded', function() {
     updateCartCount();
     const cart = getCart();
     document.querySelectorAll('.cart-checkbox').forEach(checkbox => {
@@ -231,7 +260,6 @@ if (burger && mobileMenu && closeMenu) {
         updateCartCount();
       });
     });
-  });
 
 
 // Cierra el menú al hacer clic en cualquier enlace
@@ -239,4 +267,5 @@ document.querySelectorAll('#mobileMenu a').forEach(link => {
   link.addEventListener('click', function() {
     document.getElementById('mobileMenu').classList.remove('open');
   });
-});
+}
+);
