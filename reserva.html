@@ -158,14 +158,14 @@
         };
         
         if (fechasOcupadas.includes(clave)) {
-          alert("Ya hay una reserva para ese día y hora. Elegí otra combinación.");
+          alert("Ya hay una reserva para ese día y hora.");
           e.preventDefault();
           return;
         }       
         console.log("📦 Payload final:", new URLSearchParams(formDataObj).toString());
 
         // Enviar datos a Apps Script usando form-urlencoded
-        const url = "https://script.google.com/macros/s/AKfycbzLvzHUYZvYMN6yg0dQ8WXvwZ5j7xEh-O28vOutMcVrrsaP9L_NJESlcEAuM9AzUkrG/exec"
+        const url = "https://script.google.com/macros/s/AKfycbx9u6mNENtrEsjmUDZPhJ5FcTuRLDasHTB6zNyLBpq6Wu2eELoaj9lfifMOpCII7fJy/exec"
         fetch(url, {
           method: "POST",
           headers: {

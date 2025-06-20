@@ -76,7 +76,7 @@ let fechasOcupadas = [];
     btn2.addEventListener('click', (e) => {
       e.preventDefault();
       // 3. Cargar fechas ocupadas y guardar en variable
-      fetch('https://script.google.com/macros/s/AKfycbzLvzHUYZvYMN6yg0dQ8WXvwZ5j7xEh-O28vOutMcVrrsaP9L_NJESlcEAuM9AzUkrG/exec')
+      fetch('https://script.google.com/macros/s/AKfycbx9u6mNENtrEsjmUDZPhJ5FcTuRLDasHTB6zNyLBpq6Wu2eELoaj9lfifMOpCII7fJy/exec')
         .then(res => res.json())
         .then(data => {
           console.log("📅 Fechas ocupadas:", fechasOcupadas);
