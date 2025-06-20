@@ -213,7 +213,7 @@ document.addEventListener('DOMContentLoaded', () => {
     btn2.addEventListener('click', (e) => {
       e.preventDefault();
       // 3. Cargar fechas ocupadas y guardar en variable
-      fetch('https://script.google.com/macros/s/AKfycbyzBZl3BmLLNZSHRmAgBxVL7Vl9aF8H7fTVZoHK-tOan1Xb06SrK8wa6Gmli8SBfQfk/exec')
+      fetch('https://script.google.com/macros/s/AKfycbwdgYNBM5XJi4zjs3WQYATK6cvGq6A8Y9tmHcM1qb53koBVe2uNjnTdVLALn_C9JpnD/exec')
         .then(res => res.json())
         .then(data => {
           console.log("📅 Fechas ocupadas:", fechasOcupadas);
