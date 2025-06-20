@@ -62,39 +62,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   ];
 
-  // Cargar fechas ocupadas desde el endpoint
-let fechasOcupadas = [];
-
-    // 1. Referencia al botón
-    const btn2 = document.getElementById('btnReserva');
-
-    // 2. Asegurarse de que el botón existe
-    if (!btn2) {
-      console.warn("⚠️ No se encontró el botón #btnReserva");
-      return;
-    }
-    btn2.addEventListener('click', (e) => {
-      e.preventDefault();
-      // 3. Cargar fechas ocupadas y guardar en variable
-      fetch('https://script.google.com/macros/s/AKfycbyzBZl3BmLLNZSHRmAgBxVL7Vl9aF8H7fTVZoHK-tOan1Xb06SrK8wa6Gmli8SBfQfk/exec')
-        .then(res => res.json())
-        .then(data => {
-          console.log("📅 Fechas ocupadas:", fechasOcupadas);
-          localStorage.setItem('fechasOcupadas', JSON.stringify(data));
-          window.location.href = "reserva.html";
-        })
-        .catch(err => {
-          console.error("❌ Error al cargar fechas ocupadas:", err);
-          // Consider adding the event listener here as well if navigation should still work on fetch error
-          btn2.addEventListener('click', (e) => {
-            e.preventDefault();
-            // Maybe show an error message or navigate directly
-          });
-        });
-      })
-
+  
   let currentMode = 'monthly';
-
+  
   function togglePricing(mode) {
     currentMode = mode;
     document.querySelectorAll('.pricing-toggle button').forEach(btn => {
@@ -103,116 +73,116 @@ let fechasOcupadas = [];
     document.getElementById(`${mode}Btn`).classList.add('active');
     renderPricing(mode);
   }
-
+  
   function renderPricing(mode) {
     const container = document.getElementById('pricingContainer');
     container.innerHTML = '';
-
+    
     plans.forEach(plan => {
       const card = document.createElement('div');
       card.className = 'pricing-card';
-
+      
       const planId = plan.ids[mode];
-
+      
       card.innerHTML = `
-        <h3>${plan.name}</h3>
-        <div class="price">${plan.prices[mode]}</div>
-        ${plan.intro ? `<div class="plan-intro">${plan.intro}</div>` : ''}
-        <ul class="feature-list">
-          ${plan.features
-            .filter(f => !f.modes || f.modes.includes(mode))
-            .map(f => `
-              <li>
-                ${f.label}
-                ${(!f.label.includes('EXTRA') && f.info) ? `<span class="info-icon" tabindex="0" data-tooltip="${f.info}">i</span>` : ''}                        
-              </li>
-            `).join('')}
-        </ul>
-        <button class="select-btn" data-plan="${planId}">Seleccionar</button>
-      `;
-
-      container.appendChild(card);
-    });
-
-    // Agregar redirección a todos los botones
-    document.querySelectorAll('.select-btn').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        const planId = e.currentTarget.getAttribute('data-plan');
-        window.location.href = `plansForm.html?plan=${planId}`;
+      <h3>${plan.name}</h3>
+      <div class="price">${plan.prices[mode]}</div>
+      ${plan.intro ? `<div class="plan-intro">${plan.intro}</div>` : ''}
+      <ul class="feature-list">
+      ${plan.features
+        .filter(f => !f.modes || f.modes.includes(mode))
+        .map(f => `
+          <li>
+          ${f.label}
+          ${(!f.label.includes('EXTRA') && f.info) ? `<span class="info-icon" tabindex="0" data-tooltip="${f.info}">i</span>` : ''}                        
+          </li>
+          `).join('')}
+          </ul>
+          <button class="select-btn" data-plan="${planId}">Seleccionar</button>
+          `;
+          
+          container.appendChild(card);
+        });
+        
+        // Agregar redirección a todos los botones
+        document.querySelectorAll('.select-btn').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            const planId = e.currentTarget.getAttribute('data-plan');
+            window.location.href = `plansForm.html?plan=${planId}`;
+          });
+        });
+      }
+      
+      document.getElementById('monthlyBtn').addEventListener('click', () => togglePricing('monthly'));
+      document.getElementById('yearlyBtn').addEventListener('click', () => togglePricing('yearly'));
+      
+      togglePricing('monthly');
+      
+      
+      // General button handlers
+      document.querySelectorAll('.navbar8-action11, .navbar8-action21, .hero17-button1, .hero17-button2').forEach(button => {
+        button.addEventListener('click', function() {
+          const text = this.textContent.trim();
+          alert(`Botón "${text}" clickeado - Agrega aquí la funcionalidad deseada`);
+        });
       });
-    });
-  }
-
-  document.getElementById('monthlyBtn').addEventListener('click', () => togglePricing('monthly'));
-  document.getElementById('yearlyBtn').addEventListener('click', () => togglePricing('yearly'));
-
-  togglePricing('monthly');
-
-
-  // General button handlers
-  document.querySelectorAll('.navbar8-action11, .navbar8-action21, .hero17-button1, .hero17-button2').forEach(button => {
-    button.addEventListener('click', function() {
-      const text = this.textContent.trim();
-      alert(`Botón "${text}" clickeado - Agrega aquí la funcionalidad deseada`);
-    });
-  });
-
-  // Mobile menu handlers
-  document.querySelector('.navbar8-burger-menu').addEventListener('click', function() {
-    const mobileMenu = document.querySelector('.navbar8-mobile-menu');
-    mobileMenu.style.display = mobileMenu.style.display === 'block' ? 'none' : 'block';
-  });
-
-  document.querySelector('.navbar8-close-menu').addEventListener('click', function() {
+      
+      // Mobile menu handlers
+      document.querySelector('.navbar8-burger-menu').addEventListener('click', function() {
+        const mobileMenu = document.querySelector('.navbar8-mobile-menu');
+        mobileMenu.style.display = mobileMenu.style.display === 'block' ? 'none' : 'block';
+      });
+      
+      document.querySelector('.navbar8-close-menu').addEventListener('click', function() {
     document.querySelector('.navbar8-mobile-menu').style.display = 'none';
   });
-
+  
   // Debugging all buttons
   document.querySelectorAll('button, a').forEach(element => {
     element.addEventListener('click', function(e) {
       console.log('Elemento clickeado:', this);
     });
   });
-
-let activeCategory = 'Sitio Web'; // inicial
-
-function filterCategory(category) {
-const cards = document.querySelectorAll('.product-card');
-const buttons = document.querySelectorAll('.toggle-button');
-
-// Si el usuario hace clic en el mismo botón activo, lo desactiva
-if (activeCategory === category) {
-    activeCategory = null;
-    buttons.forEach(btn => btn.classList.remove('active'));
-    cards.forEach(card => card.style.display = 'block');
-    return;
-}
-
-// Si hace clic en una nueva categoría
-activeCategory = category;
-buttons.forEach(btn => {
-    btn.classList.toggle('active', btn.textContent === category);
-});
-
-cards.forEach(card => {
-    const cat = card.querySelector('.product-category').textContent;
-    card.style.display = (cat === category) ? 'block' : 'none';
-});
-}
-
-const burger = document.querySelector('[data-thq="thq-burger-menu"]');
-const mobileMenu = document.querySelector('[data-thq="thq-mobile-menu"]');
-const closeMenu = document.querySelector('[data-thq="thq-close-menu"]');
-
-if (burger && mobileMenu && closeMenu) {
-  burger.addEventListener("click", () => {
-    mobileMenu.classList.add("active");
-  });
-
-  closeMenu.addEventListener("click", () => {
-    mobileMenu.classList.remove("active");
-  });
-}
+  
+  let activeCategory = 'Sitio Web'; // inicial
+  
+  function filterCategory(category) {
+    const cards = document.querySelectorAll('.product-card');
+    const buttons = document.querySelectorAll('.toggle-button');
+    
+    // Si el usuario hace clic en el mismo botón activo, lo desactiva
+    if (activeCategory === category) {
+      activeCategory = null;
+      buttons.forEach(btn => btn.classList.remove('active'));
+      cards.forEach(card => card.style.display = 'block');
+      return;
+    }
+    
+    // Si hace clic en una nueva categoría
+    activeCategory = category;
+    buttons.forEach(btn => {
+      btn.classList.toggle('active', btn.textContent === category);
+    });
+    
+    cards.forEach(card => {
+      const cat = card.querySelector('.product-category').textContent;
+      card.style.display = (cat === category) ? 'block' : 'none';
+    });
+  }
+  
+  const burger = document.querySelector('[data-thq="thq-burger-menu"]');
+  const mobileMenu = document.querySelector('[data-thq="thq-mobile-menu"]');
+  const closeMenu = document.querySelector('[data-thq="thq-close-menu"]');
+  
+  if (burger && mobileMenu && closeMenu) {
+    burger.addEventListener("click", () => {
+      mobileMenu.classList.add("active");
+    });
+    
+    closeMenu.addEventListener("click", () => {
+      mobileMenu.classList.remove("active");
+    });
+  }
   
   // Verificar específicamente los botones de pricing
   const monthlyBtn = document.getElementById('monthlyBtn');
@@ -229,37 +199,65 @@ if (burger && mobileMenu && closeMenu) {
       console.log('Yearly button clicked');
     });
   }
+  // Cargar fechas ocupadas desde el endpoint
+  let fechasOcupadas = [];
+  
+  // 1. Referencia al botón
+  const btn2 = document.getElementById('btnReserva');
+  
+  // 2. Asegurarse de que el botón existe
+  if (!btn2) {
+    console.warn("⚠️ No se encontró el botón #btnReserva");
+    return;
+  } else {
+    btn2.addEventListener('click', (e) => {
+      e.preventDefault();
+      // 3. Cargar fechas ocupadas y guardar en variable
+      fetch('https://script.google.com/macros/s/AKfycbyzBZl3BmLLNZSHRmAgBxVL7Vl9aF8H7fTVZoHK-tOan1Xb06SrK8wa6Gmli8SBfQfk/exec')
+        .then(res => res.json())
+        .then(data => {
+          console.log("📅 Fechas ocupadas:", fechasOcupadas);
+          localStorage.setItem('fechasOcupadas', JSON.stringify(data));
+          window.location.href = "reserva.html";
+        })
+        .catch(err => {
+        console.error("❌ Error al cargar fechas ocupadas:", err);
+        // Navega igual aunque falle el fetch
+        window.location.href = "reserva.html";
+        });
+      })
+    }
 });
 
-    // Inicializar carrito desde localStorage
-  function getCart() {
-    return JSON.parse(localStorage.getItem('cart') || '[]');
-  }
-  function setCart(cart) {
-    localStorage.setItem('cart', JSON.stringify(cart));
-  }
-  function updateCartCount() {
-    document.getElementById('cart-count').textContent = getCart().length;
-  }
+// Inicializar carrito desde localStorage
+function getCart() {
+  return JSON.parse(localStorage.getItem('cart') || '[]');
+}
+function setCart(cart) {
+  localStorage.setItem('cart', JSON.stringify(cart));
+}
+function updateCartCount() {
+  document.getElementById('cart-count').textContent = getCart().length;
+}
 
-  // Al cargar la página, marcar los checkboxes ya seleccionados
+// Al cargar la página, marcar los checkboxes ya seleccionados
+updateCartCount();
+const cart = getCart();
+document.querySelectorAll('.cart-checkbox').forEach(checkbox => {
+  if (cart.includes(checkbox.dataset.product)) {
+    checkbox.checked = true;
+  }
+  checkbox.addEventListener('change', function() {
+    let cart = getCart();
+    if (this.checked) {
+      if (!cart.includes(this.dataset.product)) cart.push(this.dataset.product);
+    } else {
+      cart = cart.filter(p => p !== this.dataset.product);
+    }
+    setCart(cart);
     updateCartCount();
-    const cart = getCart();
-    document.querySelectorAll('.cart-checkbox').forEach(checkbox => {
-      if (cart.includes(checkbox.dataset.product)) {
-        checkbox.checked = true;
-      }
-      checkbox.addEventListener('change', function() {
-        let cart = getCart();
-        if (this.checked) {
-          if (!cart.includes(this.dataset.product)) cart.push(this.dataset.product);
-        } else {
-          cart = cart.filter(p => p !== this.dataset.product);
-        }
-        setCart(cart);
-        updateCartCount();
-      });
-    });
+  });
+});
 
 
 // Cierra el menú al hacer clic en cualquier enlace
