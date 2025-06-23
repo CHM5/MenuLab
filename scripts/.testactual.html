@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <title>Menú Online</title>
+  <link rel="icon" type="image/png" href="../MLfavicon.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <link rel="icon" type="image/png" href="../MLfavicon.png" />
   <style>
     :root {
       --primary: #ffc107;
@@ -43,27 +43,6 @@
       border-radius: var(--radius);
       font-size: 1rem;
       color: #444;
-    }
-    .search-box {
-      display: flex;
-      align-items: center;
-      margin-bottom: 1.2rem;
-      background: #f8f9fa;
-      border-radius: var(--radius);
-      padding: 0.5rem 1rem;
-      box-shadow: 0 2px 8px #0001;
-    }
-    .search-box input {
-      flex: 1;
-      border: none;
-      background: transparent;
-      font-size: 1.1rem;
-      padding: 0.7rem 0.5rem;
-      outline: none;
-    }
-    .search-box svg {
-      margin-right: 0.7rem;
-      opacity: 0.6;
     }
     table {
       width: 100%;
@@ -156,8 +135,9 @@
       <span id="horarios-resto" style="font-weight: bold;"></span>
     </div>
   </footer>
+
   <script>
-    const CSV_URL = "https://docs.google.com/spreadsheets/d/1nm2nptRumlQD9Bud-7t_EnzHC0sGENk-IVCG2qhEcTM/gviz/tq?tqx=out:csv";
+    const CSV_URL = "https://docs.google.com/spreadsheets/d/1Qmi9aPm_YnWC1cBds_mLlnAm2EQTPJToIksX-xrCsMw/gviz/tq?tqx=out:csv";
     let allRows = [];
 
     function renderTable(rows) {
@@ -193,14 +173,14 @@
         console.error("Error al cargar el CSV:", err);
       });
 
-
-
-    // FUNCIONANDO: Obtener nombre del restaurante de la celda C4 de la hoja "Datos"
-    const DATOS_CSV_URL = "https://docs.google.com/spreadsheets/d/1nm2nptRumlQD9Bud-7t_EnzHC0sGENk-IVCG2qhEcTM/gviz/tq?tqx=out:csv&sheet=Datos%20Fijos"
-    fetch(DATOS_CSV_URL)
+    // Cargar Valores Estaticos en vivo
+    const STATIC_CSV_URL = "https://docs.google.com/spreadsheets/d/1Qmi9aPm_YnWC1cBds_mLlnAm2EQTPJToIksX-xrCsMw/gviz/tq?tqx=out:csv&sheet=Datos%20Fijos";
+    fetch(STATIC_CSV_URL)
       .then(response => response.text())
       .then(data => {
-        const rows = data.split("\n").map(row => row.split(","));
+        const rows = data.split("\n").map(row => row.trim()).filter(Boolean);
+        const ul = document.getElementById("fijos-list");
+        ul.innerHTML = "";
 
         const nombre = (rows[2] && rows[2][2]) ? rows[2][2].replace(/"/g, "").trim() : "";
         if (nombre) {
@@ -221,7 +201,7 @@
         if (horarios) {
           document.getElementById("horarios-resto").textContent = horarios;
         }
-      });
+      })
   </script>
 </body>
 </html>

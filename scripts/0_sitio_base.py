@@ -116,11 +116,11 @@ html = f"""<!DOCTYPE html>
 <head>
   <meta charset="UTF-8" />
   <title>Menú Online</title>
-  <link rel="icon" type="image/png" href="../MLfavicon.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
+  <link rel="icon" type="image/png" href="../MLfavicon.png" />
   <style>
     :root {{
       --primary: #ffc107;
@@ -191,9 +191,6 @@ html = f"""<!DOCTYPE html>
       .fijos {{
         font-size: 0.97rem;
         padding: 0.5rem 0.7rem;
-      }}
-      .search-box {{
-        padding: 0.4rem 0.7rem;
       }}
     }}
     @media (max-width: 480px) {{
@@ -291,9 +288,7 @@ html = f"""<!DOCTYPE html>
     fetch(STATIC_CSV_URL)
       .then(response => response.text())
       .then(data => {{
-        const rows = data.split("\\n").map(row => row.trim()).filter(Boolean);
-        const ul = document.getElementById("fijos-list");
-        ul.innerHTML = "";
+        const rows = data.split("\\n").map(row => row.split(","));
 
         const nombre = (rows[2] && rows[2][2]) ? rows[2][2].replace(/"/g, "").trim() : "";
         if (nombre) {{
@@ -314,7 +309,7 @@ html = f"""<!DOCTYPE html>
         if (horarios) {{
           document.getElementById("horarios-resto").textContent = horarios;
         }}
-      }})
+      }});
   </script>
 </body>
 </html>
