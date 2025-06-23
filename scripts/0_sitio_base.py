@@ -367,7 +367,7 @@ html = f"""<!DOCTYPE html>
       }});
       
     // Obtener nombre del restaurante de la celda C4 de la hoja "Datos"
-    DATOS_CSV_URL = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet=Datos%20Fijos"
+    const DATOS_CSV_URL = "https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet=Datos%20Fijos"
     fetch(DATOS_CSV_URL)
       .then(response => response.text())
       .then(data => {{
