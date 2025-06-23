@@ -371,9 +371,9 @@ html = f"""<!DOCTYPE html>
     fetch(DATOS_CSV_URL)
       .then(response => response.text())
       .then(data => {{
-        const rows = data.split(""\n"").map(row => row.split(","));
-        // C4 es la columna 2 (índice 2), fila 3 (índice 3)
-        const nombre = (rows[3] && rows[3][2]) ? rows[3][2].replace(/"/g, "").trim() : "";
+        const rows = data.split("\\n").map(row => row.split(","));
+        // C4 es la columna 2 (índice 2), fila 2 (índice 2)
+        const nombre = (rows[2] && rows[2][2]) ? rows[2][2].replace(/"/g, "").trim() : "";
         if (nombre) {{
           document.getElementById("nombre-resto").textContent = nombre;
         }}
