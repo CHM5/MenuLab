@@ -120,11 +120,11 @@ html = f"""<!DOCTYPE html>
 <head>
   <meta charset="UTF-8" />
   <title>Menú Online</title>
+  <link rel="icon" type="image/png" href="MLfavicon.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
   <style>
     :root {{
       --primary: #ffc107;
@@ -242,21 +242,9 @@ html = f"""<!DOCTYPE html>
       <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1750637502/BannerMenuLab_mbtrzh.jpg" alt="Banner MenuLab" style="width:100%;display:block;margin-bottom:0.5rem;">
     </a>
     <h1 id="nombre-resto" style="margin:0;font-size:2rem;">Menú Online</h1>
+    <h2 id="subtitulo-resto" style="margin:0.2rem 0 0.7rem 0;font-size:1.2rem;font-weight:400;color:#444;"></h2>
   </header>
   <div class="container">
-    <div class="fijos">
-      <strong>Datos Fijos:</strong>
-      <ul id="fijos-list" style="margin:0.5rem 0 0 1.2rem;">
-        <li>Cargando...</li>
-      </ul>
-    </div>
-    <div class="search-box">
-      <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-        <circle cx="11" cy="11" r="8"></circle>
-        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-      </svg>
-      <input id="search" type="text" placeholder="Buscar plato, categoría, descripción..." autocomplete="off">
-    </div>
     <div style="overflow-x:auto;">
       <table id="menuTable">
         <thead>
@@ -275,6 +263,10 @@ html = f"""<!DOCTYPE html>
       No se encontraron platos con ese criterio.
     </div>
   </div>
+  <footer style="background:#f1f1f1;color:#333;text-align:center;padding:1rem 0 1.2rem 0;font-size:1rem;">
+    <div id="direccion-resto"></div>
+    <div id="horarios-resto" style="margin-top:0.3rem;"></div>
+  </footer>
   <script>
     const CSV_URL = "{csv_url}";
     let allRows = [];
@@ -372,11 +364,31 @@ html = f"""<!DOCTYPE html>
       .then(response => response.text())
       .then(data => {{
         const rows = data.split("\\n").map(row => row.split(","));
-        // C4 es la columna 2 (índice 2), fila 2 (índice 2)
+        // C3 es la columna 2 (índice 2), fila 2 (índice 2)
         const nombre = (rows[2] && rows[2][2]) ? rows[2][2].replace(/"/g, "").trim() : "";
+
+        // C4 es la columna 2 (índice 2), fila 3 (índice 3)
+        const subtitulo = (rows[3] && rows[3][2]) ? rows[3][2].replace(/"/g, "").trim() : "";
+
+        // C5 es la columna 2 (índice 2), fila 4 (índice 4)
+        const direccion = (rows[4] && rows[4][2]) ? rows[4][2].replace(/"/g, "").trim() : "";
+
+        // C6 es la columna 2 (índice 2), fila 5 (índice 5)
+        const horarios = (rows[5] && rows[5][2]) ? rows[5][2].replace(/"/g, "").trim() : "";
+
         if (nombre) {{
           document.getElementById("nombre-resto").textContent = nombre;
         }}
+        if (subtitulo) {{
+        document.getElementById("subtitulo-resto").textContent = subtitulo;
+        }}
+        if (direccion) {{
+          document.getElementById("direccion-resto").textContent = direccion;
+        }}
+        if (horarios) {{
+          document.getElementById("horarios-resto").textContent = horarios;
+        }}
+
       }});
   </script>
 </body>
