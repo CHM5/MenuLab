@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <title>Menú Online</title>
-  <link rel="icon" type="image/png" href="../MLfavicon.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
+  <link rel="icon" type="image/png" href="../MLfavicon.png" />
   <style>
     :root {
       --primary: #ffc107;
@@ -124,10 +124,8 @@
     <a href="https://menulab.com.ar" target="_blank" rel="noopener">
       <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1750637502/BannerMenuLab_mbtrzh.jpg" alt="Banner MenuLab" style="width:100%;display:block;margin-bottom:0.5rem;">
     </a>
-    <h1 id="nombre-resto" style="margin:0;font-size:2rem;">Menú Online</h1>
-    <!--
-    <h2 id="subtitulo-resto" style="margin:0.2rem 0 0.7rem 0;font-size:1.2rem;font-weight:400;color:#444;"></h2>
-    -->
+    <h1 id="nombre-resto" style="font-size:2rem; color:#000;">Menú Online</h1>
+    <h2 id="subtitulo-resto" style="margin:0.2rem 0 0.7rem 0;font-size:1.2rem;font-weight:400;color:#000;"></h2>
   </header>
   <div class="container">
     <div style="overflow-x:auto;">
@@ -148,14 +146,18 @@
       No se encontraron platos con ese criterio.
     </div>
   </div>
-  <!--
   <footer style="background:#f1f1f1;color:#333;text-align:center;padding:1rem 0 1.2rem 0;font-size:1rem;">
-    <div id="direccion-resto"></div>
-    <div id="horarios-resto" style="margin-top:0.3rem;"></div>
+    <div>
+      <span>Dirección: </span>
+      <span id="direccion-resto" style="font-weight: bold;"></span>
+    </div>
+    <div>
+      <span>Horarios: </span>
+      <span id="horarios-resto" style="font-weight: bold;"></span>
+    </div>
   </footer>
-  -->
   <script>
-    const CSV_URL = "https://docs.google.com/spreadsheets/d/1hfcFQD2BS05oLUqDeyJr5iGMWXX-SGkE7pBX9XJ22ns/gviz/tq?tqx=out:csv";
+    const CSV_URL = "https://docs.google.com/spreadsheets/d/1nm2nptRumlQD9Bud-7t_EnzHC0sGENk-IVCG2qhEcTM/gviz/tq?tqx=out:csv";
     let allRows = [];
 
     function renderTable(rows) {
@@ -177,18 +179,6 @@
       document.getElementById("noResults").style.display = count === 0 ? "block" : "none";
     }
 
-    function filterTable() {
-      const q = document.getElementById("search").value.toLowerCase();
-      if (!q) {
-        renderTable(allRows);
-        return;
-      }
-      const filtered = allRows.filter(cols =>
-        cols.join(" ").toLowerCase().includes(q)
-      );
-      renderTable(filtered);
-    }
-
     fetch(CSV_URL)
       .then(response => response.text())
       .then(data => {
@@ -203,22 +193,35 @@
         console.error("Error al cargar el CSV:", err);
       });
 
-    document.getElementById("search").addEventListener("input", filterTable);
 
-    // Cargar platos en vivo
-    const PLATOS_CSV_URL = "https://docs.google.com/spreadsheets/d/1hfcFQD2BS05oLUqDeyJr5iGMWXX-SGkE7pBX9XJ22ns/gviz/tq?tqx=out:csv&sheet=Datos%20Fijos";
-    fetch(PLATOS_CSV_URL)
+
+    // Obtener nombre del restaurante de la celda C4 de la hoja "Datos"
+    const DATOS_CSV_URL = "https://docs.google.com/spreadsheets/d/1nm2nptRumlQD9Bud-7t_EnzHC0sGENk-IVCG2qhEcTM/gviz/tq?tqx=out:csv&sheet=Datos%20Fijos"
+    fetch(DATOS_CSV_URL)
       .then(response => response.text())
       .then(data => {
-        const rows = data.split("\n").map(row => row.trim()).filter(Boolean);
-        const ul = document.getElementById("fijos-list");
-        ul.innerHTML = "";
-
+        const rows = data.split("\n").map(row => row.split(","));
+        // C4 es la columna 2 (índice 2), fila 2 (índice 2)
         const nombre = (rows[2] && rows[2][2]) ? rows[2][2].replace(/"/g, "").trim() : "";
         if (nombre) {
           document.getElementById("nombre-resto").textContent = nombre;
         }
-      })
+
+        const subtitulo = (rows[3] && rows[3][2]) ? rows[3][2].replace(/"/g, "").trim() : "";
+        if (subtitulo) {
+          document.getElementById("subtitulo-resto").textContent = subtitulo;
+        }
+                
+        const direccion = (rows[4] && rows[4][2]) ? rows[4][2].replace(/"/g, "").trim() : "";
+        if (direccion) {
+          document.getElementById("direccion-resto").textContent = direccion;
+        }
+
+        const horarios = (rows[5] && rows[5][2]) ? rows[5][2].replace(/"/g, "").trim() : "";
+        if (horarios) {
+          document.getElementById("horarios-resto").textContent = horarios;
+        }
+      });
   </script>
 </body>
 </html>

@@ -89,10 +89,6 @@ drive_service.permissions().create(
     sendNotificationEmail=False
 ).execute()
 
-# === LEER CONTENIDO DE SHEET DE AMBAS TABS ===
-MENU_RANGE = "Carta Web Interactiva!A2:E26"
-FIJOS_RANGE = "Datos Fijos!B4:B15"
-
 # Leer menú
 menu_result = sheets_service.spreadsheets().values().get(
     spreadsheetId=sheet_id,
@@ -161,27 +157,6 @@ html = f"""<!DOCTYPE html>
       font-size: 1rem;
       color: #444;
     }}
-    .search-box {{
-      display: flex;
-      align-items: center;
-      margin-bottom: 1.2rem;
-      background: #f8f9fa;
-      border-radius: var(--radius);
-      padding: 0.5rem 1rem;
-      box-shadow: 0 2px 8px #0001;
-    }}
-    .search-box input {{
-      flex: 1;
-      border: none;
-      background: transparent;
-      font-size: 1.1rem;
-      padding: 0.7rem 0.5rem;
-      outline: none;
-    }}
-    .search-box svg {{
-      margin-right: 0.7rem;
-      opacity: 0.6;
-    }}
     table {{
       width: 100%;
       border-collapse: collapse;
@@ -241,10 +216,8 @@ html = f"""<!DOCTYPE html>
     <a href="https://menulab.com.ar" target="_blank" rel="noopener">
       <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1750637502/BannerMenuLab_mbtrzh.jpg" alt="Banner MenuLab" style="width:100%;display:block;margin-bottom:0.5rem;">
     </a>
-    <h1 id="nombre-resto" style="margin:0;font-size:2rem;">Menú Online</h1>
-    <!--
-    <h2 id="subtitulo-resto" style="margin:0.2rem 0 0.7rem 0;font-size:1.2rem;font-weight:400;color:#444;"></h2>
-    -->
+    <h1 id="nombre-resto" style="font-size:2rem; color:#000;">Menú Online</h1>
+    <h2 id="subtitulo-resto" style="margin:0.2rem 0 0.7rem 0;font-size:1.2rem;font-weight:400;color:#000;"></h2>
   </header>
   <div class="container">
     <div style="overflow-x:auto;">
@@ -265,12 +238,17 @@ html = f"""<!DOCTYPE html>
       No se encontraron platos con ese criterio.
     </div>
   </div>
-  <!--
   <footer style="background:#f1f1f1;color:#333;text-align:center;padding:1rem 0 1.2rem 0;font-size:1rem;">
-    <div id="direccion-resto"></div>
-    <div id="horarios-resto" style="margin-top:0.3rem;"></div>
+    <div>
+      <span>Dirección: </span>
+      <span id="direccion-resto" style="font-weight: bold;"></span>
+    </div>
+    <div>
+      <span>Horarios: </span>
+      <span id="horarios-resto" style="font-weight: bold;"></span>
+    </div>
   </footer>
-  -->
+
   <script>
     const CSV_URL = "{csv_url}";
     let allRows = [];
@@ -294,18 +272,6 @@ html = f"""<!DOCTYPE html>
       document.getElementById("noResults").style.display = count === 0 ? "block" : "none";
     }}
 
-    function filterTable() {{
-      const q = document.getElementById("search").value.toLowerCase();
-      if (!q) {{
-        renderTable(allRows);
-        return;
-      }}
-      const filtered = allRows.filter(cols =>
-        cols.join(" ").toLowerCase().includes(q)
-      );
-      renderTable(filtered);
-    }}
-
     fetch(CSV_URL)
       .then(response => response.text())
       .then(data => {{
@@ -320,11 +286,9 @@ html = f"""<!DOCTYPE html>
         console.error("Error al cargar el CSV:", err);
       }});
 
-    document.getElementById("search").addEventListener("input", filterTable);
-
-    // Cargar platos en vivo
-    const PLATOS_CSV_URL = "{sheet_url.replace('/edit', '')}/gviz/tq?tqx=out:csv&sheet=Datos%20Fijos";
-    fetch(PLATOS_CSV_URL)
+    // Cargar Valores Estaticos en vivo
+    const STATIC_CSV_URL = "{sheet_url.replace('/edit', '')}/gviz/tq?tqx=out:csv&sheet=Datos%20Fijos";
+    fetch(STATIC_CSV_URL)
       .then(response => response.text())
       .then(data => {{
         const rows = data.split("\\n").map(row => row.trim()).filter(Boolean);
@@ -336,10 +300,21 @@ html = f"""<!DOCTYPE html>
           document.getElementById("nombre-resto").textContent = nombre;
         }}
 
+        const subtitulo = (rows[3] && rows[3][2]) ? rows[3][2].replace(/"/g, "").trim() : "";
+        if (subtitulo) {{
+          document.getElementById("subtitulo-resto").textContent = subtitulo;
+        }}
+                
+        const direccion = (rows[4] && rows[4][2]) ? rows[4][2].replace(/"/g, "").trim() : "";
+        if (direccion) {{
+          document.getElementById("direccion-resto").textContent = direccion;
+        }}
+
+        const horarios = (rows[5] && rows[5][2]) ? rows[5][2].replace(/"/g, "").trim() : "";
+        if (horarios) {{
+          document.getElementById("horarios-resto").textContent = horarios;
+        }}
       }})
-      .catch(() => {{
-        document.getElementById("fijos-list").innerHTML = "<li>Error al cargar datos fijos.</li>";
-      }});
   </script>
 </body>
 </html>
