@@ -120,7 +120,7 @@ html = f"""<!DOCTYPE html>
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <link rel="icon" type="image/png" href="../MLfavicon.png" />
+  <link rel="icon" type="image/png" href="../../MLfavicon.png" />
   <style>
     :root {{
       --primary: #ffc107;
@@ -244,6 +244,21 @@ html = f"""<!DOCTYPE html>
       <span>Horarios: </span>
       <span id="horarios-resto" style="font-weight: bold;"></span>
     </div>
+    <a href="https://menulab.com.ar" target="_blank" rel="noopener">
+      <span class="thq-body-small">En colaboración con:</span>  
+      <span style="display: inline-block; margin-left: 12px;">
+        <h1 style="
+          font-family: 'Unbounded', sans-serif;
+          font-weight: 600;
+          font-size: 100%;
+          margin: 0;
+          background: linear-gradient(90deg, #E639A6, #457B9D); /* azul al rosa */
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;">
+          MenuLab
+        </h1>
+      </span>
+    </a>
   </footer>
 
   <script>
