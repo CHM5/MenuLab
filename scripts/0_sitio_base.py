@@ -238,7 +238,9 @@ html = f"""<!DOCTYPE html>
 </head>
 <body>
   <header>
-    <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1750637502/BannerMenuLab_mbtrzh.jpg" alt="Banner MenuLab" style="width:100%;display:block;margin-bottom:0.5rem;">
+    <a href="https://menulab.com.ar" target="_blank" rel="noopener">
+      <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1750637502/BannerMenuLab_mbtrzh.jpg" alt="Banner MenuLab" style="width:100%;display:block;margin-bottom:0.5rem;">
+    </a>
     <h1 id="nombre-resto" style="margin:0;font-size:2rem;">Menú Online</h1>
   </header>
   <div class="container">
@@ -365,7 +367,8 @@ html = f"""<!DOCTYPE html>
       }});
       
     // Obtener nombre del restaurante de la celda C4 de la hoja "Datos"
-    fetch("https://docs.google.com/spreadsheets/d/1FUEdPbJU1dLD4Ok6EyCXmIjucZOyMIcs193m6UQMYuo/gviz/tq?tqx=out:csv&sheet=Datos")
+    DATOS_CSV_URL = f"https://docs.google.com/spreadsheets/d/"{sheet_id}"/gviz/tq?tqx=out:csv&sheet=Datos%20Fijos"
+    fetch(DATOS_CSV_URL)
       .then(response => response.text())
       .then(data => {{
         const rows = data.split("\n").map(row => row.split(","));
