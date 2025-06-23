@@ -45,7 +45,7 @@ jobs:
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
           CLIENT_EMAIL: ${{ github.event.client_payload.email }}  # <-- Aquí está el valor del email
-        run: python scripts/generar_sitio.py
+        run: python scripts/0_sitio_base.py
 
       # 4) Capturar URLs que generó el script
       - name: Capturar rutas generadas

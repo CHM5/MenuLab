@@ -13,7 +13,7 @@
       --primary: #ffc107;
       --bg: #fff;
       --text: #212529;
-      --header: #343a40;
+      --header: #d2d0cd;
       --border: #dee2e6;
       --radius: 10px;
     }
@@ -121,10 +121,10 @@
 </head>
 <body>
   <header>
-    <h1 style="margin:0;font-size:2rem;">Menú Online</h1>
-    <div style="font-size:1rem;font-weight:400;margin-top:0.2rem;">
-      <a href="https://docs.google.com/spreadsheets/d/1FUEdPbJU1dLD4Ok6EyCXmIjucZOyMIcs193m6UQMYuo/edit" target="_blank" style="color:#ffc107;text-decoration:underline;">Ver planilla</a>
-    </div>
+    <a href="https://menulab.com.ar" target="_blank" rel="noopener">
+      <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1750637502/BannerMenuLab_mbtrzh.jpg" alt="Banner MenuLab" style="width:100%;display:block;margin-bottom:0.5rem;">
+    </a>
+    <h1 id="nombre-resto" style="margin:0;font-size:2rem;">Menú Online</h1>
   </header>
   <div class="container">
     <div class="fijos">
@@ -247,6 +247,18 @@
       })
       .catch(() => {
         document.getElementById("fijos-list").innerHTML = "<li>Error al cargar datos fijos.</li>";
+      });
+
+    // Obtener nombre del restaurante de la celda C4 de la hoja "Datos"
+    fetch("https://docs.google.com/spreadsheets/d/1FUEdPbJU1dLD4Ok6EyCXmIjucZOyMIcs193m6UQMYuo/gviz/tq?tqx=out:csv&sheet=Datos")
+      .then(response => response.text())
+      .then(data => {
+        const rows = data.split("\n").map(row => row.split(","));
+        // C4 es la columna 2 (índice 2), fila 3 (índice 3)
+        const nombre = (rows[3] && rows[3][2]) ? rows[3][2].replace(/"/g, "").trim() : "";
+        if (nombre) {
+          document.getElementById("nombre-resto").textContent = nombre;
+        }
       });
   </script>
 </body>
