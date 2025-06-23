@@ -242,7 +242,9 @@ html = f"""<!DOCTYPE html>
       <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1750637502/BannerMenuLab_mbtrzh.jpg" alt="Banner MenuLab" style="width:100%;display:block;margin-bottom:0.5rem;">
     </a>
     <h1 id="nombre-resto" style="margin:0;font-size:2rem;">Menú Online</h1>
+    <!--
     <h2 id="subtitulo-resto" style="margin:0.2rem 0 0.7rem 0;font-size:1.2rem;font-weight:400;color:#444;"></h2>
+    -->
   </header>
   <div class="container">
     <div style="overflow-x:auto;">
@@ -339,28 +341,12 @@ html = f"""<!DOCTYPE html>
             }}
           }}
         }}
-
-        // Mostrar B11:B15 (índices 11 a 15) como hipervínculo si hay valor
-        const redes = ["Whatsapp", "Instagram", "Facebook", "Rappi", "PedidosYa"];
-        for (let i = 11; i <= 15; i++) {{
-          if (rows[i]) {{
-            const cols = rows[i].split(",");
-            let link = (cols[1] || "").replace(/"/g, "").trim();
-            if (link) {{
-              ul.innerHTML += `<li><a href="${{link}}" target="_blank" rel="noopener">${{redes[i-10]}}</a></li>`;
-            }}
-          }}
-        }}
-
-        if (!ul.innerHTML) {{
-          ul.innerHTML = "<li>No hay datos fijos.</li>";
-        }}
       }})
       .catch(() => {{
         document.getElementById("fijos-list").innerHTML = "<li>Error al cargar datos fijos.</li>";
       }});
       
-    // Obtener nombre del restaurante de la celda C4 de la hoja "Datos"
+    // Obtener "Datos Fijos"
     const DATOS_CSV_URL = "https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet=Datos%20Fijos"
     fetch(DATOS_CSV_URL)
       .then(response => response.text())
@@ -370,7 +356,7 @@ html = f"""<!DOCTYPE html>
         const nombre = (rows[2] && rows[2][2]) ? rows[2][2].replace(/"/g, "").trim() : "";
 
         // C4 es la columna 2 (índice 2), fila 3 (índice 3)
-        const subtitulo = (rows[3] && rows[3][2]) ? rows[3][2].replace(/"/g, "").trim() : "";
+        //const subtitulo = (rows[3] && rows[3][2]) ? rows[3][2].replace(/"/g, "").trim() : "";
 
         // C5 es la columna 2 (índice 2), fila 4 (índice 4)
         //const direccion = (rows[4] && rows[4][2]) ? rows[4][2].replace(/"/g, "").trim() : "";
@@ -381,9 +367,9 @@ html = f"""<!DOCTYPE html>
         if (nombre) {{
           document.getElementById("nombre-resto").textContent = nombre;
         }}
-        if (subtitulo) {{
-          document.getElementById("subtitulo-resto").textContent = subtitulo;
-        }}
+        //if (subtitulo) {{
+        //  document.getElementById("subtitulo-resto").textContent = subtitulo;
+        //}}
         //if (direccion) {{
         //  document.getElementById("direccion-resto").textContent = direccion;
         //}}
