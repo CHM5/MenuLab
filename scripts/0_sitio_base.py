@@ -120,7 +120,7 @@ html = f"""<!DOCTYPE html>
 <head>
   <meta charset="UTF-8" />
   <title>Menú Online</title>
-  <link rel="icon" type="image/png" href="MLfavicon.png" />
+  <link rel="icon" type="image/png" href="../MLfavicon.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
@@ -322,61 +322,23 @@ html = f"""<!DOCTYPE html>
 
     document.getElementById("search").addEventListener("input", filterTable);
 
-    // Cargar datos fijos en vivo
-    const FIJOS_CSV_URL = "{sheet_url.replace('/edit', '')}/gviz/tq?tqx=out:csv&sheet=Datos%20Fijos";
-    fetch(FIJOS_CSV_URL)
+    // Cargar platos en vivo
+    const PLATOS_CSV_URL = "{sheet_url.replace('/edit', '')}/gviz/tq?tqx=out:csv&sheet=Datos%20Fijos";
+    fetch(PLATOS_CSV_URL)
       .then(response => response.text())
       .then(data => {{
         const rows = data.split("\\n").map(row => row.trim()).filter(Boolean);
         const ul = document.getElementById("fijos-list");
         ul.innerHTML = "";
 
-        // Mostrar B4:B8 (índices 3 a 7) como texto simple
-        for (let i = 3; i <= 7; i++) {{
-          if (rows[i]) {{
-            const cols = rows[i].split(",");
-            let valor = (cols[1] || "").replace(/"/g, "").trim();
-            if (valor) {{
-              ul.innerHTML += `<li>${{valor}}</li>`;
-            }}
-          }}
-        }}
-      }})
-      .catch(() => {{
-        document.getElementById("fijos-list").innerHTML = "<li>Error al cargar datos fijos.</li>";
-      }});
-      
-    // Obtener "Datos Fijos"
-    const DATOS_CSV_URL = "https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet=Datos%20Fijos"
-    fetch(DATOS_CSV_URL)
-      .then(response => response.text())
-      .then(data => {{
-        const rows = data.split("\\n").map(row => row.split(","));
-        // C3 es la columna 2 (índice 2), fila 2 (índice 2)
         const nombre = (rows[2] && rows[2][2]) ? rows[2][2].replace(/"/g, "").trim() : "";
-
-        // C4 es la columna 2 (índice 2), fila 3 (índice 3)
-        //const subtitulo = (rows[3] && rows[3][2]) ? rows[3][2].replace(/"/g, "").trim() : "";
-
-        // C5 es la columna 2 (índice 2), fila 4 (índice 4)
-        //const direccion = (rows[4] && rows[4][2]) ? rows[4][2].replace(/"/g, "").trim() : "";
-
-        // C6 es la columna 2 (índice 2), fila 5 (índice 5)
-        //const horarios = (rows[5] && rows[5][2]) ? rows[5][2].replace(/"/g, "").trim() : "";
-
         if (nombre) {{
           document.getElementById("nombre-resto").textContent = nombre;
         }}
-        //if (subtitulo) {{
-        //  document.getElementById("subtitulo-resto").textContent = subtitulo;
-        //}}
-        //if (direccion) {{
-        //  document.getElementById("direccion-resto").textContent = direccion;
-        //}}
-        //if (horarios) {{
-        //  document.getElementById("horarios-resto").textContent = horarios;
-        //}}
 
+      }})
+      .catch(() => {{
+        document.getElementById("fijos-list").innerHTML = "<li>Error al cargar datos fijos.</li>";
       }});
   </script>
 </body>
