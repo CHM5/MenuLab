@@ -8,9 +8,9 @@ from googleapiclient.errors import HttpError
 
 # === CONFIG ===
 TEMPLATE_SHEET_ID = "1bHOgSjbDydp69BeUS0Ln9JFke6Y2U0SGcwahUeAPAuc"
-MENU_RANGE = "Carta Web Interactiva!A2:E26"  # Hasta 25 productos
 FIJOS_RANGE = "Datos Fijos!B4:B15"
 SHEET_FIELDS = ["Categoría", "Subcategoría", "Nombre", "Descripción", "Precio"]
+MENU_RANGE = "Carta Web Interactiva!A2:E26"  # Hasta 25 productos
 
 # === AUTENTICACIÓN ===
 credentials_info = json.loads(os.environ["GOOGLE_CREDENTIALS"])
@@ -89,6 +89,13 @@ drive_service.permissions().create(
     sendNotificationEmail=False
 ).execute()
 
+# Leer datos fijos
+fijos_result = sheets_service.spreadsheets().values().get(
+    spreadsheetId=sheet_id,
+    range=FIJOS_RANGE
+).execute()
+fijos_rows = fijos_result.get("values", [])
+
 # Leer menú
 menu_result = sheets_service.spreadsheets().values().get(
     spreadsheetId=sheet_id,
@@ -96,12 +103,6 @@ menu_result = sheets_service.spreadsheets().values().get(
 ).execute()
 menu_rows = menu_result.get("values", [])
 
-# Leer datos fijos
-fijos_result = sheets_service.spreadsheets().values().get(
-    spreadsheetId=sheet_id,
-    range=FIJOS_RANGE
-).execute()
-fijos_rows = fijos_result.get("values", [])
 
 # Opcional: convertir datos fijos a una lista simple (quita sublistas vacías)
 fijos = [row[0] for row in fijos_rows if row]
@@ -206,6 +207,70 @@ html = f"""<!DOCTYPE html>
         padding: 0.4rem 0.2rem;
       }}
     }}
+
+    .menu-group {{
+      margin-top: 0.5rem;
+      margin-bottom: 1.2rem;
+    }}
+
+    .menu-group h2 {{
+      font-size: 1.5rem;
+      margin: 0.3rem 0 0.2rem;
+      border-bottom: 2px solid #ddd;
+      color: #333;
+    }}
+
+    .menu-group h3 {{
+      font-size: 1.2rem;
+      margin-top: 0.6rem;
+      color: #555;
+    }}
+
+    .menu-item {{
+      border-bottom: 1px solid #eee;
+      padding: 0.8rem 0;
+    }}
+
+    .menu-item-header {{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 0.5rem;
+    }}
+
+    .menu-name {{
+      font-size: 1.1rem;
+      margin: 0;
+      font-weight: 600;
+    }}
+
+    .menu-price {{
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: #111;
+    }}
+
+    .menu-description {{
+      margin: 0.2rem 0 0 0;
+      font-size: 0.95rem;
+      color: #666;
+      padding: 0 1rem;
+    }}
+
+    @media (max-width: 600px) {{
+      .menu-name {{
+        font-size: 1rem;
+      }}
+      .menu-price {{
+        font-size: 1rem;
+      }}
+      .menu-description {{
+        font-size: 0.9rem;
+      }}
+    }}
+    .menu-content {{
+      margin-top: 2rem;
+    }}
   </style>
 </head>
 <body>
@@ -218,18 +283,7 @@ html = f"""<!DOCTYPE html>
   </header>
   <div class="container">
     <div style="overflow-x:auto;">
-      <table id="menuTable">
-        <thead>
-          <tr>
-            <th>Categoría</th>
-            <th>Subcategoría</th>
-            <th>Nombre</th>
-            <th>Descripción</th>
-            <th>Precio</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
+      <div id="menuTable" class="menu-content"></div>
     </div>
     <div id="noResults" style="display:none;text-align:center;color:#dc3545;margin-top:1.5rem;font-size:1.1rem;">
       No se encontraron platos con ese criterio.
@@ -290,7 +344,7 @@ html = f"""<!DOCTYPE html>
         allRows = data.split("\\n").slice(1, 26).map(row =>
           row.split(",").map(col => col.replace(/\"/g, ""))
         );
-        renderTable(allRows);
+        renderMenuGrouped(allRows);
       }})
       .catch(err => {{
         document.getElementById("noResults").style.display = "block";
@@ -325,6 +379,57 @@ html = f"""<!DOCTYPE html>
           document.getElementById("horarios-resto").textContent = horarios;
         }}
       }});
+
+      function renderMenuGrouped(rows) {{
+        const container = document.querySelector("#menuTable");
+        container.innerHTML = "";
+
+        const agrupado = {{}};
+
+        rows.forEach(cols => {{
+          const [cat, subcat, nombre, desc, precio] = cols.map(c => c.trim());
+          if (!cat || !nombre) return;
+
+          if (!agrupado[cat]) agrupado[cat] = {{}};
+          const sub = subcat || "-";
+          if (!agrupado[cat][sub]) agrupado[cat][sub] = [];
+          agrupado[cat][sub].push({{ nombre, desc, precio }});
+        }});
+
+        Object.entries(agrupado).forEach(([cat, subcategorias]) => {{
+          const group = document.createElement("div");
+          group.className = "menu-group";
+
+          const catTitle = document.createElement("h2");
+          catTitle.textContent = cat;
+          group.appendChild(catTitle);
+
+          Object.entries(subcategorias).forEach(([subcat, items]) => {{
+            if (subcat && subcat !== "-") {{
+              const subTitle = document.createElement("h3");
+              subTitle.textContent = subcat;
+              group.appendChild(subTitle);
+            }}
+
+            items.forEach(item => {{
+              const itemDiv = document.createElement("div");
+              itemDiv.className = "menu-item";
+              itemDiv.innerHTML = `
+                <div class="menu-item-header">
+                  <h3 class="menu-name">${{item.nombre}}</h3>
+                  <span class="menu-price">${{item.precio}}</span>
+                </div>
+                <p class="menu-description">${{item.desc}}</p>
+              `;
+              group.appendChild(itemDiv);
+            }});
+          }});
+
+          container.appendChild(group);
+        }});
+      }}
+
+
   </script>
 </body>
 </html>
