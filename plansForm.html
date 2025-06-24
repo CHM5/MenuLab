@@ -182,6 +182,7 @@
                         
         
         <script>
+            const IS_TEST_MODE = true; // ⚠️ Cambiar a false para producción
             document.addEventListener('DOMContentLoaded', function () {
             const planMap = {
                 0: {
@@ -434,13 +435,31 @@
             showStep(currentStep);
 
             const mpPayButton = document.getElementById('mpPayButton');
-            if (mpPayButton && planParam && planMap[planParam] && planMap[planParam].mpLink) {
-                mpPayButton.href = planMap[planParam].mpLink;
-                mpPayButton.style.display = ""; // Mostrar el botón si hay link
-            } else if (mpPayButton) {
-                mpPayButton.style.display = "none"; // Ocultar si no hay link (ejemplo: Plan Base)
-            }
             const noPayButton = document.getElementById('noPayButton');
+            if (IS_TEST_MODE) {
+            // 🔁 Bypass automático para testing
+            console.warn("🧪 TEST MODE ACTIVADO: saltando MercadoPago...");
+            if (noPayButton) {
+                noPayButton.style.display = "";
+                noPayButton.click(); // Simula clic sin pago
+            }
+            if (mpPayButton) {
+                mpPayButton.style.display = "none"; // Ocultamos botón real de pago
+            }
+            } else {
+            // 👇 Modo real: configuramos botones normalmente
+            if (planParam && planMap[planParam] && planMap[planParam].mpLink) {
+                mpPayButton.href = planMap[planParam].mpLink;
+                mpPayButton.style.display = ""; // Mostrar botón real
+                noPayButton.style.display = "none";
+            } else {
+                // Si no hay link de pago (por ejemplo plan base)
+                mpPayButton.style.display = "none";
+                noPayButton.style.display = "";
+                noPayButton.addEventListener('click', handleNoPay);
+            }
+            }
+
             if (noPayButton) {
                 // Mostramos el botón si el plan no tiene link de MercadoPago (por ejemplo, plan base)
                 if (!planMap[planParam] || !planMap[planParam].mpLink) {
@@ -504,6 +523,46 @@
             }
 
     });
+
+    function handleNoPay(e) {
+        if (e) e.preventDefault();
+
+        const form = document.getElementById('sponsorshipForm');
+        const formData = new FormData(form);
+        const formDataObj = {
+            nombreCompleto: `${formData.get("nombre")} ${formData.get("apellido")}`.trim(),
+            email: formData.get("email"),
+            telefono: formData.get("telefono"),
+            negocio: formData.get("negocio"),
+            medio: formData.get("medio"),
+            comentario: formData.get("comentario"),
+            plan: planMap[planParam]?.name || "base",
+            pago: false,
+            redirect: `successpayment.html`
+        };
+
+        console.log("🔍 formDataObj que se enviará:", formDataObj);
+
+        const url = "https://script.google.com/macros/s/AKfycbyjXSQHoUrM3aYaq6objLb1JxRFPId38kmhh5lyi-wcvTOKYipH8_Y_qmWyJgosbfbO/exec";
+        fetch(url, {
+            method: "POST",
+            mode: "no-cors",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: new URLSearchParams(formDataObj).toString()
+        })
+            .then(() => {
+            currentStep = 4;
+            showStep(currentStep);
+            if (formDataObj.redirect) {
+                window.location.href = formDataObj.redirect;
+            }
+            })
+            .catch(err => {
+            console.error("❌ Error al enviar a Apps Script:", err);
+            alert("Error al enviar el formulario.");
+            });
+        }
+
     </script>
 </body>
 
