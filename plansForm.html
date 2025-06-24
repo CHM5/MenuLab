@@ -345,8 +345,8 @@
                 if (planInfoDiv) {
                     planInfoDiv.innerHTML = `
                     <h3>${plan.name}</h3>
-                    <ul style="margin-bottom:10px;">
-                        ${plan.features.map(f => `<li>✓ ${f}</li>`).join('')}
+                    <ul style="margin-bottom:10px; padding-right: 1.5rem; ">
+                        ${plan.features.map(f => `<li>${f}</li>`).join('')}
                     </ul>
                     `;
                 }

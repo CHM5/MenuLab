@@ -41,11 +41,24 @@ jobs:
       - run: pip install google-api-python-client google-auth
 
       # 3) Ejecutar script de generación
-      - name: Ejecutar script de generación
+      - name: Ejecutar script de generación según plan
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
-          CLIENT_EMAIL: ${{ github.event.client_payload.email }}  # <-- Aquí está el valor del email
-        run: python scripts/0_sitio_base.py
+          CLIENT_EMAIL: ${{ github.event.client_payload.email }}
+        run: |
+          echo "Ejecutando script para el plan: ${{ steps.vars.outputs.plan }}"
+          if [ "${{ steps.vars.outputs.plan }}" == "0" ]; then
+            python scripts/0_sitio_base.py
+          elif [ "${{ steps.vars.outputs.plan }}" == "1" ]; then
+            python scripts/1_sitio_emprendedor.py
+          elif [ "${{ steps.vars.outputs.plan }}" == "2" ]; then
+            python scripts/2_sitio_profesional.py
+          elif [ "${{ steps.vars.outputs.plan }}" == "3" ]; then
+            python scripts/3_sitio_corporativo.py
+          else
+            echo "⚠️ Plan desconocido: ${{ steps.vars.outputs.plan }}"
+            exit 1
+          fi
 
       # 4) Capturar URLs que generó el script
       - name: Capturar rutas generadas

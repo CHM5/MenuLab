@@ -8,9 +8,9 @@ from googleapiclient.errors import HttpError
 
 # === CONFIG ===
 TEMPLATE_SHEET_ID = "1bHOgSjbDydp69BeUS0Ln9JFke6Y2U0SGcwahUeAPAuc"
-MENU_RANGE = "Carta Web Interactiva!A2:E26"  # Hasta 25 productos
 FIJOS_RANGE = "Datos Fijos!B4:B15"
 SHEET_FIELDS = ["Categoría", "Subcategoría", "Nombre", "Descripción", "Precio"]
+MENU_RANGE = "Carta Web Interactiva!A2:E26"  # Hasta 25 productos
 
 # === AUTENTICACIÓN ===
 credentials_info = json.loads(os.environ["GOOGLE_CREDENTIALS"])
@@ -89,9 +89,12 @@ drive_service.permissions().create(
     sendNotificationEmail=False
 ).execute()
 
-# === LEER CONTENIDO DE SHEET DE AMBAS TABS ===
-MENU_RANGE = "Carta Web Interactiva!A2:E26"
-FIJOS_RANGE = "Datos Fijos!B4:B15"
+# Leer datos fijos
+fijos_result = sheets_service.spreadsheets().values().get(
+    spreadsheetId=sheet_id,
+    range=FIJOS_RANGE
+).execute()
+fijos_rows = fijos_result.get("values", [])
 
 # Leer menú
 menu_result = sheets_service.spreadsheets().values().get(
@@ -100,12 +103,6 @@ menu_result = sheets_service.spreadsheets().values().get(
 ).execute()
 menu_rows = menu_result.get("values", [])
 
-# Leer datos fijos
-fijos_result = sheets_service.spreadsheets().values().get(
-    spreadsheetId=sheet_id,
-    range=FIJOS_RANGE
-).execute()
-fijos_rows = fijos_result.get("values", [])
 
 # Opcional: convertir datos fijos a una lista simple (quita sublistas vacías)
 fijos = [row[0] for row in fijos_rows if row]
@@ -124,13 +121,13 @@ html = f"""<!DOCTYPE html>
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="icon" type="image/png" href="../../MLfavicon.png" />
   <style>
     :root {{
       --primary: #ffc107;
       --bg: #fff;
       --text: #212529;
-      --header: #343a40;
+      --header: #d2d0cd;
       --border: #dee2e6;
       --radius: 10px;
     }}
@@ -160,27 +157,6 @@ html = f"""<!DOCTYPE html>
       border-radius: var(--radius);
       font-size: 1rem;
       color: #444;
-    }}
-    .search-box {{
-      display: flex;
-      align-items: center;
-      margin-bottom: 1.2rem;
-      background: #f8f9fa;
-      border-radius: var(--radius);
-      padding: 0.5rem 1rem;
-      box-shadow: 0 2px 8px #0001;
-    }}
-    .search-box input {{
-      flex: 1;
-      border: none;
-      background: transparent;
-      font-size: 1.1rem;
-      padding: 0.7rem 0.5rem;
-      outline: none;
-    }}
-    .search-box svg {{
-      margin-right: 0.7rem;
-      opacity: 0.6;
     }}
     table {{
       width: 100%;
@@ -217,9 +193,6 @@ html = f"""<!DOCTYPE html>
         font-size: 0.97rem;
         padding: 0.5rem 0.7rem;
       }}
-      .search-box {{
-        padding: 0.4rem 0.7rem;
-      }}
     }}
     @media (max-width: 480px) {{
       header {{
@@ -234,45 +207,114 @@ html = f"""<!DOCTYPE html>
         padding: 0.4rem 0.2rem;
       }}
     }}
+
+    .menu-group {{
+      margin-top: 0.5rem;
+      margin-bottom: 1.2rem;
+    }}
+
+    .menu-group h2 {{
+      font-size: 1.5rem;
+      margin: 0.3rem 0 0.2rem;
+      border-bottom: 2px solid #ddd;
+      color: #333;
+    }}
+
+    .menu-group h3 {{
+      font-size: 1.2rem;
+      margin-top: 0.6rem;
+      color: #555;
+    }}
+
+    .menu-item {{
+      border-bottom: 1px solid #eee;
+      padding: 0.8rem 0;
+    }}
+
+    .menu-item-header {{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 0.5rem;
+    }}
+
+    .menu-name {{
+      font-size: 1.1rem;
+      margin: 0;
+      font-weight: 600;
+    }}
+
+    .menu-price {{
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: #111;
+    }}
+
+    .menu-description {{
+      margin: 0.2rem 0 0 0;
+      font-size: 0.95rem;
+      color: #666;
+      padding: 0 1rem;
+    }}
+
+    @media (max-width: 600px) {{
+      .menu-name {{
+        font-size: 1rem;
+      }}
+      .menu-price {{
+        font-size: 1rem;
+      }}
+      .menu-description {{
+        font-size: 0.9rem;
+      }}
+    }}
+    .menu-content {{
+      margin-top: 2rem;
+    }}
   </style>
 </head>
 <body>
   <header>
-    <h2 style="margin:0;font-size:2rem;">Menú Online</h2>
-    <h2 style="margin:0;font-size:2rem;">Menú Online</h2>
+    <a href="https://menulab.com.ar" target="_blank" rel="noopener">
+      <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1750637502/BannerMenuLab_mbtrzh.jpg" alt="Banner MenuLab" style="width:100%;display:block;margin-bottom:0.5rem;">
+    </a>
+    <h1 id="nombre-resto" style="font-size:2rem; color:#000;">Menasdasasdú Online</h1>
+    <h2 id="subtitulo-resto" style="margin:0.2rem 0 0.7rem 0;font-size:1.2rem;font-weight:400;color:#000;"></h2>
   </header>
   <div class="container">
-    <div class="fijos">
-      <strong>Datos Fijos:</strong>
-      <ul id="fijos-list" style="margin:0.5rem 0 0 1.2rem;">
-        <li>Cargando...</li>
-      </ul>
-    </div>
-    <div class="search-box">
-      <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-        <circle cx="11" cy="11" r="8"></circle>
-        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-      </svg>
-      <input id="search" type="text" placeholder="Buscar plato, categoría, descripción..." autocomplete="off">
-    </div>
     <div style="overflow-x:auto;">
-      <table id="menuTable">
-        <thead>
-          <tr>
-            <th>Categoría</th>
-            <th>Subcategoría</th>
-            <th>Nombre</th>
-            <th>Descripción</th>
-            <th>Precio</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
+      <div id="menuTable" class="menu-content"></div>
     </div>
     <div id="noResults" style="display:none;text-align:center;color:#dc3545;margin-top:1.5rem;font-size:1.1rem;">
       No se encontraron platos con ese criterio.
     </div>
   </div>
+  <footer style="background:#f1f1f1;color:#333;text-align:center;padding:1rem 0 1.2rem 0;font-size:1rem;">
+    <div>
+      <span>Dirección: </span>
+      <span id="direccion-resto" style="font-weight: bold;"></span>
+    </div>
+    <div>
+      <span>Horarios: </span>
+      <span id="horarios-resto" style="font-weight: bold;"></span>
+    </div>
+    <a href="https://menulab.com.ar" target="_blank" rel="noopener">
+      <span class="thq-body-small">En colaboración con:</span>  
+      <span style="display: inline-block; margin-left: 12px;">
+        <h1 style="
+          font-family: 'Unbounded', sans-serif;
+          font-weight: 600;
+          font-size: 100%;
+          margin: 0;
+          background: linear-gradient(90deg, #E639A6, #457B9D); /* azul al rosa */
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;">
+          MenuLab
+        </h1>
+      </span>
+    </a>
+  </footer>
+
   <script>
     const CSV_URL = "{csv_url}";
     let allRows = [];
@@ -296,25 +338,13 @@ html = f"""<!DOCTYPE html>
       document.getElementById("noResults").style.display = count === 0 ? "block" : "none";
     }}
 
-    function filterTable() {{
-      const q = document.getElementById("search").value.toLowerCase();
-      if (!q) {{
-        renderTable(allRows);
-        return;
-      }}
-      const filtered = allRows.filter(cols =>
-        cols.join(" ").toLowerCase().includes(q)
-      );
-      renderTable(filtered);
-    }}
-
     fetch(CSV_URL)
       .then(response => response.text())
       .then(data => {{
         allRows = data.split("\\n").slice(1, 26).map(row =>
           row.split(",").map(col => col.replace(/\"/g, ""))
         );
-        renderTable(allRows);
+        renderMenuGrouped(allRows);
       }})
       .catch(err => {{
         document.getElementById("noResults").style.display = "block";
@@ -322,47 +352,84 @@ html = f"""<!DOCTYPE html>
         console.error("Error al cargar el CSV:", err);
       }});
 
-    document.getElementById("search").addEventListener("input", filterTable);
-
-    // Cargar datos fijos en vivo
-    const FIJOS_CSV_URL = "{sheet_url.replace('/edit', '')}/gviz/tq?tqx=out:csv&sheet=Datos%20Fijos";
-    fetch(FIJOS_CSV_URL)
+    // Cargar Valores Estaticos en vivo
+    const STATIC_CSV_URL = "{sheet_url.replace('/edit', '')}/gviz/tq?tqx=out:csv&sheet=Datos%20Fijos";
+    fetch(STATIC_CSV_URL)
       .then(response => response.text())
       .then(data => {{
-        const rows = data.split("\\n").map(row => row.trim()).filter(Boolean);
-        const ul = document.getElementById("fijos-list");
-        ul.innerHTML = "";
+        const rows = data.split("\\n").map(row => row.split(","));
 
-        // Mostrar B4:B8 (índices 3 a 7) como texto simple
-        for (let i = 3; i <= 7; i++) {{
-          if (rows[i]) {{
-            const cols = rows[i].split(",");
-            let valor = (cols[1] || "").replace(/"/g, "").trim();
-            if (valor) {{
-              ul.innerHTML += `<li>${{valor}}</li>`;
-            }}
-          }}
+        const nombre = (rows[2] && rows[2][2]) ? rows[2][2].replace(/"/g, "").trim() : "";
+        if (nombre) {{
+          document.getElementById("nombre-resto").textContent = nombre;
         }}
 
-        // Mostrar B11:B15 (índices 11 a 15) como hipervínculo si hay valor
-        const redes = ["Whatsapp", "Instagram", "Facebook", "Rappi", "PedidosYa"];
-        for (let i = 11; i <= 15; i++) {{
-          if (rows[i]) {{
-            const cols = rows[i].split(",");
-            let link = (cols[1] || "").replace(/"/g, "").trim();
-            if (link) {{
-              ul.innerHTML += `<li><a href="${{link}}" target="_blank" rel="noopener">${{redes[i-10]}}</a></li>`;
-            }}
-          }}
+        const subtitulo = (rows[3] && rows[3][2]) ? rows[3][2].replace(/"/g, "").trim() : "";
+        if (subtitulo) {{
+          document.getElementById("subtitulo-resto").textContent = subtitulo;
+        }}
+                
+        const direccion = (rows[4] && rows[4][2]) ? rows[4][2].replace(/"/g, "").trim() : "";
+        if (direccion) {{
+          document.getElementById("direccion-resto").textContent = direccion;
         }}
 
-        if (!ul.innerHTML) {{
-          ul.innerHTML = "<li>No hay datos fijos.</li>";
+        const horarios = (rows[5] && rows[5][2]) ? rows[5][2].replace(/"/g, "").trim() : "";
+        if (horarios) {{
+          document.getElementById("horarios-resto").textContent = horarios;
         }}
-      }})
-      .catch(() => {{
-        document.getElementById("fijos-list").innerHTML = "<li>Error al cargar datos fijos.</li>";
       }});
+
+      function renderMenuGrouped(rows) {{
+        const container = document.querySelector("#menuTable");
+        container.innerHTML = "";
+
+        const agrupado = {{}};
+
+        rows.forEach(cols => {{
+          const [cat, subcat, nombre, desc, precio] = cols.map(c => c.trim());
+          if (!cat || !nombre) return;
+
+          if (!agrupado[cat]) agrupado[cat] = {{}};
+          const sub = subcat || "-";
+          if (!agrupado[cat][sub]) agrupado[cat][sub] = [];
+          agrupado[cat][sub].push({{ nombre, desc, precio }});
+        }});
+
+        Object.entries(agrupado).forEach(([cat, subcategorias]) => {{
+          const group = document.createElement("div");
+          group.className = "menu-group";
+
+          const catTitle = document.createElement("h2");
+          catTitle.textContent = cat;
+          group.appendChild(catTitle);
+
+          Object.entries(subcategorias).forEach(([subcat, items]) => {{
+            if (subcat && subcat !== "-") {{
+              const subTitle = document.createElement("h3");
+              subTitle.textContent = subcat;
+              group.appendChild(subTitle);
+            }}
+
+            items.forEach(item => {{
+              const itemDiv = document.createElement("div");
+              itemDiv.className = "menu-item";
+              itemDiv.innerHTML = `
+                <div class="menu-item-header">
+                  <h3 class="menu-name">${{item.nombre}}</h3>
+                  <span class="menu-price">${{item.precio}}</span>
+                </div>
+                <p class="menu-description">${{item.desc}}</p>
+              `;
+              group.appendChild(itemDiv);
+            }});
+          }});
+
+          container.appendChild(group);
+        }});
+      }}
+
+
   </script>
 </body>
 </html>
