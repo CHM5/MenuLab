@@ -183,11 +183,11 @@
         
         <script>
             document.addEventListener('DOMContentLoaded', function () {
-            const planMap = {
-                0: {
-                    name: "Plan Base",
-                    price: "GRATIS",
-                    features: [
+                const planMap = {
+                    0: {
+                        name: "Plan Base",
+                        price: "GRATIS",
+                        features: [
                         "Actualizaciones Ilimitadas",
                         "Diseño Responsivo",
                         "Datos del Negocio",
@@ -203,13 +203,13 @@
                         "Código QR",
                         "Sin Publicidad",
                         "Hosting 24/7",
-
+                        
                         "Ítems Ilimitados en tu carta",
                         "Actualizaciones Ilimitadas",
                         "Diseño Responsivo",
                         "Data Negocio",
                         "Certificado SSL incluido",
-
+                        
                         "5% OFF en productos"
                     ],
                     mpLink: "https://www.mercadopago.com.ar/subscriptions/checkout?preapproval_plan_id=2c938084968c9eaa01969982254c05d0"
@@ -223,7 +223,7 @@
                         "Integración WhatsApp",
                         "Integración Rappi/PedidosYa",
                         "Tema personalizable",
-
+                        
                         "Código QR",
                         "Sin Publicidad",
                         "Hosting 24/7",
@@ -232,7 +232,7 @@
                         "Diseño Responsivo",
                         "Data Negocio",
                         "Certificado SSL incluido",
-
+                        
                         "10% OFF en productos"
                     ],
                     mpLink: "https://www.mercadopago.com.ar/subscriptions/checkout?preapproval_plan_id=2c938084968c9eaa01969982254c05d0"
@@ -245,7 +245,7 @@
                         "Fotos de tus Platos",
                         "Promos x temporada",
                         "Reunión plan de acción 30m",
-
+                        
                         "Integración Instagram/Facebook",
                         "Integración WhatsApp",
                         "Integración Rappi/PedidosYa",
@@ -258,7 +258,7 @@
                         "Diseño Responsivo",
                         "Data Negocio",
                         "Certificado SSL incluido",
-
+                        
                         "15% OFF en productos"
                     ],
                     mpLink: "https://www.mercadopago.com.ar/subscriptions/checkout?preapproval_plan_id=2c938084968c9eaa01969982254c05d0"
@@ -271,13 +271,13 @@
                         "Código QR",
                         "Sin Publicidad",
                         "Hosting 24/7",
-
+                        
                         "Ítems Ilimitados en tu carta",
                         "Actualizaciones Ilimitadas",
                         "Diseño Responsivo",
                         "Data Negocio",
                         "Certificado SSL incluido",
-
+                        
                         "10% OFF en productos"
                     ],
                     mpLink: "https://www.mercadopago.com.ar/subscriptions/checkout?preapproval_plan_id=2c938084968c9eaa01969982254c05d0"
@@ -300,9 +300,9 @@
                         "Diseño Responsivo",
                         "Data Negocio",
                         "Certificado SSL incluido",
-
+                        
                         "20% OFF en productos"
-
+                        
                     ],
                     mpLink: "https://mpago.la/1FzYWEk"
                 },
@@ -314,7 +314,7 @@
                         "Fotos de tus Platos",
                         "Promos x temporada",
                         "Reunión plan de acción 30m",
-
+                        
                         "Integración Instagram/Facebook",
                         "Integración WhatsApp",
                         "Integración Rappi/PedidosYa",
@@ -332,7 +332,7 @@
                     mpLink: "https://mpago.la/2sL5gCq"
                 }
             };
-
+            
             // Lee los parámetros de la URL
             const params = new URLSearchParams(window.location.search);
             const planParam = params.get('plan');
@@ -435,9 +435,18 @@
 
             const mpPayButton = document.getElementById('mpPayButton');
             if (mpPayButton && planParam && planMap[planParam] && planMap[planParam].mpLink) {
-                mpPayButton.href = planMap[planParam].mpLink;
+                const baseLink = planMap[planParam].mpLink;
+
+                const backUrl = encodeURIComponent("https://www.menulab.com.ar/plansForm.html");
+                const externalRef = encodeURIComponent(`plan_${planParam}`);
+
+                // Agrega back_url y external_reference como query params
+                const finalLink = `${baseLink}&back_url=${backUrl}&external_reference=${externalRef}`;
+
+                mpPayButton.href = finalLink;
                 mpPayButton.style.display = ""; // Mostrar el botón si hay link
-            } else if (mpPayButton) {
+            }
+            else if (mpPayButton) {
                 mpPayButton.style.display = "none"; // Ocultar si no hay link (ejemplo: Plan Base)
             }
             const noPayButton = document.getElementById('noPayButton');
@@ -502,7 +511,30 @@
                 }
             }
 
-    });
+            
+            const preapprovalId = params.get('preapproval_id');
+            if (preapprovalId) {
+                console.log("🔁 Detected preapproval_id, enviando a Apps Script:", preapprovalId);
+                
+        fetch("https://script.google.com/macros/s/AKfycbyjXSQHoUrM3aYaq6objLb1JxRFPId38kmhh5lyi-wcvTOKYipH8_Y_qmWyJgosbfbO/exec", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: new URLSearchParams({ preapproval_id: preapprovalId }).toString()
+        })
+        .then(() => {
+            console.log("✅ Preapproval enviado correctamente. Mostrando paso 4");
+            // Avanza al paso 4 directamente
+            currentStep = 4;
+            showStep(currentStep);
+        })
+        .catch(err => {
+            console.error("❌ Error al enviar preapproval_id:", err);
+        });
+    }
+});
+
     </script>
 </body>
 
