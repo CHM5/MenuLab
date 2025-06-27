@@ -476,7 +476,7 @@
                     console.log("a");
 
                     // Enviar datos a Apps Script usando form-urlencoded
-                    const url = "https://script.google.com/macros/s/AKfycbxLkZtAopkvkau1aQB4bpewSvDHrcBqWPGMbFaaEBULc0xNnnl0Jrm0vCG43-rqHxSX/exec"
+                    const url = "https://script.google.com/macros/s/AKfycby0HUrywhZp21FrEhf4Ay3ohGOErAHjoK3Rffv_J4Q5c4SuPeCi9M_bQgGUk_HhSkOO/exec"
                     fetch(url, {
                         method: "POST",
                         mode: "no-cors",
@@ -516,7 +516,7 @@
             if (preapprovalId) {
                 console.log("🔁 Detected preapproval_id, enviando a Apps Script:", preapprovalId);
                 
-        fetch("https://script.google.com/macros/s/AKfycbxLkZtAopkvkau1aQB4bpewSvDHrcBqWPGMbFaaEBULc0xNnnl0Jrm0vCG43-rqHxSX/exec", {
+        fetch("https://script.google.com/macros/s/AKfycby0HUrywhZp21FrEhf4Ay3ohGOErAHjoK3Rffv_J4Q5c4SuPeCi9M_bQgGUk_HhSkOO/exec", {
             method: "POST",
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded"
