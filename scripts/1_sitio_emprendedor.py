@@ -24,7 +24,7 @@ sheets_service = build("sheets", "v4", credentials=creds)
 
 # === GENERAR NOMBRE Y COPIAR SHEET ===
 fecha_id = datetime.now().strftime("%Y%m%d-%H%M")
-nombre_copia = f"Menu Base {fecha_id}"
+nombre_copia = f"Menu Emprendedor {fecha_id}"
 
 copia = drive_service.files().copy(
     fileId=TEMPLATE_SHEET_ID,
@@ -108,7 +108,7 @@ menu_rows = menu_result.get("values", [])
 fijos = [row[0] for row in fijos_rows if row]
 
 # === GENERAR HTML RESPONSIVO CON BUSCADOR ===
-output_dir = Path(f"planes/menu-base-{fecha_id}")
+output_dir = Path(f"planes/menu-emprendedor-{fecha_id}")
 output_dir.mkdir(parents=True, exist_ok=True)
 html_file = output_dir / "index.html"
 
@@ -438,13 +438,15 @@ html = f"""<!DOCTYPE html>
 with open(html_file, "w", encoding="utf-8") as f:
     f.write(html)
 
+external_ref = os.environ.get("EXTERNAL_REFERENCE", "no_ref")
+print(f"🔑 External Reference: {external_ref}")
 print("✅ Menú generado:", html_file)
 print("📄 Planilla editable:", sheet_url)
 
 # NUEVO → exportar urls para el workflow
 with open("menu_url.txt", "w") as f:
     # ruta pública en GitHub Pages
-    f.write(f"planes/menu-base-{fecha_id}/index.html")
+    f.write(f"planes/menu-emprendedor-{fecha_id}/index.html")
 
 with open("sheet_url.txt", "w") as f:
     f.write(sheet_url)

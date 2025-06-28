@@ -437,17 +437,49 @@
             const mpPayButton = document.getElementById('mpPayButton');
             if (mpPayButton && planParam && planMap[planParam] && planMap[planParam].mpLink) {
                 const baseLink = planMap[planParam].mpLink;
-
                 const backUrl = encodeURIComponent("https://www.menulab.com.ar/plansForm.html");
-                const externalRef = encodeURIComponent(`plan_${planParam}`);
-
-                // Agrega back_url y external_reference como query params
                 const uniqueRef = `plan_${planParam}_${Date.now()}`;
                 const finalLink = `${baseLink}&back_url=${backUrl}&external_reference=${uniqueRef}`;
                 console.log("🔗 Link generado:", finalLink);
 
-                mpPayButton.href = finalLink;
-                mpPayButton.style.display = ""; // Mostrar el botón si hay link
+                // Cambiamos el botón: ahora NO tiene el href directo, sino un click handler
+                mpPayButton.removeAttribute('href');
+                mpPayButton.style.display = "";
+
+                mpPayButton.addEventListener('click', function (e) {
+                    e.preventDefault();
+
+                    // Capturamos los datos del formulario
+                    const form = document.getElementById('sponsorshipForm');
+                    const formData = new FormData(form);
+                    const dataObj = {
+                        nombreCompleto: `${formData.get("nombre")} ${formData.get("apellido")}`.trim(),
+                        email: formData.get("email"),
+                        telefono: formData.get("telefono"),
+                        negocio: formData.get("negocio"),
+                        medio: formData.get("medio"),
+                        comentario: formData.get("comentario"),
+                        plan: planParam,
+                        external_reference: uniqueRef
+                    };
+
+                    console.log("📦 Enviando registro previo:", dataObj);
+
+                    // Enviamos al Apps Script antes de redirigir
+                    fetch("https://script.google.com/macros/s/AKfycb.../exec", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                        body: new URLSearchParams(dataObj).toString()
+                    })
+                    .then(() => {
+                        console.log("✅ Registro previo guardado. Redirigiendo a MP...");
+                        window.location.href = finalLink;
+                    })
+                    .catch(err => {
+                        console.error("❌ Error enviando registro previo:", err);
+                        alert("Ocurrió un error al registrar el pedido. Intente nuevamente.");
+                    });
+                });
             }
             else if (mpPayButton) {
                 mpPayButton.style.display = "none"; // Ocultar si no hay link (ejemplo: Plan Base)
