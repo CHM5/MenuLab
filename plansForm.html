@@ -441,7 +441,7 @@
                 const externalRef = encodeURIComponent(`plan_${planParam}`);
 
                 // Agrega back_url y external_reference como query params
-                const finalLink = `${baseLink}&back_url=${backUrl}&external_reference=${externalRef}`;
+                const finalLink = `${baseLink}&back_url=${backUrl}&external_reference=plan_${planParam}`;
 
                 mpPayButton.href = finalLink;
                 mpPayButton.style.display = ""; // Mostrar el botón si hay link
