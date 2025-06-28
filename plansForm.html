@@ -136,7 +136,8 @@
                                     name="MP-payButton"
                                     class="blue-button"
                                     target="_blank"
-                                    rel="noopener noreferrer">Suscribirme</a>
+                                    rel="noopener noreferrer">Suscribirme
+                                </a>
                             </div>
                             <a id="noPayButton"
                                 href="#"
@@ -441,7 +442,9 @@
                 const externalRef = encodeURIComponent(`plan_${planParam}`);
 
                 // Agrega back_url y external_reference como query params
-                const finalLink = `${baseLink}&back_url=${backUrl}&external_reference=plan_${planParam}`;
+                const uniqueRef = `plan_${planParam}_${Date.now()}`;
+                const finalLink = `${baseLink}&back_url=${backUrl}&external_reference=${uniqueRef}`;
+                console.log("🔗 Link generado:", finalLink);
 
                 mpPayButton.href = finalLink;
                 mpPayButton.style.display = ""; // Mostrar el botón si hay link
