@@ -7,7 +7,7 @@ from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
 # === CONFIG ===
-TEMPLATE_SHEET_ID = "1bHOgSjbDydp69BeUS0Ln9JFke6Y2U0SGcwahUeAPAuc"
+TEMPLATE_SHEET_ID = "12K9YatZVW1uJfBjiUPMRQNhl5q78ErzGcch1hTemFbU"
 MENU_RANGE = "Carta Web Interactiva!A2:E26"  # Hasta 25 productos
 FIJOS_RANGE = "Datos Fijos!B4:B15"
 SHEET_FIELDS = ["Categoría", "Subcategoría", "Nombre", "Descripción", "Precio"]
@@ -74,7 +74,7 @@ drive_service.permissions().create(
     body={
         "type": "user",
         "role": "writer",
-        "emailAddress": "chmedina1994@gmail.com"
+        "emailAddress": "light4emitting@gmail.com"
     },
     sendNotificationEmail=False
 ).execute()

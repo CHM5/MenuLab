@@ -50,10 +50,10 @@ document.addEventListener('DOMContentLoaded', () => {
       prices: { monthly: '$72.000', yearly: '$720.000' }, ids: { monthly: 3, yearly: 6 },
       intro:'todo lo anterior, más:',
       features: [
-        { label: '<br></br>🌐 Dominio Propio', info: 'URL personalizable www.tunegocio.com.ar' },
-        { label: '📷 Fotos de Platos', info: 'Galería fotográfica para mostrar tus productos' },
-        { label: '📅 Sistema de Reservas', info: 'Permití a tus clientes reservar mesa desde la carta digital' },
+        { label: '<br></br>📷 Fotos de Platos', info: 'Galería fotográfica para mostrar tus productos' },
         { label: '🛍️ Promos por Temporada', info: 'Mensajes pop up promocionales' },
+        { label: '🛒 Pedidos por web', info: 'Permití que tus clientes hagan pedidos directamente desde la carta online' },
+        { label: '🌐 Dominio Propio', info: 'URL personalizable www.tunegocio.com.ar' },
         { label: '📞 Atención Prioritaria', info: 'Tiempo de respuesta en menos de 24h' },
         { label: '<div style="text-align:center;"><b><br></br>EXTRA</b></div>' },
         { label: '<div style="text-align:center;">✅15%OFF en <a href="#productos" style="color:#1976d2;text-decoration:underline;cursor:pointer;">Productos</a></div>', modes: ['monthly']},
@@ -143,33 +143,7 @@ document.addEventListener('DOMContentLoaded', () => {
       console.log('Elemento clickeado:', this);
     });
   });
-  
-  let activeCategory = 'Sitio Web'; // inicial
-  
-  function filterCategory(category) {
-    const cards = document.querySelectorAll('.product-card');
-    const buttons = document.querySelectorAll('.toggle-button');
     
-    // Si el usuario hace clic en el mismo botón activo, lo desactiva
-    if (activeCategory === category) {
-      activeCategory = null;
-      buttons.forEach(btn => btn.classList.remove('active'));
-      cards.forEach(card => card.style.display = 'block');
-      return;
-    }
-    
-    // Si hace clic en una nueva categoría
-    activeCategory = category;
-    buttons.forEach(btn => {
-      btn.classList.toggle('active', btn.textContent === category);
-    });
-    
-    cards.forEach(card => {
-      const cat = card.querySelector('.product-category').textContent;
-      card.style.display = (cat === category) ? 'block' : 'none';
-    });
-  }
-  
   const burger = document.querySelector('[data-thq="thq-burger-menu"]');
   const mobileMenu = document.querySelector('[data-thq="thq-mobile-menu"]');
   const closeMenu = document.querySelector('[data-thq="thq-close-menu"]');
@@ -267,3 +241,29 @@ document.querySelectorAll('#mobileMenu a').forEach(link => {
   });
 }
 );
+
+  let activeCategory = 'Sitio Web'; // inicial
+  
+  function filterCategory(category) {
+    const cards = document.querySelectorAll('.product-card');
+    const buttons = document.querySelectorAll('.toggle-button');
+    
+    // Si el usuario hace clic en el mismo botón activo, lo desactiva
+    if (activeCategory === category) {
+      activeCategory = null;
+      buttons.forEach(btn => btn.classList.remove('active'));
+      cards.forEach(card => card.style.display = 'block');
+      return;
+    }
+    
+    // Si hace clic en una nueva categoría
+    activeCategory = category;
+    buttons.forEach(btn => {
+      btn.classList.toggle('active', btn.textContent === category);
+    });
+    
+    cards.forEach(card => {
+      const cat = card.querySelector('.product-category').textContent;
+      card.style.display = (cat === category) ? 'block' : 'none';
+    });
+  }

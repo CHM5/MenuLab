@@ -24,7 +24,7 @@ sheets_service = build("sheets", "v4", credentials=creds)
 
 # === GENERAR NOMBRE Y COPIAR SHEET ===
 fecha_id = datetime.now().strftime("%Y%m%d-%H%M")
-nombre_copia = f"Menu Base {fecha_id}"
+nombre_copia = f"Menu Profesional {fecha_id}"
 
 copia = drive_service.files().copy(
     fileId=TEMPLATE_SHEET_ID,
