@@ -496,6 +496,7 @@
                     const form = document.getElementById('sponsorshipForm');
                     const formData = new FormData(form);
                     const formDataObj = {};
+                    const uniqueRef = `plan_${planParam}_${Date.now()}`;
 
                     formDataObj.nombreCompleto = `${formData.get("nombre")} ${formData.get("apellido")}`.trim();
                     formDataObj.email = formData.get("email");
@@ -505,7 +506,7 @@
                     formDataObj.comentario = formData.get("comentario");
                     formDataObj.plan = "0";
                     formDataObj.pago = false;
-                    formDataObj.external_reference = `${Date.now()}`;
+                    formDataObj.external_reference = uniqueRef;
                     formDataObj.redirect = `successpayment.html`;
                     console.log("🔍 formDataObj que se enviará:", formDataObj);
                     console.log("📦 Payload final:", new URLSearchParams(formDataObj).toString());
