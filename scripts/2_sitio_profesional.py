@@ -68,17 +68,6 @@ def share_sheet_with_client(sheet_id, client_email):
 # Llamada a la función para compartir el sheet con el cliente
 share_sheet_with_client(sheet_id, cliente_email)
 
-# Compartir automáticamente la copia con tu cuenta personal
-drive_service.permissions().create(
-    fileId=sheet_id,
-    body={
-        "type": "user",
-        "role": "writer",
-        "emailAddress": "chmedina1994@gmail.com"
-    },
-    sendNotificationEmail=False
-).execute()
-
 # Permiso general: cualquiera con el enlace puede ver
 drive_service.permissions().create(
     fileId=sheet_id,
@@ -107,7 +96,7 @@ fijos_rows = fijos_result.get("values", [])
 fijos = [row[0] for row in fijos_rows if row]
 
 # === GENERAR HTML RESPONSIVO CON BUSCADOR ===
-output_dir = Path(f"planes/menu-base-{fecha_id}")
+output_dir = Path(f"planes/menu-profesional-{fecha_id}")
 output_dir.mkdir(parents=True, exist_ok=True)
 html_file = output_dir / "index.html"
 
@@ -373,7 +362,7 @@ print("📄 Planilla editable:", sheet_url)
 # NUEVO → exportar urls para el workflow
 with open("menu_url.txt", "w") as f:
     # ruta pública en GitHub Pages
-    f.write(f"planes/menu-base-{fecha_id}/index.html")
+    f.write(f"planes/menu-profesional-{fecha_id}/index.html")
 
 with open("sheet_url.txt", "w") as f:
     f.write(sheet_url)
