@@ -68,17 +68,6 @@ def share_sheet_with_client(sheet_id, client_email):
 # Llamada a la función para compartir el sheet con el cliente
 share_sheet_with_client(sheet_id, cliente_email)
 
-# Compartir automáticamente la copia con tu cuenta personal
-drive_service.permissions().create(
-    fileId=sheet_id,
-    body={
-        "type": "user",
-        "role": "writer",
-        "emailAddress": "light4emitting@gmail.com"
-    },
-    sendNotificationEmail=False
-).execute()
-
 # Permiso general: cualquiera con el enlace puede ver
 drive_service.permissions().create(
     fileId=sheet_id,
