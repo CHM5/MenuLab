@@ -11,7 +11,7 @@ SHEET_NAME = "Clientes"
 credentials_info = json.loads(os.environ["GOOGLE_CREDENTIALS"])
 creds = Credentials.from_service_account_info(
     credentials_info,
-    scopes=["https://www.googleapis.com/auth/spreadsheets"]
+    scopes=["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/spreadsheets.readonly"]
 )
 
 sheets_service = build("sheets", "v4", credentials=creds)
