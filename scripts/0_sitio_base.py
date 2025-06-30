@@ -16,7 +16,9 @@ MENU_RANGE = "Carta!A2:E26"  # Hasta 25 productos
 credentials_info = json.loads(os.environ["GOOGLE_CREDENTIALS"])
 creds = Credentials.from_service_account_info(
     credentials_info,
-    scopes=["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/spreadsheets"]
+    scopes=["https://www.googleapis.com/auth/drive",
+            "https://www.googleapis.com/auth/drive.file",
+            "https://www.googleapis.com/auth/spreadsheets"]
 )
 
 drive_service = build("drive", "v3", credentials=creds)
