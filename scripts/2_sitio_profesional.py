@@ -8,8 +8,8 @@ from googleapiclient.errors import HttpError
 
 # === CONFIG ===
 TEMPLATE_SHEET_ID = "1kM-Xb5d8-kzF_xL8MSOkUI7bflCcw0lHe7pv26HCqjo"
-MENU_RANGE = "Carta Web Interactiva!A2:E26"  # Hasta 25 productos
-FIJOS_RANGE = "Datos Fijos!B4:B15"
+MENU_RANGE = "Carta!A2:E1000" 
+FIJOS_RANGE = "Datos Permanentes!B4:B15"
 SHEET_FIELDS = ["Categoría", "Subcategoría", "Nombre", "Descripción", "Precio"]
 
 # === AUTENTICACIÓN ===

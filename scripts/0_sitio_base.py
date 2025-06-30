@@ -8,9 +8,9 @@ from googleapiclient.errors import HttpError
 
 # === CONFIG ===
 TEMPLATE_SHEET_ID = "12rwhH-LQ5S5R8UjNr-P422_U03imcIJAP4xIwD5Q3CY"
-FIJOS_RANGE = "Datos Fijos!B4:B15"
+FIJOS_RANGE = "Datos Permanentes!B4:B15"
 SHEET_FIELDS = ["Categoría", "Subcategoría", "Nombre", "Descripción", "Precio"]
-MENU_RANGE = "Carta Web Interactiva!A2:E26"  # Hasta 25 productos
+MENU_RANGE = "Carta!A2:E26"  # Hasta 25 productos
 
 # === AUTENTICACIÓN ===
 credentials_info = json.loads(os.environ["GOOGLE_CREDENTIALS"])
