@@ -495,8 +495,8 @@
                     
                     const form = document.getElementById('sponsorshipForm');
                     const formData = new FormData(form);
-                    const formDataObj = {};
                     const uniqueRef = `plan_${planParam}_${Date.now()}`;
+                    const formDataObj = {};
 
                     formDataObj.nombreCompleto = `${formData.get("nombre")} ${formData.get("apellido")}`.trim();
                     formDataObj.email = formData.get("email");

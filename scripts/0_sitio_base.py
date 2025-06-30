@@ -1,3 +1,4 @@
+
 import os
 import json
 from pathlib import Path
@@ -16,8 +17,7 @@ MENU_RANGE = "Carta!A2:E26"  # Hasta 25 productos
 credentials_info = json.loads(os.environ["GOOGLE_CREDENTIALS"])
 creds = Credentials.from_service_account_info(
     credentials_info,
-    scopes=["https://www.googleapis.com/auth/drive",
-            "https://www.googleapis.com/auth/spreadsheets"]
+    scopes=["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/spreadsheets.readonly"]
 )
 
 drive_service = build("drive", "v3", credentials=creds)
@@ -433,7 +433,7 @@ print("📄 Planilla editable:", sheet_url)
 
 # NUEVO → exportar urls para el workflow
 with open("menu_url.txt", "w") as f:
-    # ruta pública en GitHub Pages
+    # ruta pública en GitHub Pages
     f.write(f"planes/menu-base-{fecha_id}/index.html")
 
 with open("sheet_url.txt", "w") as f:
