@@ -7,7 +7,7 @@ from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
 # === CONFIG ===
-TEMPLATE_SHEET_ID = "1bHOgSjbDydp69BeUS0Ln9JFke6Y2U0SGcwahUeAPAuc"
+TEMPLATE_SHEET_ID = "12rwhH-LQ5S5R8UjNr-P422_U03imcIJAP4xIwD5Q3CY"
 FIJOS_RANGE = "Datos Fijos!B4:B15"
 SHEET_FIELDS = ["Categoría", "Subcategoría", "Nombre", "Descripción", "Precio"]
 MENU_RANGE = "Carta Web Interactiva!A2:E26"  # Hasta 25 productos
