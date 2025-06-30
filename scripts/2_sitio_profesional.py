@@ -89,10 +89,6 @@ drive_service.permissions().create(
     sendNotificationEmail=False
 ).execute()
 
-# === LEER CONTENIDO DE SHEET DE AMBAS TABS ===
-MENU_RANGE = "Carta Web Interactiva!A2:E26"
-FIJOS_RANGE = "Datos Fijos!B4:B15"
-
 # Leer menú
 menu_result = sheets_service.spreadsheets().values().get(
     spreadsheetId=sheet_id,
