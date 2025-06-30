@@ -21,8 +21,16 @@ external_ref = os.environ.get("EXTERNAL_REF")
 menu_url = os.environ.get("MENU_URL")
 sheet_url = os.environ.get("SHEET_URL")
 
-if not (external_ref and menu_url and sheet_url):
-    print("⚠ Faltan variables de entorno necesarias (EXTERNAL_REF, MENU_URL o SHEET_URL)")
+if not external_ref:
+    print("❌ EXTERNAL_REF es obligatorio.")
+    exit(1)
+
+if not sheet_url:
+    print("❌ SHEET_URL es obligatorio.")
+    exit(1)
+
+if not menu_url:
+    print("❌ MENU_URL es obligatorio.")
     exit(1)
 
 # === ACTUALIZAR CLIENTES SHEET ===
@@ -33,6 +41,7 @@ def update_client_sheet(external_reference, sheet_url, menu_url):
     ).execute()
     rows = result.get('values', [])
 
+    found = False
     for idx, row in enumerate(rows):
         if len(row) > 11 and row[11] == external_reference:
             row_number = idx + 1
@@ -47,8 +56,11 @@ def update_client_sheet(external_reference, sheet_url, menu_url):
                 }
             ).execute()
             print(f"✅ Links actualizados en fila {row_number}")
-            return
-    print(f"⚠ External reference {external_reference} no encontrado en Clientes")
+            found = True
+            break
+
+    if not found:
+        print(f"⚠ External reference {external_reference} no encontrado en Clientes.")
 
 # === EJECUTAR ===
 update_client_sheet(external_ref, sheet_url, menu_url)

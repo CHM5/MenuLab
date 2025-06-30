@@ -1,4 +1,3 @@
-
 import os
 import json
 from pathlib import Path
@@ -10,8 +9,7 @@ from googleapiclient.errors import HttpError
 # === CONFIG ===
 TEMPLATE_SHEET_ID = "12rwhH-LQ5S5R8UjNr-P422_U03imcIJAP4xIwD5Q3CY"
 FIJOS_RANGE = "Datos Permanentes!B4:B15"
-SHEET_FIELDS = ["Categoría", "Subcategoría", "Nombre", "Descripción", "Precio"]
-MENU_RANGE = "Carta!A2:E26"  # Hasta 25 productos
+MENU_RANGE = "Carta!A2:E26"
 
 # === AUTENTICACIÓN ===
 credentials_info = json.loads(os.environ["GOOGLE_CREDENTIALS"])
@@ -23,7 +21,7 @@ creds = Credentials.from_service_account_info(
 drive_service = build("drive", "v3", credentials=creds)
 sheets_service = build("sheets", "v4", credentials=creds)
 
-# === GENERAR NOMBRE Y COPIAR SHEET ===
+# === COPIAR TEMPLATE ===
 fecha_id = datetime.now().strftime("%Y%m%d-%H%M")
 nombre_copia = f"Menu Base {fecha_id}"
 
@@ -32,72 +30,49 @@ copia = drive_service.files().copy(
     body={"name": nombre_copia}
 ).execute()
 
-sheet_id = copia["id"]  # 👈 ESTA LÍNEA ES CLAVE
+sheet_id = copia["id"]
 sheet_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/edit"
 csv_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv"
 print("🔗 CSV para menú en vivo:", csv_url)
 
-# === LEER EL CORREO DEL CLIENTE ===
-cliente_email = os.environ.get("CLIENT_EMAIL", "default_email@example.com")  # Usando una variable de entorno o pasando por el flujo de GitHub
+# === PERMISOS ===
+cliente_email = os.environ.get("CLIENT_EMAIL", "default_email@example.com")
 
-# Si el correo no es pasado por el entorno, puedes también tomarlo directamente de la variable del flujo
-cliente_email = cliente_email or "default_email@example.com"  # Aquí usas el email pasado por el flujo si está disponible
+try:
+    drive_service.permissions().create(
+        fileId=sheet_id,
+        body={'type': 'user', 'role': 'writer', 'emailAddress': cliente_email}
+    ).execute()
+    print(f"✅ Acceso de escritura otorgado a {cliente_email}")
+except HttpError as e:
+    print(f"⚠ Error compartiendo con el cliente: {e}")
 
-# === DAR PERMISOS DE EDICIÓN AL CLIENTE ===
-def share_sheet_with_client(sheet_id, client_email):
-    try:
-        # Crear el servicio de Drive
-        service = build('drive', 'v3', credentials=creds)
-
-        # Llamada para otorgar permisos de edición al cliente
-        permission = {
-            'type': 'user',
-            'role': 'writer',  # 'writer' para permisos de edición
-            'emailAddress': client_email
-        }
-
-        # Crear el permiso
-        service.permissions().create(
-            fileId=sheet_id,
-            body=permission
-        ).execute()
-
-        print(f"Se ha dado acceso de escritura a: {client_email}")
-
-    except HttpError as error:
-        print(f'Ha ocurrido un error al compartir el archivo: {error}')
-# Llamada a la función para compartir el sheet con el cliente
-share_sheet_with_client(sheet_id, cliente_email)
-
-# Permiso general: cualquiera con el enlace puede ver
 drive_service.permissions().create(
     fileId=sheet_id,
-    body={
-        "type": "anyone",
-        "role": "reader"
-    },
+    body={'type': 'anyone', 'role': 'reader'},
     sendNotificationEmail=False
 ).execute()
 
-# Leer datos fijos
-fijos_result = sheets_service.spreadsheets().values().get(
-    spreadsheetId=sheet_id,
-    range=FIJOS_RANGE
-).execute()
-fijos_rows = fijos_result.get("values", [])
+# === LEER DATOS ===
+try:
+    fijos_result = sheets_service.spreadsheets().values().get(
+        spreadsheetId=sheet_id,
+        range=FIJOS_RANGE
+    ).execute()
+    fijos_rows = fijos_result.get("values", [])
 
-# Leer menú
-menu_result = sheets_service.spreadsheets().values().get(
-    spreadsheetId=sheet_id,
-    range=MENU_RANGE
-).execute()
-menu_rows = menu_result.get("values", [])
+    menu_result = sheets_service.spreadsheets().values().get(
+        spreadsheetId=sheet_id,
+        range=MENU_RANGE
+    ).execute()
+    menu_rows = menu_result.get("values", [])
 
+except HttpError as e:
+    print(f"❌ Error al leer datos: {e}")
+    fijos_rows = []
+    menu_rows = []
 
-# Opcional: convertir datos fijos a una lista simple (quita sublistas vacías)
-fijos = [row[0] for row in fijos_rows if row]
-
-# === GENERAR HTML RESPONSIVO CON BUSCADOR ===
+# === GENERAR HTML ===
 output_dir = Path(f"planes/menu-base-{fecha_id}")
 output_dir.mkdir(parents=True, exist_ok=True)
 html_file = output_dir / "index.html"
