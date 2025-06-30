@@ -8,8 +8,8 @@ from googleapiclient.errors import HttpError
 
 # === CONFIG ===
 TEMPLATE_SHEET_ID = "12K9YatZVW1uJfBjiUPMRQNhl5q78ErzGcch1hTemFbU"
-MENU_RANGE = "Carta Web Interactiva!A2:E26"  # Hasta 25 productos
-FIJOS_RANGE = "Datos Fijos!B4:B15"
+MENU_RANGE = "Carta!A2:E26"  # Hasta 25 productos
+FIJOS_RANGE = "Datos Permanentes!B2:B14"
 SHEET_FIELDS = ["Categoría", "Subcategoría", "Nombre", "Descripción", "Precio"]
 
 # === AUTENTICACIÓN ===
@@ -90,8 +90,8 @@ drive_service.permissions().create(
 ).execute()
 
 # === LEER CONTENIDO DE SHEET DE AMBAS TABS ===
-MENU_RANGE = "Carta Web Interactiva!A2:E26"
-FIJOS_RANGE = "Datos Fijos!B4:B15"
+MENU_RANGE = "Carta!A2:E26"
+FIJOS_RANGE = "Datos Permanentes!B2:B14"
 
 # Leer menú
 menu_result = sheets_service.spreadsheets().values().get(
@@ -100,18 +100,18 @@ menu_result = sheets_service.spreadsheets().values().get(
 ).execute()
 menu_rows = menu_result.get("values", [])
 
-# Leer datos fijos
+# Leer Datos Permanentes
 fijos_result = sheets_service.spreadsheets().values().get(
     spreadsheetId=sheet_id,
     range=FIJOS_RANGE
 ).execute()
 fijos_rows = fijos_result.get("values", [])
 
-# Opcional: convertir datos fijos a una lista simple (quita sublistas vacías)
+# Opcional: convertir Datos Permanentes a una lista simple (quita sublistas vacías)
 fijos = [row[0] for row in fijos_rows if row]
 
 # === GENERAR HTML RESPONSIVO CON BUSCADOR ===
-output_dir = Path(f"planes/menu-base-{fecha_id}")
+output_dir = Path(f"planes/menu-corporativo-{fecha_id}")
 output_dir.mkdir(parents=True, exist_ok=True)
 html_file = output_dir / "index.html"
 
@@ -243,7 +243,7 @@ html = f"""<!DOCTYPE html>
   </header>
   <div class="container">
     <div class="fijos">
-      <strong>Datos Fijos:</strong>
+      <strong>Datos Permanentes:</strong>
       <ul id="fijos-list" style="margin:0.5rem 0 0 1.2rem;">
         <li>Cargando...</li>
       </ul>
@@ -324,7 +324,7 @@ html = f"""<!DOCTYPE html>
 
     document.getElementById("search").addEventListener("input", filterTable);
 
-    // Cargar datos fijos en vivo
+    // Cargar Datos Permanentes en vivo
     const FIJOS_CSV_URL = "{sheet_url.replace('/edit', '')}/gviz/tq?tqx=out:csv&sheet=Datos%20Fijos";
     fetch(FIJOS_CSV_URL)
       .then(response => response.text())
@@ -357,11 +357,11 @@ html = f"""<!DOCTYPE html>
         }}
 
         if (!ul.innerHTML) {{
-          ul.innerHTML = "<li>No hay datos fijos.</li>";
+          ul.innerHTML = "<li>No hay Datos Permanentes.</li>";
         }}
       }})
       .catch(() => {{
-        document.getElementById("fijos-list").innerHTML = "<li>Error al cargar datos fijos.</li>";
+        document.getElementById("fijos-list").innerHTML = "<li>Error al cargar Datos Permanentes.</li>";
       }});
   </script>
 </body>
@@ -377,7 +377,7 @@ print("📄 Planilla editable:", sheet_url)
 # NUEVO → exportar urls para el workflow
 with open("menu_url.txt", "w") as f:
     # ruta pública en GitHub Pages
-    f.write(f"planes/menu-base-{fecha_id}/index.html")
+    f.write(f"planes/menu-corporativo-{fecha_id}/index.html")
 
 with open("sheet_url.txt", "w") as f:
     f.write(sheet_url)
