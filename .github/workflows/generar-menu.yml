@@ -94,8 +94,10 @@ jobs:
       # 7) Guardar en Clientes links y referencias
       - name: Ejecutar script Python
         run: |
-          EXTERNAL_REF=${{ github.event.client_payload.external_reference }} python scripts/add_links.py
+          EXTERNAL_REF=${{ github.event.client_payload.external_reference }} \
+          MENU_URL=${{ steps.paths.outputs.menu_url }} \
+          SHEET_URL=${{ steps.paths.outputs.sheet_url }} \
+          python scripts/add_links.py
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
           CLIENT_EMAIL: ${{ steps.vars.outputs.email }}
-
