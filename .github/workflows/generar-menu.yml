@@ -21,6 +21,7 @@ jobs:
           echo "email=${{ github.event.client_payload.email }}" >> $GITHUB_OUTPUT
           echo "negocio=${{ github.event.client_payload.negocio || 'Cliente sin nombre' }}" >> $GITHUB_OUTPUT
           echo "external_reference=${{ github.event.client_payload.external_reference }}" >> $GITHUB_OUTPUT
+          echo "sheet_url=${{ github.event.client_payload.sheet_url }}" >> $GITHUB_OUTPUT
 
       # 2) Setup Python + dependencias
       - uses: actions/setup-python@v4
@@ -35,6 +36,7 @@ jobs:
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
           CLIENT_EMAIL: ${{ steps.vars.outputs.email }}
+          SHEET_URL: ${{ steps.vars.outputs.sheet_url }} 
         run: |
           echo "📦 Ejecutando script para plan: ${{ steps.vars.outputs.plan }}"
           case "${{ steps.vars.outputs.plan }}" in
