@@ -2,6 +2,7 @@ name: Generar Menú
 
 on:
   repository_dispatch:
+    types: [generar_menu_base, generar_menu_emprendedor, generar_menu_profesional, generar_menu_corporativo]
 
 jobs:
   generar-menu:

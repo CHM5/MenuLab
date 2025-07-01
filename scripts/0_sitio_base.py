@@ -4,57 +4,31 @@ from pathlib import Path
 from datetime import datetime
 from google.oauth2.service_account import Credentials
 from googleapiclient.discovery import build
-from googleapiclient.errors import HttpError
 
 # === CONFIG ===
-TEMPLATE_SHEET_ID = "12rwhH-LQ5S5R8UjNr-P422_U03imcIJAP4xIwD5Q3CY"
 FIJOS_RANGE = "Datos Permanentes!B4:B15"
 MENU_RANGE = "Carta!A2:E26"
+fecha_id = datetime.now().strftime("%Y%m%d-%H%M")
 
 # === AUTENTICACIÓN ===
 credentials_info = json.loads(os.environ["GOOGLE_CREDENTIALS"])
 creds = Credentials.from_service_account_info(
     credentials_info,
-    scopes=["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/spreadsheets"]
+    scopes=["https://www.googleapis.com/auth/spreadsheets"]
 )
-
-drive_service = build("drive", "v3", credentials=creds)
 sheets_service = build("sheets", "v4", credentials=creds)
 
-# === COPIAR TEMPLATE ===
-fecha_id = datetime.now().strftime("%Y%m%d-%H%M")
-nombre_copia = f"Menu Base {fecha_id}"
-
-copia = drive_service.files().copy(
-    fileId=TEMPLATE_SHEET_ID,
-    body={"name": nombre_copia}
-).execute()
-
-sheet_id = copia["id"]
-sheet_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/edit"
-csv_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv"
+# === URL recibido ===
+sheet_url = os.environ["SHEET_URL"]
+if not sheet_url:
+    print("❌ SHEET_URL no provisto en las variables de entorno")
+    exit(1)
+csv_url = f"{sheet_url.replace('/edit', '')}/gviz/tq?tqx=out:csv"
 print("🔗 CSV para menú en vivo:", csv_url)
-
-# === PERMISOS ===
-cliente_email = os.environ.get("CLIENT_EMAIL", "default_email@example.com")
-
-try:
-    drive_service.permissions().create(
-        fileId=sheet_id,
-        body={'type': 'user', 'role': 'writer', 'emailAddress': cliente_email}
-    ).execute()
-    print(f"✅ Acceso de escritura otorgado a {cliente_email}")
-except HttpError as e:
-    print(f"⚠ Error compartiendo con el cliente: {e}")
-
-drive_service.permissions().create(
-    fileId=sheet_id,
-    body={'type': 'anyone', 'role': 'reader'},
-    sendNotificationEmail=False
-).execute()
 
 # === LEER DATOS ===
 try:
+    sheet_id = sheet_url.split("/d/")[1].split("/")[0]
     fijos_result = sheets_service.spreadsheets().values().get(
         spreadsheetId=sheet_id,
         range=FIJOS_RANGE
@@ -67,10 +41,14 @@ try:
     ).execute()
     menu_rows = menu_result.get("values", [])
 
-except HttpError as e:
+except Exception as e:
     print(f"❌ Error al leer datos: {e}")
     fijos_rows = []
     menu_rows = []
+
+except IndexError:
+    print(f"❌ URL inválido: {sheet_url}")
+    exit(1)
 
 # === GENERAR HTML ===
 output_dir = Path(f"planes/menu-base-{fecha_id}")
