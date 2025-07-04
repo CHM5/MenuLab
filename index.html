@@ -74,10 +74,9 @@
           
       <!-- Menu -->
       <!-- WEB -->
-      <navbar8-wrapper class="navbar8-wrapper"
-      ><header class="navbar8-container1"
-        ><header data-thq="thq-navbar" class="navbar8-navbar-interactive"
-          >
+      <navbar8-wrapper class="navbar8-wrapper">
+        <header class="navbar8-container1">
+          <header data-thq="thq-navbar" class="navbar8-navbar-interactive">
           <div data-thq="thq-navbar-nav" class="navbar8-desktop-menu"
             ><nav class="navbar8-links1"
               ><a
@@ -120,12 +119,14 @@
                   ><span class="home-text110">Contacto</span></fragment
                 ></a
               ></nav
-            ></div
-          ><div data-thq="thq-burger-menu" class="navbar8-burger-menu"
+            ></div>
+            <div data-thq="thq-burger-menu" class="navbar8-burger-menu"
             ><svg viewBox="0 0 1024 1024" class="navbar8-icon14">
               <path
                 d="M128 554.667h768c23.552 0 42.667-19.115 42.667-42.667s-19.115-42.667-42.667-42.667h-768c-23.552 0-42.667 19.115-42.667 42.667s19.115 42.667 42.667 42.667zM128 298.667h768c23.552 0 42.667-19.115 42.667-42.667s-19.115-42.667-42.667-42.667h-768c-23.552 0-42.667 19.115-42.667 42.667s19.115 42.667 42.667 42.667zM128 810.667h768c23.552 0 42.667-19.115 42.667-42.667s-19.115-42.667-42.667-42.667h-768c-23.552 0-42.667 19.115-42.667 42.667s19.115 42.667 42.667 42.667z"
-              ></path></svg></div>
+              ></path>
+            </svg>
+          </div>
             <!-- CEL -->
             <div data-thq="thq-mobile-menu" class="navbar8-mobile-menu">
               <div class="navbar8-nav"
@@ -451,977 +452,970 @@
       </div>
 
       <!-- Productos -->
-        <div id="productos" class="centered-container">
-          <div class="pricing-header">
-            <h2 class="thq-heading-2">
-            <fragment class="home-fragment203">
-                <span class="home-text203">Productos</span></fragment
-            ></h2
-            >
-          </div>                     
-          <div class="toggle-container">
-            <button class="toggle-button active" onclick="filterCategory('Diseño de Carta')">Diseño de Carta</button>
-            <button class="toggle-button" onclick="filterCategory('Desarrollo Web')">Desarrollo Web</button>
-            <button class="toggle-button" onclick="filterCategory('Complemento')">Complemento</button>
-            <button class="toggle-button" onclick="filterCategory('Paquete')">Paquete</button>
+      <div id="productos" class="centered-container">
+        <div class="pricing-header">
+          <h2 class="thq-heading-2">
+          <fragment class="home-fragment203">
+              <span class="home-text203">Productos</span></fragment
+          ></h2
+          >
+        </div>                     
+        <div class="toggle-container">
+          <button class="toggle-button active" onclick="filterCategory('Diseño de Carta')">Diseño de Carta</button>
+          <button class="toggle-button" onclick="filterCategory('Desarrollo Web')">Desarrollo Web</button>
+          <button class="toggle-button" onclick="filterCategory('Complemento')">Complemento</button>
+          <button class="toggle-button" onclick="filterCategory('Paquete')">Paquete</button>
+        </div>
+        <div id="cart-summary" style="text-align:right; margin: 10px 0;">
+          🛒 Productos seleccionados: <span id="cart-count">0</span>
+        </div>
+        <div class="products-grid">
+          <!-- MicroSite -->
+          <div class="product-card">
+              <div class="product-badge">Nuevo</div>
+              <div class="product-tilt-effect">
+                <div class="product-image">
+                      <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1747093214/images_k104ly.jpg?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="MicroSite">
+                  </div>
+              </div>
+              <div class="product-info">
+                  <div class="product-category">Desarrollo Web</div>
+                  <h2 class="product-title">MicroSite</h2>
+                  <div class="product-description">
+                      <p>Incluye diseño web responsive con tres secciones esenciales: Nosotros, Carta y Contacto.</p>
+                  </div>
+                  <div class="product-features">
+                      <span class="feature">Diseño Responsive</span>
+                      <span class="feature">Carta Web</span>
+                      <span class="feature">Formulario de contacto</span>
+                  </div>
+                  <div class="product-bottom">
+                      <div class="product-price">
+                          <span class="price-was">$150.000</span>
+                          <span class="price-now">$120.000</span>
+                      </div>
+                      <label >
+                        <input type="checkbox" class="product-checkbox cart-checkbox" data-product="microsite">
+                        <span style="font-size: 20px;">🛒</span>
+                      </label>
+                      <a href="form.html" class="product-button">
+                        <span class="button-text">Contratar</span>
+                      </a>
+                  </div>
+                  <div class="product-meta">
+                      <div class="product-stock">In Stock</div>
+                  </div>
+              </div>
           </div>
-          <div id="cart-summary" style="text-align:right; margin: 10px 0;">
-            🛒 Productos seleccionados: <span id="cart-count">0</span>
-          </div>
-          <div class="products-grid">
-            <!-- MicroSite -->
-            <div class="product-card">
-                <div class="product-badge">Nuevo</div>
-                <div class="product-tilt-effect">
+          <!-- ProSite -->            
+          <div class="product-card">
+              <div class="product-badge">Popular</div>
+              <div class="product-tilt-effect">
                   <div class="product-image">
-                        <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1747093214/images_k104ly.jpg?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="MicroSite">
-                    </div>
-                </div>
-                <div class="product-info">
-                    <div class="product-category">Desarrollo Web</div>
-                    <h2 class="product-title">MicroSite</h2>
-                    <div class="product-description">
-                        <p>Incluye diseño web responsive con tres secciones esenciales: Nosotros, Carta y Contacto.</p>
-                    </div>
-                    <div class="product-features">
-                        <span class="feature">Diseño Responsive</span>
-                        <span class="feature">Carta Web</span>
-                        <span class="feature">Formulario de contacto</span>
-                    </div>
-                    <div class="product-bottom">
-                        <div class="product-price">
-                            <span class="price-was">$150.000</span>
-                            <span class="price-now">$120.000</span>
+                      <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1747093217/1699097359600_iypykb.jpg?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="ProSite">
+                  </div>
+              </div>
+              <div class="product-info">
+                  <div class="product-category">Desarrollo Web</div>
+                  <h2 class="product-title">ProSite</h2>
+                  <div class="product-description">
+                      <p>Incluye todo lo del MicroSite más galería de fotos integrada y módulo de pagos con Mercado Pago para recibir pedidos en línea.</p>
+                  </div>
+                  <div class="product-features">
+                      <span class="feature">Galería de imágenes</span>
+                      <span class="feature">Carta Web</span>
+                      <span class="feature">Pagos Mercado Pago</span>
+                  </div>
+                  <div class="product-bottom">
+                      <div class="product-price">
+                          <span class="price-was">$330.000</span>
+                          <span class="price-now">$300.000</span>
+                      </div>
+                      <label style="display: flex; align-items: center; gap: 8px; margin: 0;">
+                        <input type="checkbox" class="product-checkbox cart-checkbox" data-product="prosite">
+                        <span style="font-size: 20px;">🛒</span>
+                      </label>
+                      <a href="form.html" class="product-button">
+                        <span class="button-text">Contratar</span>
+                      </a>                    
+                  </div>
+                  <div class="product-meta">
+                      <div class="product-stock">In Stock</div>
+                  </div>
+              </div>
+          </div>
+          <!-- Carta Simple Faz -->
+          <div class="product-card">
+              <div class="product-badge">Simple</div>
+              <div class="product-tilt-effect">
+                  <div class="product-image">
+                      <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1747092886/soporte-porta-cartas-menu-restaurante-madera-a4-diseno-personalizado-grabado-craft-2-1000x750_zftl0j.jpg?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Carta Simple">
+                  </div>
+              </div>
+              <div class="product-info">
+                  <div class="product-category">Diseño de Carta</div>
+                  <h2 class="product-title">Carta Simple Faz</h2>
+                  <div class="product-description">
+                      <p>Diseño de carta digital pensado para cafeterías, heladerías o barras con pocos productos.</p>
+                  </div>
+                  <div class="product-features">
+                      <span class="feature">Fácil lectura</span>
+                      <span class="feature">Listo para compartir</span>
+                      <span class="feature">A4</span>
+                  </div>
+                  <div class="product-bottom">
+                      <div class="product-price">
+                          <span class="price-was">$110.000</span>
+                          <span class="price-now">$100.000</span>
                         </div>
-                        <label >
-                          <input type="checkbox" class="product-checkbox cart-checkbox" data-product="microsite">
+                      <label style="display: flex; align-items: center; gap: 8px; margin: 0;">
+                        <input type="checkbox" class="product-checkbox cart-checkbox" data-product="cartasimplefaz">
+                        <span style="font-size: 20px;">🛒</span>
+                      </label>
+                      <a href="form.html" class="product-button">
+                        <span class="button-text">Contratar</span>
+                      </a>
+                  </div>
+                  <div class="product-meta">
+                      <div class="product-stock">In Stock</div>
+                  </div>
+              </div>
+          </div>
+          <!-- Carta Doble Faz A4-->
+          <div class="product-card">
+              <div class="product-badge">Doble A4</div>
+              <div class="product-tilt-effect">
+                  <div class="product-image">
+                      <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1747094183/menu-de-drinks-a4-plastificado-menu-drinks_etmyvt.webp?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Carta Doble Faz">
+                  </div>
+              </div>
+              <div class="product-info">
+                  <div class="product-category">Diseño de Carta</div>
+                  <h2 class="product-title">Carta Doble Faz A4</h2>
+                  <div class="product-description">
+                      <p>Diseño pensado para incluir más variedad en un espacio reducido. Al contar con doble faz, permite separar categorías sin perder claridad ni legibilidad.</p>
+                  </div>
+                  <div class="product-features">
+                      <span class="feature">Formato doble cara</span>
+                      <span class="feature">Ideal para varias secciones</span>
+                      <span class="feature">A4</span>
+                  </div>
+                  <div class="product-bottom">
+                      <div class="product-price">
+                          <span class="price-was">$200.000</span>
+                          <span class="price-now">$180.000</span>
+                      </div>
+                      <label style="display: flex; align-items: center; gap: 8px; margin: 0;">
+                        <input type="checkbox" class="product-checkbox cart-checkbox" data-product="cartadoblefaz">
+                        <span style="font-size: 20px;">🛒</span>
+                      </label>
+                      <a href="form.html" class="product-button">
+                        <span class="button-text">Contratar</span>
+                      </a>
+                  </div>
+                  <div class="product-meta">
+                      <div class="product-stock">In Stock</div>
+                  </div>
+              </div>
+          </div> 
+          <!-- Carta Doble Faz A3 -->
+          <div class="product-card">
+              <div class="product-badge">Doble A3</div>
+              <div class="product-tilt-effect">
+                  <div class="product-image">
+                      <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1750050279/ChatGPT_Image_Jun_16_2025_02_03_59_AM_pwnpce.png" alt="Carta Doble Faz A3">
+                  </div>
+              </div>
+              <div class="product-info">
+                  <div class="product-category">Diseño de Carta</div>
+                  <h2 class="product-title">Carta Doble Faz A3</h2>
+                  <div class="product-description">
+                      <p>
+                          El doble de grande que una carta A4. Perfecta para cartas con <strong>letras más grandes</strong> y <strong>más espacio para imágenes de platos estrella</strong>. Ideal para destacar tu menú y facilitar la lectura a todos tus clientes.
+                      </p>
+                  </div>
+                  <div class="product-features">
+                      <span class="feature">Formato doble cara tamaño A3</span>
+                      <span class="feature">Espacio extra para fotos y descripciones</span>
+                      <span class="feature">Letras grandes y legibles</span>
+                  </div>
+                  <div class="product-bottom">
+                      <div class="product-price">
+                          <span class="price-was">$230.000</span>
+                          <span class="price-now">$210.000</span>
+                      </div>
+                      <label style="display: flex; align-items: center; gap: 8px; margin: 0;">
+                          <input type="checkbox" class="product-checkbox cart-checkbox" data-product="cartadoblefaza3">
                           <span style="font-size: 20px;">🛒</span>
-                        </label>
-                        <a href="form.html" class="product-button">
+                      </label>
+                      <a href="form.html" class="product-button">
                           <span class="button-text">Contratar</span>
-                        </a>
-                    </div>
-                    <div class="product-meta">
-                        <div class="product-stock">In Stock</div>
-                    </div>
-                </div>
-            </div>
-            <!-- ProSite -->            
-            <div class="product-card">
-                <div class="product-badge">Popular</div>
-                <div class="product-tilt-effect">
-                    <div class="product-image">
-                        <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1747093217/1699097359600_iypykb.jpg?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="ProSite">
-                    </div>
-                </div>
-                <div class="product-info">
-                    <div class="product-category">Desarrollo Web</div>
-                    <h2 class="product-title">ProSite</h2>
-                    <div class="product-description">
-                        <p>Incluye todo lo del MicroSite más galería de fotos integrada y módulo de pagos con Mercado Pago para recibir pedidos en línea.</p>
-                    </div>
-                    <div class="product-features">
-                        <span class="feature">Galería de imágenes</span>
-                        <span class="feature">Carta Web</span>
-                        <span class="feature">Pagos Mercado Pago</span>
-                    </div>
-                    <div class="product-bottom">
-                        <div class="product-price">
-                            <span class="price-was">$330.000</span>
-                            <span class="price-now">$300.000</span>
-                        </div>
-                        <label style="display: flex; align-items: center; gap: 8px; margin: 0;">
-                          <input type="checkbox" class="product-checkbox cart-checkbox" data-product="prosite">
+                      </a>
+                  </div>
+                  <div class="product-meta">
+                      <div class="product-stock">In Stock</div>
+                  </div>
+              </div>
+          </div>
+          <!-- Carta Tríptico A3 -->
+          <div class="product-card">
+              <div class="product-badge">Destacado</div>
+              <div class="product-tilt-effect">
+                  <div class="product-image">
+                      <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1747094084/diptico-triptico-carta-menu-restaurante-desplegable_wjghdz.jpg?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Carta Tríptico A3">
+                  </div>
+              </div>
+              <div class="product-info">
+                  <div class="product-category">Diseño de Carta</div>
+                  <h2 class="product-title">Carta Tríptico A3</h2>
+                  <div class="product-description">
+                                  <p>Tríptico doble faz: <strong>6 caras en total</strong> para organizar tu menú en secciones bien diferenciadas. Ideal para cartas extensas, con espacio para fotos, promociones y platos destacados. Perfecta para imprimir o compartir digitalmente.</p>
+                  </div>
+                  <div class="product-features">
+                      <span class="feature">Cafeterías</span>
+                      <span class="feature">Restaurantes Temáticos</span>
+                      <span class="feature">Formato tríptico A3</span>
+                  </div>
+                  <div class="product-bottom">
+                      <div class="product-price">
+                          <span class="price-was">$230.000</span>
+                          <span class="price-now">$210.000</span>
+                      </div>
+                      <label style="display: flex; align-items: center; gap: 8px; margin: 0;">
+                        <input type="checkbox" class="product-checkbox cart-checkbox" data-product="cartatriptica">
+                        <span style="font-size: 20px;">🛒</span>
+                      </label>
+                      <a href="form.html" class="product-button">
+                        <span class="button-text">Contratar</span>
+                      </a>
+                  </div>
+                  <div class="product-meta">
+                      <div class="product-stock">In Stock</div>
+                  </div>
+              </div>
+          </div>
+          <!-- Carta Libro 4 Caras -->
+          <div class="product-card">
+              <div class="product-badge">Libro 4 Caras</div>
+              <div class="product-tilt-effect">
+                  <div class="product-image">
+                      <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1750050398/238a2d7c-378f-4fc6-81be-4f676bf8961b_nyzif9.png" alt="Carta Libro 4 Caras">
+                  </div>
+              </div>
+              <div class="product-info">
+                  <div class="product-category">Diseño de Carta</div>
+                  <h2 class="product-title">Carta Libro 4 Caras</h2>
+                  <div class="product-description">
+                      <p>
+                          Formato tipo librito: se pliega al medio y ofrece <strong>4 lados</strong> para organizar tu menú. Perfecta para destacar platos estrella, fotos y secciones bien diferenciadas. Más espacio, más impacto visual.
+                      </p>
+                  </div>
+                  <div class="product-features">
+                      <span class="feature">Díptico doble faz (4 caras)</span>
+                      <span class="feature">Ideal para menús extensos</span>
+                      <span class="feature">Espacio para imágenes y descripciones</span>
+                  </div>
+                  <div class="product-bottom">
+                      <div class="product-price">
+                          <span class="price-was">$230.000</span>
+                          <span class="price-now">$210.000</span>
+                      </div>
+                      <label style="display: flex; align-items: center; gap: 8px; margin: 0;">
+                          <input type="checkbox" class="product-checkbox cart-checkbox" data-product="cartalibro4caras">
                           <span style="font-size: 20px;">🛒</span>
-                        </label>
-                        <a href="form.html" class="product-button">
+                      </label>
+                      <a href="form.html" class="product-button">
                           <span class="button-text">Contratar</span>
-                        </a>                    
-                    </div>
-                    <div class="product-meta">
-                        <div class="product-stock">In Stock</div>
-                    </div>
-                </div>
-            </div>
-            <!-- Carta Simple Faz -->
-            <div class="product-card">
-                <div class="product-badge">Simple</div>
-                <div class="product-tilt-effect">
-                    <div class="product-image">
-                        <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1747092886/soporte-porta-cartas-menu-restaurante-madera-a4-diseno-personalizado-grabado-craft-2-1000x750_zftl0j.jpg?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Carta Simple">
-                    </div>
-                </div>
-                <div class="product-info">
-                    <div class="product-category">Diseño de Carta</div>
-                    <h2 class="product-title">Carta Simple Faz</h2>
-                    <div class="product-description">
-                        <p>Diseño de carta digital pensado para cafeterías, heladerías o barras con pocos productos.</p>
-                    </div>
-                    <div class="product-features">
-                        <span class="feature">Fácil lectura</span>
-                        <span class="feature">Listo para compartir</span>
-                        <span class="feature">A4</span>
-                    </div>
-                    <div class="product-bottom">
-                        <div class="product-price">
-                            <span class="price-was">$110.000</span>
-                            <span class="price-now">$100.000</span>
-                          </div>
-                        <label style="display: flex; align-items: center; gap: 8px; margin: 0;">
-                          <input type="checkbox" class="product-checkbox cart-checkbox" data-product="cartasimplefaz">
-                          <span style="font-size: 20px;">🛒</span>
-                        </label>
-                        <a href="form.html" class="product-button">
+                      </a>
+                  </div>
+                  <div class="product-meta">
+                      <div class="product-stock">In Stock</div>
+                  </div>
+              </div>
+          </div>
+          <!-- Carta Anillada -->
+          <div class="product-card">
+              <div class="product-badge">Gran Volumen</div>
+              <div class="product-tilt-effect">
+                  <div class="product-image">
+                      <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1748213829/menus-anillados_mxoqdq-removebg-preview_rpplun.png?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Carta Anillada">
+                  </div>
+              </div>
+              <div class="product-info">
+                  <div class="product-category">Diseño de Carta</div>
+                  <h2 class="product-title">Carta Anillada</h2>
+                  <div class="product-description">
+                      <p>Diseñada para restaurantes con amplia oferta gastronómica. Permite organizar muchas categorías y destacar platos con imágenes a página completa.</p>
+                  </div>
+                  <div class="product-features">
+                      <span class="feature">Formato anillado A4</span>
+                      <span class="feature">Ideal para muchas secciones</span>
+                      <span class="feature">Espacio para fotos grandes</span>
+                  </div>
+                  <div class="product-bottom">
+                      <div class="product-price">
+                          <span class="price-was">$330.000</span>
+                          <span class="price-now">$300.000</span>
+                      </div>
+                      <label style="display: flex; align-items: center; gap: 8px; margin: 0;">
+                        <input type="checkbox" class="product-checkbox cart-checkbox" data-product="cartaanillada">
+                        <span style="font-size: 20px;">🛒</span>
+                      </label>
+                      <a href="form.html" class="product-button">
+                        <span class="button-text">Contratar</span>
+                      </a>
+                  </div>
+                  <div class="product-meta">
+                      <div class="product-stock">In Stock</div>
+                  </div>
+              </div>
+          </div>
+          <!-- Individuales -->
+          <div class="product-card">
+              <div class="product-badge">Económico</div>
+              <div class="product-tilt-effect">
+                  <div class="product-image">
+                      <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1747094747/D_NQ_NP_2X_858956-MLV82681018051_022025-T_nr4fza.webp?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Individual de Mesa Papel Madera">
+                  </div>
+              </div>
+              <div class="product-info">
+                  <div class="product-category">Complemento</div>
+                  <h2 class="product-title">Individual de Mesa</h2>
+                  <div class="product-description">
+                      <p>Diseño de carta impresa sobre papel kraft o papel madera tipo individual. Ideal para bares, cervecerías o espacios con alta rotación de clientes.</p>
+                  </div>
+                  <div class="product-features">
+                      <span class="feature">Estética rústica</span>
+                      <span class="feature">Fácil de reponer</span>
+                      <span class="feature">Formato A3 horizontal</span>
+                  </div>
+                  <div class="product-bottom">
+                      <div class="product-price">
+                          <span class="price-was">$60.000</span>
+                          <span class="price-now">$50.000</span>
+                      </div>
+                      <label style="display: flex; align-items: center; gap: 8px; margin: 0;">
+                        <input type="checkbox" class="product-checkbox cart-checkbox" data-product="individual">
+                        <span style="font-size: 20px;">🛒</span>
+                      </label>
+                      <a href="form.html" class="product-button">
+                        <span class="button-text">Contratar</span>
+                      </a>
+                  </div>
+                  <div class="product-meta">
+                      <div class="product-stock">In Stock</div>
+                  </div>
+              </div>
+          </div>
+          <!-- Portavasos -->
+          <div class="product-card">
+              <div class="product-badge">Diseño Gráfico</div>
+              <div class="product-tilt-effect">
+                  <div class="product-image">
+                      <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1747095239/c30a5220-32ec-4967-8ead-01568707e58b_xitblb.avif?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Diseño de Portavasos">
+                  </div>
+              </div>
+              <div class="product-info">
+                  <div class="product-category">Complemento</div>
+                  <h2 class="product-title">Diseño de Portavasos</h2>
+                  <div class="product-description">
+                      <p>Diseño gráfico personalizado para portavasos redondos o cuadrados. Refuerza la identidad visual de tu local y acompaña la experiencia de consumo.</p>
+                  </div>
+                  <div class="product-features">
+                      <span class="feature">Formato redondo o cuadrado</span>
+                      <span class="feature">Ideal para cervecerías y cafés</span>
+                      <span class="feature">Código QR</span>
+                  </div>
+                  <div class="product-bottom">
+                      <div class="product-price">
+                          <span class="price-was">$60.000</span>
+                          <span class="price-now">$50.000</span>
+                      </div>
+                      <label style="display: flex; align-items: center; gap: 8px; margin: 0;">
+                        <input type="checkbox" class="product-checkbox cart-checkbox" data-product="portavasos">
+                        <span style="font-size: 20px;">🛒</span>
+                      </label>
+                      <a href="form.html" class="product-button">
+                        <span class="button-text">Contratar</span>
+                      </a>
+                  </div>
+                  <div class="product-meta">
+                      <div class="product-stock">In Stock</div>
+                  </div>
+              </div>
+          </div>
+          <!-- Traducción de Carta al Inglés -->
+          <div class="product-card">
+              <div class="product-badge">Servicio</div>
+              <div class="product-tilt-effect">
+                  <div class="product-image">
+                      <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1748216912/243b371239aa8aded1a0ee28e1459be8_sjyeti.jpg?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Traducción de Carta al Inglés">
+                  </div>
+              </div>
+              <div class="product-info">
+                  <div class="product-category">Complemento</div>
+                  <h2 class="product-title">Traducción de Carta al Inglés</h2>
+                  <div class="product-description">
+                      <p>Servicio de traducción profesional para cartas gastronómicas. Ideal para atraer turistas y dar una imagen internacional a tu local.</p>
+                  </div>
+                  <div class="product-features">
+                      <span class="feature">Corrección gramatical incluida</span>
+                      <span class="feature">Formato editable o PDF</span>
+                      <span class="feature">Entrega en 48hs</span>
+                  </div>
+                  <div class="product-bottom">
+                      <div class="product-price">
+                          <span class="price-was">$90.000</span>
+                          <span class="price-now">$75.000</span>
+                      </div>
+                      <label style="display: flex; align-items: center; gap: 8px; margin: 0;">
+                        <input type="checkbox" class="product-checkbox cart-checkbox" data-product="traduccion">
+                        <span style="font-size: 20px;">🛒</span>
+                      </label>
+                      <a href="form.html" class="product-button">
+                        <span class="button-text">Contratar</span>
+                      </a>
+                  </div>
+                  <div class="product-meta">
+                      <div class="product-stock">In Stock</div>
+                  </div>
+              </div>
+          </div>
+          <!-- Menú de Exhibición -->
+          <div class="product-card">
+              <div class="product-badge">Diseño Gráfico</div>
+              <div class="product-tilt-effect">
+                  <div class="product-image">
+                      <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1748217714/69eb9dd2-3eac-445a-a17c-dfe132d3ba1a_r7du8y.png?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Diseño de Menú de Exhibición">
+                  </div>
+              </div>
+              <div class="product-info">
+                  <div class="product-category">Complemento</div>
+                  <h2 class="product-title">Carta de Exhibición</h2>
+                  <div class="product-description">
+                      <p>Diseño gráfico profesional de carta para colocar en la entrada del local. Atrae clientes mostrando tus platos estrella y precios antes de que ingresen.</p>
+                  </div>
+                  <div class="product-features">
+                      <span class="feature">Formato vertical o apaisado</span>
+                      <span class="feature">Ideal para atriles o vitrinas</span>
+                      <span class="feature">Diseño PDF listo para imprimir</span>
+                  </div>
+                  <div class="product-bottom">
+                      <div class="product-price">
+                          <span class="price-was">$60.000</span>
+                          <span class="price-now">$50.000</span>
+                      </div>
+                      <label style="display: flex; align-items: center; gap: 8px; margin: 0;">
+                        <input type="checkbox" class="product-checkbox cart-checkbox" data-product="exhibicion">
+                        <span style="font-size: 20px;">🛒</span>
+                      </label>
+                      <a href="form.html" class="product-button">
+                        <span class="button-text">Contratar</span>
+                      </a>
+                  </div>
+                  <div class="product-meta">
+                      <div class="product-stock">In Stock</div>
+                  </div>
+              </div>
+          </div>
+          <!-- Tarjeta Descuento -->
+          <div class="product-card">
+              <div class="product-badge">Fidelización</div>
+              <div class="product-tilt-effect">
+                  <div class="product-image">
+                      <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1748214316/conjunto-tarjetas-descuento-navidad-o-invierno-patron-copos-nieve-numeros-porcentuales-simples_34881-removebg-preview_egi8ol.png?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Tarjetas de Descuento">
+                  </div>
+              </div>
+              <div class="product-info">
+                  <div class="product-category">Complemento</div>
+                  <h2 class="product-title">Tarjeta de Descuento</h2>
+                  <div class="product-description">
+                      <p>Diseño de tarjetas físicas o digitales para promociones, programas de fidelización o regalos especiales. Adaptables a QR, cupones o combos.</p>
+                  </div>
+                  <div class="product-features">
+                      <span class="feature">Diseño personalizado</span>
+                      <span class="feature">Formato digital o impresión</span>
+                      <span class="feature">Tamaño: 85,6 mm x 53,98 mm</span>
+                  </div>
+                  <div class="product-bottom">
+                      <div class="product-price">
+                          <span class="price-was">$60.000</span>
+                          <span class="price-now">$50.000</span>
+                      </div>
+                      <label style="display: flex; align-items: center; gap: 8px; margin: 0;">
+                        <input type="checkbox" class="product-checkbox cart-checkbox" data-product="tarjeta">
+                        <span style="font-size: 20px;">🛒</span>
+                      </label>
+                      <a href="form.html" class="product-button">
+                        <span class="button-text">Contratar</span>
+                      </a>
+                  </div>
+                  <div class="product-meta">
+                      <div class="product-stock">In Stock</div>
+                  </div>
+              </div>
+          </div>
+          <!-- Diseño de Flyers -->
+          <div class="product-card">
+              <div class="product-badge">Diseño Gráfico</div>
+              <div class="product-tilt-effect">
+                  <div class="product-image">
+                      <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1748694246/ChatGPT_Image_May_31_2025_09_23_26_AM_mkn0zy.png" alt="Diseño de Flyers">
+                  </div>
+              </div>
+              <div class="product-info">
+                  <div class="product-category">Complemento</div>
+                  <h2 class="product-title">Flyers Promocionales</h2>
+                  <div class="product-description">
+                      <p>Diseño profesional de volante publicitario para repartir en la calle y atraer nuevos clientes a tu local.</p>
+                  </div>
+                  <div class="product-features">
+                      <span class="feature">Formato A6, A5 o personalizado</span>
+                      <span class="feature">Diseño full color</span>
+                      <span class="feature">QR, redes, datos de contacto</span>
+                  </div>
+                  <div class="product-bottom">
+                      <div class="product-price">
+                          <span class="price-was">$60.000</span>
+                          <span class="price-now">$50.000</span>
+                      </div>
+                      <label style="display: flex; align-items: center; gap: 8px; margin: 0;">
+                        <input type="checkbox" class="product-checkbox cart-checkbox" data-product="flyer">
+                        <span style="font-size: 20px;">🛒</span>
+                      </label>
+                      <a href="form.html" class="product-button">
+                        <span class="button-text">Contratar</span>
+                      </a>
+                  </div>
+                  <div class="product-meta">
+                      <div class="product-stock">In Stock</div>
+                  </div>
+              </div>
+          </div>
+          <!-- Menú para Mesas Vertical -->
+          <div class="product-card">
+              <div class="product-badge">Diseño Gráfico</div>
+              <div class="product-tilt-effect">
+                  <div class="product-image">
+                      <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1748694591/ChatGPT_Image_May_31_2025_09_29_42_AM_vrvxpz.png" alt="Menú para Mesas Vertical">
+                  </div>
+              </div>
+              <div class="product-info">
+                  <div class="product-category">Complemento</div>
+                  <h2 class="product-title">Menú Vertical para Mesas</h2>
+                  <div class="product-description">
+                      <p>Diseño de menú vertical para colocar sobre las mesas. Ideal para destacar promociones, menú del día o cualquier información relevante para tus clientes.</p>
+                  </div>
+                  <div class="product-features">
+                      <span class="feature">Formato vertical A5 o personalizado</span>
+                      <span class="feature">Diseño llamativo y fácil de leer</span>
+                      <span class="feature">QR, redes, datos de contacto</span>
+                  </div>
+                  <div class="product-bottom">
+                      <div class="product-price">
+                          <span class="price-was">$60.000</span>
+                          <span class="price-now">$50.000</span>
+                      </div>
+                      <label style="display: flex; align-items: center; gap: 8px; margin: 0;">
+                        <input type="checkbox" class="product-checkbox cart-checkbox" data-product="menumesas">
+                        <span style="font-size: 20px;">🛒</span>
+                      </label>
+                      <a href="form.html" class="product-button">
+                        <span class="button-text">Contratar</span>
+                      </a>
+                  </div>
+                  <div class="product-meta">
+                      <div class="product-stock">In Stock</div>
+                  </div>
+              </div>
+          </div>
+          <!-- Diseño de Logo 
+          <div class="product-card">
+              <div class="product-badge">Diseño Gráfico</div>
+              <div class="product-tilt-effect">
+                  <div class="product-image">
+                      <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1747621972/ChatGPT_Image_May_18_2025_11_32_44_PM_jpxatq.png" alt="Diseño de Logo">
+                  </div>
+              </div>
+              <div class="product-info">
+                  <div class="product-category">Complemento</div>
+                  <h2 class="product-title">Diseño de Logo</h2>
+                  <div class="product-description">
+                      <p>Diseñamos tu logo desde cero, adaptado a tu identidad, rubro y objetivos comerciales. Ideal para emprendedores o negocios que buscan destacar.</p>
+                  </div>
+                  <div class="product-features">
+                      <span class="feature">Propuestas creativas personalizadas</span>
+                      <span class="feature">Entrega en múltiples formatos (JPG, PNG, SVG)</span>
+                      <span class="feature">Incluye ajustes finales y versión monocromo</span>
+                  </div>
+                  <div class="product-bottom">
+                      <div class="product-price">
+                          <span class="price-was">$100.000</span>
+                          <span class="price-now">$85.000</span>
+                      </div>
+                      <a href="form.html" class="product-button">
                           <span class="button-text">Contratar</span>
-                        </a>
-                    </div>
-                    <div class="product-meta">
-                        <div class="product-stock">In Stock</div>
-                    </div>
-                </div>
-            </div>
-            <!-- Carta Doble Faz A4-->
-            <div class="product-card">
-                <div class="product-badge">Doble A4</div>
-                <div class="product-tilt-effect">
-                    <div class="product-image">
-                        <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1747094183/menu-de-drinks-a4-plastificado-menu-drinks_etmyvt.webp?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Carta Doble Faz">
-                    </div>
-                </div>
-                <div class="product-info">
-                    <div class="product-category">Diseño de Carta</div>
-                    <h2 class="product-title">Carta Doble Faz A4</h2>
-                    <div class="product-description">
-                        <p>Diseño pensado para incluir más variedad en un espacio reducido. Al contar con doble faz, permite separar categorías sin perder claridad ni legibilidad.</p>
-                    </div>
-                    <div class="product-features">
-                        <span class="feature">Formato doble cara</span>
-                        <span class="feature">Ideal para varias secciones</span>
-                        <span class="feature">A4</span>
-                    </div>
-                    <div class="product-bottom">
-                        <div class="product-price">
-                            <span class="price-was">$200.000</span>
-                            <span class="price-now">$180.000</span>
-                        </div>
-                        <label style="display: flex; align-items: center; gap: 8px; margin: 0;">
-                          <input type="checkbox" class="product-checkbox cart-checkbox" data-product="cartadoblefaz">
-                          <span style="font-size: 20px;">🛒</span>
-                        </label>
-                        <a href="form.html" class="product-button">
-                          <span class="button-text">Contratar</span>
-                        </a>
-                    </div>
-                    <div class="product-meta">
-                        <div class="product-stock">In Stock</div>
-                    </div>
-                </div>
-            </div> 
-            <!-- Carta Doble Faz A3 -->
-            <div class="product-card">
-                <div class="product-badge">Doble A3</div>
-                <div class="product-tilt-effect">
-                    <div class="product-image">
-                        <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1750050279/ChatGPT_Image_Jun_16_2025_02_03_59_AM_pwnpce.png" alt="Carta Doble Faz A3">
-                    </div>
-                </div>
-                <div class="product-info">
-                    <div class="product-category">Diseño de Carta</div>
-                    <h2 class="product-title">Carta Doble Faz A3</h2>
-                    <div class="product-description">
-                        <p>
-                            El doble de grande que una carta A4. Perfecta para cartas con <strong>letras más grandes</strong> y <strong>más espacio para imágenes de platos estrella</strong>. Ideal para destacar tu menú y facilitar la lectura a todos tus clientes.
-                        </p>
-                    </div>
-                    <div class="product-features">
-                        <span class="feature">Formato doble cara tamaño A3</span>
-                        <span class="feature">Espacio extra para fotos y descripciones</span>
-                        <span class="feature">Letras grandes y legibles</span>
-                    </div>
-                    <div class="product-bottom">
-                        <div class="product-price">
-                            <span class="price-was">$230.000</span>
-                            <span class="price-now">$210.000</span>
-                        </div>
-                        <label style="display: flex; align-items: center; gap: 8px; margin: 0;">
-                            <input type="checkbox" class="product-checkbox cart-checkbox" data-product="cartadoblefaza3">
-                            <span style="font-size: 20px;">🛒</span>
-                        </label>
-                        <a href="form.html" class="product-button">
-                            <span class="button-text">Contratar</span>
-                        </a>
-                    </div>
-                    <div class="product-meta">
-                        <div class="product-stock">In Stock</div>
-                    </div>
-                </div>
-            </div>
-            <!-- Carta Tríptico A3 -->
-            <div class="product-card">
-                <div class="product-badge">Destacado</div>
-                <div class="product-tilt-effect">
-                    <div class="product-image">
-                        <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1747094084/diptico-triptico-carta-menu-restaurante-desplegable_wjghdz.jpg?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Carta Tríptico A3">
-                    </div>
-                </div>
-                <div class="product-info">
-                    <div class="product-category">Diseño de Carta</div>
-                    <h2 class="product-title">Carta Tríptico A3</h2>
-                    <div class="product-description">
-                                    <p>Tríptico doble faz: <strong>6 caras en total</strong> para organizar tu menú en secciones bien diferenciadas. Ideal para cartas extensas, con espacio para fotos, promociones y platos destacados. Perfecta para imprimir o compartir digitalmente.</p>
-                    </div>
-                    <div class="product-features">
-                        <span class="feature">Cafeterías</span>
-                        <span class="feature">Restaurantes Temáticos</span>
-                        <span class="feature">Formato tríptico A3</span>
-                    </div>
-                    <div class="product-bottom">
-                        <div class="product-price">
-                            <span class="price-was">$230.000</span>
-                            <span class="price-now">$210.000</span>
-                        </div>
-                        <label style="display: flex; align-items: center; gap: 8px; margin: 0;">
-                          <input type="checkbox" class="product-checkbox cart-checkbox" data-product="cartatriptica">
-                          <span style="font-size: 20px;">🛒</span>
-                        </label>
-                        <a href="form.html" class="product-button">
-                          <span class="button-text">Contratar</span>
-                        </a>
-                    </div>
-                    <div class="product-meta">
-                        <div class="product-stock">In Stock</div>
-                    </div>
-                </div>
-            </div>
-            <!-- Carta Libro 4 Caras -->
-            <div class="product-card">
-                <div class="product-badge">Libro 4 Caras</div>
-                <div class="product-tilt-effect">
-                    <div class="product-image">
-                        <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1750050398/238a2d7c-378f-4fc6-81be-4f676bf8961b_nyzif9.png" alt="Carta Libro 4 Caras">
-                    </div>
-                </div>
-                <div class="product-info">
-                    <div class="product-category">Diseño de Carta</div>
-                    <h2 class="product-title">Carta Libro 4 Caras</h2>
-                    <div class="product-description">
-                        <p>
-                            Formato tipo librito: se pliega al medio y ofrece <strong>4 lados</strong> para organizar tu menú. Perfecta para destacar platos estrella, fotos y secciones bien diferenciadas. Más espacio, más impacto visual.
-                        </p>
-                    </div>
-                    <div class="product-features">
-                        <span class="feature">Díptico doble faz (4 caras)</span>
-                        <span class="feature">Ideal para menús extensos</span>
-                        <span class="feature">Espacio para imágenes y descripciones</span>
-                    </div>
-                    <div class="product-bottom">
-                        <div class="product-price">
-                            <span class="price-was">$230.000</span>
-                            <span class="price-now">$210.000</span>
-                        </div>
-                        <label style="display: flex; align-items: center; gap: 8px; margin: 0;">
-                            <input type="checkbox" class="product-checkbox cart-checkbox" data-product="cartalibro4caras">
-                            <span style="font-size: 20px;">🛒</span>
-                        </label>
-                        <a href="form.html" class="product-button">
-                            <span class="button-text">Contratar</span>
-                        </a>
-                    </div>
-                    <div class="product-meta">
-                        <div class="product-stock">In Stock</div>
-                    </div>
-                </div>
-            </div>
-            <!-- Carta Anillada -->
-            <div class="product-card">
-                <div class="product-badge">Gran Volumen</div>
-                <div class="product-tilt-effect">
-                    <div class="product-image">
-                        <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1748213829/menus-anillados_mxoqdq-removebg-preview_rpplun.png?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Carta Anillada">
-                    </div>
-                </div>
-                <div class="product-info">
-                    <div class="product-category">Diseño de Carta</div>
-                    <h2 class="product-title">Carta Anillada</h2>
-                    <div class="product-description">
-                        <p>Diseñada para restaurantes con amplia oferta gastronómica. Permite organizar muchas categorías y destacar platos con imágenes a página completa.</p>
-                    </div>
-                    <div class="product-features">
-                        <span class="feature">Formato anillado A4</span>
-                        <span class="feature">Ideal para muchas secciones</span>
-                        <span class="feature">Espacio para fotos grandes</span>
-                    </div>
-                    <div class="product-bottom">
-                        <div class="product-price">
-                            <span class="price-was">$330.000</span>
-                            <span class="price-now">$300.000</span>
-                        </div>
-                        <label style="display: flex; align-items: center; gap: 8px; margin: 0;">
-                          <input type="checkbox" class="product-checkbox cart-checkbox" data-product="cartaanillada">
-                          <span style="font-size: 20px;">🛒</span>
-                        </label>
-                        <a href="form.html" class="product-button">
-                          <span class="button-text">Contratar</span>
-                        </a>
-                    </div>
-                    <div class="product-meta">
-                        <div class="product-stock">In Stock</div>
-                    </div>
-                </div>
-            </div>
-            <!-- Individuales -->
-            <div class="product-card">
-                <div class="product-badge">Económico</div>
-                <div class="product-tilt-effect">
-                    <div class="product-image">
-                        <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1747094747/D_NQ_NP_2X_858956-MLV82681018051_022025-T_nr4fza.webp?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Individual de Mesa Papel Madera">
-                    </div>
-                </div>
-                <div class="product-info">
-                    <div class="product-category">Complemento</div>
-                    <h2 class="product-title">Individual de Mesa</h2>
-                    <div class="product-description">
-                        <p>Diseño de carta impresa sobre papel kraft o papel madera tipo individual. Ideal para bares, cervecerías o espacios con alta rotación de clientes.</p>
-                    </div>
-                    <div class="product-features">
-                        <span class="feature">Estética rústica</span>
-                        <span class="feature">Fácil de reponer</span>
-                        <span class="feature">Formato A3 horizontal</span>
-                    </div>
-                    <div class="product-bottom">
-                        <div class="product-price">
-                            <span class="price-was">$60.000</span>
-                            <span class="price-now">$50.000</span>
-                        </div>
-                        <label style="display: flex; align-items: center; gap: 8px; margin: 0;">
-                          <input type="checkbox" class="product-checkbox cart-checkbox" data-product="individual">
-                          <span style="font-size: 20px;">🛒</span>
-                        </label>
-                        <a href="form.html" class="product-button">
-                          <span class="button-text">Contratar</span>
-                        </a>
-                    </div>
-                    <div class="product-meta">
-                        <div class="product-stock">In Stock</div>
-                    </div>
-                </div>
-            </div>
-            <!-- Portavasos -->
-            <div class="product-card">
-                <div class="product-badge">Diseño Gráfico</div>
-                <div class="product-tilt-effect">
-                    <div class="product-image">
-                        <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1747095239/c30a5220-32ec-4967-8ead-01568707e58b_xitblb.avif?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Diseño de Portavasos">
-                    </div>
-                </div>
-                <div class="product-info">
-                    <div class="product-category">Complemento</div>
-                    <h2 class="product-title">Diseño de Portavasos</h2>
-                    <div class="product-description">
-                        <p>Diseño gráfico personalizado para portavasos redondos o cuadrados. Refuerza la identidad visual de tu local y acompaña la experiencia de consumo.</p>
-                    </div>
-                    <div class="product-features">
-                        <span class="feature">Formato redondo o cuadrado</span>
-                        <span class="feature">Ideal para cervecerías y cafés</span>
-                        <span class="feature">Código QR</span>
-                    </div>
-                    <div class="product-bottom">
-                        <div class="product-price">
-                            <span class="price-was">$60.000</span>
-                            <span class="price-now">$50.000</span>
-                        </div>
-                        <label style="display: flex; align-items: center; gap: 8px; margin: 0;">
-                          <input type="checkbox" class="product-checkbox cart-checkbox" data-product="portavasos">
-                          <span style="font-size: 20px;">🛒</span>
-                        </label>
-                        <a href="form.html" class="product-button">
-                          <span class="button-text">Contratar</span>
-                        </a>
-                    </div>
-                    <div class="product-meta">
-                        <div class="product-stock">In Stock</div>
-                    </div>
-                </div>
-            </div>
-            <!-- Traducción de Carta al Inglés -->
-            <div class="product-card">
-                <div class="product-badge">Servicio</div>
-                <div class="product-tilt-effect">
-                    <div class="product-image">
-                        <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1748216912/243b371239aa8aded1a0ee28e1459be8_sjyeti.jpg?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Traducción de Carta al Inglés">
-                    </div>
-                </div>
-                <div class="product-info">
-                    <div class="product-category">Complemento</div>
-                    <h2 class="product-title">Traducción de Carta al Inglés</h2>
-                    <div class="product-description">
-                        <p>Servicio de traducción profesional para cartas gastronómicas. Ideal para atraer turistas y dar una imagen internacional a tu local.</p>
-                    </div>
-                    <div class="product-features">
-                        <span class="feature">Corrección gramatical incluida</span>
-                        <span class="feature">Formato editable o PDF</span>
-                        <span class="feature">Entrega en 48hs</span>
-                    </div>
-                    <div class="product-bottom">
-                        <div class="product-price">
-                            <span class="price-was">$90.000</span>
-                            <span class="price-now">$75.000</span>
-                        </div>
-                        <label style="display: flex; align-items: center; gap: 8px; margin: 0;">
-                          <input type="checkbox" class="product-checkbox cart-checkbox" data-product="traduccion">
-                          <span style="font-size: 20px;">🛒</span>
-                        </label>
-                        <a href="form.html" class="product-button">
-                          <span class="button-text">Contratar</span>
-                        </a>
-                    </div>
-                    <div class="product-meta">
-                        <div class="product-stock">In Stock</div>
-                    </div>
-                </div>
-            </div>
-            <!-- Menú de Exhibición -->
-            <div class="product-card">
-                <div class="product-badge">Diseño Gráfico</div>
-                <div class="product-tilt-effect">
-                    <div class="product-image">
-                        <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1748217714/69eb9dd2-3eac-445a-a17c-dfe132d3ba1a_r7du8y.png?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Diseño de Menú de Exhibición">
-                    </div>
-                </div>
-                <div class="product-info">
-                    <div class="product-category">Complemento</div>
-                    <h2 class="product-title">Carta de Exhibición</h2>
-                    <div class="product-description">
-                        <p>Diseño gráfico profesional de carta para colocar en la entrada del local. Atrae clientes mostrando tus platos estrella y precios antes de que ingresen.</p>
-                    </div>
-                    <div class="product-features">
-                        <span class="feature">Formato vertical o apaisado</span>
-                        <span class="feature">Ideal para atriles o vitrinas</span>
-                        <span class="feature">Diseño PDF listo para imprimir</span>
-                    </div>
-                    <div class="product-bottom">
-                        <div class="product-price">
-                            <span class="price-was">$60.000</span>
-                            <span class="price-now">$50.000</span>
-                        </div>
-                        <label style="display: flex; align-items: center; gap: 8px; margin: 0;">
-                          <input type="checkbox" class="product-checkbox cart-checkbox" data-product="exhibicion">
-                          <span style="font-size: 20px;">🛒</span>
-                        </label>
-                        <a href="form.html" class="product-button">
-                          <span class="button-text">Contratar</span>
-                        </a>
-                    </div>
-                    <div class="product-meta">
-                        <div class="product-stock">In Stock</div>
-                    </div>
-                </div>
-            </div>
-            <!-- Tarjeta Descuento -->
-            <div class="product-card">
-                <div class="product-badge">Fidelización</div>
-                <div class="product-tilt-effect">
-                    <div class="product-image">
-                        <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1748214316/conjunto-tarjetas-descuento-navidad-o-invierno-patron-copos-nieve-numeros-porcentuales-simples_34881-removebg-preview_egi8ol.png?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Tarjetas de Descuento">
-                    </div>
-                </div>
-                <div class="product-info">
-                    <div class="product-category">Complemento</div>
-                    <h2 class="product-title">Tarjeta de Descuento</h2>
-                    <div class="product-description">
-                        <p>Diseño de tarjetas físicas o digitales para promociones, programas de fidelización o regalos especiales. Adaptables a QR, cupones o combos.</p>
-                    </div>
-                    <div class="product-features">
-                        <span class="feature">Diseño personalizado</span>
-                        <span class="feature">Formato digital o impresión</span>
-                        <span class="feature">Tamaño: 85,6 mm x 53,98 mm</span>
-                    </div>
-                    <div class="product-bottom">
-                        <div class="product-price">
-                            <span class="price-was">$60.000</span>
-                            <span class="price-now">$50.000</span>
-                        </div>
-                        <label style="display: flex; align-items: center; gap: 8px; margin: 0;">
-                          <input type="checkbox" class="product-checkbox cart-checkbox" data-product="tarjeta">
-                          <span style="font-size: 20px;">🛒</span>
-                        </label>
-                        <a href="form.html" class="product-button">
-                          <span class="button-text">Contratar</span>
-                        </a>
-                    </div>
-                    <div class="product-meta">
-                        <div class="product-stock">In Stock</div>
-                    </div>
-                </div>
-            </div>
-            <!-- Diseño de Flyers -->
-            <div class="product-card">
-                <div class="product-badge">Diseño Gráfico</div>
-                <div class="product-tilt-effect">
-                    <div class="product-image">
-                        <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1748694246/ChatGPT_Image_May_31_2025_09_23_26_AM_mkn0zy.png" alt="Diseño de Flyers">
-                    </div>
-                </div>
-                <div class="product-info">
-                    <div class="product-category">Complemento</div>
-                    <h2 class="product-title">Flyers Promocionales</h2>
-                    <div class="product-description">
-                        <p>Diseño profesional de volante publicitario para repartir en la calle y atraer nuevos clientes a tu local.</p>
-                    </div>
-                    <div class="product-features">
-                        <span class="feature">Formato A6, A5 o personalizado</span>
-                        <span class="feature">Diseño full color</span>
-                        <span class="feature">QR, redes, datos de contacto</span>
-                    </div>
-                    <div class="product-bottom">
-                        <div class="product-price">
-                            <span class="price-was">$60.000</span>
-                            <span class="price-now">$50.000</span>
-                        </div>
-                        <label style="display: flex; align-items: center; gap: 8px; margin: 0;">
-                          <input type="checkbox" class="product-checkbox cart-checkbox" data-product="flyer">
-                          <span style="font-size: 20px;">🛒</span>
-                        </label>
-                        <a href="form.html" class="product-button">
-                          <span class="button-text">Contratar</span>
-                        </a>
-                    </div>
-                    <div class="product-meta">
-                        <div class="product-stock">In Stock</div>
-                    </div>
-                </div>
-            </div>
-            <!-- Menú para Mesas Vertical -->
-            <div class="product-card">
-                <div class="product-badge">Diseño Gráfico</div>
-                <div class="product-tilt-effect">
-                    <div class="product-image">
-                        <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1748694591/ChatGPT_Image_May_31_2025_09_29_42_AM_vrvxpz.png" alt="Menú para Mesas Vertical">
-                    </div>
-                </div>
-                <div class="product-info">
-                    <div class="product-category">Complemento</div>
-                    <h2 class="product-title">Menú Vertical para Mesas</h2>
-                    <div class="product-description">
-                        <p>Diseño de menú vertical para colocar sobre las mesas. Ideal para destacar promociones, menú del día o cualquier información relevante para tus clientes.</p>
-                    </div>
-                    <div class="product-features">
-                        <span class="feature">Formato vertical A5 o personalizado</span>
-                        <span class="feature">Diseño llamativo y fácil de leer</span>
-                        <span class="feature">QR, redes, datos de contacto</span>
-                    </div>
-                    <div class="product-bottom">
-                        <div class="product-price">
-                            <span class="price-was">$60.000</span>
-                            <span class="price-now">$50.000</span>
-                        </div>
-                        <label style="display: flex; align-items: center; gap: 8px; margin: 0;">
-                          <input type="checkbox" class="product-checkbox cart-checkbox" data-product="menumesas">
-                          <span style="font-size: 20px;">🛒</span>
-                        </label>
-                        <a href="form.html" class="product-button">
-                          <span class="button-text">Contratar</span>
-                        </a>
-                    </div>
-                    <div class="product-meta">
-                        <div class="product-stock">In Stock</div>
-                    </div>
-                </div>
-            </div>
-            <!-- Diseño de Logo 
-            <div class="product-card">
-                <div class="product-badge">Diseño Gráfico</div>
-                <div class="product-tilt-effect">
-                    <div class="product-image">
-                        <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1747621972/ChatGPT_Image_May_18_2025_11_32_44_PM_jpxatq.png" alt="Diseño de Logo">
-                    </div>
-                </div>
-                <div class="product-info">
-                    <div class="product-category">Complemento</div>
-                    <h2 class="product-title">Diseño de Logo</h2>
-                    <div class="product-description">
-                        <p>Diseñamos tu logo desde cero, adaptado a tu identidad, rubro y objetivos comerciales. Ideal para emprendedores o negocios que buscan destacar.</p>
-                    </div>
-                    <div class="product-features">
-                        <span class="feature">Propuestas creativas personalizadas</span>
-                        <span class="feature">Entrega en múltiples formatos (JPG, PNG, SVG)</span>
-                        <span class="feature">Incluye ajustes finales y versión monocromo</span>
-                    </div>
-                    <div class="product-bottom">
-                        <div class="product-price">
-                            <span class="price-was">$100.000</span>
-                            <span class="price-now">$85.000</span>
-                        </div>
-                        <a href="form.html" class="product-button">
-                            <span class="button-text">Contratar</span>
-                            <svg class="button-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
-                                <line x1="3" y1="6" x2="21" y2="6"></line>
-                                <path d="M16 10a4 4 0 0 1-8 0"></path>
-                            </svg>
-                        </a>
-                    </div>
-                    <div class="product-meta">
-                        <div class="product-stock">In Stock</div>
-                    </div>
-                </div>
-            </div>
-            -->
-            <!-- Paquete Base -->
-            <div class="product-card">
-                <div class="product-badge">Paquete</div>
-                <div class="product-tilt-effect">
-                    <div class="product-image">
-                        <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1747100996/ChatGPT_Image_May_12_2025_10_49_43_PM_hc4pbf.png?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Paquete base: Microsite + Carta Doble Faz + Individual">
-                    </div>
-                </div>
-                <div class="product-info">
-                    <div class="product-category">Paquete</div>
-                    <h2 class="product-title">Paquete Base</h2>
-                    <div class="product-description">
-                        <p>Este Paquete incluye todo lo necesario para tu primera carta digital y física: un MicroSite, una carta doble faz y diseño de individual de mesa en papel kraft.</p>
-                    </div>
-                    <div class="product-features">
-                        <span class="feature">MicroSite</span>
-                        <span class="feature">Carta doble faz A4</span>
-                        <span class="feature">Individual de papel madera A3</span>
-                    </div>
-                    <div class="product-bottom">
-                        <div class="product-price">
-                            <span class="price-was">$480.000</span>
-                            <span class="price-now">$336.000</span>
-                        </div>
-                        <label style="display: flex; align-items: center; gap: 8px; margin: 0;">
-                          <input type="checkbox" class="product-checkbox cart-checkbox" data-product="Paquetebase">
-                          <span style="font-size: 20px;">🛒</span>
-                        </label>
-                        <a href="form.html" class="product-button">
-                          <span class="button-text">Contratar</span>
-                        </a>
-                    </div>
-                    <div class="product-meta">
-                        <div class="product-stock">In Stock</div>
-                    </div>
-                </div>
-            </div>
-            <!-- Paquete Pro -->
-            <div class="product-card">
-                <div class="product-badge">Paquete</div>
-                <div class="product-tilt-effect">
-                    <div class="product-image">
-                        <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1747101155/ChatGPT_Image_May_12_2025_10_52_22_PM_t8upcq.png?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Paquete base: ProSite + Anillado + Portavasos + Tarjetas Descuentos">
-                    </div>
-                </div>
-                <div class="product-info">
-                    <div class="product-category">Paquete</div>
-                    <h2 class="product-title">Paquete Pro</h2>
-                    <div class="product-description">
-                        <p>El Paquete más completo: presencia digital con ProSite, carta anillada con fotos destacadas, portavasos personalizados y tarjetas de descuento para fidelizar.</p>
-                    </div>
-                    <div class="product-features">
-                        <span class="feature">ProSite con pagos online</span>
-                        <span class="feature">Carta anillada ilustrada</span>
-                        <span class="feature">Portavasos personalizados</span>
-                        <span class="feature">Tarjetas de fidelización</span>
-                    </div>
-                    <div class="product-bottom">
-                        <div class="product-price">
-                            <span class="price-was">$700.000</span>
-                            <span class="price-now">$600.000</span>
-                        </div>
-                        <label style="display: flex; align-items: center; gap: 8px; margin: 0;">
-                          <input type="checkbox" class="product-checkbox cart-checkbox" data-product="Paquetepro">
-                          <span style="font-size: 20px;">🛒</span>
-                        </label>
-                        <a href="form.html" class="product-button">
-                          <span class="button-text">Contratar</span>
-                        </a>
-                    </div>
-                    <div class="product-meta">
-                        <div class="product-stock">In Stock</div>
-                    </div>
-                </div>
-            </div>
+                          <svg class="button-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                              <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                              <line x1="3" y1="6" x2="21" y2="6"></line>
+                              <path d="M16 10a4 4 0 0 1-8 0"></path>
+                          </svg>
+                      </a>
+                  </div>
+                  <div class="product-meta">
+                      <div class="product-stock">In Stock</div>
+                  </div>
+              </div>
+          </div>
+          -->
+          <!-- Paquete Base -->
+          <div class="product-card">
+              <div class="product-badge">Paquete</div>
+              <div class="product-tilt-effect">
+                  <div class="product-image">
+                      <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1747100996/ChatGPT_Image_May_12_2025_10_49_43_PM_hc4pbf.png?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Paquete base: Microsite + Carta Doble Faz + Individual">
+                  </div>
+              </div>
+              <div class="product-info">
+                  <div class="product-category">Paquete</div>
+                  <h2 class="product-title">Paquete Base</h2>
+                  <div class="product-description">
+                      <p>Este Paquete incluye todo lo necesario para tu primera carta digital y física: un MicroSite, una carta doble faz y diseño de individual de mesa en papel kraft.</p>
+                  </div>
+                  <div class="product-features">
+                      <span class="feature">MicroSite</span>
+                      <span class="feature">Carta doble faz A4</span>
+                      <span class="feature">Individual de papel madera A3</span>
+                  </div>
+                  <div class="product-bottom">
+                      <div class="product-price">
+                          <span class="price-was">$480.000</span>
+                          <span class="price-now">$336.000</span>
+                      </div>
+                      <label style="display: flex; align-items: center; gap: 8px; margin: 0;">
+                        <input type="checkbox" class="product-checkbox cart-checkbox" data-product="Paquetebase">
+                        <span style="font-size: 20px;">🛒</span>
+                      </label>
+                      <a href="form.html" class="product-button">
+                        <span class="button-text">Contratar</span>
+                      </a>
+                  </div>
+                  <div class="product-meta">
+                      <div class="product-stock">In Stock</div>
+                  </div>
+              </div>
+          </div>
+          <!-- Paquete Pro -->
+          <div class="product-card">
+              <div class="product-badge">Paquete</div>
+              <div class="product-tilt-effect">
+                  <div class="product-image">
+                      <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1747101155/ChatGPT_Image_May_12_2025_10_52_22_PM_t8upcq.png?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Paquete base: ProSite + Anillado + Portavasos + Tarjetas Descuentos">
+                  </div>
+              </div>
+              <div class="product-info">
+                  <div class="product-category">Paquete</div>
+                  <h2 class="product-title">Paquete Pro</h2>
+                  <div class="product-description">
+                      <p>El Paquete más completo: presencia digital con ProSite, carta anillada con fotos destacadas, portavasos personalizados y tarjetas de descuento para fidelizar.</p>
+                  </div>
+                  <div class="product-features">
+                      <span class="feature">ProSite con pagos online</span>
+                      <span class="feature">Carta anillada ilustrada</span>
+                      <span class="feature">Portavasos personalizados</span>
+                      <span class="feature">Tarjetas de fidelización</span>
+                  </div>
+                  <div class="product-bottom">
+                      <div class="product-price">
+                          <span class="price-was">$700.000</span>
+                          <span class="price-now">$600.000</span>
+                      </div>
+                      <label style="display: flex; align-items: center; gap: 8px; margin: 0;">
+                        <input type="checkbox" class="product-checkbox cart-checkbox" data-product="Paquetepro">
+                        <span style="font-size: 20px;">🛒</span>
+                      </label>
+                      <a href="form.html" class="product-button">
+                        <span class="button-text">Contratar</span>
+                      </a>
+                  </div>
+                  <div class="product-meta">
+                      <div class="product-stock">In Stock</div>
+                  </div>
+              </div>
           </div>
         </div>
+      </div>
 
-        <!-- Testimonios -->
-        <testimonial17-wrapper class="testimonial17-wrapper">
-          <div class="thq-section-padding"
-            ><div class="testimonial17-max-width thq-section-max-width"
-              ><div class="testimonial17-container10"
-                ><h2 class="thq-heading-2"
-                  ><fragment class="home-fragment203"
-                    ><span class="home-text203">Testimonios</span></fragment
-                  ></h2
-                ></div
-              ><div class="thq-grid-2"
-                ><div class="thq-animated-card-bg-2"
-                  ><div class="thq-animated-card-bg-1"
-                    ><div
-                      data-animated="true"
-                      class="thq-card testimonial17-card1"
-                      ><div class="testimonial17-container12"
-                        ><img
-                          alt="Image of John Doe"
-                          src="https://res.cloudinary.com/drxznqm61/image/upload/v1746982890/c3e2c204-be7f-4696-8a70-013fd5449749.png?crop=entropy&amp;cs=tinysrgb&amp;fit=max&amp;fm=jpg&amp;ixid=M3w5MTMyMXwwfDF8cmFuZG9tfHx8fHx8fHx8MTc0NjkwMTQ3Mnw&amp;ixlib=rb-4.1.0&amp;q=80&amp;w=1080"
-                          class="testimonial17-image1"
-                        /><div class="testimonial17-container13"
-                          ><strong class="thq-body-large"
-                            ><fragment class="home-fragment194"
-                              ><span class="home-text194">Graciela Navarro</span></fragment
-                            ></strong
-                          ><span class="thq-body-small"
-                            ><fragment class="home-fragment193"
-                              ><span class="home-text193">Dueña de La Botiga</span></fragment
-                            ></span
-                          ></div
-                        ></div
-                      ><span class="testimonial17-text14 thq-body-small"
-                        ><fragment class="home-fragment202"
-                          ><span class="home-text202"
-                            >Trabajar con los chicos de MenuLab fue muy fluido. Renovamos nuestra carta ofreciéndoles a nuestros clientes un simple QR, y encima el diseño virtual matchea con el físico.</span
-                          ></fragment
-                        ></span
-                      ></div
-                    ></div
-                  ></div
-                ><div class="thq-animated-card-bg-2"
-                  ><div class="thq-animated-card-bg-1"
-                    ><div
-                      data-animated="true"
-                      class="thq-card testimonial17-card2"
-                      ><div class="testimonial17-container14"
-                        ><img
-                          alt="Image of Jane Smith"
-                          src="https://res.cloudinary.com/drxznqm61/image/upload/v1746983079/3b3f8633-b19f-4ae9-928f-8426653658c9.png?crop=entropy&amp;cs=tinysrgb&amp;fit=max&amp;fm=jpg&amp;ixid=M3w5MTMyMXwwfDF8cmFuZG9tfHx8fHx8fHx8MTc0NjkwMTQ3Mnw&amp;ixlib=rb-4.1.0&amp;q=80&amp;w=1080"
-                          class="testimonial17-image2"
-                        /><div class="testimonial17-container15"
-                          ><strong class="thq-body-large"
-                            ><fragment class="home-fragment197"
-                              ><span class="home-text197"
-                                >Mauro Vignatti</span
-                              ></fragment
-                            ></strong
-                          ><span class="thq-body-small"
-                            ><fragment class="home-fragment192"
-                              ><span class="home-text192"
-                                >Chef Ejecutivo en Rústica</span
-                              ></fragment
-                            ></span
-                          ></div
-                        ></div
-                      ><span class="testimonial17-text17 thq-body-small"
-                        ><fragment class="home-fragment196"
-                          ><span class="home-text196"
-                            >Gracias a MenuLab puedo actualizar el menú todos los días sin depender de imprentas. Me ahorra tiempo y mantiene la imagen del local impecable.</span
-                          ></fragment
-                        ></span
-                      ></div
-                    ></div
-                  ></div
-                ><div class="thq-animated-card-bg-2"
-                  ><div class="thq-animated-card-bg-1"
-                    ><div
-                      data-animated="true"
-                      class="thq-card testimonial17-card3"
-                      ><div class="testimonial17-container16"
-                        ><img
-                          alt="Image of David Johnson"
-                          src="https://res.cloudinary.com/drxznqm61/image/upload/v1746983153/4aa4beea-31c1-4787-a290-b61cd2e36fcc.png?crop=entropy&amp;cs=tinysrgb&amp;fit=max&amp;fm=jpg&amp;ixid=M3w5MTMyMXwwfDF8cmFuZG9tfHx8fHx8fHx8MTc0NjkwMTQ3Mnw&amp;ixlib=rb-4.1.0&amp;q=80&amp;w=1080"
-                          class="testimonial17-image3"
-                        /><div class="testimonial17-container17"
-                          ><strong class="thq-body-large"
-                            ><fragment class="home-fragment195"
-                              ><span class="home-text195"
-                                >Sofía Bressán</span
-                              ></fragment
-                            ></strong
-                          ><span class="thq-body-small"
-                            ><fragment class="home-fragment201"
-                              ><span class="home-text201"
-                                >Creadora de Club Lunch</span
-                              ></fragment
-                            ></span
-                          ></div
-                        ></div
-                      ><span class="testimonial17-text20 thq-body-small"
-                        ><fragment class="home-fragment204"
-                          ><span class="home-text204"
-                            >Antes perdíamos clientes por no tener carta online. Ahora todos acceden al menú desde su celular, y eso nos potenció muchísimo.</span
-                          ></fragment
-                        ></span
-                      ></div
-                    ></div
-                  ></div
-                ><div class="thq-animated-card-bg-2"
-                  ><div class="thq-animated-card-bg-1"
-                    ><div
-                      data-animated="true"
-                      class="thq-card testimonial17-card4"
-                      ><div class="testimonial17-container18"
-                        ><img
-                          alt="Image of Sarah Brown"
-                          src="https://res.cloudinary.com/drxznqm61/image/upload/v1746982757/72480051-930f-442d-892a-b299129fb5b5.png?crop=entropy&amp;cs=tinysrgb&amp;fit=max&amp;fm=jpg&amp;ixid=M3w5MTMyMXwwfDF8cmFuZG9tfHx8fHx8fHx8MTc0NjkwMTQ3Mnw&amp;ixlib=rb-4.1.0&amp;q=80&amp;w=1080"
-                          class="testimonial17-image4"
-                        /><div class="testimonial17-container19"
-                          ><strong class="thq-body-large"
-                            ><fragment class="home-fragment199"
-                              ><span class="home-text199"
-                                >Martín Ocampo</span
-                              ></fragment
-                            ></strong
-                          ><span class="thq-body-small"
-                            ><fragment class="home-fragment198"
-                              ><span class="home-text198"
-                                >Socio en Carne, Hierro y Carbón</span
-                              ></fragment
-                            ></span
-                          ></div
-                        ></div
-                      ><span class="testimonial17-text23 thq-body-small"
-                        ><fragment class="home-fragment205"
-                          ><span class="home-text205"
-                            >La atención fue excelente y nos resolvieron todo muy rápido. Hoy manejamos promociones, diseño y fotos desde una sola plataforma.</span
-                          ></fragment
-                        ></span
-                      ></div
-                    ></div
-                  ></div
-                ></div
-              ></div
-            ></div
-          >
-        </testimonial17-wrapper>
-
-        <!-- Faq -->
-        <section id="faq" class="faq-section thq-section-padding">
-          <div class="thq-section-max-width">
-            <h2 class="thq-heading-2">Preguntas Frecuentes</h2>
-            <div class="faq-list">
-
-              <details class="faq-item">
-                <summary>¿Cómo acceden mis clientes a la carta digital?</summary>
-                <p>A través de un QR personalizado que te entregamos al crear tu carta. Podés imprimirlo o mostrarlo en cualquier superficie.</p>
-              </details>
-
-              <details class="faq-item">
-                <summary>¿Puedo actualizar mi carta después de publicada?</summary>
-                <p>Sí, podés hacer cambios en tiempo real desde cualquier dispositivo. Los cambios se ven reflejados al instante.</p>
-              </details>
-
-              <details class="faq-item">
-                <summary>¿Qué incluye el plan gratuito?</summary>
-                <p>El plan gratuito permite cargar hasta 25 productos y configurar los datos básicos de tu negocio. Es ideal para empezar sin costo.</p>
-              </details>
-
-              <details class="faq-item">
-                <summary>¿Qué pasa si necesito más productos o funciones?</summary>
-                <p>Podés cambiar de plan en cualquier momento. Solo tenés que escribirnos y actualizamos tu cuenta sin complicaciones.</p>
-              </details>
-
-              <details class="faq-item">
-                <summary>¿El diseño físico está incluido en los planes?</summary>
-                <p>No está incluido, pero tenés descuentos especiales según el plan que elijas. Podés combinar carta digital con carta impresa.</p>
-              </details>
-
-              <details class="faq-item">
-                <summary>¿Necesito conocimientos técnicos para usarlo?</summary>
-                <p>Para nada. Nosotros configuramos todo por vos. Si querés, también podés acceder al panel para editar tu carta cuando lo necesites.</p>
-              </details>
-
-              <details class="faq-item">
-                <summary>¿Puedo agregar fotos y promociones a mi carta?</summary>
-                <p>Sí. En los planes Profesional y Corporativo podés sumar imágenes de platos y cargar promos por temporada.</p>
-              </details>
-
-              <details class="faq-item">
-                <summary>¿Qué formas de contacto puedo agregar a la carta?</summary>
-                <p>Se pueden incluir botones a tus redes sociales, WhatsApp y hasta contacto por mail, dependiendo del plan.</p>
-              </details>
-
+      <!-- Testimonios -->
+      <testimonial17-wrapper class="testimonial17-wrapper">
+        <div class="thq-section-padding">
+          <div class="testimonial17-max-width thq-section-max-width">
+            <div class="testimonial17-container10">
+              <h2 class="thq-heading-2">
+                <fragment class="home-fragment203">
+                  <span class="home-text203">Testimonios</span></fragment>
+              </h2>
             </div>
-          </div>
-        </section>
-
-        <!--Contacto-->
-        <cta26-wrapper class="cta26-wrapper">
-          <div id="contact" class="thq-section-padding">
-            <div class="thq-section-max-width">
-              <div class="cta26-accent2-bg">
-                <div class="cta26-accent1-bg">
-                  <div class="cta26-container2">
-                    <div class="cta26-content">
-                      <span class="thq-heading-2">
-                        <fragment class="home-fragment124">
-                          <span class="home-text124">¿Tenés más dudas? ¡Hablemos!</span>
-                        </fragment>
-                      </span>
-                      <p class="thq-body-large">
-                        <fragment class="home-fragment125">
-                          <span class="home-text125">
-                            Escribinos por WhatsApp o mandanos un mail. Estamos para ayudarte a elegir el mejor plan para tu negocio.
-                          </span>
-                          <p style="margin: 8px 0;">
-                          </p>
-                        </fragment>
-                      </p>
-                    </div>
-                    <div>
-                      <a href="https://wa.me/5491130625858?text=Hola%20quisiera%20consultar%20acerca%20de..." class="thq-button-outline cta26-button" target="_blank" rel="noopener noreferrer">
-                        WhatsApp
-                      </a>
-                      <a href="mailto:comercial@menulab.com.ar" class="thq-button-filled cta26-button">
-                        <span><span class="home-text126">comercial@menulab.com.ar</span></span>
-                      </a>
-                    </div>
+            <div class="thq-grid-2">
+              <div class="thq-animated-card-bg-2">
+                <div class="thq-animated-card-bg-1">
+                  <div data-animated="true" class="thq-card testimonial17-card1">
+                    <div class="testimonial17-container12">
+                      <img
+                        alt="Image of John Doe"
+                        src="https://res.cloudinary.com/drxznqm61/image/upload/v1746982890/c3e2c204-be7f-4696-8a70-013fd5449749.png?crop=entropy&amp;cs=tinysrgb&amp;fit=max&amp;fm=jpg&amp;ixid=M3w5MTMyMXwwfDF8cmFuZG9tfHx8fHx8fHx8MTc0NjkwMTQ3Mnw&amp;ixlib=rb-4.1.0&amp;q=80&amp;w=1080"
+                        class="testimonial17-image1"/>
+                          <div class="testimonial17-container13"
+                            ><strong class="thq-body-large"
+                              ><fragment class="home-fragment194"
+                                ><span class="home-text194">Graciela Navarro</span></fragment
+                              ></strong
+                            ><span class="thq-body-small"
+                              ><fragment class="home-fragment193"
+                                ><span class="home-text193">Dueña de La Botiga</span></fragment
+                              ></span>
+                          </div>
+                          </div
+                    ><span class="testimonial17-text14 thq-body-small"
+                      ><fragment class="home-fragment202"
+                        ><span class="home-text202"
+                          >Trabajar con los chicos de MenuLab fue muy fluido. Renovamos nuestra carta ofreciéndoles a nuestros clientes un simple QR, y encima el diseño virtual matchea con el físico.</span
+                        ></fragment
+                      ></span
+                    ></div
+                  ></div>
+              </div>
+              <div class="thq-animated-card-bg-2"
+                ><div class="thq-animated-card-bg-1"
+                  ><div
+                    data-animated="true"
+                    class="thq-card testimonial17-card2"
+                    ><div class="testimonial17-container14"
+                      ><img
+                        alt="Image of Jane Smith"
+                        src="https://res.cloudinary.com/drxznqm61/image/upload/v1746983079/3b3f8633-b19f-4ae9-928f-8426653658c9.png?crop=entropy&amp;cs=tinysrgb&amp;fit=max&amp;fm=jpg&amp;ixid=M3w5MTMyMXwwfDF8cmFuZG9tfHx8fHx8fHx8MTc0NjkwMTQ3Mnw&amp;ixlib=rb-4.1.0&amp;q=80&amp;w=1080"
+                        class="testimonial17-image2"
+                      /><div class="testimonial17-container15"
+                        ><strong class="thq-body-large"
+                          ><fragment class="home-fragment197"
+                            ><span class="home-text197"
+                              >Mauro Vignatti</span
+                            ></fragment
+                          ></strong
+                        ><span class="thq-body-small"
+                          ><fragment class="home-fragment192"
+                            ><span class="home-text192"
+                              >Chef Ejecutivo en Rústica</span
+                            ></fragment
+                          ></span
+                        ></div
+                      ></div
+                    ><span class="testimonial17-text17 thq-body-small"
+                      ><fragment class="home-fragment196"
+                        ><span class="home-text196"
+                          >Gracias a MenuLab puedo actualizar el menú todos los días sin depender de imprentas. Me ahorra tiempo y mantiene la imagen del local impecable.</span
+                        ></fragment
+                      ></span
+                  ></div
+                ></div>
+              </div>
+              <div class="thq-animated-card-bg-2"
+                ><div class="thq-animated-card-bg-1"
+                  ><div
+                    data-animated="true"
+                    class="thq-card testimonial17-card3"
+                    ><div class="testimonial17-container16"
+                      ><img
+                        alt="Image of David Johnson"
+                        src="https://res.cloudinary.com/drxznqm61/image/upload/v1746983153/4aa4beea-31c1-4787-a290-b61cd2e36fcc.png?crop=entropy&amp;cs=tinysrgb&amp;fit=max&amp;fm=jpg&amp;ixid=M3w5MTMyMXwwfDF8cmFuZG9tfHx8fHx8fHx8MTc0NjkwMTQ3Mnw&amp;ixlib=rb-4.1.0&amp;q=80&amp;w=1080"
+                        class="testimonial17-image3"
+                      /><div class="testimonial17-container17"
+                        ><strong class="thq-body-large"
+                          ><fragment class="home-fragment195"
+                            ><span class="home-text195"
+                              >Sofía Bressán</span
+                            ></fragment
+                          ></strong
+                        ><span class="thq-body-small"
+                          ><fragment class="home-fragment201"
+                            ><span class="home-text201"
+                              >Creadora de Club Lunch</span
+                            ></fragment
+                          ></span
+                        ></div
+                      ></div
+                    ><span class="testimonial17-text20 thq-body-small"
+                      ><fragment class="home-fragment204"
+                        ><span class="home-text204"
+                          >Antes perdíamos clientes por no tener carta online. Ahora todos acceden al menú desde su celular, y eso nos potenció muchísimo.</span
+                        ></fragment
+                      ></span
+                  ></div
+                ></div>
+              </div>
+              <div class="thq-animated-card-bg-2"
+                ><div class="thq-animated-card-bg-1"
+                  ><div
+                    data-animated="true"
+                    class="thq-card testimonial17-card4"
+                    ><div class="testimonial17-container18"
+                      ><img
+                        alt="Image of Sarah Brown"
+                        src="https://res.cloudinary.com/drxznqm61/image/upload/v1746982757/72480051-930f-442d-892a-b299129fb5b5.png?crop=entropy&amp;cs=tinysrgb&amp;fit=max&amp;fm=jpg&amp;ixid=M3w5MTMyMXwwfDF8cmFuZG9tfHx8fHx8fHx8MTc0NjkwMTQ3Mnw&amp;ixlib=rb-4.1.0&amp;q=80&amp;w=1080"
+                        class="testimonial17-image4"
+                      /><div class="testimonial17-container19"
+                        ><strong class="thq-body-large"
+                          ><fragment class="home-fragment199"
+                            ><span class="home-text199"
+                              >Martín Ocampo</span
+                            ></fragment
+                          ></strong
+                        ><span class="thq-body-small"
+                          ><fragment class="home-fragment198"
+                            ><span class="home-text198"
+                              >Socio en Carne, Hierro y Carbón</span
+                            ></fragment
+                          ></span
+                        ></div
+                      ></div
+                    ><span class="testimonial17-text23 thq-body-small"
+                      ><fragment class="home-fragment205"
+                        ><span class="home-text205"
+                          >La atención fue excelente y nos resolvieron todo muy rápido. Hoy manejamos promociones, diseño y fotos desde una sola plataforma.</span
+                        ></fragment
+                      ></span>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </cta26-wrapper>
+        </div>
+      </testimonial17-wrapper>
 
-        <!--Footer4 component-->
-        <footer4-wrapper class="footer4-wrapper"
-        ><footer
-          class="footer4-footer7 thq-section-padding"
-          ><div class="footer4-max-width thq-section-max-width"
-            ><div class="footer4-content"
-              ><div class="footer4-credits"
-              ><div class="thq-divider-horizontal"></div
-              ><div class="footer4-row"
-                ><!-- MercadoPago logo y leyenda -->
-                <span style="display: flex; align-items: center; gap: 8px; margin-left: 18px;">
-                  <div style="display:flex;justify-content:center;margin-bottom:12px;">
+      <!-- Faq -->
+      <section id="faq" class="faq-section thq-section-padding">
+        <div class="thq-section-max-width">
+          <h2 class="thq-heading-2">Preguntas Frecuentes</h2>
+          <div class="faq-list">
+
+            <details class="faq-item">
+              <summary>¿Cómo acceden mis clientes a la carta digital?</summary>
+              <p>A través de un QR personalizado que te entregamos al crear tu carta. Podés imprimirlo o mostrarlo en cualquier superficie.</p>
+            </details>
+
+            <details class="faq-item">
+              <summary>¿Puedo actualizar mi carta después de publicada?</summary>
+              <p>Sí, podés hacer cambios en tiempo real desde cualquier dispositivo. Los cambios se ven reflejados al instante.</p>
+            </details>
+
+            <details class="faq-item">
+              <summary>¿Qué incluye el plan gratuito?</summary>
+              <p>El plan gratuito permite cargar hasta 25 productos y configurar los datos básicos de tu negocio. Es ideal para empezar sin costo.</p>
+            </details>
+
+            <details class="faq-item">
+              <summary>¿Qué pasa si necesito más productos o funciones?</summary>
+              <p>Podés cambiar de plan en cualquier momento. Solo tenés que escribirnos y actualizamos tu cuenta sin complicaciones.</p>
+            </details>
+
+            <details class="faq-item">
+              <summary>¿El diseño físico está incluido en los planes?</summary>
+              <p>No está incluido, pero tenés descuentos especiales según el plan que elijas. Podés combinar carta digital con carta impresa.</p>
+            </details>
+
+            <details class="faq-item">
+              <summary>¿Necesito conocimientos técnicos para usarlo?</summary>
+              <p>Para nada. Nosotros configuramos todo por vos. Si querés, también podés acceder al panel para editar tu carta cuando lo necesites.</p>
+            </details>
+
+            <details class="faq-item">
+              <summary>¿Puedo agregar fotos y promociones a mi carta?</summary>
+              <p>Sí. En los planes Profesional y Corporativo podés sumar imágenes de platos y cargar promos por temporada.</p>
+            </details>
+
+            <details class="faq-item">
+              <summary>¿Qué formas de contacto puedo agregar a la carta?</summary>
+              <p>Se pueden incluir botones a tus redes sociales, WhatsApp y hasta contacto por mail, dependiendo del plan.</p>
+            </details>
+
+          </div>
+        </div>
+      </section>
+
+      <!--Contacto-->
+      <cta26-wrapper class="cta26-wrapper">
+        <div id="contact" class="thq-section-padding">
+          <div class="thq-section-max-width">
+            <div class="cta26-accent2-bg">
+              <div class="cta26-accent1-bg">
+                <div class="cta26-container2">
+                  <div class="cta26-content">
+                    <span class="thq-heading-2">
+                      <fragment class="home-fragment124">
+                        <span class="home-text124">¿Tenés más dudas? ¡Hablemos!</span>
+                      </fragment>
+                    </span>
+                    <p class="thq-body-large">
+                      <fragment class="home-fragment125">
+                        <span class="home-text125">
+                          Escribinos por WhatsApp o mandanos un mail. Estamos para ayudarte a elegir el mejor plan para tu negocio.
+                        </span>
+                        <p style="margin: 8px 0;">
+                        </p>
+                      </fragment>
+                    </p>
+                  </div>
+                  <div>
+                    <a href="https://wa.me/5491130625858?text=Hola%20quisiera%20consultar%20acerca%20de..." class="thq-button-outline cta26-button" target="_blank" rel="noopener noreferrer">
+                      WhatsApp
+                    </a>
+                    <a href="mailto:comercial@menulab.com.ar" class="thq-button-filled cta26-button">
+                      <span><span class="home-text126">comercial@menulab.com.ar</span></span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </cta26-wrapper>
+
+      <!--Footer4 component-->
+      <footer4-wrapper class="footer4-wrapper">
+        <footer class="footer4-footer7 thq-section-padding">
+          <div class="footer4-max-width thq-section-max-width">
+            <div class="footer4-content">
+              <div class="footer4-credits">
+                <div class="thq-divider-horizontal"></div>
+                <div class="footer4-row">
+                  <!-- MercadoPago logo y leyenda -->
+                  <span style="display: flex; align-items: center; gap: 8px; margin-left: 18px;">
+                    <div style="display:flex;justify-content:center;margin-bottom:12px;">
                       <img src="MPicon.svg" alt="MercadoPago" style="width:60px;height:auto;">
                     </div>                    
                   </span>
                   <div class="footer4-container">
                     <span style="display: inline-block; margin-left: 12px;">
                       <h1 style="
-                      font-family: 'Unbounded', sans-serif;
-                      font-weight: 600;
-                      font-size: 100%;
-                      margin: 0;
-                      background: linear-gradient(90deg, #E639A6, #457B9D); /* azul al rosa */
-                      -webkit-background-clip: text;
-                      -webkit-text-fill-color: transparent;
-                      ">
-                      MenuLab
-                    </h1>
-                  </span>
-                  <span class="thq-body-small">© 2025 
-                </span>
+                        font-family: 'Unbounded', sans-serif;
+                        font-weight: 600;
+                        font-size: 100%;
+                        margin: 0;
+                        background: linear-gradient(90deg, #E639A6, #457B9D); /* azul al rosa */
+                        -webkit-background-clip: text;
+                        -webkit-text-fill-color: transparent;
+                        ">
+                        MenuLab
+                      </h1>
+                    </span>
+                    <span class="thq-body-small">© 2025</span>
+                  </div>
                 </div>
-              </div
-              ></div
-            ></div
-          ></footer
-        ></footer4-wrapper>
-
-      </div>
-    </div>
+              </div>
+            </div>
+          </div>
+        </footer>
+      </footer4-wrapper>
 
     <script src="script.js"></script>
     <link rel="stylesheet" href="reserva.css">
