@@ -142,8 +142,9 @@
                             <a id="noPayButton"
                                 href="#"
                                 class="blue-button"
-                                style="display: none;">Continuar sin pagar
+                                style="display: none; position: relative">Continuar sin pagar
                             </a>
+                            <span id="noPayLoader" style="display:none; margin-left:8px;">⏳ Cargando...</span>
                         </div>
                     </div>
 
@@ -484,6 +485,7 @@
             else if (mpPayButton) {
                 mpPayButton.style.display = "none"; // Ocultar si no hay link (ejemplo: Plan Base)
             }
+            let isLoading = false;
             const noPayButton = document.getElementById('noPayButton');
             if (noPayButton) {
                 // Mostramos el botón si el plan no tiene link de MercadoPago (por ejemplo, plan base)
@@ -491,8 +493,14 @@
                   noPayButton.style.display = "";
                   
                   noPayButton.addEventListener('click', function (e) {
+                    if (isLoading) return; // Previene doble click
+                    isLoading = true;
                     e.preventDefault();
                     
+                    noPayButton.disabled = true;
+                    const loader = document.getElementById('noPayLoader');
+                    loader.style.display = 'inline-block';
+
                     const form = document.getElementById('sponsorshipForm');
                     const formData = new FormData(form);
                     const uniqueRef = `plan_${planParam}_${Date.now()}`;
@@ -543,7 +551,7 @@
                     .catch(err => {
                       console.error("❌ Error al enviar a Apps Script:", err);
                       alert("Error crítico antes de intentar enviar los datos.");
-                    });
+                    })
                   });
                 }
             }
