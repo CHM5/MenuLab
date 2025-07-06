@@ -436,7 +436,7 @@
             showStep(currentStep);
 
             const mpPayButton = document.getElementById('mpPayButton');
-            if (mpPayButton && planParam && planMap[planParam]) {
+            if (mpPayButton && planParam && planMap[planParam] && planMap[planParam].mpLink) {
                 // Cambiamos el botón: ahora NO tiene el href directo, sino un click handler
                 mpPayButton.removeAttribute('href');
                 mpPayButton.style.display = "";
@@ -459,7 +459,7 @@
                     };
                     console.log("📦 Enviando registro previo:", dataObj);
                     // Enviamos al Apps Script antes de redirigir
-                    fetch("https://script.google.com/macros/s/AKfycbyLCRdP-P09ADxeGHJLjy01ceov9Cx9aDb3Hc4uZCL-UO6QN3EmUUdSGK-748v7kykF/exec", {
+                    fetch("https://script.google.com/macros/s/AKfycbzbV6d0Lv9isBxj9Cy9fclFV15XoFnsYEpKFeDtaS9_2jDQjzpq2OoOuP3UhKY9PkoR/exec", {
                         method: "POST",
                         headers: { "Content-Type": "application/x-www-form-urlencoded" },
                         body: new URLSearchParams(dataObj).toString()
@@ -484,7 +484,7 @@
             let isLoading = false;
             const noPayButton = document.getElementById('noPayButton');
             if (noPayButton) {
-                // Mostramos el botón si el plan no tiene link de MercadoPago (por ejemplo, plan base)
+                // Mostramos el botón si el plan no tiene link de MercadoPago (plan base)
                 if (!planMap[planParam] || !planMap[planParam].mpLink) {
                   noPayButton.style.display = "";
                   
@@ -517,7 +517,7 @@
                     console.log("a");
 
                     // Enviar datos a Apps Script usando form-urlencoded
-                    const url = "https://script.google.com/macros/s/AKfycbyLCRdP-P09ADxeGHJLjy01ceov9Cx9aDb3Hc4uZCL-UO6QN3EmUUdSGK-748v7kykF/exec"
+                    const url = "https://script.google.com/macros/s/AKfycbzbV6d0Lv9isBxj9Cy9fclFV15XoFnsYEpKFeDtaS9_2jDQjzpq2OoOuP3UhKY9PkoR/exec"
                     fetch(url, {
                         method: "POST",
                         mode: "no-cors",
@@ -557,7 +557,7 @@
             if (preapprovalId) {
                 console.log("🔁 Detected preapproval_id, enviando a Apps Script:", preapprovalId);
                 
-        fetch("https://script.google.com/macros/s/AKfycbyLCRdP-P09ADxeGHJLjy01ceov9Cx9aDb3Hc4uZCL-UO6QN3EmUUdSGK-748v7kykF/exec", {
+        fetch("https://script.google.com/macros/s/AKfycbzbV6d0Lv9isBxj9Cy9fclFV15XoFnsYEpKFeDtaS9_2jDQjzpq2OoOuP3UhKY9PkoR/exec", {
             method: "POST",
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded"
