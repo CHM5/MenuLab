@@ -144,7 +144,7 @@
                                 class="blue-button"
                                 style="display: none; position: relative">Continuar sin pagar
                             </a>
-                            <span id="noPayLoader" style="display:none; margin-left:8px;">⏳ Cargando...</span>
+                            <span id="noPayLoader" style="display:none; margin-left:8px; justify-content: center;">⏳ Generando Menú ⏳</span>
                         </div>
                     </div>
 
@@ -436,13 +436,7 @@
             showStep(currentStep);
 
             const mpPayButton = document.getElementById('mpPayButton');
-            if (mpPayButton && planParam && planMap[planParam] && planMap[planParam].mpLink) {
-                const baseLink = planMap[planParam].mpLink;
-                const backUrl = encodeURIComponent("https://www.menulab.com.ar/plansForm.html");
-                const uniqueRef = `plan_${planParam}_${Date.now()}`;
-                const finalLink = `${baseLink}&back_url=${backUrl}&external_reference=${uniqueRef}`;
-                console.log("🔗 Link generado:", finalLink);
-
+            if (mpPayButton && planParam && planMap[planParam]) {
                 // Cambiamos el botón: ahora NO tiene el href directo, sino un click handler
                 mpPayButton.removeAttribute('href');
                 mpPayButton.style.display = "";
@@ -461,28 +455,30 @@
                         medio: formData.get("medio"),
                         comentario: formData.get("comentario"),
                         plan: planParam,
-                        external_reference: uniqueRef
+                        external_reference: `plan_${planParam}_${Date.now()}`
                     };
-
                     console.log("📦 Enviando registro previo:", dataObj);
-
                     // Enviamos al Apps Script antes de redirigir
-                    fetch("https://script.google.com/macros/s/AKfycbx6xnGghKtxZGSKPtLkD-V3AcL8Z4D9R4MoP10ipO_bUcORXmQwcfsTdeW6Wg-Q2MmG/exec", {
+                    fetch("https://script.google.com/macros/s/AKfycbyLCRdP-P09ADxeGHJLjy01ceov9Cx9aDb3Hc4uZCL-UO6QN3EmUUdSGK-748v7kykF/exec", {
                         method: "POST",
                         headers: { "Content-Type": "application/x-www-form-urlencoded" },
                         body: new URLSearchParams(dataObj).toString()
                     })
-                    .then(() => {
-                        console.log("✅ Registro previo guardado. Redirigiendo a MP...");
-                        window.location.href = finalLink;
+                    .then(res => res.json())
+                    .then(json => {
+                    if (json.init_point) {
+                        console.log("✅ init_point recibido, redirigiendo...");
+                        window.location.href = json.init_point;
+                    } else {
+                        alert("Error generando link de pago");
+                    }
                     })
                     .catch(err => {
-                        console.error("❌ Error enviando registro previo:", err);
-                        alert("Ocurrió un error al registrar el pedido. Intente nuevamente.");
+                    console.error("❌ Error creando la suscripción:", err);
+                    alert("Error creando la suscripción.");
                     });
                 });
-            }
-            else if (mpPayButton) {
+            } else if (mpPayButton) {
                 mpPayButton.style.display = "none"; // Ocultar si no hay link (ejemplo: Plan Base)
             }
             let isLoading = false;
@@ -521,7 +517,7 @@
                     console.log("a");
 
                     // Enviar datos a Apps Script usando form-urlencoded
-                    const url = "https://script.google.com/macros/s/AKfycbx6xnGghKtxZGSKPtLkD-V3AcL8Z4D9R4MoP10ipO_bUcORXmQwcfsTdeW6Wg-Q2MmG/exec"
+                    const url = "https://script.google.com/macros/s/AKfycbyLCRdP-P09ADxeGHJLjy01ceov9Cx9aDb3Hc4uZCL-UO6QN3EmUUdSGK-748v7kykF/exec"
                     fetch(url, {
                         method: "POST",
                         mode: "no-cors",
@@ -561,7 +557,7 @@
             if (preapprovalId) {
                 console.log("🔁 Detected preapproval_id, enviando a Apps Script:", preapprovalId);
                 
-        fetch("https://script.google.com/macros/s/AKfycbx6xnGghKtxZGSKPtLkD-V3AcL8Z4D9R4MoP10ipO_bUcORXmQwcfsTdeW6Wg-Q2MmG/exec", {
+        fetch("https://script.google.com/macros/s/AKfycbyLCRdP-P09ADxeGHJLjy01ceov9Cx9aDb3Hc4uZCL-UO6QN3EmUUdSGK-748v7kykF/exec", {
             method: "POST",
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded"
