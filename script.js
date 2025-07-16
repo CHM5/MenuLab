@@ -89,51 +89,61 @@ document.addEventListener('DOMContentLoaded', () => {
       <div class="price">${plan.prices[mode]}</div>
       ${plan.intro ? `<div class="plan-intro">${plan.intro}</div>` : ''}
       <ul class="feature-list">
-      ${plan.features
-        .filter(f => !f.modes || f.modes.includes(mode))
-        .map(f => `
-          <li>
-          ${f.label}
-          ${(!f.label.includes('EXTRA') && f.info) ? `<span class="info-icon" tabindex="0" data-tooltip="${f.info}">i</span>` : ''}                        
-          </li>
-          `).join('')}
-          </ul>
-          <button class="select-btn" data-plan="${planId}">Seleccionar</button>
-          `;
-          
-          container.appendChild(card);
+        ${plan.features
+          .filter(f => !f.modes || f.modes.includes(mode))
+          .map(f => `
+            <li>
+            ${f.label}
+            ${(!f.label.includes('EXTRA') && f.info) ? `<span class="info-icon" tabindex="0" data-tooltip="${f.info}">i</span>` : ''}                        
+            </li>
+            `).join('')}
+      </ul>
+      <div style="margin-bottom: 4px;" >
+        <button class="select-btn demo-btn" data-plan="${planId}" data-demo="${plan.name.toLowerCase().includes('base') ? 'base' : plan.name.toLowerCase().includes('emprendedor') ? 'emprendedor' : plan.name.toLowerCase().includes('profesional') ? 'profesional' : 'corporativo'}">Demo</button>
+      </div>
+      <button class="select-btn" data-plan="${planId}">Seleccionar</button>
+      `;
+      
+      container.appendChild(card);
+    });
+    
+    // Agregar redirección a todos los botones
+    document.querySelectorAll('.select-btn').forEach(btn => {
+      if (btn.classList.contains('demo-btn')) {
+        btn.addEventListener('click', (e) => {
+          const demoType = e.currentTarget.getAttribute('data-demo');
+          window.open(`demo/${demoType}.html`, '_blank');
         });
-        
-        // Agregar redirección a todos los botones
-        document.querySelectorAll('.select-btn').forEach(btn => {
-          btn.addEventListener('click', (e) => {
-            const planId = e.currentTarget.getAttribute('data-plan');
-            window.location.href = `plansForm.html?plan=${planId}`;
-          });
+      } else {
+        btn.addEventListener('click', (e) => {
+          const planId = e.currentTarget.getAttribute('data-plan');
+          window.location.href = `plansForm.html?plan=${planId}`;
         });
       }
-      
-      document.getElementById('monthlyBtn').addEventListener('click', () => togglePricing('monthly'));
-      document.getElementById('yearlyBtn').addEventListener('click', () => togglePricing('yearly'));
-      
-      togglePricing('monthly');
-      
-      
-      // General button handlers
-      document.querySelectorAll('.navbar8-action11, .navbar8-action21, .hero17-button1, .hero17-button2').forEach(button => {
-        button.addEventListener('click', function() {
-          const text = this.textContent.trim();
-          alert(`Botón "${text}" clickeado - Agrega aquí la funcionalidad deseada`);
-        });
-      });
-      
-      // Mobile menu handlers
-      document.querySelector('.navbar8-burger-menu').addEventListener('click', function() {
-        const mobileMenu = document.querySelector('.navbar8-mobile-menu');
-        mobileMenu.style.display = mobileMenu.style.display === 'block' ? 'none' : 'block';
-      });
-      
-      document.querySelector('.navbar8-close-menu').addEventListener('click', function() {
+    });
+  }
+  
+  document.getElementById('monthlyBtn').addEventListener('click', () => togglePricing('monthly'));
+  document.getElementById('yearlyBtn').addEventListener('click', () => togglePricing('yearly'));
+  
+  togglePricing('monthly');
+  
+  
+  // General button handlers
+  document.querySelectorAll('.navbar8-action11, .navbar8-action21, .hero17-button1, .hero17-button2').forEach(button => {
+    button.addEventListener('click', function() {
+      const text = this.textContent.trim();
+      alert(`Botón "${text}" clickeado - Agrega aquí la funcionalidad deseada`);
+    });
+  });
+  
+  // Mobile menu handlers
+  document.querySelector('.navbar8-burger-menu').addEventListener('click', function() {
+    const mobileMenu = document.querySelector('.navbar8-mobile-menu');
+    mobileMenu.style.display = mobileMenu.style.display === 'block' ? 'none' : 'block';
+  });
+  
+  document.querySelector('.navbar8-close-menu').addEventListener('click', function() {
     document.querySelector('.navbar8-mobile-menu').style.display = 'none';
   });
   
@@ -187,7 +197,7 @@ document.addEventListener('DOMContentLoaded', () => {
     btn2.addEventListener('click', (e) => {
       e.preventDefault();
       // 3. Cargar fechas ocupadas y guardar en variable
-      fetch('https://script.google.com/macros/s/AKfycbwfVH2M-CmhjaNiWb3WYw74KlVn7hfbaSrxtdzHV-omaRXYuztzl_ta0YlX39qO3m5o/exec')
+      fetch('https://script.google.com/macros/s/AKfycbxgKDs5ImPgPyOh0vrh5RAeM2tyttFGkFR_sheDK_cZU0l1Q_9R9nkY6lmLmb8igxMq/exec')
         .then(res => res.json())
         .then(data => {
           console.log("📅 Fechas ocupadas:", fechasOcupadas);

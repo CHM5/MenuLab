@@ -792,3 +792,17 @@
     gap: 8px;
   }
 }
+
+.select-btn.demo-btn {
+  background: #E639A6;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.select-btn.demo-btn:hover {
+  background: #c02785;
+}
