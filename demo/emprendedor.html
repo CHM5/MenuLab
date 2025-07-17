@@ -164,12 +164,133 @@
     .menu-content {
       margin-top: 2rem;
     }
+
+    .category-menu {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      align-items: center;
+      margin: -10000px 0 0.5rem 0;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      padding-top: 8px;
+      padding-bottom: 8px;
+      scrollbar-width: thin;
+      scrollbar-color: #457B9D #eee;
+      position: sticky;
+      top: 50px;
+      z-index: 1000;
+      background: var(#457B9D); /* o #f1f1f1 si no estás usando variables */
+    }
+    #categoryMenu {
+      margin-top: -0.2rem; /* Opcional: reducí espacio si ves separación */
+    }
+    .category-menu::-webkit-scrollbar {
+      height: 6px;
+    }
+    .category-menu::-webkit-scrollbar-thumb {
+      background: #457B9D;
+      border-radius: 10px;
+    }
+    .search-menu {
+      text-align: center;
+      margin: 1rem 0;
+      position: sticky;
+      top: 0;
+      padding-top: 8px;
+    }
+    .category-btn {
+      background: #457B9D;
+      color: #fff;
+      border: none;
+      border-radius: 20px;
+      padding: 7px 18px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background 0.2s;
+      flex: 0 0 auto;
+    }
+    .category-btn:hover, .category-btn.active {
+      background: #457B9D;
+    }
+
+    .header-flex {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .header-left {
+      text-align: left;
+      min-width: 200px;
+      flex: 1 1 60px;
+    }
+    .header-right {
+      text-align: right;
+      min-width: 180px;
+      flex: 1 1 180px;
+      color:#000;
+    }
+    @media (max-width: 600px) {
+      .header-flex {
+        flex-direction: column;
+        gap: 0.2rem;
+        margin-bottom: -100px;
+      }
+      .header-left {
+        text-align: left;
+        margin-top: 0px;
+        margin-bottom: 0px;
+        width: 100%;
+      }
+      .header-right {
+        margin-top: 0.3rem;
+        margin-bottom: 0px;
+        width: 100%;
+        min-width: unset;
+      }
+      .header-left h1, .header-left h2 {
+        margin: 0.2rem 0; 
+      }
+      .header-right div {
+        margin-top: 0.3rem; /* acercálo al bloque superior */
+      }
+    }
   </style>
 </head>
 <body>
-  <header>
-    <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1752632048/cafe-central_ne83eh.png" alt="Banner MenuLab" style="width:100%;display:block;margin-bottom:0.5rem;">
+  <header style="background: var(--header); color: #000; padding: 0.8rem 1rem 0.5rem 1rem; border-radius: 0 0 var(--radius) var(--radius);">
+    <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1752632048/cafe-central_ne83eh.png" alt="Banner Cafe Central" style="width:100%;display:block;margin-bottom:0.5rem;">
+    <div class="container">
+      <div class="header-flex">
+        <div class="header-left">
+          <h1 id="nombre-resto" style="font-size:2rem; color:#000; margin-bottom:0; margin-top:0;">Café Central</h1>
+          <h2 id="subtitulo-resto" style="margin:0.2rem 0 0.3rem 0;font-size:1.2rem;font-weight:400;color:#000;font-style:italic;">
+            Todo rico, todo el día
+          </h2>
+        </div>
+        <div class="header-right">
+          <div>
+            <span>Av. Siempre Viva 123 📍</span>
+          </div>
+          <div>
+            <span>de Lun a Dom 8 a 20hs 🕒</span>
+          </div>
+        </div>
+      </div>
+    </div>
   </header>
+    <div class="search-menu">
+    <input
+      id="menuSearch"
+      type="text"
+      placeholder="Buscar en la carta..."
+      style="padding: 0.5rem 1rem; border-radius: 20px; border: 1px solid #ccc; width: 90%; max-width: 400px; font-size: 1rem;"
+    />
+  </div>
+  <div id="categoryMenu" class="category-menu"></div>
   <div class="container">
     <div style="overflow-x:auto;">
       <div id="menuTable" class="menu-content"></div>
@@ -179,22 +300,14 @@
     </div>
   </div>
   <footer style="background:#f1f1f1;color:#333;text-align:center;padding:1rem 0 1.2rem 0;font-size:1rem;">
-    <div>
-      <span>Dirección: </span>
-      <span id="direccion-resto" style="font-weight: bold;">Av. Siempre Viva 123</span>
-    </div>
-    <div>
-      <span>Horarios: </span>
-      <span id="horarios-resto" style="font-weight: bold;">Lun a Dom 8 a 20hs</span>
-    </div>
+    <span class="thq-body-small">Desarrollado por</span>  
     <a href="https://menulab.com.ar" target="_blank" rel="noopener">
-      <span class="thq-body-small">Desarrollado por</span>  
       <span style="display: inline-block; margin-left: 12px;">
         <h1 style="
           font-family: 'Unbounded', sans-serif;
           font-weight: 600;
           font-size: 100%;
-          margin: 0;
+          margin-left: -10px;
           background: linear-gradient(90deg, #E639A6, #457B9D);
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;">
@@ -205,7 +318,6 @@
   </footer>
 
   <script>
-    // Hardcodear menú de ejemplo
     const allRows = [
       ["Cafetería", "Clásicos", "Café Doble", "Café espresso doble.", "$1200"],
       ["Cafetería", "Clásicos", "Café con Leche", "Café espresso con leche caliente.", "$1300"],
@@ -226,8 +338,53 @@
       ["Sandwiches", "", "Croissant Veggie", "Croissant con vegetales grillados y queso.", "$2200"],
       ["Desayunos", "", "Combo Central", "Café + jugo + tostadas + mermelada y manteca.", "$2500"],
       ["Desayunos", "", "Granola Bowl", "Yogur natural, granola casera y frutas frescas.", "$1800"],
-      ["Desayunos", "", "Tostadas Avocado", "Pan integral, palta, tomate y semillas.", "$2100"]
+      ["Desayunos", "", "Tostadas Avocado", "Pan integral, palta, tomate y semillas.", "$2100"],
+      ["Cafetería", "Especiales", "Mocha Latte", "Café espresso con leche vaporizada y chocolate.", "$1700"],
+      ["Cafetería", "Especiales", "Caramel Macchiato", "Espresso con leche, espuma y toque de caramelo.", "$1750"],
+      ["Cafetería", "Especiales", "Espresso Tonic", "Espresso servido sobre tónica y hielo.", "$1600"],
+      ["Cafetería", "Especiales", "Affogato", "Helado de vainilla bañado con espresso caliente.", "$1900"],
+      ["Cafetería", "Fríos", "Iced Matcha Latte", "Té matcha japonés con leche vegetal y hielo.", "$1800"],
+      ["Cafetería", "Fríos", "Frappuccino Oreo", "Frappé de café con galletas Oreo y crema.", "$2000"],
+      ["Cafetería", "Fríos", "Limonada Menta & Jengibre", "Refrescante, casera y natural.", "$1500"],
+      ["Cafetería", "Fríos", "Smoothie Frutos Rojos", "Batido con yogur natural y frutas del bosque.", "$1900"],
+      ["Pastelería", "Vegano", "Muffin de Banana Vegano", "Sin lácteos, sin huevo, con nueces y banana.", "$1300"],
+      ["Pastelería", "Sin Gluten", "Brownie sin TACC", "Brownie húmedo con almendras sin gluten.", "$1400"],
+      ["Pastelería", "Repostería", "Cinnamon Roll", "Roll de canela con glaseado de vainilla.", "$1600"],
+      ["Pastelería", "Repostería", "Mini Tarta de Manzana", "Tarta individual con manzana caramelizada.", "$1700"],
+      ["Sandwiches", "", "Focaccia de Pollo", "Pan focaccia, pollo grillado, rúcula y pesto.", "$2400"],
+      ["Sandwiches", "", "Croissant Capresse", "Croissant con tomate, albahaca y mozzarella.", "$2300"],
+      ["Sandwiches", "", "Tostado Vegano", "Pan integral, hummus, palta y tomate seco.", "$2100"],
+      ["Sandwiches", "", "Bagel de Salmón", "Salmón ahumado, queso crema y alcaparras.", "$2700"],
+      ["Desayunos", "", "Açai Bowl", "Base de açai con frutas, granola y coco.", "$2000"],
+      ["Desayunos", "", "Tostadas Francesas", "Pan brioche con canela, miel y frutos secos.", "$1900"],
+      ["Desayunos", "", "Huevos Benedicto", "Pan de campo, jamón cocido, huevo poché y salsa holandesa.", "$2600"],
+      ["Desayunos", "", "Brunch Central", "Huevos, tostadas, café, jugo y mini torta.", "$3200"]
     ];
+
+    function renderCategoryMenu(rows) {
+      const categories = [...new Set(rows.map(r => r[0].trim()).filter(Boolean))];
+      const menuDiv = document.getElementById('categoryMenu');
+      menuDiv.innerHTML = '';
+
+      categories.forEach(cat => {
+        const btn = document.createElement('button');
+        btn.className = 'category-btn';
+        btn.textContent = cat;
+        btn.onclick = () => {
+          // Scroll a la sección de la categoría
+          const section = document.querySelector(`.menu-group[data-cat="${cat}"]`);
+          if (section) {
+            section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            // Opcional: marcar el botón activo
+            document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+          }
+        };
+          // 🔥 Esto asegura que el scroll se reinicie después de agregar los botones
+        menuDiv.scrollLeft = 0;
+        menuDiv.appendChild(btn);
+      });
+    }
 
     function renderMenuGrouped(rows) {
       const container = document.querySelector("#menuTable");
@@ -248,6 +405,7 @@
       Object.entries(agrupado).forEach(([cat, subcategorias]) => {
         const group = document.createElement("div");
         group.className = "menu-group";
+        group.setAttribute('data-cat', cat); // <-- Para el scroll
 
         const catTitle = document.createElement("h2");
         catTitle.textContent = cat;
@@ -278,8 +436,25 @@
       });
     }
 
-    // Renderizar menú hardcodeado
+    function filterMenuRows(rows, query) {
+      if (!query) return rows;
+      const q = query.trim().toLowerCase();
+      return rows.filter(cols =>
+        cols.some(cell => cell && cell.toLowerCase().includes(q))
+      );
+    }
+
+    const searchInput = document.getElementById('menuSearch');
+    searchInput.addEventListener('input', function () {
+      const filtered = filterMenuRows(allRows, this.value);
+      renderMenuGrouped(filtered);
+      renderCategoryMenu(filtered);
+      document.getElementById('noResults').style.display = filtered.length === 0 ? "block" : "none";
+    });
+
+    // Renderizar menú y categorías
     renderMenuGrouped(allRows);
+    renderCategoryMenu(allRows);
   </script>
 </body>
 </html>
