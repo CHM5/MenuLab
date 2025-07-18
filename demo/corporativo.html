@@ -79,24 +79,28 @@
         font-size: 0.97rem;
         padding: 0.5rem 0.7rem;
       }
-  .menu-item-inner {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
 
-  .menu-img {
-    width: 100%;
-    max-width: 180px;
-    height: auto;
-    margin-bottom: 0.5rem;
-  }
-
-  .menu-text {
-    width: 100%;
-  }
+    .menu-item-inner {
+      display: flex;
+      align-items: center; /* Alinea verticalmente al centro */
     }
-    @media (max-width: 480px) {
+    .menu-text {
+      width: 100%;
+      text-align: left;
+      flex: 1;
+    }
+    .menu-img {
+      width: 100%;
+      max-width: 180px;
+      height: auto;
+      margin-bottom: 0.5rem;
+    }
+
+}
+.menu-text {
+  flex: 1;
+}
+@media (max-width: 480px) {
       header {
         font-size: 1.2rem;
         padding: 0.8rem 0.3rem;
@@ -165,9 +169,6 @@
   flex-shrink: 0;
 }
 
-.menu-text {
-  flex: 1;
-}
 
 .menu-name {
   font-size: 1.1rem;
@@ -412,14 +413,22 @@
   </footer>
 
   <!-- Botón de WhatsApp flotante -->
-  <a href="https://wa.me/5491122334455" target="_blank" id="whatsapp-float" aria-label="WhatsApp">
+  <a href="https://wa.me/5491130625858" target="_blank" id="whatsapp-float" aria-label="WhatsApp">
     <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" style="width:56px;height:56px;">
   </a>
+
+  <!-- Promo PopUp -->
+<div id="promoPopup" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.45); z-index:3000; justify-content:center; align-items:center;">
+  <div id="promoContent" style="background:#fff; border-radius:16px; box-shadow:0 4px 32px #0003; padding:0; max-width:90vw; max-height:80vh; display:flex; flex-direction:column; align-items:center;">
+    <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1752803985/Felices_Pascuas_Instagram_story_etspb5.jpg" alt="Promo de Temporada " style="width:100%; max-width:400px; height:auto; border-radius:12px; display:block;">
+    <!-- Puedes agregar texto o botón si querés -->
+  </div>
+</div>
 
   <script>
     const allRows = [
       ["Cafetería", "Clásicos", "Café Doble", "Café espresso doble.", "$1200", "https://res.cloudinary.com/drxznqm61/image/upload/v1752718317/Caf%C3%A9espressodoble_n1nmlh.png"],
-      ["Cafetería", "Clásicos", "Café con Leche", "Café espresso con leche caliente.", "$1300"],
+      ["Cafetería", "Clásicos", "Café con Leche", "Café espresso con leche caliente.", "$1300", "https://res.cloudinary.com/drxznqm61/image/upload/v1752718317/Caf%C3%A9espressodoble_n1nmlh.png"],
       ["Cafetería", "Clásicos", "Café Americano", "Café filtrado suave, taza grande.", "$1100"],
       ["Cafetería", "Especiales", "Flat White", "Espresso doble con leche microespumada.", "$1500"],
       ["Cafetería", "Especiales", "Latte Vainilla", "Café con leche y sirope de vainilla.", "$1600"],
@@ -605,6 +614,21 @@
         socialsDiv.appendChild(a);
       }
     });
+
+    // Mostrar el popup de promo al cargar
+    window.onload = () => {
+      setTimeout(() => {
+        const popup = document.getElementById('promoPopup');
+        popup.style.display = 'flex';
+
+        // Cerrar el popup al hacer clic fuera de la caja de contenido
+        popup.onclick = (e) => {
+          if (e.target === popup) {
+            popup.style.display = 'none';
+          }
+        };
+      }, 2000); // 2000ms = 2 segundos
+    };
   </script>
 </body>
 </html>
