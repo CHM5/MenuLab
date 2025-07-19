@@ -4670,7 +4670,7 @@ button::before, button::after,
   text-align: center;
   padding: 5px;
   width: 100%; /* Take up full width on smaller screens */
-  max-width: 600px; /* Prevent it from getting too wide */
+  max-width: 100%; /* Prevent it from getting too wide */
   box-sizing: border-box; /* Include padding and border in the element's total width and height */
 }
 

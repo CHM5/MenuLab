@@ -188,24 +188,23 @@ if (mpRedirectBtn) {
         if (nameLower.includes('base')) {
             planDesc = `
                 <ul>
-                    <li>✅ Actualizaciones del software limitadas</li>
-                    <li>✅ Carga y edición de información básica del local</li>
+                    <li>✅ Menú Online</li>
                     <li>✅ Certificado SSL incluido</li>
-                    <li>✅ Hasta 25 ítems en tu carta</li>
+                    <li>⚠️ asta 25 ítems en tu carta</li>
+                    <li>⚠️ ctualizaciones del software limitadas</li>
                     <li>⚠️ Hosting limitado</li>
                 </ul>
             `;
         } else if (nameLower.includes('emprendedor')) {
             planDesc = `
                 <ul>
-                    <li>✅ Actualizaciones automáticas ilimitadas</li>
-                    <li>✅ Carga y edición completa</li>
-                    <li>✅ Certificado SSL incluido</li>
-                    <li>✅ Productos ilimitados</li>
-                    <li>✅ Dominio personalizado</li>
-                    <li>✅ Soporte estándar</li>
+                    <li>✅ Código QR</li>
                     <li>✅ Sin publicidad</li>
                     <li>✅ Hosting 24/7</li>
+                    <li>✅ Productos ilimitados</li>
+                    <li>✅ Búsqueda de Platos</li>
+                    <li>✅ Certificado SSL incluido</li>
+                    <li>✅ Atención Virtual</li>
                     <li>
                         <strong>Extra:</strong>
                         <ul>
@@ -218,11 +217,12 @@ if (mpRedirectBtn) {
             planDesc = `
                 <ul>
                     <li><strong>Incluye todo lo del plan Emprendedor, más:</strong></li>
-                    <li>✅ Diseño personalizado</li>
-                    <li>✅ Galería de fotos</li>
-                    <li>✅ Soporte prioritario</li>
-                    <li>✅ Botón de WhatsApp</li>
-                    <li>✅ Dominio personalizado</li>
+                    <li>✅ Integración WhatsApp</li>
+                    <li>✅ Integración Rappi/PedidosYa</li>
+                    <li>✅ Integración Instagram/Facebook</li>
+                    <li>✅ Integración Google Maps</li>
+                    <li>✅ Tema Personalizable</li>
+                    <li>✅ Atención Personalizada</li>
                     <li>
                         <strong>Extras:</strong>
                         <ul>
@@ -235,10 +235,11 @@ if (mpRedirectBtn) {
             planDesc = `
                 <ul>
                     <li><strong>Incluye todo lo del plan Profesional, más:</strong></li>
-                    <li>✅ Gestión multisucursal</li>
-                    <li>✅ Atención personalizada 1 a 1</li>
-                    <li>✅ Edición avanzada</li>
-                    <li>✅ Informe mensual de visitas</li>
+                    <li>✅ Fotos de Platos</li>
+                    <li>✅ Promos por Temporada</li>
+                    <li>✅ Pedidos por web</li>
+                    <li>✅ Dominio Propio</li>
+                    <li>✅ Atención Prioritaria</li>
                     <li>
                         <strong>Extras:</strong>
                         <ul>

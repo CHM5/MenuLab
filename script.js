@@ -6,11 +6,12 @@ document.addEventListener('DOMContentLoaded', () => {
       prices: { monthly: 'GRATIS', yearly: 'GRATIS' }, ids: { monthly: 0, yearly: 0 },
       intro:'de por vida',
       features: [
-        { label: '<br></br>🔄 Actualizaciones', info: 'Actualizá tu carta en tiempo real' },
+        { label: '<br></br>🍽️ Menu Online', info: 'Actualizá tu carta en tiempo real' },
+        { label: '🔄 Actualizaciones', info: 'Actualizá tu carta en tiempo real' },
         { label: '📱Diseño Responsivo', info: 'Compatible con móviles y tablets' },
+        { label: '🍝 Hasta 25 Ítems', info: 'Podés cargar hasta 25 ítems en tu carta' },
         { label: '🏪 Data Negocio', info: 'Dirección, horarios de atencion, etc' },
-        { label: '🔐 Sitio Seguro SSL', info: 'Certificado SSL incluido' },
-        { label: '🍝 Hasta 25 Ítems', info: 'Podés cargar hasta 25 ítems en tu carta' }
+        { label: '🔐 Sitio Seguro SSL', info: 'Certificado SSL incluido' }
       ]
     },
     {

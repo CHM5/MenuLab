@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>Menú Online</title>
+  <title>Demo Plan Corporativo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
@@ -141,7 +141,7 @@
     .menu-item {
       border-bottom: 1px solid #eee;
       margin: -.5rem 0 -.5rem;
-      padding: 0.8rem 0;
+      padding:.5rem 0;
     }
 
     .menu-item-header {
@@ -151,23 +151,23 @@
       padding: 0 0.5rem;
     }
 
-.menu-item-inner {
-  display: flex;
-  align-items: flex-start;
-  gap: 1rem;
-  padding: 1rem;
-  border-radius: 8px;
-  background-color: #fff;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
-}
+    .menu-item-inner {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      padding: 1rem;
+      border-radius: 8px;
+      background-color: #fff;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    }
 
-.menu-img {
-  width: 80px;
-  height: 80px;
-  object-fit: cover;
-  border-radius: 10px;
-  flex-shrink: 0;
-}
+    .menu-img {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 10px;
+      flex-shrink: 0;
+    }
 
 
 .menu-name {
@@ -271,6 +271,7 @@
       min-width: 180px;
       flex: 1 1 180px;
       color:#000;
+      font: italic 0.9rem 'Segoe UI', sans-serif;
     }
     @media (max-width: 600px) {
       .header-flex {
@@ -349,6 +350,75 @@
       transform: scale(1.1);
     }
 
+    .pedido-checkbox {
+      accent-color: #E639A6;
+      width: 12px;
+      height: 12px;
+    }
+    .menu-item.selected {
+      background: #457B9D !important; /* azul oscuro */
+      color: #fff !important;
+      border-radius: 10px;
+      padding: 0rem 0rem;
+    }
+    .menu-item.selected .menu-name,
+    .menu-item.selected .menu-description,
+    .menu-item.selected .menu-price {
+      color: #fff !important;
+    }
+    .menu-item.selected .menu-img {
+      filter: none !important;
+      opacity: 1 !important;
+    }
+    .menu-item.selected .menu-item-inner {
+      background: transparent !important;
+    }
+
+    /* Estilos para el botón de WhatsApp flotante con viñeta */
+    #whatsapp-float {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #25D366;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 56px;
+      height: 56px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+      z-index: 1000;
+      transition: background 0.3s;
+    }
+
+    #whatsapp-float:hover {
+      background: #128C7E;
+    }
+
+    #whatsapp-float img {
+      width: 24px;
+      height: 24px;
+    }
+
+    .whatsapp-tooltip {
+      display: none;
+      position: absolute;
+      bottom: 70px;
+      right: 0;
+      background: rgba(0, 0, 0, 0.7);
+      color: #fff;
+      padding: 0.5rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      white-space: nowrap;
+      z-index: 1001;
+    }
+
+    #whatsapp-float:hover .whatsapp-tooltip {
+      display: block;
+    }
 
   </style>
 </head>
@@ -358,8 +428,8 @@
     <div class="container">
       <div class="header-flex">
         <div class="header-left">
-          <h1 id="nombre-resto" style="font-size:2rem; color:#000; margin-bottom:0; margin-top:0;">Café Central</h1>
-          <h2 id="subtitulo-resto" style="margin:0.2rem 0 0.3rem 0;font-size:1.2rem;font-weight:400;color:#000;font-style:italic;">
+          <h1 id="nombre-resto" style="font-size:1.8rem; color:#000; margin-bottom:0; margin-top:0;">Café Central</h1>
+          <h2 id="subtitulo-resto" style="margin:0.2rem 0 0.3rem 0;font-size:1rem;font-weight:400;color:#000;font-style:italic;">
             Todo rico, todo el día
           </h2>
         </div>
@@ -412,8 +482,9 @@
     </a>
   </footer>
 
-  <!-- Botón de WhatsApp flotante -->
+  <!-- Botón de WhatsApp flotante con viñeta -->
   <a href="https://wa.me/5491130625858" target="_blank" id="whatsapp-float" aria-label="WhatsApp">
+    <span class="whatsapp-tooltip">Hacé tu pedido por WhatsApp</span>
     <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" style="width:56px;height:56px;">
   </a>
 
@@ -495,57 +566,65 @@
     }
 
     function renderMenuGrouped(rows) {
-    const container = document.querySelector("#menuTable");
-    container.innerHTML = "";
+  const container = document.querySelector("#menuTable");
+  container.innerHTML = "";
 
-    const agrupado = {};
+  const agrupado = {};
 
-    rows.forEach(cols => {
-        const [cat, subcat, nombre, desc, precio, imagen] = cols.map(c => c.trim());
-        if (!cat || !nombre) return;
+  rows.forEach(cols => {
+    const [cat, subcat, nombre, desc, precio, imagen] = cols.map(c => c.trim());
+    if (!cat || !nombre) return;
 
-        if (!agrupado[cat]) agrupado[cat] = {};
-        const sub = subcat || "-";
-        if (!agrupado[cat][sub]) agrupado[cat][sub] = [];
-        agrupado[cat][sub].push({ nombre, desc, precio, imagen });
-    });
+    if (!agrupado[cat]) agrupado[cat] = {};
+    const sub = subcat || "-";
+    if (!agrupado[cat][sub]) agrupado[cat][sub] = [];
+    agrupado[cat][sub].push({ nombre, desc, precio, imagen });
+  });
 
-    Object.entries(agrupado).forEach(([cat, subcategorias]) => {
-        const group = document.createElement("div");
-        group.className = "menu-group";
-        group.setAttribute("data-cat", cat);
+  Object.entries(agrupado).forEach(([cat, subcategorias]) => {
+    const group = document.createElement("div");
+    group.className = "menu-group";
+    group.setAttribute("data-cat", cat);
 
-        const catTitle = document.createElement("h2");
-        catTitle.textContent = cat;
-        group.appendChild(catTitle);
+    const catTitle = document.createElement("h2");
+    catTitle.textContent = cat;
+    group.appendChild(catTitle);
 
-        Object.entries(subcategorias).forEach(([subcat, items]) => {
-        if (subcat && subcat !== "-") {
-            const subTitle = document.createElement("h3");
-            subTitle.textContent = subcat;
-            group.appendChild(subTitle);
-        }
+    Object.entries(subcategorias).forEach(([subcat, items]) => {
+      if (subcat && subcat !== "-") {
+        const subTitle = document.createElement("h3");
+        subTitle.textContent = subcat;
+        group.appendChild(subTitle);
+      }
 
-        items.forEach(item => {
-            const itemDiv = document.createElement("div");
-            itemDiv.className = "menu-item";
-            itemDiv.innerHTML = `
-            <div class="menu-item-inner">
-                <div class="menu-text">
-                <h4 class="menu-name">${item.nombre}</h4>
-                <p class="menu-description">${item.desc}</p>
-                <div class="menu-price">${item.precio}</div>
-                </div>
-                ${item.imagen ? `<img src="${item.imagen}" alt="${item.nombre}" class="menu-img">` : ""}
+      items.forEach((item, idx) => {
+        const itemDiv = document.createElement("div");
+        itemDiv.className = "menu-item";
+        itemDiv.setAttribute("data-nombre", item.nombre);
+
+        itemDiv.innerHTML = `
+          <div class="menu-item-inner">
+            <div class="menu-text">
+              <h4 class="menu-name">${item.nombre}</h4>
+              <p class="menu-description">${item.desc}</p>
+              <div class="menu-price">${item.precio}</div>
             </div>
-            `;
-            group.appendChild(itemDiv);
-        });
+            ${item.imagen ? `<img src="${item.imagen}" alt="${item.nombre}" class="menu-img">` : ""}
+          </div>
+        `;
+
+        // Selección visual y lógica
+        itemDiv.addEventListener('click', function() {
+          itemDiv.classList.toggle('selected');
         });
 
-        container.appendChild(group);
+        group.appendChild(itemDiv);
+      });
     });
-    }
+
+    container.appendChild(group);
+  });
+}
 
     function filterMenuRows(rows, query) {
       if (!query) return rows;
@@ -629,6 +708,19 @@
         };
       }, 2000); // 2000ms = 2 segundos
     };
+
+document.getElementById('whatsapp-float').addEventListener('click', function(e) {
+  e.preventDefault();
+  const selectedItems = document.querySelectorAll('.menu-item.selected');
+  if (selectedItems.length === 0) {
+    window.open(this.href, '_blank');
+    return;
+  }
+  let pedido = Array.from(selectedItems).map(div => div.getAttribute('data-nombre')).join(', ');
+  let mensaje = encodeURIComponent(`Hola, quisiera pedir: ${pedido}`);
+  let url = this.href.split('?')[0] + `?text=${mensaje}`;
+  window.open(url, '_blank');
+});
   </script>
 </body>
 </html>
