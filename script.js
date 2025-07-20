@@ -157,17 +157,32 @@ document.addEventListener('DOMContentLoaded', () => {
     
   const burger = document.querySelector('[data-thq="thq-burger-menu"]');
   const mobileMenu = document.querySelector('[data-thq="thq-mobile-menu"]');
-  const closeMenu = document.querySelector('[data-thq="thq-close-menu"]');
-  
-  if (burger && mobileMenu && closeMenu) {
-    burger.addEventListener("click", () => {
-      mobileMenu.classList.add("active");
+  const closeBtn = document.querySelector('[data-thq="thq-close-menu"]');
+
+  burger.addEventListener('click', () => {
+    mobileMenu.style.display = 'block';
+  });
+
+  closeBtn.addEventListener('click', () => {
+    mobileMenu.style.display = 'none';
+  });
+
+  // Cerrar menú si se hace clic fuera
+  document.addEventListener('click', (e) => {
+    if (mobileMenu.style.display === 'block' &&
+        !mobileMenu.contains(e.target) &&
+        !burger.contains(e.target)) {
+      mobileMenu.style.display = 'none';
+    }
+  });
+
+  // Cerrar al hacer clic en un link
+  mobileMenu.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      mobileMenu.style.display = 'none';
     });
-    
-    closeMenu.addEventListener("click", () => {
-      mobileMenu.classList.remove("active");
-    });
-  }
+  });
+
   
   // Verificar específicamente los botones de pricing
   const monthlyBtn = document.getElementById('monthlyBtn');
