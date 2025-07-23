@@ -646,7 +646,7 @@
     height: auto;
     padding: 2rem 1.5rem;
     box-shadow: 2px 0 12px rgba(0,0,0,0.1);
-    display: flex;
+    display: none;
     flex-direction: column;
     z-index: 9999;
     max-height: 100vh;
