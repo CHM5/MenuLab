@@ -1,0 +1,111 @@
+name: Generar Menú
+
+on:
+  repository_dispatch:
+    types: [generar_menu_base, generar_menu_emprendedor, generar_menu_profesional, generar_menu_corporativo]
+
+jobs:
+  generar-menu:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 0) Checkout
+      - name: Clonar el repositorio
+        uses: actions/checkout@v3
+
+      # 1) Extraer datos del cliente
+      - name: Setear variables del cliente
+        id: vars
+        run: |
+          echo "plan=${{ github.event.client_payload.plan }}" >> $GITHUB_OUTPUT
+          echo "email=${{ github.event.client_payload.email }}" >> $GITHUB_OUTPUT
+          echo "negocio=${{ github.event.client_payload.negocio || 'Cliente sin nombre' }}" >> $GITHUB_OUTPUT
+          echo "external_reference=${{ github.event.client_payload.external_reference }}" >> $GITHUB_OUTPUT
+          echo "sheet_url=${{ github.event.client_payload.sheet_url }}" >> $GITHUB_OUTPUT
+
+      # 2) Setup Python + dependencias
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Instalar dependencias Python
+        run: pip install google-api-python-client google-auth
+
+      # 3) Ejecutar script Python correspondiente al plan
+      - name: Ejecutar script según plan
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+          CLIENT_EMAIL: ${{ steps.vars.outputs.email }}
+          SHEET_URL: ${{ steps.vars.outputs.sheet_url }} 
+        run: |
+          echo "📦 Ejecutando script para plan: ${{ steps.vars.outputs.plan }}"
+          case "${{ steps.vars.outputs.plan }}" in
+            "0") python scripts/0_sitio_base.py ;;
+            "1") python scripts/1_sitio_emprendedor.py ;;
+            "2") python scripts/2_sitio_profesional.py ;;
+            "3") python scripts/3_sitio_corporativo.py ;;
+            *)
+              echo "❌ Plan desconocido: ${{ steps.vars.outputs.plan }}"
+              exit 1
+              ;;
+          esac
+
+      # 4) Leer archivos de salida
+      - name: Capturar URLs generadas
+        id: paths
+        run: |
+          echo "menu_url=$(cat menu_url.txt)" >> $GITHUB_OUTPUT
+          echo "sheet_url=$(cat sheet_url.txt)" >> $GITHUB_OUTPUT
+
+      # 5) Commit + push al repo
+      - name: Configurar clave SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.DEPLOY_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+
+      - name: Commit y push del sitio generado
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add planes/
+          git commit -m "🔧 Menú generado para ${{ steps.vars.outputs.negocio }}" || echo "Nada para commitear"
+          git remote set-url origin git@github.com:CHM5/menulab.git
+          git pull --rebase origin main
+          git push origin HEAD:main
+
+      # 6) Enviar correo al cliente
+      - name: Enviar e‑mail al cliente
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: ${{ secrets.SMTP_SERVER }}
+          server_port:    ${{ secrets.SMTP_PORT }}
+          username:       ${{ secrets.SMTP_USER }}
+          password:       ${{ secrets.SMTP_PASS }}
+          subject: "Tu menú online está listo 🎉"
+          to: ${{ steps.vars.outputs.email }}
+          from: "MenuLab <${{ secrets.SMTP_USER }}>"
+          html_body: >
+            <p>¡Hola ${{ steps.vars.outputs.name }}!</p>
+            <p>Nos alegra informarte que tu menú digital ya está activo y listo para compartir.</p>
+            <p>🔗 Accedé a tu carta online desde el siguiente enlace:<br>
+            👉 <a href="https://menulab.com.ar/${{ steps.paths.outputs.menu_url }}">Ver menú</a></p>
+            <p>📝 Si querés modificar platos, precios o descripciones, podés hacerlo directamente desde tu planilla de gestión:<br>
+            👉 <a href="${{ steps.paths.outputs.sheet_url }}">Abrir Google Sheet</a></p>
+            ${{ (steps.vars.outputs.plan != '0') && format('<p>📲 Además, te adjuntamos el código QR exclusivo de tu menú para que puedas imprimirlo, colocarlo en mesas o compartirlo en redes:<br>👉 <a href="https://menulab.com.ar/qr/{0}.png">Descargar QR</a><br><img src="https://menulab.com.ar/qr/{0}.png" alt="Código QR" width="140" style="margin-top:1rem;"></p>', steps.paths.outputs.menu_url) || '' }}
+            <p>💡 Recordá que podés actualizar el contenido del menú en tiempo real desde tu planilla, sin necesidad de reenviar el enlace.</p>
+            <p>¡Gracias por confiar en MenuLab!<br>
+            Estamos a tu disposición para lo que necesites.<br><br>
+            — El equipo de MenuLab</p>
+
+      # 7) Guardar en Clientes links y referencias
+      - name: Guardar links en la hoja
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+          CLIENT_EMAIL: ${{ steps.vars.outputs.email }}
+          EXTERNAL_REF: ${{ steps.vars.outputs.external_reference }}
+          MENU_URL: ${{ steps.paths.outputs.menu_url }}
+          SHEET_URL: ${{ steps.paths.outputs.sheet_url }}
+        run: |
+          python scripts/add_links.py
