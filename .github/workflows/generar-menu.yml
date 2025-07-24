@@ -87,13 +87,17 @@ jobs:
           to: ${{ steps.vars.outputs.email }}
           from: "MenuLab <${{ secrets.SMTP_USER }}>"
           html_body: >
-            <p>¡Hola!</p>
-            <p>Aquí tenés tu menú online:<br>
-            <a href="https://menulab.com.ar/${{ steps.paths.outputs.menu_url }}">Ver menú</a></p>
-            <p>Podés editar los platos desde esta planilla:<br>
-            <a href="${{ steps.paths.outputs.sheet_url }}">Abrir Google Sheet</a></p>
-            <p>¡Gracias por elegirnos!<br>
-            — Equipo MenuLab</p>
+            <p>¡Hola ${{ steps.vars.outputs.name }}!</p>
+            <p>Nos alegra informarte que tu menú digital ya está activo y listo para compartir.</p>
+            <p>🔗 Accedé a tu carta online desde el siguiente enlace:<br>
+            👉 <a href="https://menulab.com.ar/${{ steps.paths.outputs.menu_url }}">Ver menú</a></p>
+            <p>📝 Si querés modificar platos, precios o descripciones, podés hacerlo directamente desde tu planilla de gestión:<br>
+            👉 <a href="${{ steps.paths.outputs.sheet_url }}">Abrir Google Sheet</a></p>
+            ${{ (steps.vars.outputs.plan != '0') && format('<p>📲 Además, te adjuntamos el código QR exclusivo de tu menú para que puedas imprimirlo, colocarlo en mesas o compartirlo en redes:<br>👉 <a href="https://menulab.com.ar/qr/{0}.png">Descargar QR</a><br><img src="https://menulab.com.ar/qr/{0}.png" alt="Código QR" width="140" style="margin-top:1rem;"></p>', steps.paths.outputs.menu_url) || '' }}
+            <p>💡 Recordá que podés actualizar el contenido del menú en tiempo real desde tu planilla, sin necesidad de reenviar el enlace.</p>
+            <p>¡Gracias por confiar en MenuLab!<br>
+            Estamos a tu disposición para lo que necesites.<br><br>
+            — El equipo de MenuLab</p>
 
       # 7) Guardar en Clientes links y referencias
       - name: Guardar links en la hoja
