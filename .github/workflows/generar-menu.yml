@@ -85,7 +85,6 @@ jobs:
             echo "qr_html=" >> $GITHUB_OUTPUT
           fi
 
-      # 7) Send Email
       - name: Enviar e‑mail al cliente
         uses: dawidd6/action-send-mail@v3
         with:
@@ -97,19 +96,44 @@ jobs:
           to: ${{ steps.vars.outputs.email }}
           from: "MenuLab <${{ secrets.SMTP_USER }}>"
           html_body: >
-            <p>¡Hola ${{ steps.vars.outputs.name }}!</p>
-            <p>Nos alegra informarte que tu menú digital ya está activo y listo para compartir.</p>
-            <p>🔗 Accedé a tu carta online desde el siguiente enlace:<br>
-            👉 <a href="https://menulab.com.ar/${{ steps.paths.outputs.menu_url }}">Ver menú</a></p>
-            <p>📝 Si querés modificar platos, precios o descripciones, podés hacerlo directamente desde tu planilla de gestión:<br>
-            👉 <a href="${{ steps.paths.outputs.sheet_url }}">Abrir Google Sheet</a></p>
-            ${{ steps.qrblock.outputs.qr_html }}
-            <p>💡 Recordá que podés actualizar el contenido del menú en tiempo real desde tu planilla, sin necesidad de reenviar el enlace.</p>
-            <p>¡Gracias por confiar en MenuLab!<br>
-            Estamos a tu disposición para lo que necesites.<br><br>
-            — El equipo de MenuLab</p>
+            <!DOCTYPE html>
+            <html lang="es">
+            <body style="background-color:#f4f4f4; font-family: Arial, sans-serif; margin:0; padding:2rem 0;">
+              <center>
+                <table style="max-width:600px; width:90%; background:#ffffff; border-radius:10px; box-shadow:0 0 12px rgba(0,0,0,0.08); overflow:hidden;">
+                  <tr>
+                    <td style="padding:0;">
+                      <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1750637502/BannerMenuLab_mbtrzh.jpg" alt="MenuLab" style="width:100%; max-width:600px; display:block;">
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding:2rem;">
+                      <p style="font-size:1.1rem;">¡Hola <strong>${{ steps.vars.outputs.nombreCompleto }}</strong>!</p>
 
-      # 8) Guardar en Clientes links y referencias
+                      <p>Nos alegra informarte que tu menú digital ya está activo y listo para compartir.</p>
+
+                      <p>🔗 Accedé a tu carta online desde el siguiente enlace:<br>
+                      👉 <a href="https://menulab.com.ar/${{ steps.paths.outputs.menu_url }}" style="color:#007bff;">Ver menú</a></p>
+
+                      <p>📝 Si querés modificar platos, precios o descripciones, podés hacerlo directamente desde tu planilla de gestión:<br>
+                      👉 <a href="${{ steps.paths.outputs.sheet_url }}" style="color:#007bff;">Abrir Google Sheet</a></p>
+
+                      ${{ steps.qrblock.outputs.qr_html }}
+
+                      <p>💡 Recordá que podés actualizar el contenido del menú en tiempo real desde tu planilla, sin necesidad de reenviar el enlace.</p>
+
+                      <p style="margin-top:2rem;">¡Gracias por confiar en <strong>MenuLab</strong>!<br>
+                      Estamos a tu disposición para lo que necesites.<br><br>
+                      — El equipo de MenuLab</p>
+                    </td>
+                  </tr>
+                </table>
+              </center>
+            </body>
+            </html>
+
+
+      # 7) Guardar en Clientes links y referencias
       - name: Guardar links en la hoja
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
