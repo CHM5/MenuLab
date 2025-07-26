@@ -19,7 +19,7 @@ creds = Credentials.from_service_account_info(
 sheets_service = build("sheets", "v4", credentials=creds)
 
 # === URL DE LA PLANILLA ===
-sheet_url = os.environ.get("SHEET_URL")
+sheet_url = os.environ["SHEET_URL"]
 if not sheet_url:
     print("❌ SHEET_URL no provisto en las variables de entorno")
     exit(1)
