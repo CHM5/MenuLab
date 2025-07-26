@@ -26,7 +26,7 @@ if not sheet_url:
 
 # URLs para CSV
 csv_url = f"{sheet_url.replace('/edit', '')}/gviz/tq?tqx=out:csv"
-fijos_csv_url = f"{sheet_url.replace('/edit', '')}/gviz/tq?tqx=out:csv&sheet=Datos%20Fijos"
+fijos_csv_url = f"{sheet_url.replace('/edit', '')}/gviz/tq?tqx=out:csv&sheet=Datos%20Permanentes"
 print("🔗 CSV menú:", csv_url)
 print("🔗 CSV fijos:", fijos_csv_url)
 
