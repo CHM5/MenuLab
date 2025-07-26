@@ -6,8 +6,8 @@ from google.oauth2.service_account import Credentials
 from googleapiclient.discovery import build
 
 # === CONFIGURACIÓN ===
-FIJOS_RANGE = "Datos Permanentes!B4:B15"
 MENU_RANGE = "Carta!A2:E26"
+FIJOS_RANGE = "Datos Permanentes!B2:B5"
 fecha_id = datetime.now().strftime("%Y%m%d-%H%M")
 
 # === AUTENTICACIÓN GOOGLE ===
@@ -216,10 +216,10 @@ html = f"""<!DOCTYPE html>
       .then(r => r.text())
       .then(data => {{
         const rows = data.split("\\n").map(r => r.split(","));
-        document.getElementById("nombre-resto").textContent = rows[2]?.[2]?.replace(/"/g, "").trim() || "";
-        document.getElementById("subtitulo-resto").textContent = rows[3]?.[2]?.replace(/"/g, "").trim() || "";
-        document.getElementById("direccion-resto").textContent = rows[4]?.[2]?.replace(/"/g, "").trim() || "";
-        document.getElementById("horarios-resto").textContent = rows[5]?.[2]?.replace(/"/g, "").trim() || "";
+        document.getElementById("nombre-resto").textContent    = rows[1]?.[1]?.replace(/"/g, "").trim() || "";
+        document.getElementById("subtitulo-resto").textContent = rows[2]?.[1]?.replace(/"/g, "").trim() || "";
+        document.getElementById("direccion-resto").textContent = rows[3]?.[1]?.replace(/"/g, "").trim() || "";
+        document.getElementById("horarios-resto").textContent  = rows[4]?.[1]?.replace(/"/g, "").trim() || "";
       }});
   </script>
 </body>
