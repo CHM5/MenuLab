@@ -19,7 +19,7 @@ jobs:
         run: |
           echo "plan=${{ github.event.client_payload.plan }}" >> $GITHUB_OUTPUT
           echo "email=${{ github.event.client_payload.email }}" >> $GITHUB_OUTPUT
-          echo "negocio=${{ github.event.client_payload.negocio || 'Cliente sin nombre' }}" >> $GITHUB_OUTPUT
+          echo "negocio=${{ github.event.client_payload.negocio || 'Cliente sin nombre de negocio' }}" >> $GITHUB_OUTPUT
           echo "external_reference=${{ github.event.client_payload.external_reference }}" >> $GITHUB_OUTPUT
           echo "sheet_url=${{ github.event.client_payload.sheet_url }}" >> $GITHUB_OUTPUT
 
@@ -108,9 +108,9 @@ jobs:
                   </tr>
                   <tr>
                     <td style="padding:2rem;">
-                      <p style="font-size:1.1rem;">¡Hola <strong>${{ steps.vars.outputs.nombreCompleto }}</strong>!</p>
+                      <p style="font-size:1.1rem;">¡Hola <strong>${{ github.event.client_payload.nombreCompleto }}</strong>!</p>
 
-                      <p>Nos alegra informarte que tu menú digital ya está activo y listo para compartir.</p>
+                      <p>Nos alegra informarte que tu menú digital para ${{ steps.vars.outputs.negocio }} ya está activo y listo para compartir.</p>
 
                       <p>🔗 Accedé a tu carta online desde el siguiente enlace:<br>
                       👉 <a href="https://menulab.com.ar/${{ steps.paths.outputs.menu_url }}" style="color:#007bff;">Ver menú</a></p>
