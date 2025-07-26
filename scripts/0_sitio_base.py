@@ -5,12 +5,12 @@ from datetime import datetime
 from google.oauth2.service_account import Credentials
 from googleapiclient.discovery import build
 
-# === CONFIGURACIÓN ===
+# === CONFIG ===
+FIJOS_RANGE = "Datos Permanentes!B4:B15"
 MENU_RANGE = "Carta!A2:E26"
-FIJOS_RANGE = "Datos Permanentes!B2:B5"
 fecha_id = datetime.now().strftime("%Y%m%d-%H%M")
 
-# === AUTENTICACIÓN GOOGLE ===
+# === AUTENTICACIÓN ===
 credentials_info = json.loads(os.environ["GOOGLE_CREDENTIALS"])
 creds = Credentials.from_service_account_info(
     credentials_info,
@@ -18,29 +18,39 @@ creds = Credentials.from_service_account_info(
 )
 sheets_service = build("sheets", "v4", credentials=creds)
 
-# === URL DE LA PLANILLA ===
+# === URL recibido ===
 sheet_url = os.environ["SHEET_URL"]
 if not sheet_url:
     print("❌ SHEET_URL no provisto en las variables de entorno")
     exit(1)
+csv_url = f"{sheet_url.replace('/edit', '')}/gviz/tq?tqx=out:csv"
+print("🔗 CSV para menú en vivo:", csv_url)
 
-# Extraer el ID de la hoja desde la URL y construir URLs públicas
-sheet_id = sheet_url.split("/d/")[1].split("/")[0] 
-csv_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv"
-fijos_csv_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet=Datos%20Permanentes"
-print("🔗 CSV menú:", csv_url)
-print("🔗 CSV fijos:", fijos_csv_url)
-
-# === LEER DATOS DE PRUEBA (opcional, para validar conexión) ===
+# === LEER DATOS ===
 try:
-    sheets_service.spreadsheets().values().get(
-        spreadsheetId=sheet_id, range=MENU_RANGE
+    sheet_id = sheet_url.split("/d/")[1].split("/")[0]
+    fijos_result = sheets_service.spreadsheets().values().get(
+        spreadsheetId=sheet_id,
+        range=FIJOS_RANGE
     ).execute()
+    fijos_rows = fijos_result.get("values", [])
+
+    menu_result = sheets_service.spreadsheets().values().get(
+        spreadsheetId=sheet_id,
+        range=MENU_RANGE
+    ).execute()
+    menu_rows = menu_result.get("values", [])
+
 except Exception as e:
     print(f"❌ Error al leer datos: {e}")
+    fijos_rows = []
+    menu_rows = []
+
+except IndexError:
+    print(f"❌ URL inválido: {sheet_url}")
     exit(1)
 
-# === CREAR HTML ===
+# === GENERAR HTML ===
 output_dir = Path(f"planes/menu-base-{fecha_id}")
 output_dir.mkdir(parents=True, exist_ok=True)
 html_file = output_dir / "index.html"
@@ -91,23 +101,6 @@ html = f"""<!DOCTYPE html>
       font-size: 1rem;
       color: #444;
     }}
-    .search-box {{
-      display: flex;
-      align-items: center;
-      margin-bottom: 1.2rem;
-      background: #f8f9fa;
-      border-radius: var(--radius);
-      padding: 0.5rem 1rem;
-      box-shadow: 0 2px 8px #0001;
-    }}
-    .search-box input {{
-      flex: 1;
-      border: none;
-      background: transparent;
-      font-size: 1.1rem;
-      padding: 0.7rem 0.5rem;
-      outline: none;
-    }}
     table {{
       width: 100%;
       border-collapse: collapse;
@@ -131,6 +124,96 @@ html = f"""<!DOCTYPE html>
     tr:last-child td {{
       border-bottom: none;
     }}
+    @media (max-width: 700px) {{
+      .container {{
+        padding: 0.5rem;
+      }}
+      th, td {{
+        font-size: 0.97rem;
+        padding: 0.6rem 0.3rem;
+      }}
+      .fijos {{
+        font-size: 0.97rem;
+        padding: 0.5rem 0.7rem;
+      }}
+    }}
+    @media (max-width: 480px) {{
+      header {{
+        font-size: 1.2rem;
+        padding: 0.8rem 0.3rem;
+      }}
+      .container {{
+        padding: 0.2rem;
+      }}
+      th, td {{
+        font-size: 0.93rem;
+        padding: 0.4rem 0.2rem;
+      }}
+    }}
+
+    .menu-group {{
+      margin-top: 0.5rem;
+      margin-bottom: 1.2rem;
+    }}
+
+    .menu-group h2 {{
+      font-size: 1.5rem;
+      margin: 0.3rem 0 0.2rem;
+      border-bottom: 2px solid #ddd;
+      color: #333;
+    }}
+
+    .menu-group h3 {{
+      font-size: 1.2rem;
+      margin-top: 0.6rem;
+      color: #555;
+    }}
+
+    .menu-item {{
+      border-bottom: 1px solid #eee;
+      padding: 0.8rem 0;
+    }}
+
+    .menu-item-header {{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 0.5rem;
+    }}
+
+    .menu-name {{
+      font-size: 1.1rem;
+      margin: 0;
+      font-weight: 600;
+    }}
+
+    .menu-price {{
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: #111;
+    }}
+
+    .menu-description {{
+      margin: 0.2rem 0 0 0;
+      font-size: 0.95rem;
+      color: #666;
+      padding: 0 1rem;
+    }}
+
+    @media (max-width: 600px) {{
+      .menu-name {{
+        font-size: 1rem;
+      }}
+      .menu-price {{
+        font-size: 1rem;
+      }}
+      .menu-description {{
+        font-size: 0.9rem;
+      }}
+    }}
+    .menu-content {{
+      margin-top: 2rem;
+    }}
   </style>
 </head>
 <body>
@@ -143,44 +226,41 @@ html = f"""<!DOCTYPE html>
   </header>
   <div class="container">
     <div style="overflow-x:auto;">
-      <table id="menuTable">
-        <thead>
-          <tr>
-            <th>Categoría</th>
-            <th>Subcategoría</th>
-            <th>Nombre</th>
-            <th>Descripción</th>
-            <th>Precio</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
+      <div id="menuTable" class="menu-content"></div>
     </div>
     <div id="noResults" style="display:none;text-align:center;color:#dc3545;margin-top:1.5rem;font-size:1.1rem;">
       No se encontraron platos con ese criterio.
     </div>
   </div>
   <footer style="background:#f1f1f1;color:#333;text-align:center;padding:1rem 0 1.2rem 0;font-size:1rem;">
-    <div><span>Dirección: </span><span id="direccion-resto" style="font-weight: bold;"></span></div>
-    <div><span>Horarios: </span><span id="horarios-resto" style="font-weight: bold;"></span></div>
+    <div>
+      <span>Dirección: </span>
+      <span id="direccion-resto" style="font-weight: bold;"></span>
+    </div>
+    <div>
+      <span>Horarios: </span>
+      <span id="horarios-resto" style="font-weight: bold;"></span>
+    </div>
     <a href="https://menulab.com.ar" target="_blank" rel="noopener">
-      <span class="thq-body-small">En colaboración con:</span>
+      <span class="thq-body-small">En colaboración con:</span>  
       <span style="display: inline-block; margin-left: 12px;">
         <h1 style="
           font-family: 'Unbounded', sans-serif;
           font-weight: 600;
           font-size: 100%;
           margin: 0;
-          background: linear-gradient(90deg, #E639A6, #457B9D);
+          background: linear-gradient(90deg, #E639A6, #457B9D); /* azul al rosa */
           -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;">MenuLab</h1>
+          -webkit-text-fill-color: transparent;">
+          MenuLab
+        </h1>
       </span>
     </a>
   </footer>
 
   <script>
     const CSV_URL = "{csv_url}";
-    const FIJOS_URL = "{fijos_csv_url}";
+    let allRows = [];
 
     function renderTable(rows) {{
       const tbody = document.querySelector("#menuTable tbody");
@@ -202,25 +282,97 @@ html = f"""<!DOCTYPE html>
     }}
 
     fetch(CSV_URL)
-      .then(r => r.text())
+      .then(response => response.text())
       .then(data => {{
-        const rows = data.split("\\n").slice(1).map(r => r.split(",").map(c => c.replace(/\"/g, "")));
-        renderTable(rows);
+        allRows = data.split("\\n").slice(1, 26).map(row =>
+          row.split(",").map(col => col.replace(/\"/g, ""))
+        );
+        renderMenuGrouped(allRows);
       }})
       .catch(err => {{
         document.getElementById("noResults").style.display = "block";
         document.getElementById("noResults").textContent = "Error al cargar el menú.";
+        console.error("Error al cargar el CSV:", err);
       }});
 
-    fetch(FIJOS_URL)
-      .then(r => r.text())
+    // Cargar Valores Estaticos en vivo
+    const STATIC_CSV_URL = "{sheet_url.replace('/edit', '')}/gviz/tq?tqx=out:csv&sheet=Datos%20Fijos";
+    fetch(STATIC_CSV_URL)
+      .then(response => response.text())
       .then(data => {{
-        const rows = data.split("\\n").map(r => r.split(","));
-        document.getElementById("nombre-resto").textContent    = rows[1]?.[1]?.replace(/"/g, "").trim() || "";
-        document.getElementById("subtitulo-resto").textContent = rows[2]?.[1]?.replace(/"/g, "").trim() || "";
-        document.getElementById("direccion-resto").textContent = rows[3]?.[1]?.replace(/"/g, "").trim() || "";
-        document.getElementById("horarios-resto").textContent  = rows[4]?.[1]?.replace(/"/g, "").trim() || "";
+        const rows = data.split("\\n").map(row => row.split(","));
+
+        const nombre = (rows[2] && rows[2][2]) ? rows[2][2].replace(/"/g, "").trim() : "";
+        if (nombre) {{
+          document.getElementById("nombre-resto").textContent = nombre;
+        }}
+
+        const subtitulo = (rows[3] && rows[3][2]) ? rows[3][2].replace(/"/g, "").trim() : "";
+        if (subtitulo) {{
+          document.getElementById("subtitulo-resto").textContent = subtitulo;
+        }}
+                
+        const direccion = (rows[4] && rows[4][2]) ? rows[4][2].replace(/"/g, "").trim() : "";
+        if (direccion) {{
+          document.getElementById("direccion-resto").textContent = direccion;
+        }}
+
+        const horarios = (rows[5] && rows[5][2]) ? rows[5][2].replace(/"/g, "").trim() : "";
+        if (horarios) {{
+          document.getElementById("horarios-resto").textContent = horarios;
+        }}
       }});
+
+      function renderMenuGrouped(rows) {{
+        const container = document.querySelector("#menuTable");
+        container.innerHTML = "";
+
+        const agrupado = {{}};
+
+        rows.forEach(cols => {{
+          const [cat, subcat, nombre, desc, precio] = cols.map(c => c.trim());
+          if (!cat || !nombre) return;
+
+          if (!agrupado[cat]) agrupado[cat] = {{}};
+          const sub = subcat || "-";
+          if (!agrupado[cat][sub]) agrupado[cat][sub] = [];
+          agrupado[cat][sub].push({{ nombre, desc, precio }});
+        }});
+
+        Object.entries(agrupado).forEach(([cat, subcategorias]) => {{
+          const group = document.createElement("div");
+          group.className = "menu-group";
+
+          const catTitle = document.createElement("h2");
+          catTitle.textContent = cat;
+          group.appendChild(catTitle);
+
+          Object.entries(subcategorias).forEach(([subcat, items]) => {{
+            if (subcat && subcat !== "-") {{
+              const subTitle = document.createElement("h3");
+              subTitle.textContent = subcat;
+              group.appendChild(subTitle);
+            }}
+
+            items.forEach(item => {{
+              const itemDiv = document.createElement("div");
+              itemDiv.className = "menu-item";
+              itemDiv.innerHTML = `
+                <div class="menu-item-header">
+                  <h3 class="menu-name">${{item.nombre}}</h3>
+                  <span class="menu-price">${{item.precio}}</span>
+                </div>
+                <p class="menu-description">${{item.desc}}</p>
+              `;
+              group.appendChild(itemDiv);
+            }});
+          }});
+
+          container.appendChild(group);
+        }});
+      }}
+
+
   </script>
 </body>
 </html>
@@ -229,11 +381,13 @@ html = f"""<!DOCTYPE html>
 with open(html_file, "w", encoding="utf-8") as f:
     f.write(html)
 
-print("✅ HTML generado:", html_file)
-print("📄 Planilla conectada:", sheet_url)
+print("✅ Menú generado:", html_file)
+print("📄 Planilla editable:", sheet_url)
 
-# === EXPORTAR PATHS PARA WORKFLOW (opcional)
+# NUEVO → exportar urls para el workflow
 with open("menu_url.txt", "w") as f:
+    # ruta pública en GitHub Pages
     f.write(f"planes/menu-base-{fecha_id}/index.html")
+
 with open("sheet_url.txt", "w") as f:
     f.write(sheet_url)
