@@ -24,15 +24,15 @@ if not sheet_url:
     print("❌ SHEET_URL no provisto en las variables de entorno")
     exit(1)
 
-# URLs para CSV
-csv_url = f"{sheet_url.replace('/edit', '')}/gviz/tq?tqx=out:csv"
-fijos_csv_url = f"{sheet_url.replace('/edit', '')}/gviz/tq?tqx=out:csv&sheet=Datos%20Permanentes"
+# Extraer el ID de la hoja desde la URL y construir URLs públicas
+sheet_id = sheet_url.split("/d/")[1].split("/")[0] 
+csv_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv"
+fijos_csv_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet=Datos%20Permanentes"
 print("🔗 CSV menú:", csv_url)
 print("🔗 CSV fijos:", fijos_csv_url)
 
 # === LEER DATOS DE PRUEBA (opcional, para validar conexión) ===
 try:
-    sheet_id = sheet_url.split("/d/")[1].split("/")[0]
     sheets_service.spreadsheets().values().get(
         spreadsheetId=sheet_id, range=MENU_RANGE
     ).execute()
