@@ -44,12 +44,17 @@ jobs:
           GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
           SHEET_URL: ${{ steps.vars.outputs.sheet_url }}
 
+      # 3) Setear EXTERNAL_REFERENCE como variable de entorno
+      - name: Setear EXTERNAL_REFERENCE desde payload
+        run: echo "EXTERNAL_REFERENCE=${{ steps.vars.outputs.external_reference }}" >> $GITHUB_ENV
+
       # 3) Ejecutar script Python correspondiente al plan
       - name: Ejecutar script según plan
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
           CLIENT_EMAIL: ${{ steps.vars.outputs.email }}
           SHEET_URL: ${{ steps.vars.outputs.sheet_url }} 
+          EXTERNAL_REFERENCE: ${{ env.EXTERNAL_REFERENCE }}
         run: |
           echo "📦 Ejecutando script para plan: ${{ steps.vars.outputs.plan }}"
           case "${{ steps.vars.outputs.plan }}" in
