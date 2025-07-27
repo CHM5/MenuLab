@@ -31,6 +31,19 @@ jobs:
       - name: Instalar dependencias Python
         run: pip install google-api-python-client google-auth
 
+      - name: Verificar Service Account usado
+        run: |
+          echo "$GOOGLE_CREDENTIALS" | jq -r .client_email
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+
+      - name: Test conexión a Google Sheets
+        run: |
+          python scripts/test.py
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+          SHEET_URL: ${{ steps.vars.outputs.sheet_url }}
+
       # 3) Ejecutar script Python correspondiente al plan
       - name: Ejecutar script según plan
         env:
@@ -103,14 +116,16 @@ jobs:
                 <table style="max-width:600px; width:90%; background:#ffffff; border-radius:10px; box-shadow:0 0 12px rgba(0,0,0,0.08); overflow:hidden;">
                   <tr>
                     <td style="padding:0;">
-                      <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1750637502/BannerMenuLab_mbtrzh.jpg" alt="MenuLab" style="width:100%; max-width:600px; display:block;">
+                        <a href="https://www.menulab.com.ar" target="_blank" rel="noopener">
+                          <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1750637502/BannerMenuLab_mbtrzh.jpg" alt="MenuLab" style="width:100%; max-width:600px; display:block;">
+                        </a>
                     </td>
                   </tr>
                   <tr>
                     <td style="padding:2rem;">
                       <p style="font-size:1.1rem;">¡Hola <strong>${{ github.event.client_payload.nombreCompleto }}</strong>!</p>
 
-                      <p>Nos alegra informarte que tu menú digital para ${{ steps.vars.outputs.negocio }} ya está activo y listo para compartir.</p>
+                      <p>Nos alegra informarte que tu menú digital para ya está activo y listo para compartir.</p>
 
                       <p>🔗 Accedé a tu carta online desde el siguiente enlace:<br>
                       👉 <a href="https://menulab.com.ar/${{ steps.paths.outputs.menu_url }}" style="color:#007bff;">Ver menú</a></p>
