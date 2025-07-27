@@ -10,7 +10,7 @@ if not SHEET_URL:
     exit(1)
 
 sheet_id = SHEET_URL.split("/d/")[1].split("/")[0]
-RANGO_TEST = "Carta!A1:E1"  # leer 2 celdas como prueba
+RANGO_TEST = "Menu!A1:E1"  # leer 2 celdas como prueba
 
 # === CARGAR CREDENCIALES ===
 try:

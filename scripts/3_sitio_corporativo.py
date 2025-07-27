@@ -8,7 +8,7 @@ from googleapiclient.errors import HttpError
 
 # === CONFIG ===
 TEMPLATE_SHEET_ID = "12K9YatZVW1uJfBjiUPMRQNhl5q78ErzGcch1hTemFbU"
-CARTA_RANGE = "Carta!A2:E1000"
+CARTA_RANGE = "Menu!A2:E1000"
 CARTA_FIELDS = ["Categoría", "Subcategoría", "Plato", "Descripción", "Precio", "Enlace Foto"]
 FIJOS_RANGE = "Datos Permanentes!B2:B14"
 
@@ -79,7 +79,7 @@ drive_service.permissions().create(
 ).execute()
 
 # === LEER CONTENIDO DE SHEET DE AMBAS TABS ===
-MENU_RANGE = "Carta!A2:E26"
+MENU_RANGE = "Menu!A2:E26"
 FIJOS_RANGE = "Datos Permanentes!B2:B14"
 
 # Leer menú

@@ -9,7 +9,7 @@ from googleapiclient.errors import HttpError
 # === CONFIG ===
 TEMPLATE_SHEET_ID = "1bLzEXHmei95_XlHDBVO1sYHkDU5nEQwfLdCA8XCCoWo"
 FIJOS_RANGE = "Datos Permanentes!B4:B15"
-MENU_RANGE = "Carta!A2:E1000"
+MENU_RANGE = "Menu!A2:E1000"
 fecha_id = datetime.now().strftime("%Y%m%d-%H%M")
 
 # === AUTENTICACIÓN ===
