@@ -8,6 +8,7 @@
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
   <link rel="icon" type="image/png" href="../../MLfavicon.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
     :root {
       --primary: #ffc107;
@@ -260,6 +261,7 @@
       align-items: flex-start;
       flex-wrap: wrap;
       gap: 0.5rem;
+      font-family: 'Poppins', sans-serif;
     }
     .header-left {
       text-align: left;
@@ -490,8 +492,14 @@
 
   <!-- Promo PopUp -->
 <div id="promoPopup" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.45); z-index:3000; justify-content:center; align-items:center;">
-  <div id="promoContent" style="background:#fff; border-radius:16px; box-shadow:0 4px 32px #0003; padding:0; max-width:90vw; max-height:80vh; display:flex; flex-direction:column; align-items:center;">
-    <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1752803985/Felices_Pascuas_Instagram_story_etspb5.jpg" alt="Promo de Temporada " style="width:100%; max-width:400px; height:auto; border-radius:12px; display:block;">
+  <div id="promoContent" style="position:relative; background:#fff; border-radius:16px; box-shadow:0 4px 32px #0003; padding:0; max-width:90vw; max-height:80vh; display:flex; flex-direction:column; align-items:center;">
+    <!-- Botón de cierre -->
+    <button onclick="document.getElementById('promoPopup').style.display='none'" 
+            style="position:absolute; top:10px; right:12px; background:transparent; border:none; font-size:1.5rem; color:#999; cursor:pointer;">
+      &times;
+    </button>
+    <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1752803985/Felices_Pascuas_Instagram_story_etspb5.jpg" alt="Promo de Temporada" 
+         style="width:100%; max-width:400px; height:auto; border-radius:12px; display:block;">
     <!-- Puedes agregar texto o botón si querés -->
   </div>
 </div>
@@ -513,9 +521,13 @@
       ["Pastelería", "Cookies", "Cookie Chips", "Galleta artesanal con chips de chocolate.", "$900"],
       ["Pastelería", "Cookies", "Cookie Red Velvet", "Galleta roja con chocolate blanco.", "$950"],
       ["Sandwiches", "", "Tostado de Jamón y Queso", "Pan de campo, jamón cocido y queso.", "$2000"],
-      ["Sandwiches", "", "Bagel Capresse", "Bagel artesanal, tomate, mozzarella y albahaca.", "$2300"],
+      ["Sandwiches", "", "Bagel Capresse", "Bagel artesanal, tomate, mozzarella y albahaca.", "$2300", "https://res.cloudinary.com/drxznqm61/image/upload/v1753625624/Bagel-de-salmon-removebg-preview_jia8vv.png"],
       ["Sandwiches", "", "Croissant Veggie", "Croissant con vegetales grillados y queso.", "$2200"],
       ["Desayunos", "", "Combo Central", "Café + jugo + tostadas + mermelada y manteca.", "$2500"],
+      ["Bebidas", "Jugos Naturales", "Jugo de Naranja Natural", "Jugo exprimido al momento.", "$800", "https://res.cloudinary.com/drxznqm61/image/upload/v1753625743/limonadaembotella-removebg-preview_ajszh4.png"],
+      ["Bebidas", "Jugos Naturales", "Jugo de Manzana y Zanahoria", "Fresco y revitalizante.", "$900", "https://res.cloudinary.com/drxznqm61/image/upload/v1753625743/limonadaembotella-removebg-preview_ajszh4.png"],
+      ["Saludables", "Yogur", "Yogur Natural", "Limonada casera con menta y albahaca.", "$850", "https://res.cloudinary.com/drxznqm61/image/upload/v1753625560/Yogur-Griego-con-Frutos-Rojos-y-Granola-Casera-removebg-preview_vqcagd.png"],
+      ["Saludables", "Yogur", "Yogur con Granola y Frutas", "Yogur natural con granola casera y frutas de estación", "2000", "https://res.cloudinary.com/drxznqm61/image/upload/v1753625560/Yogur-Griego-con-Frutos-Rojos-y-Granola-Casera-removebg-preview_vqcagd.png"],
       ["Desayunos", "", "Granola Bowl", "Yogur natural, granola casera y frutas frescas.", "$1800"],
       ["Desayunos", "", "Tostadas Avocado", "Pan integral, palta, tomate y semillas.", "$2100"],
       ["Cafetería", "Especiales", "Mocha Latte", "Café espresso con leche vaporizada y chocolate.", "$1700"],
@@ -533,11 +545,12 @@
       ["Sandwiches", "", "Focaccia de Pollo", "Pan focaccia, pollo grillado, rúcula y pesto.", "$2400"],
       ["Sandwiches", "", "Croissant Capresse", "Croissant con tomate, albahaca y mozzarella.", "$2300"],
       ["Sandwiches", "", "Tostado Vegano", "Pan integral, hummus, palta y tomate seco.", "$2100"],
-      ["Sandwiches", "", "Bagel de Salmón", "Salmón ahumado, queso crema y alcaparras.", "$2700"],
+      ["Sandwiches", "", "Bagel de Salmón", "Salmón ahumado, queso crema y alcaparras.", "$2700", "https://res.cloudinary.com/drxznqm61/image/upload/v1753625624/Bagel-de-salmon-removebg-preview_jia8vv.png"],
       ["Desayunos", "", "Açai Bowl", "Base de açai con frutas, granola y coco.", "$2000"],
       ["Desayunos", "", "Tostadas Francesas", "Pan brioche con canela, miel y frutos secos.", "$1900"],
       ["Desayunos", "", "Huevos Benedicto", "Pan de campo, jamón cocido, huevo poché y salsa holandesa.", "$2600"],
       ["Desayunos", "", "Brunch Central", "Huevos, tostadas, café, jugo y mini torta.", "$3200"]
+      
     ];
 
     function renderCategoryMenu(rows) {
