@@ -8,7 +8,7 @@ from googleapiclient.discovery import build
 # === CONFIGURACIÓN ===
 MENU_RANGE = "Carta!A2:E26"
 FIJOS_RANGE = "Datos Permanentes!B2:B5"
-fecha_id = datetime.now().strftime("%Y%m%d-%H%M")
+fecha_id = datetime.now().strftime("%Y%m%d")
 
 # === AUTENTICACIÓN GOOGLE ===
 credentials_info = json.loads(os.environ["GOOGLE_CREDENTIALS"])
@@ -406,7 +406,7 @@ html = f"""<!DOCTYPE html>
             itemDiv.innerHTML = `
               <div class="menu-item-header">
                 <h4 class="menu-name">${{item.nombre}}</h4>
-                <span class="menu-price">${{item.precio}}</span>
+                <span class="menu-price">$${{item.precio}}</span>
               </div>
               <p class="menu-description">${{item.desc}}</p>
             `;
