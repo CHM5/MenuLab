@@ -387,8 +387,19 @@
       padding: 1rem;
       font-size: 1rem;
       color: #333;
+      text-align: left;
+    }
+    .faq-item summary {
+      text-align: left;
+      font-weight: 600;
+      cursor: pointer;
+      list-style: none;
     }
 
+    .faq-item p {
+      text-align: left;
+      margin-top: 0.5rem;
+    }
     /* Contacto */
     .cta26-button {
       margin-right: 12px;
@@ -824,6 +835,47 @@
           🛒 Productos seleccionados: <span id="cart-count">0</span>
         </div>
         <div class="products-grid">
+          <!-- Consultoría de Carta -->
+          <div class="product-card">
+            <div class="product-badge">Nuevo</div>
+            <div class="product-tilt-effect">
+              <div class="product-image">
+                <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1753627253/curaduria_ewnfus.avif" alt="Consultoría de Carta">
+              </div>
+            </div>
+            <div class="product-info">
+              <div class="product-category">Complemento</div>
+              <h2 class="product-title">Consultoría de Carta</h2>
+              <div class="product-description">
+                <p>Los servicios de menu consulting o curaduría enfocan el menú de tu restaurante como un activo estratégico, optimizando diseño, selección de ítems, 
+                  descripciones y estructura para maximizar atractivo y rentabilidad. Según expertos, esto mejora la experiencia del cliente y puede aumentar márgenes 
+                  y satisfacción.</p>
+              </div>
+              <div class="product-features">
+                <span class="feature">Identificación de platos estrella o de alta rentabilidad</span>
+                <span class="feature">Inclusión e información clara de opciones sin gluten o dietéticas</span>
+                <span class="feature">Descripciones persuasivas que conecten con el cliente</span>
+                <span class="feature">Diseño de carta coherente con el branding del negocio, mejorando la imagen</span>
+              </div>
+              <div class="product-bottom">
+                <div class="product-price">
+                  <span class="price-was">$121.000</span>
+                  <span class="price-now">$110.000</span>
+                </div>
+                <label>
+                  <input type="checkbox" class="product-checkbox cart-checkbox" data-product="Consultoria">
+                  <span style="font-size: 20px;">🛒</span>
+                </label>
+                <a href="form.html" class="product-button">
+                  <span class="button-text">Contratar</span>
+                </a>
+              </div>
+              <div class="product-meta">
+                <div class="product-stock">In Stock</div>
+              </div>
+            </div>
+          </div>
+
           <!-- MicroSite -->
           <div class="product-card">
               <div class="product-badge">Nuevo</div>
@@ -898,6 +950,7 @@
                   </div>
               </div>
           </div>
+
           <!-- Carta Simple Faz -->
           <div class="product-card">
               <div class="product-badge">Simple</div>
@@ -1219,8 +1272,8 @@
                   </div>
                   <div class="product-bottom">
                       <div class="product-price">
-                          <span class="price-was">$90.000</span>
-                          <span class="price-now">$75.000</span>
+                          <span class="price-was">$60.000</span>
+                          <span class="price-now">$50.000</span>
                       </div>
                       <label style="display: flex; align-items: center; gap: 8px; margin: 0;">
                         <input type="checkbox" class="product-checkbox cart-checkbox" data-product="traduccion">
@@ -1654,51 +1707,44 @@
             
             <details class="faq-item">
               <summary>¿Qué incluye el plan gratuito?</summary>
-              <p>El plan gratuito permite cargar hasta 25 productos y configurar los datos básicos de tu negocio. Es ideal para empezar sin costo. 
-                Probá la <a href="https://www.menulab.com.ar/demo/base.html" target="_blank" style="color: hotpink; text-decoration: underline;">Demo Base</a></p>
+              <p>El plan gratuito permite cargar hasta 25 productos y configurar los datos básicos de tu negocio.
+                Ideal para emprendimientos. Probá la <a href="https://www.menulab.com.ar/demo/base.html" target="_blank" style="color: hotpink; text-decoration: underline;">Demo Base.</a>
+              </p>
               </details>
-  
               <details class="faq-item">
                 <summary>¿Cómo acceden mis clientes a la carta digital?</summary>
-                <p>A través de un QR personalizado o url que te entregamos al crear tu carta.
-                Probá la <a href="https://www.menulab.com.ar/demo/emprendedor.html" target="_blank" style="color: hotpink; text-decoration: underline;">Demo Emprendedor</a></p>
+                <p>A través de un QR personalizado o url que te entregamos al crear tu carta. 
+                  Probá la <a href="https://www.menulab.com.ar/demo/emprendedor.html" target="_blank" style="color: hotpink; text-decoration: underline;">Demo Emprendedor.</a>
+                </p>
               </details>
-
-            
-            <details class="faq-item">
-              <summary>¿Qué formas de contacto puedo agregar a la carta?</summary>
-              <p>Se pueden incluir botones a tus redes sociales, WhatsApp y hasta redireccionamiento a Pedidos ya, Rappi y 
-                google Maps, dependiendo del plan. 
-                Probá la <a href="https://www.menulab.com.ar/demo/profesional.html" target="_blank" style="color: hotpink; text-decoration: underline;">Demo Profesional</a></p>
+              <details class="faq-item">
+                <summary>¿Qué formas de contacto puedo agregar a la carta?</summary>
+                <p>Se pueden incluir botones a tus redes sociales, WhatsApp y redireccionamiento a Pedidos ya, Rappi y google Maps, dependiendo del plan. 
+                  Probá la <a href="https://www.menulab.com.ar/demo/profesional.html" target="_blank" style="color: hotpink; text-decoration: underline;">Demo Profesional.</a>
+                </p>
               </details>
-              
               <details class="faq-item">
                 <summary>¿Puedo agregar fotos y promociones a mi carta?</summary>
                 <p>Sí. En el plan Corporativo podés sumar imágenes de platos y cargar promos por temporada como mensaje emergente. 
-                  Probá la <a href="https://www.menulab.com.ar/demo/corporativo.html" target="_blank" style="color: hotpink; text-decoration: underline;">Demo Corporativa</a></p>
+                  Probá la <a href="https://www.menulab.com.ar/demo/corporativo.html" target="_blank" style="color: hotpink; text-decoration: underline;">Demo Corporativa.</a></p>
                 </details>
-  
               <details class="faq-item">
                 <summary>¿Puedo actualizar mi carta después de publicada?</summary>
-                <p>Sí, podés hacer cambios en tiempo real desde cualquier dispositivo. Los cambios se ven reflejados al instante.</p>
+                <p>Sí, podés hacer cambios en tiempo real desde cualquier dispositivo. La actualización es instantánea.</p>
               </details>
-
-            <details class="faq-item">
-              <summary>¿Qué pasa si necesito más productos o funciones?</summary>
-              <p>Podés cambiar de plan en cualquier momento. Solo tenés que escribirnos y actualizamos tu cuenta sin complicaciones. 
-                También podemos cotizarte soluciones a medida.</p>
-            </details>
-
-            <details class="faq-item">
-              <summary>¿El diseño físico está incluido en los planes?</summary>
-              <p>No está incluido, pero tenés descuentos especiales según el plan que elijas. Podés combinar carta digital con carta impresa.</p>
-            </details>
-
-            <details class="faq-item">
-              <summary>¿Necesito conocimientos técnicos para usarlo?</summary>
-              <p>Para nada. Nosotros configuramos todo por vos. Para que te enfoques unicamente en el contenido de tu menú.</p>
-            </details>
-
+              <details class="faq-item">
+                <summary>¿Qué pasa si necesito más productos o funciones?</summary>
+                <p>Podés cambiar de plan en cualquier momento. Nos escribís y actualizamos tu cuenta sin complicaciones. 
+                  También te armamos soluciones a medida.</p>
+              </details>
+              <details class="faq-item">
+                <summary>¿El diseño físico está incluido en los planes?</summary>
+                <p>No está incluido, pero tenés descuentos especiales según el plan que elijas. Podés combinar carta digital con carta impresa.</p>
+              </details>
+              <details class="faq-item">
+                <summary>¿Necesito conocimientos técnicos para usarlo?</summary>
+                <p>Ninguno. Nosotros configuramos todo por vos, solo tenés q pasarnos el contenido del menú.</p>
+              </details>
           </div>
         </div>
       </section>
