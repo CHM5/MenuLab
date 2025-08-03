@@ -49,6 +49,7 @@
       <textarea name="comentario"></textarea><br>
 
       <button type="submit" style="margin-top: 20px;">Confirmar cita</button>
+      <span id="noPayLoader" style="display:none; margin-left:8px; justify-content: center;">⏳ Generando Cita ⏳</span>
     </form>
 
     <div style="text-align: center; margin-top: 30px;">
@@ -132,10 +133,16 @@
 
 
       // Manejador de envío
+      let isSubmitting = false;
+      const loader = document.getElementById('noPayLoader');
+
       document.getElementById('formTurno').addEventListener('submit', function (e) {
-        
         e.preventDefault();
         
+        if (isSubmitting) return; // previene doble submit
+        isSubmitting = true;
+        
+        loader.style.display = 'inline-block';
         const form = document.getElementById('formTurno');
         const data = new FormData(form); 
         const fecha = data.get("fechaTurno");
@@ -159,7 +166,8 @@
         
         if (fechasOcupadas.includes(clave)) {
           alert("Ya hay una reserva para ese día y hora.");
-          e.preventDefault();
+          isSubmitting = false;
+          loader.style.display = 'none'; 
           return;
         }       
         console.log("📦 Payload final:", new URLSearchParams(formDataObj).toString());

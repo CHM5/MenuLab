@@ -204,7 +204,8 @@ document.addEventListener('DOMContentLoaded', () => {
   
   // 1. Referencia al botón
   const btn2 = document.getElementById('btnReserva');
-  
+  const loader = document.getElementById('noPayLoader');
+
   // 2. Asegurarse de que el botón existe
   if (!btn2) {
     console.warn("⚠️ No se encontró el botón #btnReserva");
@@ -212,6 +213,7 @@ document.addEventListener('DOMContentLoaded', () => {
   } else {
     btn2.addEventListener('click', (e) => {
       e.preventDefault();
+      loader.style.display = 'inline-block';
       // 3. Cargar fechas ocupadas y guardar en variable
       fetch('https://script.google.com/macros/s/AKfycbwod9qGaXetAuQ_E3DG87Y8kgUgRNCoOlkib6tgMPXfQym6g47tJku_X1x8cxLa4jXB/exec')
         .then(res => res.json())
