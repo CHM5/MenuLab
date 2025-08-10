@@ -218,7 +218,7 @@ html = f"""<!DOCTYPE html>
       position: sticky;
       top: 0;
       z-index: 1000;
-      background: var(#457B9D);
+      background: #457B9D;
     }}
     #categoryMenu {{
       margin-top: -0.2rem;
@@ -295,23 +295,25 @@ html = f"""<!DOCTYPE html>
   </style>
 </head>
 <body>
-  <header class="header-style">
+  <header style="background: var(--header); color: #000; padding: 0.8rem 1rem 0.5rem 1rem; border-radius: 0 0 var(--radius) var(--radius);">
+    <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1752632048/cafe-central_ne83eh.png" alt="Banner Cafe Central" style="width:100%;display:block;margin-bottom:0.5rem;">
     <div class="container">
-      <a href="https://menulab.com.ar" target="_blank" rel="noopener">
-        <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1750637502/BannerMenuLab_mbtrzh.jpg" alt="Banner MenuLab" style="width:100%;display:block;margin-bottom:0.5rem;">
-      </a>
       <div class="header-flex">
         <div class="header-left">
-          <h1 id="nombre-resto" style="font-size:1.8rem; margin:0;color:#000;margin-top:0;margin-bottom:0;"></h1>
-          <h2 id="subtitulo-resto" style="margin:0.2rem 0 0.3rem 0;font-size:1rem;font-weight:400;font-style:italic;color:#000;"></h2>
+          <h1 id="nombre-resto" style="font-size:1.8rem; color:#000;">Café Central</h1>
+          <h2 id="subtitulo-resto" style="font-size:1rem; font-style:italic; font-weight:400; color:#000;"></h2>
         </div>
         <div class="header-right">
-          <div><span id="direccion-resto"> </span></div>
-          <div><span id="horarios-resto"> </span></div>
+          <div><span id="direccion-resto"></span></div>
+          <div><span id="horarios-resto"></span></div>
         </div>
       </div>
     </div>
   </header>
+
+  <div class="search-menu">
+    <input id="menuSearch" type="text" placeholder="Buscar en la carta..." style="padding: 0.5rem 1rem; border-radius: 20px; border: 1px solid #ccc; width: 90%; max-width: 400px; font-size: 1rem;" />
+  </div>
 
   <div id="categoryMenu" class="category-menu"></div>
 
@@ -328,14 +330,9 @@ html = f"""<!DOCTYPE html>
     <span class="thq-body-small">Desarrollado por</span>  
     <a href="https://menulab.com.ar" target="_blank" rel="noopener">
       <span style="display: inline-block; margin-left: 12px;">
-        <h1 style="
-          font-family: 'Unbounded', sans-serif;
-          font-weight: 600;
-          font-size: 100%;
-          margin-left: -10px;
+        <h1 style="font-family: 'Unbounded', sans-serif; font-weight: 600; font-size: 100%; margin-left: -10px;
           background: linear-gradient(90deg, #E639A6, #457B9D);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;">
+          -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
           MenuLab
         </h1>
       </span>
