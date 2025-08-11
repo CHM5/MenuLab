@@ -101,18 +101,22 @@ jobs:
           MENU_URL: https://menulab.com.ar/${{ steps.paths.outputs.menu_url }}
         run: |
           if [ "${{ steps.vars.outputs.plan }}" != "0" ]; then
-            # URL-encode del link completo para pasar por 'chl='
+            # URL-encode del link completo
             ENC_URL=$(printf '%s' "$MENU_URL" | jq -sRr @uri)
 
             {
               echo "qr_html<<EOF"
-              echo "<p>📲 Además, te adjuntamos el código QR exclusivo de tu menú para que puedas imprimirlo, colocarlo en mesas o compartirlo en redes:<br>👉 <a href='https://chart.googleapis.com/chart?cht=qr&chs=200x200&chl=$ENC_URL'>Descargar QR</a><br><img src='https://chart.googleapis.com/chart?cht=qr&chs=200x200&chl=$ENC_URL' alt='Código QR' width='140' style='margin-top:1rem;'></p>"
+              echo "<p>📲 Además, te adjuntamos el código QR exclusivo de tu menú para que puedas imprimirlo, colocarlo en mesas o compartirlo en redes:<br>
+              👉 <a href='https://quickchart.io/qr?size=200&text=$ENC_URL'>Descargar QR</a><br>
+              <img src='https://quickchart.io/qr?size=200&text=$ENC_URL' alt='Código QR' width='140' style='margin-top:1rem;'></p>"
               echo "EOF"
             } >> "$GITHUB_OUTPUT"
           else
             echo "qr_html=" >> "$GITHUB_OUTPUT"
           fi
 
+
+      # 7) Send client email
       - name: Enviar e‑mail al cliente
         uses: dawidd6/action-send-mail@v3
         with:
@@ -148,8 +152,6 @@ jobs:
                       <p>📝 Si querés modificar platos, precios o descripciones, podés hacerlo directamente desde tu planilla de gestión:<br>
                       👉 <a href="${{ steps.paths.outputs.sheet_url }}" style="color:#007bff;">Abrir Google Sheet</a></p>
 
-                      ${{ steps.qrblock.outputs.qr_html }}
-
                       <p>💡 Recordá que podés actualizar el contenido del menú en tiempo real desde tu planilla, sin necesidad de reenviar el enlace.</p>
 
                       <p style="margin-top:2rem;">¡Gracias por confiar en <strong>MenuLab</strong>!<br>
@@ -161,3 +163,14 @@ jobs:
               </center>
             </body>
             </html>
+
+      # 8) Guardar en Clientes links y referencias
+      - name: Guardar links en la hoja
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+          CLIENT_EMAIL: ${{ steps.vars.outputs.email }}
+          EXTERNAL_REF: ${{ steps.vars.outputs.external_reference }}
+          MENU_URL: https://menulab.com.ar/${{ steps.paths.outputs.menu_url }}
+          SHEET_URL: ${{ steps.paths.outputs.sheet_url }}
+        run: |
+          python scripts/add_links.py
