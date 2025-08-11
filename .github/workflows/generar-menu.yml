@@ -96,12 +96,24 @@ jobs:
       # 6) Set QR block
       - name: Set QR block
         id: qrblock
+        env:
+          MENU_URL: https://menulab.com.ar/${{ steps.paths.outputs.menu_url }}
         run: |
           if [ "${{ steps.vars.outputs.plan }}" != "0" ]; then
-            echo "qr_html=<p>📲 Además, te adjuntamos el código QR exclusivo de tu menú para que puedas imprimirlo, colocarlo en mesas o compartirlo en redes:<br>👉 <a href='https://chart.googleapis.com/chart?cht=qr&chs=200x200&chl=https://menulab.com.ar/${{ steps.paths.outputs.menu_url }}'>Descargar QR</a><br><img src='https://chart.googleapis.com/chart?cht=qr&chs=200x200&chl=https://menulab.com.ar/${{ steps.paths.outputs.menu_url }}' alt='Código QR' width='140' style='margin-top:1rem;'></p>" >> $GITHUB_OUTPUT
-          else
-            echo "qr_html=" >> $GITHUB_OUTPUT
-          fi
+            # URL-encode del link completo para usar en `chl=`
+            ENC_URL=$(python3 - <<'PY'
+            import os, urllib.parse
+            print(urllib.parse.quote(os.environ["MENU_URL"], safe=""))
+            PY
+            )
+                  {
+                    echo "qr_html<<EOF"
+                    echo "<p>📲 Además, te adjuntamos el código QR exclusivo de tu menú para que puedas imprimirlo, colocarlo en mesas o compartirlo en redes:<br>👉 <a href='https://chart.googleapis.com/chart?cht=qr&chs=200x200&chl=$ENC_URL'>Descargar QR</a><br><img src='https://chart.googleapis.com/chart?cht=qr&chs=200x200&chl=$ENC_URL' alt='Código QR' width='140' style='margin-top:1rem;'></p>"
+                    echo "EOF"
+                  } >> "$GITHUB_OUTPUT"
+                else
+                  echo "qr_html=" >> "$GITHUB_OUTPUT"
+                fi
 
       - name: Enviar e‑mail al cliente
         uses: dawidd6/action-send-mail@v3
@@ -151,15 +163,3 @@ jobs:
               </center>
             </body>
             </html>
-
-
-      # 7) Guardar en Clientes links y referencias
-      - name: Guardar links en la hoja
-        env:
-          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
-          CLIENT_EMAIL: ${{ steps.vars.outputs.email }}
-          EXTERNAL_REF: ${{ steps.vars.outputs.external_reference }}
-          MENU_URL: ${{ steps.paths.outputs.menu_url }}
-          SHEET_URL: ${{ steps.paths.outputs.sheet_url }}
-        run: |
-          python scripts/add_links.py
