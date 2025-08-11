@@ -98,7 +98,7 @@ jobs:
         id: qrblock
         run: |
           if [ "${{ steps.vars.outputs.plan }}" != "0" ]; then
-            echo "qr_html=<p>📲 Además, te adjuntamos el código QR exclusivo de tu menú para que puedas imprimirlo, colocarlo en mesas o compartirlo en redes:<br>👉 <a href='https://menulab.com.ar/qr/${{ steps.paths.outputs.menu_url }}.png'>Descargar QR</a><br><img src='https://menulab.com.ar/qr/${{ steps.paths.outputs.menu_url }}.png' alt='Código QR' width='140' style='margin-top:1rem;'></p>" >> $GITHUB_OUTPUT
+            echo "qr_html=<p>📲 Además, te adjuntamos el código QR exclusivo de tu menú para que puedas imprimirlo, colocarlo en mesas o compartirlo en redes:<br>👉 <a href='https://chart.googleapis.com/chart?cht=qr&chs=200x200&chl=https://menulab.com.ar/${{ steps.paths.outputs.menu_url }}'>Descargar QR</a><br><img src='https://chart.googleapis.com/chart?cht=qr&chs=200x200&chl=https://menulab.com.ar/${{ steps.paths.outputs.menu_url }}' alt='Código QR' width='140' style='margin-top:1rem;'></p>" >> $GITHUB_OUTPUT
           else
             echo "qr_html=" >> $GITHUB_OUTPUT
           fi
