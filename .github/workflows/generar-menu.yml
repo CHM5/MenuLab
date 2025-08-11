@@ -48,7 +48,7 @@ jobs:
       - name: Setear EXTERNAL_REFERENCE desde payload
         run: echo "EXTERNAL_REFERENCE=${{ steps.vars.outputs.external_reference }}" >> $GITHUB_ENV
 
-      # 3) Ejecutar script Python correspondiente al plan
+      # 4) Ejecutar script Python correspondiente al plan
       - name: Ejecutar script según plan
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
@@ -68,14 +68,14 @@ jobs:
               ;;
           esac
 
-      # 4) Leer archivos de salida
+      # 5) Leer archivos de salida
       - name: Capturar URLs generadas
         id: paths
         run: |
           echo "menu_url=$(cat menu_url.txt)" >> $GITHUB_OUTPUT
           echo "sheet_url=$(cat sheet_url.txt)" >> $GITHUB_OUTPUT
 
-      # 5) Commit + push al repo
+      # 6) Commit + push al repo
       - name: Configurar clave SSH
         run: |
           mkdir -p ~/.ssh
@@ -93,7 +93,7 @@ jobs:
           git pull --rebase origin main
           git push origin HEAD:main
 
-      # 6) Set QR block
+      # 7) Set QR block
       - name: Set QR block
         id: qrblock
         shell: bash
@@ -115,8 +115,11 @@ jobs:
             echo "qr_html=" >> "$GITHUB_OUTPUT"
           fi
 
+      # 8) Esperar 2 minutos para asegurar que la URL esté disponible
+      - name: Esperar 2 minutos antes de enviar el mail
+        run: sleep 120
 
-      # 7) Send client email
+      # 9) Send client email
       - name: Enviar e‑mail al cliente
         uses: dawidd6/action-send-mail@v3
         with:
@@ -166,7 +169,7 @@ jobs:
             </body>
             </html>
 
-      # 8) Guardar en Clientes links y referencias
+      # 10) Guardar en Clientes links y referencias
       - name: Guardar links en la hoja
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
