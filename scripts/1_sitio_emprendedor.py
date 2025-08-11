@@ -216,7 +216,7 @@ html = f"""<!DOCTYPE html>
       scrollbar-width: thin;
       scrollbar-color: #457B9D #eee;
       position: sticky;
-      top: 0;
+      top: 50px;
       z-index: 1000;
       background: var(#457B9D);
     }}
@@ -229,6 +229,13 @@ html = f"""<!DOCTYPE html>
     .category-menu::-webkit-scrollbar-thumb {{
       background: #457B9D;
       border-radius: 10px;
+    }}
+    .search-menu {{
+      text-align: center;
+      margin: 1rem 0;
+      position: sticky;
+      top: 0;
+      padding-top: 8px;
     }}
     .category-btn {{
       background: #457B9D;
@@ -296,10 +303,8 @@ html = f"""<!DOCTYPE html>
 </head>
 <body>
   <header class="header-style">
+    <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1752632048/cafe-central_ne83eh.png" alt="Banner Cafe Central" style="width:100%;display:block;margin-bottom:0.5rem;">
     <div class="container">
-          <a href="https://menulab.com.ar" target="_blank" rel="noopener">
-        <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1750637502/BannerMenuLab_mbtrzh.jpg" alt="Banner MenuLab" style="width:100%;display:block;margin-bottom:0.5rem;">
-      </a>
       <div class="header-flex">
         <div class="header-left">
           <h1 id="nombre-resto" style="font-size:1.8rem; color:#000;">Café Central</h1>
@@ -312,7 +317,14 @@ html = f"""<!DOCTYPE html>
       </div>
     </div>
   </header>
-
+  <div class="search-menu">
+    <input
+      id="menuSearch"
+      type="text"
+      placeholder="Buscar en la carta..."
+      style="padding: 0.5rem 1rem; border-radius: 20px; border: 1px solid #ccc; width: 90%; max-width: 400px; font-size: 1rem;"
+    />
+  </div>
   <div id="categoryMenu" class="category-menu"></div>
 
   <div class="container">
@@ -413,6 +425,22 @@ html = f"""<!DOCTYPE html>
       }});
     }}
 
+    function filterMenuRows(rows, query) {{
+      if (!query) return rows;
+      const q = query.trim().toLowerCase();
+      return rows.filter(cols =>
+        cols.some(cell => cell && cell.toLowerCase().includes(q))
+      );
+    }}
+
+    const searchInput = document.getElementById('menuSearch');
+    searchInput.addEventListener('input', function () {{
+      const filtered = filterMenuRows(allRows, this.value);
+      renderMenuGrouped(filtered);
+      renderCategoryMenu(filtered);
+      document.getElementById('noResults').style.display = filtered.length === 0 ? "block" : "none";
+    }});
+    
     fetch(CSV_URL)
       .then(r => r.text())
       .then(data => {{
