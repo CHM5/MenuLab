@@ -152,6 +152,8 @@ jobs:
                       <p>📝 Si querés modificar platos, precios o descripciones, podés hacerlo directamente desde tu planilla de gestión:<br>
                       👉 <a href="${{ steps.paths.outputs.sheet_url }}" style="color:#007bff;">Abrir Google Sheet</a></p>
 
+                      ${{ steps.qrblock.outputs.qr_html }} 
+
                       <p>💡 Recordá que podés actualizar el contenido del menú en tiempo real desde tu planilla, sin necesidad de reenviar el enlace.</p>
 
                       <p style="margin-top:2rem;">¡Gracias por confiar en <strong>MenuLab</strong>!<br>
