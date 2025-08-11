@@ -41,7 +41,7 @@ except Exception as e:
     print(f"⚠️ Advertencia: no se pudo validar conexión con Sheets: {e}")
 
 # === GENERAR HTML ===
-output_dir = Path(f"planes/menu-base-{fecha_id}")
+output_dir = Path(f"planes/menu-profesional-{fecha_id}")
 output_dir.mkdir(parents=True, exist_ok=True)
 html_file = output_dir / "index.html"
 
@@ -447,6 +447,6 @@ print("📄 Planilla conectada:", sheet_url)
 
 # === EXPORTAR PATHS PARA WORKFLOW
 with open("menu_url.txt", "w") as f:
-    f.write(f"planes/menu-base-{fecha_id}/index.html")
+    f.write(f"planes/menu-profesional-{fecha_id}/index.html")
 with open("sheet_url.txt", "w") as f:
     f.write(sheet_url)
