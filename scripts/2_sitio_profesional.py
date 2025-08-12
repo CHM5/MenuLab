@@ -41,7 +41,7 @@ except Exception as e:
     print(f"⚠️ Advertencia: no se pudo validar conexión con Sheets: {e}")
 
 # === GENERAR HTML ===
-output_dir = Path(f"planes/menu-profesional-{fecha_id}")
+output_dir = Path(f"planes/menu-emprendedor-{fecha_id}")
 output_dir.mkdir(parents=True, exist_ok=True)
 html_file = output_dir / "index.html"
 
@@ -216,7 +216,7 @@ html = f"""<!DOCTYPE html>
       scrollbar-width: thin;
       scrollbar-color: #457B9D #eee;
       position: sticky;
-      top: 0;
+      top: 50px;
       z-index: 1000;
       background: var(#457B9D);
     }}
@@ -229,6 +229,13 @@ html = f"""<!DOCTYPE html>
     .category-menu::-webkit-scrollbar-thumb {{
       background: #457B9D;
       border-radius: 10px;
+    }}
+    .search-menu {{
+      text-align: center;
+      margin: 1rem 0;
+      position: sticky;
+      top: 0;
+      padding-top: 8px;
     }}
     .category-btn {{
       background: #457B9D;
@@ -286,6 +293,56 @@ html = f"""<!DOCTYPE html>
         margin-top: 0.3rem; /* acercálo al bloque superior */
       }}
     }}
+    /* Estilos para el botón de WhatsApp flotante */
+    #whatsapp-float {{
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #25D366;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 56px;
+      height: 56px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+      z-index: 1000;
+      transition: background 0.3s;
+    }}
+
+    #whatsapp-float:hover {{
+      background: #128C7E;
+    }}
+
+    #whatsapp-float img {{
+      width: 24px;
+      height: 24px;
+    }}
+
+    .header-socials {{
+        text-align: center;
+        margin: 0rem 10px 0.5rem 10px;
+        background-color: #f1f1f1; /* gris clarito */
+        border-radius: 10px; /* bordes redondeados */
+        padding: 0.5rem 1rem; /* opcional, para que respire */
+    }}
+
+    .header-socials a {{
+      margin: 0 10px;
+      display: inline-block;
+    }}
+
+    .header-socials img {{
+      width: 30px;
+      height: 30px;
+      transition: transform 0.3s;
+    }}
+
+    .header-socials img:hover {{
+      transform: scale(1.1);
+    }}
     .header-style {{
       background: var(--header);
       color: #000;
@@ -296,13 +353,11 @@ html = f"""<!DOCTYPE html>
 </head>
 <body>
   <header class="header-style">
-    <div class="container">
-          <a href="https://menulab.com.ar" target="_blank" rel="noopener">
-        <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1750637502/BannerMenuLab_mbtrzh.jpg" alt="Banner MenuLab" style="width:100%;display:block;margin-bottom:0.5rem;">
-      </a>
+      <img id="banner-resto" src="" alt="Banner" style="width:100%;display:block;margin-bottom:0.5rem;">    
+      <div class="container">
       <div class="header-flex">
         <div class="header-left">
-          <h1 id="nombre-resto" style="font-size:1.8rem; color:#000;">Café Central</h1>
+          <h1 id="nombre-resto" style="font-size:1.8rem; color:#000;"></h1>
           <h2 id="subtitulo-resto" style="font-size:1rem; font-style:italic; font-weight:400; color:#000;"></h2>
         </div>
         <div class="header-right">
@@ -312,7 +367,15 @@ html = f"""<!DOCTYPE html>
       </div>
     </div>
   </header>
-
+  <div class="header-socials" id="headerSocials"></div>
+  <div class="search-menu">
+    <input
+      id="menuSearch"
+      type="text"
+      placeholder="Buscar en la carta..."
+      style="padding: 0.5rem 1rem; border-radius: 20px; border: 1px solid #ccc; width: 90%; max-width: 400px; font-size: 1rem;"
+    />
+  </div>
   <div id="categoryMenu" class="category-menu"></div>
 
   <div class="container">
@@ -336,7 +399,10 @@ html = f"""<!DOCTYPE html>
       </span>
     </a>
   </footer>
-
+  <!-- Botón de WhatsApp flotante (sin href fijo) -->
+  <a href="#" target="_blank" id="whatsapp-float" aria-label="WhatsApp">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" style="width:56px;height:56px;">
+  </a>
   <script>
     const CSV_URL = "{csv_url}";
     const FIJOS_URL = "{fijos_csv_url}";
@@ -413,12 +479,29 @@ html = f"""<!DOCTYPE html>
       }});
     }}
 
+    function filterMenuRows(rows, query) {{
+      if (!query) return rows;
+      const q = query.trim().toLowerCase();
+      return rows.filter(cols =>
+        cols.some(cell => cell && cell.toLowerCase().includes(q))
+      );
+    }}
+
+    const searchInput = document.getElementById('menuSearch');
+    searchInput.addEventListener('input', function () {{
+      const filtered = filterMenuRows(allRows, this.value);
+      renderMenuGrouped(filtered);
+      renderCategoryMenu(filtered);
+      document.getElementById('noResults').style.display = filtered.length === 0 ? "block" : "none";
+    }});
+
+    let allRows = [];
     fetch(CSV_URL)
       .then(r => r.text())
       .then(data => {{
-        const rows = data.split("\\n").slice(1).map(r => r.split(",").map(c => c.replace(/\"/g, "")));
-        renderMenuGrouped(rows);
-        renderCategoryMenu(rows);
+        allRows = data.split("\\n").slice(1).map(r => r.split(",").map(c => c.replace(/\"/g, "")));
+        renderMenuGrouped(allRows);
+        renderCategoryMenu(allRows);
       }})
       .catch(err => {{
         document.getElementById("noResults").style.display = "block";
@@ -433,6 +516,56 @@ html = f"""<!DOCTYPE html>
         document.getElementById("subtitulo-resto").textContent = rows[2]?.[1]?.replace(/"/g, "").trim() || "";
         document.getElementById("direccion-resto").textContent = rows[3]?.[1]?.replace(/"/g, "").trim() || "";
         document.getElementById("horarios-resto").textContent  = rows[4]?.[1]?.replace(/"/g, "").trim() || "";
+        document.getElementById("banner-resto").src            = rows[5]?.[1]?.replace(/"/g, "").trim() || "";
+        document.getElementById("whatsapp-float").href         = "https://wa.me/" + (rows[8]?.[1]?.replace(/"/g, "").trim().replace(/[^0-9]/g, "") || "");
+        const socialLinks = [
+          {{
+            href: rows[9]?.[1]?.trim() || "",
+            img: "https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png",
+            alt: "Instagram",
+            label: "Instagram"
+          }},
+          {{
+            href: rows[10]?.[1]?.trim() || "",
+            img: "https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg",
+            alt: "Facebook",
+            label: "Facebook"
+          }},
+          {{
+            href: rows[11]?.[1]?.trim() || "",
+            img: "https://res.cloudinary.com/drxznqm61/image/upload/v1752716379/rappi_oul48p.png",
+            alt: "Rappi",
+            label: "Rappi"
+          }},
+          {{
+            href: rows[12]?.[1]?.trim() || "",
+            img: "https://res.cloudinary.com/drxznqm61/image/upload/v1752716289/pedidosya_q40sz4.png",
+            alt: "PedidosYa",
+            label: "PedidosYa"
+          }},
+          {{
+            href: rows[13]?.[1]?.trim() || "",
+            img: "https://res.cloudinary.com/drxznqm61/image/upload/v1752716133/googlemaps-removebg-preview_xh3ivm.png",
+            alt: "Google Maps",
+            label: "Google Maps"
+          }}
+        ];
+
+        const socialsDiv = document.getElementById('headerSocials');
+        socialsDiv.innerHTML = "";
+        socialLinks.forEach(social => {{
+          if (social.href && social.href.trim() !== "") {{
+            const a = document.createElement('a');
+            a.href = social.href;
+            a.target = "_blank";
+            a.setAttribute('aria-label', social.label);
+            const img = document.createElement('img');
+            img.src = social.img;
+            img.alt = social.alt;
+            a.appendChild(img);
+            socialsDiv.appendChild(a);
+          }}
+        }});
       }});
   </script>
 </body>
@@ -447,6 +580,6 @@ print("📄 Planilla conectada:", sheet_url)
 
 # === EXPORTAR PATHS PARA WORKFLOW
 with open("menu_url.txt", "w") as f:
-    f.write(f"planes/menu-profesional-{fecha_id}/index.html")
+    f.write(f"planes/menu-emprendedor-{fecha_id}/index.html")
 with open("sheet_url.txt", "w") as f:
     f.write(sheet_url)
