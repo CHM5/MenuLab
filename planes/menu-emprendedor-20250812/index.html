@@ -303,8 +303,8 @@
   </footer>
 
   <script>
-    const CSV_URL = "https://docs.google.com/spreadsheets/d/1zTzVWffHMZ_a5_0h3l2HgV9ljFHkCC8Fhp8wSsknpJ0/gviz/tq?tqx=out:csv";
-    const FIJOS_URL = "https://docs.google.com/spreadsheets/d/1zTzVWffHMZ_a5_0h3l2HgV9ljFHkCC8Fhp8wSsknpJ0/gviz/tq?tqx=out:csv&sheet=Datos%20Permanentes";
+    const CSV_URL = "https://docs.google.com/spreadsheets/d/1KQln4sGG_PcxSgtpxz0ga_TkdY9Mi328JURjg1X37mA/gviz/tq?tqx=out:csv";
+    const FIJOS_URL = "https://docs.google.com/spreadsheets/d/1KQln4sGG_PcxSgtpxz0ga_TkdY9Mi328JURjg1X37mA/gviz/tq?tqx=out:csv&sheet=Datos%20Permanentes";
 
     function renderCategoryMenu(rows) {
       const categories = [...new Set(rows.map(r => r[0].trim()).filter(Boolean))];
@@ -388,18 +388,19 @@
 
     const searchInput = document.getElementById('menuSearch');
     searchInput.addEventListener('input', function () {
-      const filtered = filterMenuRows(rows, this.value);
+      const filtered = filterMenuRows(allRows, this.value);
       renderMenuGrouped(filtered);
       renderCategoryMenu(filtered);
       document.getElementById('noResults').style.display = filtered.length === 0 ? "block" : "none";
     });
-    
+
+    let allRows = [];
     fetch(CSV_URL)
       .then(r => r.text())
       .then(data => {
-        const rows = data.split("\n").slice(1).map(r => r.split(",").map(c => c.replace(/"/g, "")));
-        renderMenuGrouped(rows);
-        renderCategoryMenu(rows);
+        allRows = data.split("\n").slice(1).map(r => r.split(",").map(c => c.replace(/"/g, "")));
+        renderMenuGrouped(allRows);
+        renderCategoryMenu(allRows);
       })
       .catch(err => {
         document.getElementById("noResults").style.display = "block";
