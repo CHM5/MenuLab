@@ -4,6 +4,7 @@ from pathlib import Path
 from datetime import datetime
 from google.oauth2.service_account import Credentials
 from googleapiclient.discovery import build
+import hashlib
 
 # === CONFIGURACIÓN ===
 MENU_RANGE = "Menu!A2:E26"
@@ -41,7 +42,11 @@ except Exception as e:
     print(f"⚠️ Advertencia: no se pudo validar conexión con Sheets: {e}")
 
 # === GENERAR HTML ===
-output_dir = Path(f"planes/menu-emprendedor-{fecha_id}")
+# Generar hash único de 5 dígitos usando la fecha y la URL de la planilla
+hash_input = f"{fecha_id}-{sheet_url}".encode("utf-8")
+hash_str = hashlib.sha1(hash_input).hexdigest()[:5]
+
+output_dir = Path(f"planes/menu-emprendedor-{fecha_id}-{hash_str}")
 output_dir.mkdir(parents=True, exist_ok=True)
 html_file = output_dir / "index.html"
 
@@ -477,6 +482,6 @@ print("📄 Planilla conectada:", sheet_url)
 
 # === EXPORTAR PATHS PARA WORKFLOW
 with open("menu_url.txt", "w") as f:
-    f.write(f"planes/menu-emprendedor-{fecha_id}/index.html")
+    f.write(f"planes/menu-emprendedor-{fecha_id}-{hash_str}/index.html")
 with open("sheet_url.txt", "w") as f:
     f.write(sheet_url)

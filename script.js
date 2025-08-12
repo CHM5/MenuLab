@@ -54,6 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { label: '<br></br>📷 Fotos de Platos', info: 'Galería fotográfica para mostrar tus productos' },
         { label: '🛍️ Promos por Temporada', info: 'Mensajes pop up promocionales' },
         { label: '🛒 Pedidos por web', info: 'Permití que tus clientes hagan pedidos directamente desde la carta online' },
+        { label: '💳 Link de pago ', info: 'Agregá un link de pago para que tus clientes paguen online' },
         { label: '🌐 Dominio Propio', info: 'URL personalizable www.tunegocio.com.ar' },
         { label: '📞 Atención Prioritaria', info: 'Tiempo de respuesta en menos de 24h' },
         { label: '<div style="text-align:center;"><b><br></br>EXTRA</b></div>' },

@@ -238,6 +238,7 @@ if (mpRedirectBtn) {
                     <li>✅ Fotos de Platos</li>
                     <li>✅ Promos por Temporada</li>
                     <li>✅ Pedidos por web</li>
+                    <li>✅ Link de pago</li>
                     <li>✅ Dominio Propio</li>
                     <li>✅ Atención Prioritaria</li>
                     <li>
