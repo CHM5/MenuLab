@@ -215,7 +215,7 @@ document.addEventListener('DOMContentLoaded', () => {
       e.preventDefault();
       loader.style.display = 'inline-block';
       // 3. Cargar fechas ocupadas y guardar en variable
-      fetch('https://script.google.com/macros/s/AKfycbwod9qGaXetAuQ_E3DG87Y8kgUgRNCoOlkib6tgMPXfQym6g47tJku_X1x8cxLa4jXB/exec')
+      fetch('https://script.google.com/macros/s/AKfycbx4eTbkgmuLpOK16HIL_AWwu-d9Ju9JdBY-FmruZCGMKqSgCrJFYnmLJ6Q-i_J2WHgb/exec')
         .then(res => res.json())
         .then(data => {
           console.log("📅 Fechas ocupadas:", fechasOcupadas);

@@ -303,9 +303,9 @@
     </a>
   </footer>
 
-  <script type="d4b56ea7ab430880fcaee0de-text/javascript">
-    const CSV_URL = "https://docs.google.com/spreadsheets/d/1cN2YBIcCIKvNYTimKXv2-Mz0swQNVs-RMhMtWJkQfqc/gviz/tq?tqx=out:csv";
-    const FIJOS_URL = "https://docs.google.com/spreadsheets/d/1cN2YBIcCIKvNYTimKXv2-Mz0swQNVs-RMhMtWJkQfqc/gviz/tq?tqx=out:csv&sheet=Datos%20Permanentes";
+  <script type="fa1c8ec1436fb013d3814fc9-text/javascript">
+    const CSV_URL = "https://docs.google.com/spreadsheets/d/11DjVESJEjWHR0tqbpGCAyZ7ZENLfOcHJB0ACF0XLEi8/gviz/tq?tqx=out:csv";
+    const FIJOS_URL = "https://docs.google.com/spreadsheets/d/11DjVESJEjWHR0tqbpGCAyZ7ZENLfOcHJB0ACF0XLEi8/gviz/tq?tqx=out:csv&sheet=Datos%20Permanentes";
 
     function renderCategoryMenu(rows) {
       const categories = [...new Set(rows.map(r => r[0].trim()).filter(Boolean))];
@@ -367,7 +367,7 @@
             itemDiv.innerHTML = `
               <div class="menu-item-header">
                 <h4 class="menu-name">${item.nombre}</h4>
-                <span class="menu-price">${item.precio}</span>
+                <span class="menu-price">$${item.precio}</span>
               </div>
               <p class="menu-description">${item.desc}</p>
             `;
@@ -398,10 +398,9 @@
     fetch(CSV_URL)
       .then(r => r.text())
       .then(data => {
-        allRows = data.split("
-").slice(1).map(r => r.split(",").map(c => c.replace(/"/g, "")));
-        renderMenuGrouped(allRows);
-        renderCategoryMenu(allRows);
+        const rows = data.split("\n").slice(1).map(r => r.split(",").map(c => c.replace(/"/g, "")));
+        renderMenuGrouped(rows);
+        renderCategoryMenu(rows);
       })
       .catch(err => {
         document.getElementById("noResults").style.display = "block";
@@ -419,5 +418,5 @@
         document.getElementById("banner-resto").src            = rows[5]?.[1]?.replace(/"/g, "").trim() || "";
       });
   </script>
-<script src="/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" data-cf-settings="d4b56ea7ab430880fcaee0de-|49" defer></script></body>
+<script src="/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" data-cf-settings="fa1c8ec1436fb013d3814fc9-|49" defer></script></body>
 </html>

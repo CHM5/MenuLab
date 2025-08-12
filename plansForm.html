@@ -217,7 +217,7 @@
 
                         "5% OFF en Productos"
                     ],
-                    mpLink: "https://www.mercadopago.com.ar/subscriptions/checkout?preapproval_plan_id=2c938084968c9eaa01969982254c05d0"
+                    mpLink: "https://www.mercadopago.com.ar/subscriptions/checkout?preapproval_plan_id=2c938084966c84bc01969976d53f14d2"
                 },
                 2: {
                     name: "Plan Profesional Mensual",
@@ -242,7 +242,7 @@
 
                         "10% OFF en productos"
                     ],
-                    mpLink: "https://www.mercadopago.com.ar/subscriptions/checkout?preapproval_plan_id=2c938084968c9eaa01969982254c05d0"
+                    mpLink: "https://www.mercadopago.com.ar/subscriptions/checkout?preapproval_plan_id=2c9380849696ea8201969bd7708d01ac"
                 },
                 3: {
                     name: "Plan Corporativo Mensual",
@@ -271,7 +271,7 @@
 
                         "15% OFF en productos"
                     ],
-                    mpLink: "https://www.mercadopago.com.ar/subscriptions/checkout?preapproval_plan_id=2c938084968c9eaa01969982254c05d0"
+                    mpLink: "https://www.mercadopago.com.ar/subscriptions/checkout?preapproval_plan_id=2c938084968c9eaa01969bd7f0f4062c"
                 },
                 4: {
                     name: "Plan Emprendedor Anual",
@@ -292,7 +292,7 @@
                         
                         "10% OFF en productos"
                     ],
-                    mpLink: "https://www.mercadopago.com.ar/subscriptions/checkout?preapproval_plan_id=2c938084968c9eaa01969982254c05d0"
+                    mpLink: "https://www.mercadopago.com.ar/subscriptions/checkout?preapproval_plan_id=2c9380849721f5e501972934c13602ad"
                 },
                 5: {
                     name: "Plan Profesional Anual",
@@ -474,7 +474,7 @@
                     };
                     console.log("📦 Enviando registro previo:", dataObj);
                     // Enviamos al Apps Script antes de redirigir
-                    fetch("https://script.google.com/macros/s/AKfycbwod9qGaXetAuQ_E3DG87Y8kgUgRNCoOlkib6tgMPXfQym6g47tJku_X1x8cxLa4jXB/exec", {
+                    fetch("https://script.google.com/macros/s/AKfycbx4eTbkgmuLpOK16HIL_AWwu-d9Ju9JdBY-FmruZCGMKqSgCrJFYnmLJ6Q-i_J2WHgb/exec", {
                         method: "POST",
                         headers: { "Content-Type": "application/x-www-form-urlencoded" },
                         body: new URLSearchParams(dataObj).toString()
@@ -533,7 +533,7 @@
                     console.log("a");
 
                     // Enviar datos a Apps Script usando form-urlencoded
-                    const url = "https://script.google.com/macros/s/AKfycbwod9qGaXetAuQ_E3DG87Y8kgUgRNCoOlkib6tgMPXfQym6g47tJku_X1x8cxLa4jXB/exec"
+                    const url = "https://script.google.com/macros/s/AKfycbx4eTbkgmuLpOK16HIL_AWwu-d9Ju9JdBY-FmruZCGMKqSgCrJFYnmLJ6Q-i_J2WHgb/exec"
                     fetch(url, {
                         method: "POST",
                         mode: "no-cors",
@@ -573,7 +573,7 @@
             if (preapprovalId) {
                 console.log("🔁 Detected preapproval_id, enviando a Apps Script:", preapprovalId);
                 
-                fetch("https://script.google.com/macros/s/AKfycbwod9qGaXetAuQ_E3DG87Y8kgUgRNCoOlkib6tgMPXfQym6g47tJku_X1x8cxLa4jXB/exec", {
+                fetch("https://script.google.com/macros/s/AKfycbx4eTbkgmuLpOK16HIL_AWwu-d9Ju9JdBY-FmruZCGMKqSgCrJFYnmLJ6Q-i_J2WHgb/exec", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/x-www-form-urlencoded"
