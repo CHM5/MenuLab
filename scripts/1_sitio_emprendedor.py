@@ -435,18 +435,19 @@ html = f"""<!DOCTYPE html>
 
     const searchInput = document.getElementById('menuSearch');
     searchInput.addEventListener('input', function () {{
-      const filtered = filterMenuRows(rows, this.value);
+      const filtered = filterMenuRows(allRows, this.value);
       renderMenuGrouped(filtered);
       renderCategoryMenu(filtered);
       document.getElementById('noResults').style.display = filtered.length === 0 ? "block" : "none";
     }});
-    
+
+    let allRows = [];
     fetch(CSV_URL)
       .then(r => r.text())
       .then(data => {{
-        const rows = data.split("\\n").slice(1).map(r => r.split(",").map(c => c.replace(/\"/g, "")));
-        renderMenuGrouped(rows);
-        renderCategoryMenu(rows);
+        allRows = data.split("\\n").slice(1).map(r => r.split(",").map(c => c.replace(/\"/g, "")));
+        renderMenuGrouped(allRows);
+        renderCategoryMenu(allRows);
       }})
       .catch(err => {{
         document.getElementById("noResults").style.display = "block";

@@ -303,9 +303,9 @@
     </a>
   </footer>
 
-  <script type="fa1c8ec1436fb013d3814fc9-text/javascript">
-    const CSV_URL = "https://docs.google.com/spreadsheets/d/11DjVESJEjWHR0tqbpGCAyZ7ZENLfOcHJB0ACF0XLEi8/gviz/tq?tqx=out:csv";
-    const FIJOS_URL = "https://docs.google.com/spreadsheets/d/11DjVESJEjWHR0tqbpGCAyZ7ZENLfOcHJB0ACF0XLEi8/gviz/tq?tqx=out:csv&sheet=Datos%20Permanentes";
+  <script type="e5a4585b6076f72d2c86558b-text/javascript">
+    const CSV_URL = "https://docs.google.com/spreadsheets/d/1zTzVWffHMZ_a5_0h3l2HgV9ljFHkCC8Fhp8wSsknpJ0/gviz/tq?tqx=out:csv";
+    const FIJOS_URL = "https://docs.google.com/spreadsheets/d/1zTzVWffHMZ_a5_0h3l2HgV9ljFHkCC8Fhp8wSsknpJ0/gviz/tq?tqx=out:csv&sheet=Datos%20Permanentes";
 
     function renderCategoryMenu(rows) {
       const categories = [...new Set(rows.map(r => r[0].trim()).filter(Boolean))];
@@ -389,16 +389,17 @@
 
     const searchInput = document.getElementById('menuSearch');
     searchInput.addEventListener('input', function () {
-      const filtered = filterMenuRows(allRows, this.value);
+      const filtered = filterMenuRows(rows, this.value);
       renderMenuGrouped(filtered);
       renderCategoryMenu(filtered);
       document.getElementById('noResults').style.display = filtered.length === 0 ? "block" : "none";
     });
     
+    let rows = []; 
     fetch(CSV_URL)
       .then(r => r.text())
       .then(data => {
-        const rows = data.split("\n").slice(1).map(r => r.split(",").map(c => c.replace(/"/g, "")));
+        allRows = data.split("\n").slice(1).map(r => r.split(",").map(c => c.replace(/"/g, "")));
         renderMenuGrouped(rows);
         renderCategoryMenu(rows);
       })
@@ -418,5 +419,5 @@
         document.getElementById("banner-resto").src            = rows[5]?.[1]?.replace(/"/g, "").trim() || "";
       });
   </script>
-<script src="/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" data-cf-settings="fa1c8ec1436fb013d3814fc9-|49" defer></script></body>
+<script src="/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" data-cf-settings="e5a4585b6076f72d2c86558b-|49" defer></script></body>
 </html>
