@@ -413,7 +413,7 @@ html = f"""<!DOCTYPE html>
             itemDiv.innerHTML = `
               <div class="menu-item-header">
                 <h4 class="menu-name">${{item.nombre}}</h4>
-                <span class="menu-price">${{item.precio}}</span>
+                <span class="menu-price">$${{item.precio}}</span>
               </div>
               <p class="menu-description">${{item.desc}}</p>
             `;
@@ -444,9 +444,9 @@ html = f"""<!DOCTYPE html>
     fetch(CSV_URL)
       .then(r => r.text())
       .then(data => {{
-        allRows = data.split("\n").slice(1).map(r => r.split(",").map(c => c.replace(/\"/g, "")));
-        renderMenuGrouped(allRows);
-        renderCategoryMenu(allRows);
+        const rows = data.split("\\n").slice(1).map(r => r.split(",").map(c => c.replace(/\"/g, "")));
+        renderMenuGrouped(rows);
+        renderCategoryMenu(rows);
       }})
       .catch(err => {{
         document.getElementById("noResults").style.display = "block";

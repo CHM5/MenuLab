@@ -302,7 +302,7 @@ html = f"""<!DOCTYPE html>
       </a>
       <div class="header-flex">
         <div class="header-left">
-          <h1 id="nombre-resto" style="font-size:1.8rem; color:#000;">Café Central</h1>
+          <h1 id="nombre-resto" style="font-size:1.8rem; color:#000;"></h1>
           <h2 id="subtitulo-resto" style="font-size:1rem; font-style:italic; font-weight:400; color:#000;"></h2>
         </div>
         <div class="header-right">
