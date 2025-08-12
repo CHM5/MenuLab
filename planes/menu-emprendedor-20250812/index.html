@@ -303,8 +303,8 @@
   </footer>
 
   <script>
-    const CSV_URL = "https://docs.google.com/spreadsheets/d/11DjVESJEjWHR0tqbpGCAyZ7ZENLfOcHJB0ACF0XLEi8/gviz/tq?tqx=out:csv";
-    const FIJOS_URL = "https://docs.google.com/spreadsheets/d/11DjVESJEjWHR0tqbpGCAyZ7ZENLfOcHJB0ACF0XLEi8/gviz/tq?tqx=out:csv&sheet=Datos%20Permanentes";
+    const CSV_URL = "https://docs.google.com/spreadsheets/d/1mHlN1M07m6bmoA7z1AFeWwYtpXXknbUIY2u7SjZEOnU/gviz/tq?tqx=out:csv";
+    const FIJOS_URL = "https://docs.google.com/spreadsheets/d/1mHlN1M07m6bmoA7z1AFeWwYtpXXknbUIY2u7SjZEOnU/gviz/tq?tqx=out:csv&sheet=Datos%20Permanentes";
 
     function renderCategoryMenu(rows) {
       const categories = [...new Set(rows.map(r => r[0].trim()).filter(Boolean))];
@@ -388,7 +388,7 @@
 
     const searchInput = document.getElementById('menuSearch');
     searchInput.addEventListener('input', function () {
-      const filtered = filterMenuRows(allRows, this.value);
+      const filtered = filterMenuRows(rows, this.value);
       renderMenuGrouped(filtered);
       renderCategoryMenu(filtered);
       document.getElementById('noResults').style.display = filtered.length === 0 ? "block" : "none";
