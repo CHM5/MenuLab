@@ -522,34 +522,34 @@ html = f"""<!DOCTYPE html>
         document.getElementById("direccion-resto").textContent = rows[3]?.[1]?.replace(/"/g, "").trim() || "";
         document.getElementById("horarios-resto").textContent  = rows[4]?.[1]?.replace(/"/g, "").trim() || "";
         document.getElementById("banner-resto").src            = rows[5]?.[1]?.replace(/"/g, "").trim() || "";
-        document.getElementById("whatsapp-float").href         = "https://wa.me/" + (rows[8]?.[1]?.replace(/"/g, "").trim().replace(/[^0-9]/g, "") || "");
+        document.getElementById("whatsapp-float").href         = "https://wa.me/" + (rows[8]?.[1]?.replace(/"/g, "").trim() || "");
         const socialLinks = [
           {{
-            href: rows[9]?.[1]?.trim() || "",
-            img: "https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png",
-            alt: "Instagram",
-            label: "Instagram"
-          }},
-          {{
-            href: rows[10]?.[1]?.trim() || "",
-            img: "https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg",
-            alt: "Facebook",
-            label: "Facebook"
-          }},
-          {{
-            href: rows[11]?.[1]?.trim() || "",
+            href: rows[9]?.[1]?.replace(/"/g, "").trim() || "",
             img: "https://res.cloudinary.com/drxznqm61/image/upload/v1752716379/rappi_oul48p.png",
             alt: "Rappi",
             label: "Rappi"
           }},
           {{
-            href: rows[12]?.[1]?.trim() || "",
+            href: rows[10]?.[1]?.replace(/"/g, "").trim() || "",
             img: "https://res.cloudinary.com/drxznqm61/image/upload/v1752716289/pedidosya_q40sz4.png",
             alt: "PedidosYa",
             label: "PedidosYa"
           }},
           {{
-            href: rows[13]?.[1]?.trim() || "",
+            href: rows[11]?.[1]?.replace(/"/g, "").trim() || "",
+            img: "https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png",
+            alt: "Instagram",
+            label: "Instagram"
+          }},
+          {{
+            href: rows[12]?.[1]?.replace(/"/g, "").trim() || "",
+            img: "https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg",
+            alt: "Facebook",
+            label: "Facebook"
+          }},
+          {{
+            href: rows[13]?.[1]?.replace(/"/g, "").trim() || "",
             img: "https://res.cloudinary.com/drxznqm61/image/upload/v1752716133/googlemaps-removebg-preview_xh3ivm.png",
             alt: "Google Maps",
             label: "Google Maps"
