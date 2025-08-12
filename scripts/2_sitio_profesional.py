@@ -8,7 +8,7 @@ import hashlib
 
 # === CONFIGURACIÓN ===
 MENU_RANGE = "Menu!A2:E26"
-FIJOS_RANGE = "Datos Permanentes!B2:B5"
+FIJOS_RANGE = "Datos Permanentes!B2:B14"
 fecha_id = datetime.now().strftime("%Y%m%d")
 
 # === AUTENTICACIÓN GOOGLE ===
