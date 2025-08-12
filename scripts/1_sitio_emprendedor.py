@@ -303,11 +303,11 @@ html = f"""<!DOCTYPE html>
 </head>
 <body>
   <header class="header-style">
-      <img id="banner-resto" src="" alt="Banner Cafe Central" style="width:100%;display:block;margin-bottom:0.5rem;">    
+      <img id="banner-resto" src="" alt="Banner" style="width:100%;display:block;margin-bottom:0.5rem;">    
       <div class="container">
       <div class="header-flex">
         <div class="header-left">
-          <h1 id="nombre-resto" style="font-size:1.8rem; color:#000;">Café Central</h1>
+          <h1 id="nombre-resto" style="font-size:1.8rem; color:#000;"></h1>
           <h2 id="subtitulo-resto" style="font-size:1rem; font-style:italic; font-weight:400; color:#000;"></h2>
         </div>
         <div class="header-right">
@@ -413,7 +413,7 @@ html = f"""<!DOCTYPE html>
             itemDiv.innerHTML = `
               <div class="menu-item-header">
                 <h4 class="menu-name">${{item.nombre}}</h4>
-                <span class="menu-price">$${{item.precio}}</span>
+                <span class="menu-price">${{item.precio}}</span>
               </div>
               <p class="menu-description">${{item.desc}}</p>
             `;
