@@ -435,7 +435,7 @@ html = f"""<!DOCTYPE html>
 
     const searchInput = document.getElementById('menuSearch');
     searchInput.addEventListener('input', function () {{
-      const filtered = filterMenuRows(allRows, this.value);
+      const filtered = filterMenuRows(rows, this.value);
       renderMenuGrouped(filtered);
       renderCategoryMenu(filtered);
       document.getElementById('noResults').style.display = filtered.length === 0 ? "block" : "none";
