@@ -115,9 +115,9 @@ jobs:
             echo "qr_html=" >> "$GITHUB_OUTPUT"
           fi
 
-      # 8) Esperar 2 minutos para asegurar que la URL esté disponible
-      - name: Esperar 2 minutos antes de enviar el mail
-        run: sleep 120
+      # 8) Esperar 1.5 minutos para asegurar que la URL esté disponible
+      - name: Esperar 1.5 minutos antes de enviar el mail
+        run: sleep 90
 
       # 9) Send client email
       - name: Enviar e‑mail al cliente
