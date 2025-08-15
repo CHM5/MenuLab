@@ -311,10 +311,6 @@ html = f"""<!DOCTYPE html>
     </div>
   </header>
 
-  <div class="search-menu">
-    <input id="menuSearch" type="text" placeholder="Buscar en la carta..." style="padding: 0.5rem 1rem; border-radius: 20px; border: 1px solid #ccc; width: 90%; max-width: 400px; font-size: 1rem;" />
-  </div>
-
   <div id="categoryMenu" class="category-menu"></div>
 
   <div class="container">
