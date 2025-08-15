@@ -119,6 +119,21 @@ jobs:
       - name: Esperar 1.5 minutos antes de enviar el mail
         run: sleep 90
 
+      # 8.1) Setear código y porcentaje de descuento según plan
+      - name: Setear código y porcentaje de descuento
+        id: descuento
+        shell: bash
+        run: |
+          case "${{ steps.vars.outputs.plan }}" in
+            "1") echo "codigo_descuento=MLAB-5-5a8da" >> $GITHUB_OUTPUT; echo "porcentaje_descuento=5" >> $GITHUB_OUTPUT ;;
+            "2") echo "codigo_descuento=MLAB-10-6b7eb" >> $GITHUB_OUTPUT; echo "porcentaje_descuento=10" >> $GITHUB_OUTPUT ;;
+            "3") echo "codigo_descuento=MLAB-15-7c6fc" >> $GITHUB_OUTPUT; echo "porcentaje_descuento=15" >> $GITHUB_OUTPUT ;;
+            "4") echo "codigo_descuento=MLAB-10-08e5gd" >> $GITHUB_OUTPUT; echo "porcentaje_descuento=10" >> $GITHUB_OUTPUT ;;
+            "5") echo "codigo_descuento=MLAB-20-9f4he" >> $GITHUB_OUTPUT; echo "porcentaje_descuento=20" >> $GITHUB_OUTPUT ;;
+            "6") echo "codigo_descuento=MLAB-30-0g3if" >> $GITHUB_OUTPUT; echo "porcentaje_descuento=30" >> $GITHUB_OUTPUT ;;
+            *) echo "codigo_descuento=" >> $GITHUB_OUTPUT; echo "porcentaje_descuento=" >> $GITHUB_OUTPUT ;;
+          esac
+
       # 9) Send client email
       - name: Enviar e‑mail al cliente
         uses: dawidd6/action-send-mail@v3
@@ -155,9 +170,13 @@ jobs:
                       <p>📝 Si querés modificar platos, precios o descripciones, podés hacerlo directamente desde tu planilla de gestión:<br>
                       👉 <a href="${{ steps.paths.outputs.sheet_url }}" style="color:#007bff;">Abrir Google Sheet</a></p>
 
-                      ${{ steps.qrblock.outputs.qr_html }} 
+                      ${{ steps.qrblock.outputs.qr_html }}
 
                       <p>💡 Recordá que podés actualizar el contenido del menú en tiempo real desde tu planilla, sin necesidad de reenviar el enlace.</p>
+
+                      <p style="color:#008000; font-weight:bold;">
+                        🎁 Te regalamos el {{ steps.descuento.outputs.porcentaje_descuento }}% de descuento ingresando este código sin tope: <b>${{ steps.descuento.outputs.codigo_descuento }}</b>
+                      </p>
 
                       <p style="margin-top:2rem;">¡Gracias por confiar en <strong>MenuLab</strong>!<br>
                       Estamos a tu disposición para lo que necesites.<br><br>
