@@ -175,7 +175,9 @@ jobs:
                       <p>💡 Recordá que podés actualizar el contenido del menú en tiempo real desde tu planilla, sin necesidad de reenviar el enlace.</p>
 
                       <p style="color:#008000; font-weight:bold;">
-                        🎁 Te regalamos el ${{ steps.descuento.outputs.porcentaje_descuento }}% de descuento ingresando este código de descuento sin tope! Código de descuento: <b>${{ steps.descuento.outputs.codigo_descuento }}</b>
+                        🎁 Te regalamos el ${{ steps.descuento.outputs.porcentaje_descuento }}% de descuento ingresando este código sin tope en cualquiera de nuestros productos!<br>
+                        Código de descuento: <b>${{ steps.descuento.outputs.codigo_descuento }}</b><br>
+                        👉 <a href="https://menulab.com.ar/#productos" style="color:#007bff;">Ver productos</a>
                       </p>
 
                       <p style="margin-top:2rem;">¡Gracias por confiar en <strong>MenuLab</strong>!<br>
