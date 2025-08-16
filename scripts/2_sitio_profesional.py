@@ -96,7 +96,7 @@ except Exception as e:
 hash_input = f"{fecha_id}-{sheet_url}".encode("utf-8")
 hash_str = hashlib.sha1(hash_input).hexdigest()[:5]
 
-output_dir = Path(f"planes/menu-corporativo-{fecha_id}-{hash_str}")
+output_dir = Path(f"planes/menu-profesional-{fecha_id}-{hash_str}")
 output_dir.mkdir(parents=True, exist_ok=True)
 html_file = output_dir / "index.html"
 
@@ -127,7 +127,7 @@ html = f"""<!DOCTYPE html>
     body {{
       font-family: 'Segoe UI', Arial, sans-serif;
       background: var(--bg);
-      color: var(--text);
+      color: var(--bg);
       margin: 0;
       padding: 0;
     }}
@@ -401,12 +401,6 @@ html = f"""<!DOCTYPE html>
     .header-socials img:hover {{
       transform: scale(1.1);
     }}
-    .header-style {{
-      background: var(--header);
-      color: #000;
-      padding: 0.8rem 1rem 0.5rem 1rem;
-      border-radius: 0 0 var(--radius) var(--radius);
-    }}
     .style-nombre {{
       font-size:1.8rem;
       color:var(--header); 
@@ -423,21 +417,19 @@ html = f"""<!DOCTYPE html>
   </style>
 </head>
 <body>
-  <header class="header-style">
-      <img id="banner-resto" src="" alt="Banner" style="width:100%;display:block;margin-bottom:0.5rem;">    
-      <div class="container">
-      <div class="header-flex">
-        <div class="header-left">
-          <h1 id="nombre-resto" class="style-nombre"></h1>
-          <h2 id="subtitulo-resto" class="style-subtitulo"></h2>
-        </div>
-        <div class="header-right">
-          <div><span id="direccion-resto"></span></div>
-          <div><span id="horarios-resto"></span></div>
-        </div>
+    <img id="banner-resto" src="" alt="Banner" style="width:100%;display:block;margin-bottom:0.5rem;">    
+    <div class="container">
+    <div class="header-flex">
+      <div class="header-left">
+        <h1 id="nombre-resto" class="style-nombre"></h1>
+        <h2 id="subtitulo-resto" class="style-subtitulo"></h2>
+      </div>
+      <div class="header-right">
+        <div><span id="direccion-resto"></span></div>
+        <div><span id="horarios-resto"></span></div>
       </div>
     </div>
-  </header>
+  </div>
   <div class="header-socials" id="headerSocials"></div>
   <div class="search-menu">
     <input
@@ -651,6 +643,6 @@ print("📄 Planilla conectada:", sheet_url)
 
 # === EXPORTAR PATHS PARA WORKFLOW
 with open("menu_url.txt", "w") as f:
-    f.write(f"planes/menu-corporativo-{fecha_id}-{hash_str}/index.html")
+    f.write(f"planes/menu-profesional-{fecha_id}-{hash_str}/index.html")
 with open("sheet_url.txt", "w") as f:
     f.write(sheet_url)

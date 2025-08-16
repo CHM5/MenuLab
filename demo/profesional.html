@@ -25,7 +25,7 @@
     body {
       font-family: 'Segoe UI', Arial, sans-serif;
       background: var(--bg);
-      color: var(--header);
+      color: var(--bg);
       margin: 0;
       padding: 0;
     }
@@ -183,10 +183,10 @@
       position: sticky;
       top: 50px;
       z-index: 1000;
-      background: var(#457B9D); /* o #f1f1f1 si no estás usando variables */
+      background: var(#457B9D);
     }
     #categoryMenu {
-      margin-top: -0.2rem; /* Opcional: reducí espacio si ves separación */
+      margin-top: -0.2rem; 
     }
     .category-menu::-webkit-scrollbar {
       height: 6px;
@@ -478,7 +478,7 @@
       Object.entries(agrupado).forEach(([cat, subcategorias]) => {
         const group = document.createElement("div");
         group.className = "menu-group";
-        group.setAttribute('data-cat', cat); // <-- Para el scroll
+        group.setAttribute('data-cat', cat); 
 
         const catTitle = document.createElement("h2");
         catTitle.textContent = cat;
