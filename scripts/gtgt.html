@@ -12,15 +12,15 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: {personalizacion_colors['--bg']};
-      --header: {personalizacion_colors['--header']};
-      --bgScrollbar: {personalizacion_colors['--bgScrollbar']};
-      --textScrollbar: {personalizacion_colors['--textScrollbar']};
-      --title: {personalizacion_colors['--title']};
-      --subtitle: {personalizacion_colors['--subtitle']};
-      --plate: {personalizacion_colors['--plate']};
-      --description: {personalizacion_colors['--description']};
-      --price: {personalizacion_colors['--price']};
+      --bg: #f1f1f1;
+      --header: #212529;
+      --bgScrollbar: #457a9d;
+      --textScrollbar: #ffffff;
+      --title: #333333;
+      --subtitle: #555555;
+      --plate: #555555;
+      --description: #666666;
+      --price: #111111;
       --radius: 10px;
     }
     body {
@@ -175,7 +175,7 @@
       position: sticky;
       top: 50px;
       z-index: 1000;
-      background: var(#457B9D);
+      background: #457B9D;
     }
     #categoryMenu {
       margin-top: -0.2rem;
@@ -365,9 +365,10 @@
   <a href="#" target="_blank" id="whatsapp-float" aria-label="WhatsApp">
     <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" style="width:56px;height:56px;">
   </a>
-  <script type="b3583808952e4a0e66f7d023-text/javascript">
-    const CSV_URL = "https://docs.google.com/spreadsheets/d/1FIfjQiSE1PUe7AS3ecQwe0cZfphHainJLruuN4JaLAs/gviz/tq?tqx=out:csv";
-    const FIJOS_URL = "https://docs.google.com/spreadsheets/d/1FIfjQiSE1PUe7AS3ecQwe0cZfphHainJLruuN4JaLAs/gviz/tq?tqx=out:csv&sheet=Datos%20Permanentes";
+  <script type="a59c38778fc1a4791a09aaea-text/javascript">
+    const CSV_URL = "https://docs.google.com/spreadsheets/d/1jkU6cMgbML6kfAZTAHsZseHk00CYfdeZx3yoVJY34rQ/gviz/tq?tqx=out:csv&sheet=Menu";
+    const FIJOS_URL = "https://docs.google.com/spreadsheets/d/1jkU6cMgbML6kfAZTAHsZseHk00CYfdeZx3yoVJY34rQ/gviz/tq?tqx=out:csv&sheet=Datos%20Permanentes";
+    const PERSONALIZACION_URL = "https://docs.google.com/spreadsheets/d/1jkU6cMgbML6kfAZTAHsZseHk00CYfdeZx3yoVJY34rQ/gviz/tq?tqx=out:csv&sheet=Personalizacion";
 
     function renderCategoryMenu(rows) {
       const categories = [...new Set(rows.map(r => r[0].trim()).filter(Boolean))];
@@ -529,6 +530,38 @@
           }
         });
       });
+
+    // Mapea el nombre de la fila (columna B) a tu variable CSS
+    const VAR_MAP = {
+      "Fondo": "--bg",
+      "Encabezado": "--header",
+      "Fondo Categorías": "--bgScrollbar",
+      "Texto Categorías": "--textScrollbar",
+      "Categoría": "--title",
+      "Subcategoría": "--subtitle",
+      "Plato": "--plate",
+      "Descripción": "--description",
+      "Precio": "--price"
+    };
+
+  // Lee la hoja y setea variables (B = nombre, C = color)
+  fetch(PERSONALIZACION_URL)
+    .then(r => r.text())
+    .then(csv => {
+      const rows = csv.trim().split("
+").map(r => r.split(","));
+      // salteo encabezado: “Fuente,Color”
+      rows.slice(1).forEach(cols => {
+        const nombre = (cols[1] || "").replace(/"/g, "").trim(); // col B
+        const color  = (cols[2] || "").replace(/"/g, "").trim(); // col C
+        const varCSS = VAR_MAP[nombre];
+        if (varCSS && color) {
+          document.documentElement.style.setProperty(varCSS, color);
+        }
+      });
+    })
+    .catch(err => console.error("Error Personalizacion:", err));
+
   </script>
-<script src="/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" data-cf-settings="b3583808952e4a0e66f7d023-|49" defer></script></body>
+<script src="/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" data-cf-settings="a59c38778fc1a4791a09aaea-|49" defer></script></body>
 </html>

@@ -651,7 +651,7 @@ html = f"""<!DOCTYPE html>
   fetch(PERSONALIZACION_URL)
     .then(r => r.text())
     .then(csv => {{
-      const rows = csv.trim().split("\n").map(r => r.split(","));
+      const rows = csv.trim().split(/\r?\n/).map(r => r.split(","));
       // salteo encabezado: “Fuente,Color”
       rows.slice(1).forEach(cols => {{
         const nombre = (cols[1] || "").replace(/"/g, "").trim(); // col B
