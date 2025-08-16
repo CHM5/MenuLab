@@ -29,6 +29,8 @@ if not sheet_url:
 sheet_id = sheet_url.split("/d/")[1].split("/")[0]
 csv_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv"
 fijos_csv_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet=Datos%20Permanentes"
+personalizacion_csv_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet=Personalizacion"
+
 print("🔗 CSV menú:", csv_url)
 print("🔗 CSV fijos:", fijos_csv_url)
 
@@ -276,7 +278,7 @@ html = f"""<!DOCTYPE html>
       position: sticky;
       top: 50px;
       z-index: 1000;
-      background: var(#457B9D);
+      background: #457B9D;
     }}
     #categoryMenu {{
       margin-top: -0.2rem;
@@ -469,6 +471,7 @@ html = f"""<!DOCTYPE html>
   <script>
     const CSV_URL = "{csv_url}";
     const FIJOS_URL = "{fijos_csv_url}";
+    const PERSONALIZACION_URL = "{personalizacion_csv_url}";
 
     function renderCategoryMenu(rows) {{
       const categories = [...new Set(rows.map(r => r[0].trim()).filter(Boolean))];
@@ -630,6 +633,37 @@ html = f"""<!DOCTYPE html>
           }}
         }});
       }});
+
+    // Mapea el nombre de la fila (columna B) a tu variable CSS
+    const VAR_MAP = {{
+      "Fondo": "--bg",
+      "Encabezado": "--header",
+      "Fondo Categorías": "--bgScrollbar",
+      "Texto Categorías": "--textScrollbar",
+      "Categoría": "--title",
+      "Subcategoría": "--subtitle",
+      "Plato": "--plate",
+      "Descripción": "--description",
+      "Precio": "--price"
+    }};
+
+  // Lee la hoja y setea variables (B = nombre, C = color)
+  fetch(PERSONALIZACION_URL)
+    .then(r => r.text())
+    .then(csv => {{
+      const rows = csv.trim().split("\n").map(r => r.split(","));
+      // salteo encabezado: “Fuente,Color”
+      rows.slice(1).forEach(cols => {{
+        const nombre = (cols[1] || "").replace(/"/g, "").trim(); // col B
+        const color  = (cols[2] || "").replace(/"/g, "").trim(); // col C
+        const varCSS = VAR_MAP[nombre];
+        if (varCSS && color) {{
+          document.documentElement.style.setProperty(varCSS, color);
+        }}
+      }});
+    }})
+    .catch(err => console.error("Error Personalizacion:", err));
+
   </script>
 </body>
 </html>

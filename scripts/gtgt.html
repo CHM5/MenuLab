@@ -26,7 +26,7 @@
     body {
       font-family: 'Segoe UI', Arial, sans-serif;
       background: var(--bg);
-      color: var(--text);
+      color: var(--bg);
       margin: 0;
       padding: 0;
     }
@@ -300,12 +300,6 @@
     .header-socials img:hover {
       transform: scale(1.1);
     }
-    .header-style {
-      background: var(--header);
-      color: #000;
-      padding: 0.8rem 1rem 0.5rem 1rem;
-      border-radius: 0 0 var(--radius) var(--radius);
-    }
     .style-nombre {
       font-size:1.8rem;
       color:var(--header); 
@@ -322,21 +316,19 @@
   </style>
 </head>
 <body>
-  <header class="header-style">
-      <img id="banner-resto" src="" alt="Banner" style="width:100%;display:block;margin-bottom:0.5rem;">    
-      <div class="container">
-      <div class="header-flex">
-        <div class="header-left">
-          <h1 id="nombre-resto" class="style-nombre"></h1>
-          <h2 id="subtitulo-resto" class="style-subtitulo"></h2>
-        </div>
-        <div class="header-right">
-          <div><span id="direccion-resto"></span></div>
-          <div><span id="horarios-resto"></span></div>
-        </div>
+    <img id="banner-resto" src="" alt="Banner" style="width:100%;display:block;margin-bottom:0.5rem;">    
+    <div class="container">
+    <div class="header-flex">
+      <div class="header-left">
+        <h1 id="nombre-resto" class="style-nombre"></h1>
+        <h2 id="subtitulo-resto" class="style-subtitulo"></h2>
+      </div>
+      <div class="header-right">
+        <div><span id="direccion-resto"></span></div>
+        <div><span id="horarios-resto"></span></div>
       </div>
     </div>
-  </header>
+  </div>
   <div class="header-socials" id="headerSocials"></div>
   <div class="search-menu">
     <input
@@ -373,9 +365,9 @@
   <a href="#" target="_blank" id="whatsapp-float" aria-label="WhatsApp">
     <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" style="width:56px;height:56px;">
   </a>
-  <script type="2f68531ca64c04284d0b5fe3-text/javascript">
-    const CSV_URL = "https://docs.google.com/spreadsheets/d/1HpPzcMb5bU4tGbhbf2KHRXhKbhHVG65RP54hNWbJ0vE/gviz/tq?tqx=out:csv";
-    const FIJOS_URL = "https://docs.google.com/spreadsheets/d/1HpPzcMb5bU4tGbhbf2KHRXhKbhHVG65RP54hNWbJ0vE/gviz/tq?tqx=out:csv&sheet=Datos%20Permanentes";
+  <script type="b3583808952e4a0e66f7d023-text/javascript">
+    const CSV_URL = "https://docs.google.com/spreadsheets/d/1FIfjQiSE1PUe7AS3ecQwe0cZfphHainJLruuN4JaLAs/gviz/tq?tqx=out:csv";
+    const FIJOS_URL = "https://docs.google.com/spreadsheets/d/1FIfjQiSE1PUe7AS3ecQwe0cZfphHainJLruuN4JaLAs/gviz/tq?tqx=out:csv&sheet=Datos%20Permanentes";
 
     function renderCategoryMenu(rows) {
       const categories = [...new Set(rows.map(r => r[0].trim()).filter(Boolean))];
@@ -538,5 +530,5 @@
         });
       });
   </script>
-<script src="/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" data-cf-settings="2f68531ca64c04284d0b5fe3-|49" defer></script></body>
+<script src="/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" data-cf-settings="b3583808952e4a0e66f7d023-|49" defer></script></body>
 </html>
