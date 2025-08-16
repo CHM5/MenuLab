@@ -11,22 +11,25 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --primary: #ffc107;
-      --bg: #f1f1f1;
-      --text: #212529;
-      --header: #d2d0cd;
-      --border: #dee2e6;
+      --bg: #f1f1f1; /* Fondo */
+      --header: #212529; /* Encabezado */
+      --bgScrollbar: #457B9D; /* Fondo Categorías */
+      --textScrollbar: #fff; /* Texto Categorías */
+      --title: #333; /* Color del título de la categoría */
+      --subtitle: #555; /* Color del subtítulo de la categoría */
+      --plate: #555; /* Color del nombre del plato */
+      --description: #666; /* Color de la descripción del plato */
+      --price: #111; /* Color del precio */
       --radius: 10px;
     }
     body {
       font-family: 'Segoe UI', Arial, sans-serif;
       background: var(--bg);
-      color: var(--text);
+      color: var(--header);
       margin: 0;
       padding: 0;
     }
     header {
-      background: var(--header);
       color: #fff;
       padding: 1.2rem 1rem 0.7rem 1rem;
       text-align: center;
@@ -56,7 +59,6 @@
     }
     th, td {
       padding: 0.8rem 0.5rem;
-      border-bottom: 1px solid var(--border);
       text-align: left;
       font-size: 1rem;
     }
@@ -104,19 +106,32 @@
       font-size: 1.7rem;
       margin: 2rem 0 0.2rem;
       border-bottom: 2px solid #ddd;
-      color: #333;
+      color: var(--title); /* Color del título de la categoría #333 */
     }
 
     .menu-group h3 {
       font-size: 1.5rem;
       margin: 1rem 0 0rem;
-      color: #555;
+      color: var(--subtitle); /* Color del subtítulo de la categoría #555 */
     }
 
     .menu-group h4 {
       font-size: 1.2rem;
       margin: 1rem 0 0rem;
-      color: #555;
+      color: var(--plate); /* Color del nombre del plato #555 */
+    }   
+    
+    .menu-description {
+      margin: 0.2rem 0 0 0;
+      font-size: 0.95rem;
+      color: var(--description); /* Color de la descripción del plato #666 */
+      padding: 0 1rem;
+    }
+
+    .menu-price {
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: var(--price); /* Color del precio  #111*/
     }
 
     .menu-item {
@@ -136,19 +151,6 @@
       font-size: 1.1rem;
       margin: 0;
       font-weight: 600;
-    }
-
-    .menu-price {
-      font-size: 1.1rem;
-      font-weight: 500;
-      color: #111;
-    }
-
-    .menu-description {
-      margin: 0.2rem 0 0 0;
-      font-size: 0.95rem;
-      color: #666;
-      padding: 0 1rem;
     }
 
     @media (max-width: 600px) {
@@ -177,7 +179,7 @@
       padding-top: 8px;
       padding-bottom: 8px;
       scrollbar-width: thin;
-      scrollbar-color: #457B9D #eee;
+      scrollbar-color: var(--bgScrollbar) #eee;
       position: sticky;
       top: 50px;
       z-index: 1000;
@@ -190,7 +192,7 @@
       height: 6px;
     }
     .category-menu::-webkit-scrollbar-thumb {
-      background: #457B9D;
+      background: var(--bgScrollbar); /* #457B9D */
       border-radius: 10px;
     }
     .search-menu {
@@ -201,8 +203,8 @@
       padding-top: 8px;
     }
     .category-btn {
-      background: #457B9D;
-      color: #fff;
+      background: var(--bgScrollbar);
+      color: var(--textScrollbar);
       border: none;
       border-radius: 20px;
       padding: 7px 18px;
@@ -233,7 +235,7 @@
       text-align: right;
       min-width: 180px;
       flex: 1 1 180px;
-      color:#000;
+      color:var(--header);
       font: italic 0.9rem 'Segoe UI', sans-serif;
     }
     @media (max-width: 600px) {
@@ -312,33 +314,42 @@
     .header-socials img:hover {
       transform: scale(1.1);
     }
+    .style-nombre {
+      font-size:1.8rem;
+      color:var(--header); 
+      margin-bottom:0; 
+      margin-top:0;
+    }
+    .style-subtitulo {
+      margin:0.2rem 0 0.3rem 0;
+      font-size:1rem;
+      font-weight:400;
+      color:var(--header);
+      font-style:italic;
+    }
   </style>
 </head>
 <body>
-  <header style="background: var(--header); color: #000; padding: 0.8rem 1rem 0.5rem 1rem; border-radius: 0 0 var(--radius) var(--radius);">
-    <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1752632048/cafe-central_ne83eh.png" alt="Banner Cafe Central" style="width:100%;display:block;margin-bottom:0.5rem;">
-    <div class="container">
-      <div class="header-flex">
-        <div class="header-left">
-          <h1 id="nombre-resto" style="font-size:1.8rem; color:#000; margin-bottom:0; margin-top:0;">Café Central</h1>
-          <h2 id="subtitulo-resto" style="margin:0.2rem 0 0.3rem 0;font-size:1rem;font-weight:400;color:#000;font-style:italic;">
-            Todo rico, todo el día
-          </h2>
+  <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1752632048/cafe-central_ne83eh.png" alt="Banner Cafe Central" style="width:100%;display:block;margin-bottom:0.5rem;">
+  <div class="container">
+    <div class="header-flex">
+      <div class="header-left">
+        <h1 id="nombre-resto" class="style-nombre">Café Central</h1>
+        <h2 id="subtitulo-resto" class="style-subtitulo">
+          Todo rico, todo el día
+        </h2>
+      </div>
+      <div class="header-right">
+        <div>
+          <span>Av. Siempre Viva 123 📍</span>
         </div>
-        <div class="header-right">
-          <div>
-            <span>Av. Siempre Viva 123 📍</span>
-          </div>
-          <div>
-            <span>de Lun a Dom 8 a 20hs 🕒</span>
-          </div>
+        <div>
+          <span>de Lun a Dom 8 a 20hs 🕒</span>
         </div>
       </div>
     </div>
-
-    <div class="header-socials" id="headerSocials">
-    </div>
-  </header>
+  </div>
+  <div class="header-socials" id="headerSocials"></div>
     <div class="search-menu">
     <input
       id="menuSearch"

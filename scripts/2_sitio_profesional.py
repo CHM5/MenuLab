@@ -41,6 +41,56 @@ try:
 except Exception as e:
     print(f"⚠️ Advertencia: no se pudo validar conexión con Sheets: {e}")
 
+# === OBTENER COLORES DE PERSONALIZACION ===
+def rgb_to_hex(rgb):
+    if not rgb:
+        return "#ffffff"
+    r = int(rgb.get("red", 1) * 255)
+    g = int(rgb.get("green", 1) * 255)
+    b = int(rgb.get("blue", 1) * 255)
+    return f"#{r:02x}{g:02x}{b:02x}"
+
+# Mapeo: variable CSS -> fila en Personalizacion (0-indexed)
+css_map = [
+    ("--bg", 0),             # Fondo
+    ("--header", 1),         # Encabezado
+    ("--bgScrollbar", 2),    # Fondo Categorías
+    ("--textScrollbar", 3),  # Texto Categorías
+    ("--title", 4),          # Categoría
+    ("--subtitle", 5),       # Subcategoría
+    ("--plate", 6),          # Plato
+    ("--description", 7),    # Descripción
+    ("--price", 8),          # Precio
+]
+
+personalizacion_colors = {}
+
+try:
+    sheet = sheets_service.spreadsheets().get(
+        spreadsheetId=sheet_id,
+        ranges=["Personalizacion!C2:C9"],
+        includeGridData=True,
+        fields="sheets.data.rowData.values.effectiveFormat.backgroundColor"
+    ).execute()
+    rows = sheet["sheets"][0]["data"][0]["rowData"]
+    for idx, (css_var, row_idx) in enumerate(css_map):
+        color = rows[row_idx]["values"][0]["effectiveFormat"]["backgroundColor"]
+        personalizacion_colors[css_var] = rgb_to_hex(color)
+except Exception as e:
+    print("⚠️ No se pudieron obtener los colores de Personalizacion:", e)
+    # Defaults
+    personalizacion_colors = {
+        "--bg": "#f1f1f1",
+        "--header": "#212529",
+        "--bgScrollbar": "#457B9D",
+        "--textScrollbar": "#fff",
+        "--title": "#333",
+        "--subtitle": "#555",
+        "--plate": "#555",
+        "--description": "#666",
+        "--price": "#111"
+    }
+
 # === GENERAR HTML ===
 # Generar hash único de 5 dígitos usando la fecha y la URL de la planilla
 hash_input = f"{fecha_id}-{sheet_url}".encode("utf-8")
@@ -63,11 +113,15 @@ html = f"""<!DOCTYPE html>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
     :root {{
-      --primary: #ffc107;
-      --bg: #f1f1f1;
-      --text: #212529;
-      --header: #d2d0cd;
-      --border: #dee2e6;
+      --bg: {{personalizacion_colors['--bg']}};
+      --header: {{personalizacion_colors['--header']}};
+      --bgScrollbar: {{personalizacion_colors['--bgScrollbar']}};
+      --textScrollbar: {{personalizacion_colors['--textScrollbar']}};
+      --title: {{personalizacion_colors['--title']}};
+      --subtitle: {{personalizacion_colors['--subtitle']}};
+      --plate: {{personalizacion_colors['--plate']}};
+      --description: {{personalizacion_colors['--description']}};
+      --price: {{personalizacion_colors['--price']}};
       --radius: 10px;
     }}
     body {{
@@ -108,7 +162,6 @@ html = f"""<!DOCTYPE html>
     }}
     th, td {{
       padding: 0.8rem 0.5rem;
-      border-bottom: 1px solid var(--border);
       text-align: left;
       font-size: 1rem;
     }}
@@ -154,17 +207,28 @@ html = f"""<!DOCTYPE html>
       font-size: 1.7rem;
       margin: 2rem 0 0.2rem;
       border-bottom: 2px solid #ddd;
-      color: #333;
+      color: var(--title); /* Color del título de la categoría #333 */
     }}
     .menu-group h3 {{
       font-size: 1.5rem;
       margin: 1rem 0 0rem;
-      color: #555;
+      color: var(--subtitle); /* Color del subtítulo de la categoría #555 */
     }}
     .menu-group h4 {{
       font-size: 1.2rem;
       margin: 1rem 0 0rem;
-      color: #555;
+      color: var(--plate); /* Color del nombre del plato #555 */
+    }}
+    .menu-description {{
+      margin: 0.2rem 0 0 0;
+      font-size: 0.95rem;
+      color: var(--description); /* Color de la descripción del plato #666 */
+      padding: 0 1rem;
+    }}
+    .menu-price {{
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: var(--price); /* Color del precio  #111*/
     }}
     .menu-item {{
       border-bottom: 1px solid #eee;
@@ -181,17 +245,6 @@ html = f"""<!DOCTYPE html>
       font-size: 1.1rem;
       margin: 0;
       font-weight: 600;
-    }}
-    .menu-price {{
-      font-size: 1.1rem;
-      font-weight: 500;
-      color: #111;
-    }}
-    .menu-description {{
-      margin: 0.2rem 0 0 0;
-      font-size: 0.95rem;
-      color: #666;
-      padding: 0 1rem;
     }}
 
     @media (max-width: 600px) {{
@@ -219,7 +272,7 @@ html = f"""<!DOCTYPE html>
       padding-top: 8px;
       padding-bottom: 8px;
       scrollbar-width: thin;
-      scrollbar-color: #457B9D #eee;
+      scrollbar-color: var(--bgScrollbar) #eee;
       position: sticky;
       top: 50px;
       z-index: 1000;
@@ -232,7 +285,7 @@ html = f"""<!DOCTYPE html>
       height: 6px;
     }}
     .category-menu::-webkit-scrollbar-thumb {{
-      background: #457B9D;
+      background: var(--bgScrollbar); /* #457B9D */
       border-radius: 10px;
     }}
     .search-menu {{
@@ -243,8 +296,8 @@ html = f"""<!DOCTYPE html>
       padding-top: 8px;
     }}
     .category-btn {{
-      background: #457B9D;
-      color: #fff;
+      background: var(--bgScrollbar);
+      color: var(--textScrollbar);
       border: none;
       border-radius: 20px;
       padding: 7px 18px;
@@ -274,7 +327,7 @@ html = f"""<!DOCTYPE html>
       text-align: right;
       min-width: 180px;
       flex: 1 1 180px;
-      color:#000;
+      color: var(--header);
       font: italic 0.9rem 'Segoe UI', sans-serif;
     }}
     @media (max-width: 600px) {{
@@ -354,6 +407,19 @@ html = f"""<!DOCTYPE html>
       padding: 0.8rem 1rem 0.5rem 1rem;
       border-radius: 0 0 var(--radius) var(--radius);
     }}
+    .style-nombre {{
+      font-size:1.8rem;
+      color:var(--header); 
+      margin-bottom:0; 
+      margin-top:0;
+    }}
+    .style-subtitulo {{
+      margin:0.2rem 0 0.3rem 0;
+      font-size:1rem;
+      font-weight:400;
+      color:var(--header);
+      font-style:italic;
+    }}
   </style>
 </head>
 <body>
@@ -362,8 +428,8 @@ html = f"""<!DOCTYPE html>
       <div class="container">
       <div class="header-flex">
         <div class="header-left">
-          <h1 id="nombre-resto" style="font-size:1.8rem; color:#000;"></h1>
-          <h2 id="subtitulo-resto" style="font-size:1rem; font-style:italic; font-weight:400; color:#000;"></h2>
+          <h1 id="nombre-resto" class="style-nombre"></h1>
+          <h2 id="subtitulo-resto" class="style-subtitulo"></h2>
         </div>
         <div class="header-right">
           <div><span id="direccion-resto"></span></div>
