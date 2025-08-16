@@ -27,7 +27,7 @@ if not sheet_url:
 
 # Extraer ID y armar URLs válidas
 sheet_id = sheet_url.split("/d/")[1].split("/")[0]
-csv_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv"
+csv_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet=Menu"
 fijos_csv_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet=Datos%20Permanentes"
 personalizacion_csv_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet=Personalizacion"
 
@@ -70,7 +70,7 @@ personalizacion_colors = {}
 try:
     sheet = sheets_service.spreadsheets().get(
         spreadsheetId=sheet_id,
-        ranges=["Personalizacion!C2:C9"],
+        ranges=["Personalizacion!C2:C10"],
         includeGridData=True,
         fields="sheets.data.rowData.values.effectiveFormat.backgroundColor"
     ).execute()
@@ -115,15 +115,15 @@ html = f"""<!DOCTYPE html>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
     :root {{
-      --bg: {{personalizacion_colors['--bg']}};
-      --header: {{personalizacion_colors['--header']}};
-      --bgScrollbar: {{personalizacion_colors['--bgScrollbar']}};
-      --textScrollbar: {{personalizacion_colors['--textScrollbar']}};
-      --title: {{personalizacion_colors['--title']}};
-      --subtitle: {{personalizacion_colors['--subtitle']}};
-      --plate: {{personalizacion_colors['--plate']}};
-      --description: {{personalizacion_colors['--description']}};
-      --price: {{personalizacion_colors['--price']}};
+      --bg: {personalizacion_colors['--bg']};
+      --header: {personalizacion_colors['--header']};
+      --bgScrollbar: {personalizacion_colors['--bgScrollbar']};
+      --textScrollbar: {personalizacion_colors['--textScrollbar']};
+      --title: {personalizacion_colors['--title']};
+      --subtitle: {personalizacion_colors['--subtitle']};
+      --plate: {personalizacion_colors['--plate']};
+      --description: {personalizacion_colors['--description']};
+      --price: {personalizacion_colors['--price']};
       --radius: 10px;
     }}
     body {{
