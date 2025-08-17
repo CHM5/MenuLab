@@ -989,6 +989,35 @@ fetch(CSV_URL)
         }});
       }})
       .catch(err => console.error("Personalizacion BG error:", err));
+
+    // Mostrar el popup de promo al cargar
+    window.onload = () => {{
+      setTimeout(() => {{
+        const popup = document.getElementById('promoPopup');
+        popup.style.display = 'flex';
+
+        // Cerrar el popup al hacer clic fuera de la caja de contenido
+        popup.onclick = (e) => {{
+          if (e.target === popup) {{
+            popup.style.display = 'none';
+          }}
+        }};
+      }}, 2000); // 2000ms = 2 segundos
+    }};
+
+  document.getElementById('whatsapp-float').addEventListener('click', function(e) {{
+    e.preventDefault();
+    const selectedItems = document.querySelectorAll('.menu-item.selected');
+    if (selectedItems.length === 0) {{
+      window.open(this.href, '_blank');
+      return;
+    }}
+    let pedido = Array.from(selectedItems).map(div => div.getAttribute('data-nombre')).join(', ');
+    let mensaje = encodeURIComponent(`Hola, quisiera pedir: ${{pedido}}`);
+    let url = this.href.split('?')[0] + `?text=${{mensaje}}`;
+    window.open(url, '_blank');
+  }});
+
   </script>
 </body>
 </html>
