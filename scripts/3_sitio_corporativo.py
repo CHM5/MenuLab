@@ -903,7 +903,7 @@ fetch(CSV_URL)
     fetch(FIJOS_URL)
       .then(r => r.text())
       .then(data => {{
-        const rows = data.split("\\n").map(r => r.split(","));
+        const rows = parseCSV(data);
         document.getElementById("nombre-resto").textContent    = rows[1]?.[1]?.replace(/"/g, "").trim() || "";
         document.getElementById("subtitulo-resto").textContent = rows[2]?.[1]?.replace(/"/g, "").trim() || "";
         document.getElementById("direccion-resto").textContent = rows[3]?.[1]?.replace(/"/g, "").trim() || "";
