@@ -427,28 +427,9 @@ html = f"""<!DOCTYPE html>
       font-weight: 600;
     }}
 
-  .menu-description {{
-  margin: 0.2rem 0 0 0;
-  font-size: 0.95rem;
-  color: #666;
-}}
-
-.menu-price {{
-  font-size: 1.1rem;
-  font-weight: bold;
-  color: #111;
-  margin-top: 0.4rem;
-}}
-
     @media (max-width: 600px) {{
       .menu-name {{
         font-size: 1rem;
-      }}
-      .menu-price {{
-        font-size: 1rem;
-      }}
-      .menu-description {{
-        font-size: 0.9rem;
       }}
     }}
     .menu-content {{
