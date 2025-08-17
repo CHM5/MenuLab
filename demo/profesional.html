@@ -11,15 +11,33 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #f1f1f1; /* Fondo */
-      --header: #212529; /* Encabezado */
-      --bgScrollbar: #457B9D; /* Fondo Categorías */
-      --textScrollbar: #fff; /* Texto Categorías */
-      --title: #333; /* Color del título de la categoría */
-      --subtitle: #555; /* Color del subtítulo de la categoría */
-      --plate: #555; /* Color del nombre del plato */
-      --description: #666; /* Color de la descripción del plato */
-      --price: #111; /* Color del precio */
+      /* Colores */
+      --businessName: #212529;                              /* nombre del negocio */
+      --slogan: #212529;                                    /* Slogan */
+      --address: #212529;                                   /* Dirección */
+      --horarios: #212529;                                  /* horarios */
+      --textScrollbar: #fff;                                /* Texto Categorías */
+      --title: #333;                                        /* Color del título de la categoría */
+      --subtitle: #555;                                     /* Color del subtítulo de la categoría */
+      --plate: #555;                                        /* Color del nombre del plato */
+      --description: #666;                                  /* Color de la descripción del plato */
+      --price: #111;                                        /* Color del precio */
+      --bg: #f1f1f1;                                        /* Fondo */
+      --bgScrollbar: #457B9D;                               /* Fondo Categorías */
+      
+      /* Fuentes */
+      --font-businessName: 1.8rem 'Segoe UI', sans-serif;     /* Fuente del nombre del negocio */
+      --font-slogan: italic 1rem 'Segoe UI', sans-serif;      /* Fuente del slogan */  
+      --font-address: italic 0.9rem 'Segoe UI', sans-serif;   /* Fuente de la dirección */
+      --font-horarios: italic 0.9rem 'Segoe UI', sans-serif;  /* Fuente de los horarios */
+      --font-textScrollbar: 1rem 'Poppins', sans-serif;       /* Fuente del texto de las categorías */
+      --font-title: 1.7rem 'Poppins', sans-serif;             /* Fuente del título de la categoría */
+      --font-subtitle: 1.5rem 'Poppins', Arial, sans-serif;   /* Fuente del subtítulo de la categoría */
+      --font-plate: 1.2rem 'Poppins', sans-serif;             /* Fuente del nombre del plato */
+      --font-description: 0.95rem 'Unbounded', cursive;       /* Fuente de la descripción del plato */
+      --font-price: 1.1rem 'Poppins', sans-serif;             /* Fuente del precio */
+
+      /* Bordes */
       --radius: 10px;
     }
     body {
@@ -103,35 +121,35 @@
     }
 
     .menu-group h2 {
-      font-size: 1.7rem;
+      font: var(--font-title);
+      color: var(--title); /* Color del título de la categoría #333 */
       margin: 2rem 0 0.2rem;
       border-bottom: 2px solid #ddd;
-      color: var(--title); /* Color del título de la categoría #333 */
     }
 
     .menu-group h3 {
-      font-size: 1.5rem;
-      margin: 1rem 0 0rem;
+      font: var(--font-subtitle);
       color: var(--subtitle); /* Color del subtítulo de la categoría #555 */
+      margin: 1rem 0 0rem;
     }
 
     .menu-group h4 {
-      font-size: 1.2rem;
-      margin: 1rem 0 0rem;
+      font: var(--font-plate);
       color: var(--plate); /* Color del nombre del plato #555 */
+      margin: 1rem 0 0rem;
     }   
     
     .menu-description {
-      margin: 0.2rem 0 0 0;
-      font-size: 0.95rem;
+      font: var(--font-description);
       color: var(--description); /* Color de la descripción del plato #666 */
+      margin: 0.2rem 0 0 0;
       padding: 0 1rem;
     }
 
     .menu-price {
-      font-size: 1.1rem;
-      font-weight: 500;
+      font: var(--font-price);
       color: var(--price); /* Color del precio  #111*/
+      font-weight: 500;
     }
 
     .menu-item {
@@ -173,7 +191,7 @@
       gap: 12px;
       justify-content: center;
       align-items: center;
-      margin: -10000px 0 0.5rem 0;
+      margin: 0 0 0.5rem 0;
       flex-wrap: nowrap;
       overflow-x: auto;
       padding-top: 8px;
@@ -202,6 +220,7 @@
       padding-top: 8px;
     }
     .category-btn {
+      font: var(--font-textScrollbar);
       background: var(--bgScrollbar);
       color: var(--textScrollbar);
       border: none;
@@ -209,7 +228,6 @@
       padding: 7px 18px;
       font-weight: 600;
       cursor: pointer;
-      font-size: 1rem;
       transition: background 0.2s;
       flex: 0 0 auto;
     }
@@ -234,8 +252,6 @@
       text-align: right;
       min-width: 180px;
       flex: 1 1 180px;
-      color:var(--header);
-      font: italic 0.9rem 'Segoe UI', sans-serif;
     }
     @media (max-width: 600px) {
       .header-flex {
@@ -314,17 +330,25 @@
       transform: scale(1.1);
     }
     .style-nombre {
-      font-size:1.8rem;
-      color:var(--header); 
+      font: var(--font-businessName);
+      color:var(--businessName); 
       margin-bottom:0; 
       margin-top:0;
     }
     .style-subtitulo {
+      font: var(--font-slogan);
+      color:var(--slogan);
       margin:0.2rem 0 0.3rem 0;
-      font-size:1rem;
       font-weight:400;
-      color:var(--header);
       font-style:italic;
+    }
+    .style-direccion {
+      font: var(--font-address);
+      color: var(--address);
+    }
+    .style-horarios {
+      font: var(--font-horarios);
+      color: var(--horarios);
     }
   </style>
 </head>
@@ -340,10 +364,10 @@
       </div>
       <div class="header-right">
         <div>
-          <span>Av. Siempre Viva 123 📍</span>
+          <span class="style-direccion">Av. Siempre Viva 123 📍</span>
         </div>
         <div>
-          <span>de Lun a Dom 8 a 20hs 🕒</span>
+          <span class="style-horarios">de Lun a Dom 8 a 20hs 🕒</span>
         </div>
       </div>
     </div>

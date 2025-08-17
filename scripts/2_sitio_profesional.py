@@ -52,25 +52,144 @@ def rgb_to_hex(rgb):
     b = int(rgb.get("blue", 1) * 255)
     return f"#{r:02x}{g:02x}{b:02x}"
 
+
+def pt_to_rem(pt: float) -> str:
+    # 1pt ≈ 1.333px; 16px = 1rem
+    px = float(pt) * 1.333
+    return f"{px/16:.2f}rem"
+
+def quote_family(fam: str) -> str:
+    if not fam:
+        return ""
+    # Si tiene espacios o no es alfanumérico simple, comillas simples
+    return f"'{fam}'" if any(ch.isspace() for ch in fam) else fam
+
+def build_font_shorthand(tf: dict) -> str:
+    """
+    tf = textFormat dict de Sheets:
+      { 'fontFamily': 'Segoe UI', 'fontSize': 12, 'bold': True, 'italic': True, ... }
+    Devuelve ej: "italic bold 0.94rem 'Segoe UI', sans-serif"
+    """
+    if not tf:
+        return ""
+
+    parts = []
+    if tf.get("italic"):
+        parts.append("italic")
+    if tf.get("bold"):
+        parts.append("bold")
+
+    size = tf.get("fontSize")
+    if size:
+        parts.append(pt_to_rem(size))
+
+    fam = tf.get("fontFamily")
+    if fam:
+        parts.append(f"{quote_family(fam)}, sans-serif")
+
+    return " ".join(parts).strip()
+
 # Mapeo: variable CSS -> fila en Personalizacion (0-indexed)
 css_map = [
-    ("--bg", 0),             # Fondo
-    ("--header", 1),         # Encabezado
-    ("--bgScrollbar", 2),    # Fondo Categorías
-    ("--textScrollbar", 3),  # Texto Categorías
-    ("--title", 4),          # Categoría
-    ("--subtitle", 5),       # Subcategoría
-    ("--plate", 6),          # Plato
-    ("--description", 7),    # Descripción
-    ("--price", 8),          # Precio
+    ("--businessName", 0),         # Encabezado
+    ("--slogan", 1),         # Encabezado
+    ("--address", 2),         # Encabezado
+    ("--horarios", 3),         # Encabezado
+    ("--textScrollbar", 4),  # Texto Categorías
+    ("--title", 5),          # Categoría
+    ("--subtitle", 6),       # Subcategoría
+    ("--plate", 7),          # Plato
+    ("--description", 8),    # Descripción
+    ("--price", 9),          # Precio
+    ("--bg", 10),             # Fondo
+    ("--bgScrollbar", 11),    # Fondo Categorías
 ]
+# Mapeo: nombre (col A en “Personalizacion”) -> variable CSS de fuente
+FONT_VAR_MAP = {
+    "Nombre del Negocio": "--font-businessName",
+    "Eslogan": "--font-slogan",
+    "Dirección": "--font-address",
+    "Horarios": "--font-horarios",
+    "Texto Categorías": "--font-textScrollbar",
+    "Categoría": "--font-title",
+    "Subcategoría": "--font-subtitle",
+    "Plato": "--font-plate",
+    "Descripción": "--font-description",
+    "Precio": "--font-price",
+}
+
+def get_personalizacion_fonts(sheet_id: str) -> dict:
+    """
+    Lee Personalizacion!A2:B13 con includeGridData=True y arma { '--font-...': 'shorthand' }
+    Si hay textFormatRuns, prioriza el primer run. Si no, usa effectiveFormat.textFormat.
+    """
+    fonts = {}
+    try:
+        resp = sheets_service.spreadsheets().get(
+            spreadsheetId=sheet_id,
+            ranges=["Personalizacion!A2:B13"],
+            includeGridData=True,
+            fields="sheets.data.rowData.values(effectiveFormat.textFormat,textFormatRuns,formattedValue)"
+        ).execute()
+
+        row_data = resp["sheets"][0]["data"][0].get("rowData", [])
+        for row in row_data:
+            cells = row.get("values", [])
+            if len(cells) < 2:
+                continue
+
+            # Columna A: nombre (key)
+            name = (cells[0].get("formattedValue") or "").strip()
+            if not name:
+                continue
+            css_var = FONT_VAR_MAP.get(name)
+            if not css_var:
+                continue
+
+            # Columna B: fuente
+            cell_b = cells[1]
+            # 1) Si hay textFormatRuns, usamos el primer run
+            tf = None
+            runs = cell_b.get("textFormatRuns")
+            if runs and isinstance(runs, list) and runs:
+                tf = runs[0].get("format", {})
+            # 2) Sino, usamos effectiveFormat.textFormat
+            if not tf:
+                eff = cell_b.get("effectiveFormat", {})
+                tf = eff.get("textFormat", {})
+
+            shorthand = build_font_shorthand(tf)
+            if shorthand:
+                fonts[css_var] = shorthand
+
+    except Exception as e:
+        print("⚠️ No se pudieron obtener las fuentes de Personalizacion:", e)
+
+    return fonts
 
 personalizacion_colors = {}
+personalizacion_fonts = get_personalizacion_fonts(sheet_id)
+
+defaults_fonts = {
+  "--font-businessName": "1.8rem 'Segoe UI', sans-serif",
+  "--font-slogan": "italic 1rem 'Segoe UI', sans-serif",
+  "--font-address": "italic 0.9rem 'Segoe UI', sans-serif",
+  "--font-horarios": "italic 0.9rem 'Segoe UI', sans-serif",
+  "--font-textScrollbar": "1rem 'Poppins', sans-serif",
+  "--font-title": "1.7rem 'Poppins', sans-serif",
+  "--font-subtitle": "1.5rem 'Poppins', Arial, sans-serif",
+  "--font-plate": "1.2rem 'Poppins', sans-serif",
+  "--font-description": "0.95rem 'Unbounded', cursive",
+  "--font-price": "1.1rem 'Poppins', sans-serif",
+}
+for k, v in defaults_fonts.items():
+    personalizacion_fonts.setdefault(k, v)
+
 
 try:
     sheet = sheets_service.spreadsheets().get(
         spreadsheetId=sheet_id,
-        ranges=["Personalizacion!C2:C10"],
+        ranges=["Personalizacion!C2:C13"],
         includeGridData=True,
         fields="sheets.data.rowData.values.effectiveFormat.backgroundColor"
     ).execute()
@@ -82,15 +201,18 @@ except Exception as e:
     print("⚠️ No se pudieron obtener los colores de Personalizacion:", e)
     # Defaults
     personalizacion_colors = {
-        "--bg": "#f1f1f1",
-        "--header": "#212529",
-        "--bgScrollbar": "#457B9D",
+        "--businessName": "#222222",
+        "--slogan": "#444444",
+        "--address": "#444444",
+        "--horarios": "#444444",
         "--textScrollbar": "#fff",
         "--title": "#333",
         "--subtitle": "#555",
         "--plate": "#555",
         "--description": "#666",
-        "--price": "#111"
+        "--price": "#111",
+        "--bg": "#f1f1f1",
+        "--bgScrollbar": "#457B9D"
     }
 
 # === GENERAR HTML ===
@@ -115,26 +237,42 @@ html = f"""<!DOCTYPE html>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
     :root {{
-      --bg: {personalizacion_colors['--bg']};
-      --header: {personalizacion_colors['--header']};
-      --bgScrollbar: {personalizacion_colors['--bgScrollbar']};
+      /* Colores */
+      --businessName: {personalizacion_colors['--businessName']};
+      --slogan: {personalizacion_colors['--slogan']};
+      --address: {personalizacion_colors['--address']};
+      --horarios: {personalizacion_colors['--horarios']};
       --textScrollbar: {personalizacion_colors['--textScrollbar']};
       --title: {personalizacion_colors['--title']};
       --subtitle: {personalizacion_colors['--subtitle']};
       --plate: {personalizacion_colors['--plate']};
       --description: {personalizacion_colors['--description']};
       --price: {personalizacion_colors['--price']};
+      --bg: {personalizacion_colors['--bg']};
+      --bgScrollbar: {personalizacion_colors['--bgScrollbar']};
+
+      /* Fuentes */
+      --font-businessName: {personalizacion_fonts['--font-businessName']};
+      --font-slogan: {personalizacion_fonts['--font-slogan']};
+      --font-address: {personalizacion_fonts['--font-address']};
+      --font-horarios: {personalizacion_fonts['--font-horarios']};
+      --font-textScrollbar: {personalizacion_fonts['--font-textScrollbar']};
+      --font-title: {personalizacion_fonts['--font-title']};
+      --font-subtitle: {personalizacion_fonts['--font-subtitle']};
+      --font-plate: {personalizacion_fonts['--font-plate']};
+      --font-description: {personalizacion_fonts['--font-description']};
+      --font-price: {personalizacion_fonts['--font-price']};
+
+      /* Bordes */
       --radius: 10px;
     }}
     body {{
       font-family: 'Segoe UI', Arial, sans-serif;
       background: var(--bg);
-      color: var(--bg);
       margin: 0;
       padding: 0;
     }}
     header {{
-      background: var(--header);
       color: #fff;
       padding: 1.2rem 1rem 0.7rem 1rem;
       text-align: center;
@@ -206,31 +344,31 @@ html = f"""<!DOCTYPE html>
       margin-bottom: 1.2rem;
     }}
     .menu-group h2 {{
-      font-size: 1.7rem;
+      font: var(--font-title);
+      color: var(--title); 
       margin: 2rem 0 0.2rem;
       border-bottom: 2px solid #ddd;
-      color: var(--title); /* Color del título de la categoría #333 */
     }}
     .menu-group h3 {{
-      font-size: 1.5rem;
+      font: var(--font-subtitle);
+      color: var(--subtitle); 
       margin: 1rem 0 0rem;
-      color: var(--subtitle); /* Color del subtítulo de la categoría #555 */
     }}
     .menu-group h4 {{
-      font-size: 1.2rem;
+      font: var(--font-plate);
+      color: var(--plate);
       margin: 1rem 0 0rem;
-      color: var(--plate); /* Color del nombre del plato #555 */
     }}
     .menu-description {{
+      font: var(--font-description);
+      color: var(--description);
       margin: 0.2rem 0 0 0;
-      font-size: 0.95rem;
-      color: var(--description); /* Color de la descripción del plato #666 */
       padding: 0 1rem;
     }}
     .menu-price {{
-      font-size: 1.1rem;
+      font: var(--font-price);
+      color: var(--price);
       font-weight: 500;
-      color: var(--price); /* Color del precio  #111*/
     }}
     .menu-item {{
       border-bottom: 1px solid #eee;
@@ -268,7 +406,7 @@ html = f"""<!DOCTYPE html>
       gap: 12px;
       justify-content: center;
       align-items: center;
-      margin: -10000px 0 0.5rem 0;
+      margin: 0 0 0.5rem 0;
       flex-wrap: nowrap;
       overflow-x: auto;
       padding-top: 8px;
@@ -297,6 +435,7 @@ html = f"""<!DOCTYPE html>
       padding-top: 8px;
     }}
     .category-btn {{
+      font: var(--font-textScrollbar);
       background: var(--bgScrollbar);
       color: var(--textScrollbar);
       border: none;
@@ -304,7 +443,6 @@ html = f"""<!DOCTYPE html>
       padding: 7px 18px;
       font-weight: 600;
       cursor: pointer;
-      font-size: 1rem;
       transition: background 0.2s;
       flex: 0 0 auto;
     }}
@@ -328,8 +466,6 @@ html = f"""<!DOCTYPE html>
       text-align: right;
       min-width: 180px;
       flex: 1 1 180px;
-      color: var(--header);
-      font: italic 0.9rem 'Segoe UI', sans-serif;
     }}
     @media (max-width: 600px) {{
       .header-flex {{ flex-direction: column; gap: 0.2rem; margin-bottom: -100px; }}
@@ -403,18 +539,27 @@ html = f"""<!DOCTYPE html>
       transform: scale(1.1);
     }}
     .style-nombre {{
-      font-size:1.8rem;
-      color:var(--header); 
+      font: var(--font-businessName);
+      color:var(--businessName); 
       margin-bottom:0; 
       margin-top:0;
     }}
     .style-subtitulo {{
+      font: var(--font-slogan);
+      color:var(--slogan);
       margin:0.2rem 0 0.3rem 0;
-      font-size:1rem;
       font-weight:400;
-      color:var(--header);
       font-style:italic;
     }}
+    .style-direccion {{
+      font: var(--font-address);
+      color: var(--address);
+    }}
+    .style-horarios {{
+      font: var(--font-horarios);
+      color: var(--horarios);
+    }}
+
   </style>
 </head>
 <body>
@@ -426,8 +571,8 @@ html = f"""<!DOCTYPE html>
         <h2 id="subtitulo-resto" class="style-subtitulo"></h2>
       </div>
       <div class="header-right">
-        <div><span id="direccion-resto"></span></div>
-        <div><span id="horarios-resto"></span></div>
+        <div><span id="direccion-resto" class="style-direccion"></span></div>
+        <div><span id="horarios-resto" class="style-horarios"></span></div>
       </div>
     </div>
   </div>
@@ -633,8 +778,23 @@ html = f"""<!DOCTYPE html>
         }});
       }});
 
+    const FONTS_URL =
+      'https://script.google.com/macros/s/AKfycbxfLpop2cnmImGRhmOcWFgoKF2FD1VtEWEArxUg6r8mkcIUKo74ixAQW-spKVJS7mWf/exec?action=fonts&sheet_url=' +
+      encodeURIComponent("{sheet_url}");
+
+    // Aplica dinámicamente shorthand CSS (p. ej. "italic 1rem 'Poppins', sans-serif")
+    fetch(FONTS_URL)
+      .then(r => r.json())
+      .then(({{ ok, vars }}) => {{
+        if (!ok || !vars) return;
+        Object.entries(vars).forEach(([cssVar, shorthand]) => {{
+          document.documentElement.style.setProperty(cssVar, shorthand);
+        }});
+      }})
+      .catch(err => console.error("Personalizacion FONTS error:", err));
+
     const COLORS_URL =
-      'https://script.google.com/macros/s/AKfycbzN1wf40qzy_Sm7Xg7HftNgrWpHGX6sZzYJK6RtQNO8s5aiPwzo2OhegTBEXToe7mkz/exec?action=colors&sheet_url=' +
+      'https://script.google.com/macros/s/AKfycbxfLpop2cnmImGRhmOcWFgoKF2FD1VtEWEArxUg6r8mkcIUKo74ixAQW-spKVJS7mWf/exec?action=colors&sheet_url=' +
       encodeURIComponent("{sheet_url}");
 
     fetch(COLORS_URL)
@@ -646,6 +806,8 @@ html = f"""<!DOCTYPE html>
         }});
       }})
       .catch(err => console.error("Personalizacion BG error:", err));
+
+    
 
   </script>
 </body>
