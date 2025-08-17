@@ -639,7 +639,7 @@ html = f"""<!DOCTYPE html>
 
     fetch(COLORS_URL)
       .then(r => r.json())
-      .then(({ ok, vars }) => {{
+      .then(({{ ok, vars }}) => {{
         if (!ok || !vars) return;
         Object.entries(vars).forEach(([cssVar, color]) => {{
           document.documentElement.style.setProperty(cssVar, color);
