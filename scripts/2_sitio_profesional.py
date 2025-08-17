@@ -7,7 +7,7 @@ from googleapiclient.discovery import build
 import hashlib
 
 # === CONFIGURACIÓN ===
-MENU_RANGE = "Menu!A2:E26"
+MENU_RANGE = "Menu!A2:E"
 FIJOS_RANGE = "Datos Permanentes!B2:B17"
 fecha_id = datetime.now().strftime("%Y%m%d")
 
@@ -390,12 +390,6 @@ html = f"""<!DOCTYPE html>
     @media (max-width: 600px) {{
       .menu-name {{
         font-size: 1rem;
-      }}
-      .menu-price {{
-        font-size: 1rem;
-      }}
-      .menu-description {{
-        font-size: 0.9rem;
       }}
     }}
     .menu-content {{

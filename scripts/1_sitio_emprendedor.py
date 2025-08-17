@@ -7,7 +7,7 @@ from googleapiclient.discovery import build
 import hashlib
 
 # === CONFIGURACIÓN ===
-MENU_RANGE = "Menu!A2:E26"
+MENU_RANGE = "Menu!A2:E"
 FIJOS_RANGE = "Datos Permanentes!B2:B5"
 fecha_id = datetime.now().strftime("%Y%m%d")
 
