@@ -861,7 +861,7 @@ function parseCSV(text) {{
 }}
 
 // === Nuevo fetch del CSV de Menu ===
-//  - Lee B2 para el popup
+//  - Lee B1 para el popup
 //  - Renderiza desde la fila 5 (índice 4) en adelante
 let allRows = [];
 fetch(CSV_URL)
@@ -869,8 +869,8 @@ fetch(CSV_URL)
   .then(text => {{
     const rows = parseCSV(text);
 
-    // 1) POPUP desde Menu!B2 (fila 2 = índice 1, col 2 = índice 1)
-    const popupUrl = (rows[1]?.[1] || '').trim();
+    // 1) POPUP desde Menu!B1 (fila 2 = índice 1, col 2 = índice 1)
+    const popupUrl = (rows[0]?.[1] || '').trim();
     if (popupUrl) {{
       const promoImg = document.getElementById('promoImage');
       const popup    = document.getElementById('promoPopup');
@@ -880,8 +880,8 @@ fetch(CSV_URL)
       }}
     }}
 
-    // 2) Datos de platos desde fila 5 (index 4). Fila 4 (index 3) son encabezados "Categoría,Subcategoría,..."
-    const dataRows = rows.slice(4)  // <-- desde la fila 5
+    // 2) Datos de platos desde fila 2 (index 4). Fila 4 (index 3) son encabezados "Categoría,Subcategoría,..."
+    const dataRows = rows.slice(1)  // <-- desde la fila 5
       .map(r => r.map(c => (c || '').trim()))
       .filter(r =>
         // mantener filas con al menos categoría + plato o imagen/descripcion/precio
