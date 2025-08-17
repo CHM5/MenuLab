@@ -27,11 +27,12 @@ if not sheet_url:
 
 # Extraer ID y armar URLs válidas
 sheet_id = sheet_url.split("/d/")[1].split("/")[0]
-csv_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet=Menu"
+popup_csv_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet=Menu&range=B2"
+menu_csv_url  = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet=Menu&range=A2:F"
 fijos_csv_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet=Datos%20Permanentes"
 personalizacion_csv_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet=Personalizacion"
 
-print("🔗 CSV menú:", csv_url)
+print("🔗 CSV menú:", menu_csv_url )
 print("🔗 CSV fijos:", fijos_csv_url)
 
 # === VALIDAR CONEXIÓN (sin cortar si falla) ===
@@ -722,12 +723,14 @@ html = f"""<!DOCTYPE html>
     </div>
   </div>
   <script data-cfasync="false">
-    const CSV_URL = "{csv_url}";
+    const POPUP_CSV_URL = "{popup_csv_url}";
+    const CSV_URL = "{menu_csv_url }";
     const FIJOS_URL = "{fijos_csv_url}";
     const PERSONALIZACION_URL = "{personalizacion_csv_url}";
 
+    let allRows = [];
     function renderCategoryMenu(rows) {{
-      const categories = [...new Set(rows.map(r => r[0].trim()).filter(Boolean))];
+      const categories = [...new Set(rows.map(r => ((r[0] ?? '').trim()).filter(Boolean))];
       const menuDiv = document.getElementById('categoryMenu');
       menuDiv.innerHTML = '';
 
@@ -787,12 +790,13 @@ html = f"""<!DOCTYPE html>
 
             itemDiv.innerHTML = `
               <div class="menu-item-inner">
-                <h4 class="menu-name">${{item.nombre}}</h4>
-                <p class="menu-description">${{item.desc}}</p>
-                <span class="menu-price">$${{item.precio}}</span>
+                <div class="menu-text">
+                  <h4 class="menu-name">${{item.nombre}}</h4>
+                  <p class="menu-description">${{item.desc}}</p>
+                  <span class="menu-price">$${{item.precio}}</span>
+                </div>
+                ${{item.imagen ? `<img src="${{item.imagen}}" alt="${{item.nombre}}" class="menu-img">` : ""}}
               </div>
-              ${{item.imagen ? `<img src="${{item.imagen}}" alt="${{item.nombre}}" class="menu-img">` : ""}}
-            </div>
             `;
 
             // Selección visual y lógica
@@ -860,52 +864,39 @@ function parseCSV(text) {{
   return rows;
 }}
 
-// === Nuevo fetch del CSV de Menu ===
-//  - Lee B1 para el popup
-//  - Renderiza desde la fila 5 (índice 4) en adelante
-let allRows = [];
+// --- POPUP: B2 directo (sin indexar filas) ---
+fetch(POPUP_CSV_URL)
+  .then(r => r.text())
+  .then(txt => {{
+    const url = txt.trim().replace(/^"|"$/g, ''); // quita comillas del CSV
+    if (url && /^https?:\/\//i.test(url) && url.toLowerCase() !== 'off') {{
+      const img = document.getElementById('promoImage');
+      const pop = document.getElementById('promoPopup');
+      if (img && pop) {{ img.src = url; pop.style.display = 'flex'; }}
+    }}
+  }})
+  .catch(console.error);
+
+// MENÚ: A2:F directo
 fetch(CSV_URL)
   .then(r => r.text())
   .then(text => {{
     const rows = parseCSV(text);
-
-    // 1) POPUP desde Menu!B1 (fila 2 = índice 1, col 2 = índice 1)
-    const popupUrl = (rows[0]?.[1] || '').trim();
-    if (popupUrl) {{
-      const promoImg = document.getElementById('promoImage');
-      const popup    = document.getElementById('promoPopup');
-      if (promoImg && popup) {{
-        promoImg.src = popupUrl;
-        popup.style.display = 'flex'; // mostrar automáticamente si hay URL
-      }}
-    }}
-
-    // 2) Datos de platos desde fila 2 (index 4). Fila 4 (index 3) son encabezados "Categoría,Subcategoría,..."
-    const dataRows = rows.slice(1)  // <-- desde la fila 5
-      .map(r => r.map(c => (c || '').trim()))
-      .filter(r =>
-        // mantener filas con al menos categoría + plato o imagen/descripcion/precio
-        (r[0] && r[2]) || r[5] || r[3] || r[4]
-      );
-
-    // Estructura esperada: [cat, subcat, nombre, desc, precio, imagen]
-    allRows = dataRows.map(r => [
-      r[0] || '', // A Categoría
-      r[1] || '', // B Subcategoría
-      r[2] || '', // C Plato
-      r[3] || '', // D Descripción
-      r[4] || '', // E Precio
-      r[5] || ''  // F Enlace Foto
-    ]);
-
+    allRows = rows
+      .map(r => {{
+        const [a='',b='',c='',d='',e='',f=''] = r;
+        return [a.trim(), b.trim(), c.trim(), d.trim(), e.trim(), f.trim()];
+      }})
+      .filter(r => r.some(Boolean));
     renderMenuGrouped(allRows);
     renderCategoryMenu(allRows);
     document.getElementById('noResults').style.display = allRows.length ? "none" : "block";
   }})
   .catch(err => {{
     console.error('Error CSV:', err);
-    document.getElementById("noResults").style.display = "block";
-    document.getElementById("noResults").textContent = "Error al cargar el menú.";
+    const el = document.getElementById("noResults");
+    el.style.display = "block";
+    el.textContent = "Error al cargar el menú.";
   }});
 
 
