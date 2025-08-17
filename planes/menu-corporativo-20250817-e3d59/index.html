@@ -617,7 +617,8 @@ function parseCSV(text) {
       row.push(cell);
       cell = '';
     } else if ((char === '
-' || char === '') && !inQuotes) {
+' || char === '
+') && !inQuotes) {
       if (cell.length || row.length) {
         row.push(cell);
         rows.push(row);
@@ -744,7 +745,7 @@ fetch(CSV_URL)
         });
       });
 
-    const FONTS_URL =
+    conhttps://script.google.com/macros/s/AKfycbyLSRd2Fa4Czd6N8j8KQA2U3ULgP0fmcPyEeoZnRPzfIuDlWK5tMRGkVYx_YwFBES6J/exec
       'https://script.google.com/macros/s/AKfycbyoUpJYVybiCQRpIoKTPH8uEDTbdzPWI9BcfCcQwUeitz8eXsQXx6MlFj-lsmGTcn4/exec?action=fonts&sheet_url=' +
       encodeURIComponent("https://docs.google.com/spreadsheets/d/1tBnXAlc0XsGlShSjM0usjewKiK-7fTJ7O3zBYbi8r7o/edit?usp=drivesdk");
 
@@ -759,7 +760,7 @@ fetch(CSV_URL)
       })
       .catch(err => console.error("Personalizacion FONTS error:", err));
 
-    const COLORS_URL =
+    conhttps://script.google.com/macros/s/AKfycbyLSRd2Fa4Czd6N8j8KQA2U3ULgP0fmcPyEeoZnRPzfIuDlWK5tMRGkVYx_YwFBES6J/exec
       'https://script.google.com/macros/s/AKfycbyoUpJYVybiCQRpIoKTPH8uEDTbdzPWI9BcfCcQwUeitz8eXsQXx6MlFj-lsmGTcn4/exec?action=colors&sheet_url=' +
       encodeURIComponent("https://docs.google.com/spreadsheets/d/1tBnXAlc0XsGlShSjM0usjewKiK-7fTJ7O3zBYbi8r7o/edit?usp=drivesdk");
 

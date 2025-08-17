@@ -773,7 +773,7 @@ html = f"""<!DOCTYPE html>
       }});
 
     const FONTS_URL =
-      'https://script.google.com/macros/s/AKfycbyoUpJYVybiCQRpIoKTPH8uEDTbdzPWI9BcfCcQwUeitz8eXsQXx6MlFj-lsmGTcn4/exec?action=fonts&sheet_url=' +
+      'https://script.google.com/macros/s/AKfycbyLSRd2Fa4Czd6N8j8KQA2U3ULgP0fmcPyEeoZnRPzfIuDlWK5tMRGkVYx_YwFBES6J/exec?action=fonts&sheet_url=' +
       encodeURIComponent("{sheet_url}");
 
     // Aplica dinámicamente shorthand CSS (p. ej. "italic 1rem 'Poppins', sans-serif")
@@ -788,7 +788,7 @@ html = f"""<!DOCTYPE html>
       .catch(err => console.error("Personalizacion FONTS error:", err));
 
     const COLORS_URL =
-      'https://script.google.com/macros/s/AKfycbyoUpJYVybiCQRpIoKTPH8uEDTbdzPWI9BcfCcQwUeitz8eXsQXx6MlFj-lsmGTcn4/exec?action=colors&sheet_url=' +
+      'https://script.google.com/macros/s/AKfycbyLSRd2Fa4Czd6N8j8KQA2U3ULgP0fmcPyEeoZnRPzfIuDlWK5tMRGkVYx_YwFBES6J/exec?action=colors&sheet_url=' +
       encodeURIComponent("{sheet_url}");
 
     fetch(COLORS_URL)
