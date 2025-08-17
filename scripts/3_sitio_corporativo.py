@@ -730,7 +730,7 @@ html = f"""<!DOCTYPE html>
 
     let allRows = [];
     function renderCategoryMenu(rows) {{
-      const categories = [...new Set(rows.map(r => ((r[0] ?? '').trim()).filter(Boolean))];
+      const categories = [...new Set(rows.map(r => r[0].trim()).filter(Boolean))];
       const menuDiv = document.getElementById('categoryMenu');
       menuDiv.innerHTML = '';
 
