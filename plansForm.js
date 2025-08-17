@@ -143,12 +143,12 @@ if (mpRedirectBtn) {
         const price = parseInt(selected?.dataset.price || 0, 10);
 
         const mpLinks = {
-            18000: "https://www.mercadopago.com.ar/subscriptions/checkout?preapproval_plan_id=2c938084968c9eaa01969982254c05d0",
-            36000: "https://www.mercadopago.com.ar/subscriptions/checkout?preapproval_plan_id=2c938084968c9eaa01969982254c05d0",
-            72000: "https://www.mercadopago.com.ar/subscriptions/checkout?preapproval_plan_id=2c938084968c9eaa01969982254c05d0",
-            180000: "https://www.mercadopago.com.ar/subscriptions/checkout?preapproval_plan_id=2c938084968c9eaa01969982254c05d0",
-            360000: "hhttps://www.mercadopago.com.ar/subscriptions/checkout?preapproval_plan_id=2c938084968c9eaa01969982254c05d0",
-            720000: "https://www.mercadopago.com.ar/subscriptions/checkout?preapproval_plan_id=2c938084968c9eaa01969982254c05d0"
+            18000: "https://www.mercadopago.com.ar/subscriptions/checkout?preapproval_plan_id=2c938084966c84bc01969976d53f14d2",
+            36000: "https://www.mercadopago.com.ar/subscriptions/checkout?preapproval_plan_id=2c9380849696ea8201969bd7708d01ac",
+            72000: "https://www.mercadopago.com.ar/subscriptions/checkout?preapproval_plan_id=2c938084968c9eaa01969bd7f0f4062c",
+            180000: "https://www.mercadopago.com.ar/subscriptions/checkout?preapproval_plan_id=2c9380849721f5e501972934c13602ad",
+            360000: "https://mpago.la/1FzYWEk",
+            720000: "https://mpago.la/2sL5gCq"
         };
 
         if (price === 0) {
