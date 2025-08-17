@@ -721,7 +721,7 @@ html = f"""<!DOCTYPE html>
       <!-- Puedes agregar texto o botón si querés -->
     </div>
   </div>
-  <script>
+  <script data-cfasync="false">
     const CSV_URL = "{csv_url}";
     const FIJOS_URL = "{fijos_csv_url}";
     const PERSONALIZACION_URL = "{personalizacion_csv_url}";
@@ -842,7 +842,7 @@ function parseCSV(text) {{
     }} else if (char === ',' && !inQuotes) {{
       row.push(cell);
       cell = '';
-    }} else if ((char === '\n' || char === '\r') && !inQuotes) {{
+    }} else if ((char === "\\n" || char === "\\r") && !inQuotes) {{
       if (cell.length || row.length) {{
         row.push(cell);
         rows.push(row);
@@ -997,9 +997,6 @@ fetch(CSV_URL)
         }});
       }})
       .catch(err => console.error("Personalizacion BG error:", err));
-
-    
-
   </script>
 </body>
 </html>
