@@ -383,7 +383,7 @@ html = f"""<!DOCTYPE html>
     .header-socials {{
         text-align: center;
         margin: 0rem 10px 0.5rem 10px;
-        background-color: #f1f1f1; /* gris clarito */
+        background-color: var(--bg); /* gris clarito */
         border-radius: 10px; /* bordes redondeados */
         padding: 0.5rem 1rem; /* opcional, para que respire */
     }}
@@ -634,7 +634,7 @@ html = f"""<!DOCTYPE html>
       }});
 
     const COLORS_URL =
-      'https://script.google.com/macros/s/AKfycbzQuffLaXej2xdX1QWNG9Gedhz8kjK7brjxlUJUBc-S6Vbu0T1WctEHUY4G4kbS-63c/exec?action=colors&sheet_url=' +
+      'https://script.google.com/macros/s/AKfycbzN1wf40qzy_Sm7Xg7HftNgrWpHGX6sZzYJK6RtQNO8s5aiPwzo2OhegTBEXToe7mkz/exec?action=colors&sheet_url=' +
       encodeURIComponent("{sheet_url}");
 
     fetch(COLORS_URL)
