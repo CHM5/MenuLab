@@ -8,7 +8,7 @@ import hashlib
 
 # === CONFIGURACIÓN ===
 MENU_RANGE = "Menu!A2:E26"
-FIJOS_RANGE = "Datos Permanentes!B2:B14"
+FIJOS_RANGE = "Datos Permanentes!B2:B17"
 fecha_id = datetime.now().strftime("%Y%m%d")
 
 # === AUTENTICACIÓN GOOGLE ===
@@ -120,14 +120,14 @@ FONT_VAR_MAP = {
 
 def get_personalizacion_fonts(sheet_id: str) -> dict:
     """
-    Lee Personalizacion!A2:B13 con includeGridData=True y arma { '--font-...': 'shorthand' }
+    Lee Personalizacion!A2:B17 con includeGridData=True y arma { '--font-...': 'shorthand' }
     Si hay textFormatRuns, prioriza el primer run. Si no, usa effectiveFormat.textFormat.
     """
     fonts = {}
     try:
         resp = sheets_service.spreadsheets().get(
             spreadsheetId=sheet_id,
-            ranges=["Personalizacion!A2:B13"],
+            ranges=["Personalizacion!A2:B17"],
             includeGridData=True,
             fields="sheets.data.rowData.values(effectiveFormat.textFormat,textFormatRuns,formattedValue)"
         ).execute()
@@ -189,7 +189,7 @@ for k, v in defaults_fonts.items():
 try:
     sheet = sheets_service.spreadsheets().get(
         spreadsheetId=sheet_id,
-        ranges=["Personalizacion!C2:C13"],
+        ranges=["Personalizacion!C2:C17"],
         includeGridData=True,
         fields="sheets.data.rowData.values.effectiveFormat.backgroundColor"
     ).execute()
@@ -779,7 +779,7 @@ html = f"""<!DOCTYPE html>
       }});
 
     const FONTS_URL =
-      'https://script.google.com/macros/s/AKfycbxfLpop2cnmImGRhmOcWFgoKF2FD1VtEWEArxUg6r8mkcIUKo74ixAQW-spKVJS7mWf/exec?action=fonts&sheet_url=' +
+      'https://script.google.com/macros/s/AKfycbwVKiJqY2nAUnyMEngLP2z-N0ivfwcfZXhRdwAxcMrXOxQUf7y2vi3-BsLND28Tb4mq/exec?action=fonts&sheet_url=' +
       encodeURIComponent("{sheet_url}");
 
     // Aplica dinámicamente shorthand CSS (p. ej. "italic 1rem 'Poppins', sans-serif")
@@ -794,7 +794,7 @@ html = f"""<!DOCTYPE html>
       .catch(err => console.error("Personalizacion FONTS error:", err));
 
     const COLORS_URL =
-      'https://script.google.com/macros/s/AKfycbxfLpop2cnmImGRhmOcWFgoKF2FD1VtEWEArxUg6r8mkcIUKo74ixAQW-spKVJS7mWf/exec?action=colors&sheet_url=' +
+      'https://script.google.com/macros/s/AKfycbwVKiJqY2nAUnyMEngLP2z-N0ivfwcfZXhRdwAxcMrXOxQUf7y2vi3-BsLND28Tb4mq/exec?action=colors&sheet_url=' +
       encodeURIComponent("{sheet_url}");
 
     fetch(COLORS_URL)
