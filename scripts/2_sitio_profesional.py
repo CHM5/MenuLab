@@ -278,7 +278,6 @@ html = f"""<!DOCTYPE html>
       position: sticky;
       top: 50px;
       z-index: 1000;
-      background: #457B9D;
     }}
     #categoryMenu {{
       margin-top: -0.2rem;
@@ -634,35 +633,19 @@ html = f"""<!DOCTYPE html>
         }});
       }});
 
-    // Mapea el nombre de la fila (columna B) a tu variable CSS
-    const VAR_MAP = {{
-      "Fondo": "--bg",
-      "Encabezado": "--header",
-      "Fondo Categorías": "--bgScrollbar",
-      "Texto Categorías": "--textScrollbar",
-      "Categoría": "--title",
-      "Subcategoría": "--subtitle",
-      "Plato": "--plate",
-      "Descripción": "--description",
-      "Precio": "--price"
-    }};
+    const COLORS_URL =
+      'https://script.google.com/macros/s/AKfycbzQuffLaXej2xdX1QWNG9Gedhz8kjK7brjxlUJUBc-S6Vbu0T1WctEHUY4G4kbS-63c/exec?action=colors&sheet_url=' +
+      encodeURIComponent("{sheet_url}");
 
-  // Lee la hoja y setea variables (B = nombre, C = color)
-  fetch(PERSONALIZACION_URL)
-    .then(r => r.text())
-    .then(csv => {{
-      const rows = csv.trim().split("\\n").map(r => r.split(","));
-      // salteo encabezado: “Fuente,Color”
-      rows.slice(1).forEach(cols => {{
-        const nombre = (cols[1] || "").replace(/"/g, "").trim(); // col B
-        const color  = (cols[2] || "").replace(/"/g, "").trim(); // col C
-        const varCSS = VAR_MAP[nombre];
-        if (varCSS && color) {{
-          document.documentElement.style.setProperty(varCSS, color);
-        }}
-      }});
-    }})
-    .catch(err => console.error("Error Personalizacion:", err));
+    fetch(COLORS_URL)
+      .then(r => r.json())
+      .then(({ ok, vars }) => {{
+        if (!ok || !vars) return;
+        Object.entries(vars).forEach(([cssVar, color]) => {{
+          document.documentElement.style.setProperty(cssVar, color);
+        }});
+      }})
+      .catch(err => console.error("Personalizacion BG error:", err));
 
   </script>
 </body>
