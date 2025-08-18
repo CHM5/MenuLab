@@ -580,7 +580,7 @@ html = f"""<!DOCTYPE html>
       height: 12px;
     }}
     .menu-item.selected {{
-      background: #457B9D !important; /* azul oscuro */
+      background: var(--bgScrollbar) !important; /* azul oscuro */
       color: #fff !important;
       border-radius: 10px;
       padding: 0rem 0rem;
