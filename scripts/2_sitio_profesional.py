@@ -611,6 +611,7 @@ html = f"""<!DOCTYPE html>
     const FIJOS_URL = "{fijos_csv_url}";
     const PERSONALIZACION_URL = "{personalizacion_csv_url}";
 
+    let allRows = [];
     function renderCategoryMenu(rows) {{
       const categories = [...new Set(rows.map(r => r[0].trim()).filter(Boolean))];
       const menuDiv = document.getElementById('categoryMenu');
@@ -801,7 +802,73 @@ html = f"""<!DOCTYPE html>
       }})
       .catch(err => console.error("Personalizacion BG error:", err));
 
-    
+    const WEB_SAFE = new Set([
+      'Arial','Helvetica','Verdana','Tahoma','Trebuchet MS','Geneva',
+      'Times New Roman','Times','Georgia','Palatino Linotype','Book Antiqua','Palatino',
+      'Courier New','Courier','Consolas','Lucida Console',
+      'Segoe UI','system-ui','Helvetica Neue','Roboto','Noto Sans','Monaco','Menlo',
+      'serif','sans-serif','monospace'
+    ]);
+
+    // mapeos de propietarias a stacks parecidas
+    const FALLBACK_MAP = {{
+      'calibri': "system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
+      'cambria': "Georgia, 'Times New Roman', Times, serif",
+      'segoe ui': "system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif"
+    }};
+
+    function firstFamilyFromShorthand(sh) {{
+      // toma la primera familia (entre comillas o hasta la coma)
+      const m = sh.match(/'([^']+)'/);
+      if (m) return m[1];
+      return (sh.split(',')[0] || '').trim();
+    }}
+
+    function loadGoogleFonts(families) {{
+      if (!families.length) return;
+      const qs = families
+        .map(f => 'family=' + encodeURIComponent(f.replace(/\s+/g, '+')))
+        .join('&');
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = 'https://fonts.googleapis.com/css2?' + qs + '&display=swap';
+      document.head.appendChild(link);
+    }}
+
+    // Cuando recibís {{ ok, vars }} desde tu FONTS_URL:
+    fetch(FONTS_URL).then(r=>r.json()).then(({ok, vars})=>{{
+      if (!ok || !vars) return;
+
+      // 1) familias únicas usadas
+      const fams = new Set();
+      Object.values(vars).forEach(sh => {{
+        const fam = firstFamilyFromShorthand(sh);
+        if (fam) fams.add(fam);
+      }});
+
+      // 2) cargá por Google Fonts todo lo que NO sea web-safe ni propietaria mapeada
+      const toLoad = [];
+      [...fams].forEach(f => {{
+        const key = f.toLowerCase();
+        if (FALLBACK_MAP[key]) return;     // propietaria → se cae al stack
+        if (WEB_SAFE.has(f)) return;       // ya está en el sistema
+        toLoad.push(f);                    // intentamos Google Fonts
+      }});
+      loadGoogleFonts(toLoad);
+
+      // 3) Aplicá shorthand, ajustando propietarias a sus stacks
+      Object.entries(vars).forEach(([cssVar, sh]) => {{
+        const fam = firstFamilyFromShorthand(sh).toLowerCase();
+        if (FALLBACK_MAP[fam]) {{
+          // reemplaza sólo la parte de font-family dejando tamaño/estilo
+          const cleaned = sh.replace(/('[^']+'|[^,]+)\s*,?/, FALLBACK_MAP[fam] + ',');
+          document.documentElement.style.setProperty(cssVar, cleaned);
+        }} else {{
+          document.documentElement.style.setProperty(cssVar, sh);
+        }}
+      }});
+    }}).catch(console.error);
+
 
   </script>
 </body>

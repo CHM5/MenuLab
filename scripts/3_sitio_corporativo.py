@@ -427,6 +427,7 @@ html = f"""<!DOCTYPE html>
       font-weight: 600;
     }}
 
+
     @media (max-width: 600px) {{
       .menu-name {{
         font-size: 1rem;
@@ -637,6 +638,55 @@ html = f"""<!DOCTYPE html>
       color: var(--horarios);
     }}
 
+    #totalBar {{
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: #fff;
+      border-top: 1px solid #e9ecef;
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.06);
+      padding: 0.8rem 1rem;
+      font-weight: 700;
+      font-size: 1.05rem;
+      text-align: center;
+      z-index: 1100; /* por encima del contenido y debajo del popup */
+    }}
+
+    /* para que el contenido no quede tapado por la barra */
+    body {{ padding-bottom: 72px; }}
+
+    /* que el botón de WhatsApp no quede escondido detrás de la barra */
+    #whatsapp-float {{ bottom: 90px; }}
+    @media (max-width: 600px) {{
+      #whatsapp-float {{ bottom: 88px; }}
+    }}
+
+    /* Barra de total fija */
+    #totalBar{{
+      position: fixed; left: 0; right: 0; bottom: 0;
+      background: #fff; border-top: 1px solid #e9ecef;
+      box-shadow: 0 -2px 10px rgba(0,0,0,.06);
+      padding: .8rem 1rem;
+      font-weight: 700; font-size: 1.05rem;
+      z-index: 1100;
+      display: flex; justify-content: center; align-items: center; gap: 12px;
+    }}
+
+    /* que nada quede tapado por la barra */
+    body{{ padding-bottom: 72px; }}
+
+    /* botón pagar */
+    #payButton{{
+      display: none;           /* se muestra solo con selección */
+      background: #457B9D;     /* tu color */
+      color: #fff; 
+      text-decoration: none;
+      border-radius: 999px; padding: .55rem 1rem;
+      font-weight: 700; font-size: .98rem;
+    }}
+    #payButton.show{{ display: inline-block; }}
+
   </style>
 </head>
 <body>
@@ -703,12 +753,17 @@ html = f"""<!DOCTYPE html>
       <!-- Puedes agregar texto o botón si querés -->
     </div>
   </div>
+  <div id="totalBar" aria-live="polite">
+    <span id="totalText">Total: $0</span>
+    <a id="payButton" href="#" target="_blank" rel="noopener">Pagar</a>
+  </div>
   <script data-cfasync="false">
     const POPUP_CSV_URL = "{popup_csv_url}";
     const CSV_URL = "{menu_csv_url }";
     const FIJOS_URL = "{fijos_csv_url}";
     const PERSONALIZACION_URL = "{personalizacion_csv_url}";
 
+    let PAYMENT_URL = "";
     let allRows = [];
     function renderCategoryMenu(rows) {{
       const categories = [...new Set(rows.map(r => r[0].trim()).filter(Boolean))];
@@ -784,6 +839,7 @@ html = f"""<!DOCTYPE html>
             // Selección visual y lógica
             itemDiv.addEventListener('click', function() {{
               itemDiv.classList.toggle('selected');
+              updateTotal();
             }});
 
             group.appendChild(itemDiv);
@@ -791,6 +847,7 @@ html = f"""<!DOCTYPE html>
         }});
 
         container.appendChild(group);
+        updateTotal();
       }});
     }}
 
@@ -807,6 +864,7 @@ html = f"""<!DOCTYPE html>
       const filtered = filterMenuRows(allRows, this.value);
       renderMenuGrouped(filtered);
       renderCategoryMenu(filtered);
+      updateTotal();
       document.getElementById('noResults').style.display = filtered.length === 0 ? "block" : "none";
     }});
 
@@ -872,6 +930,7 @@ fetch(CSV_URL)
       .filter(r => r.some(Boolean));
     renderMenuGrouped(allRows);
     renderCategoryMenu(allRows);
+    updateTotal();
     document.getElementById('noResults').style.display = allRows.length ? "none" : "block";
   }})
   .catch(err => {{
@@ -924,6 +983,22 @@ fetch(CSV_URL)
             label: "Google Maps"
           }}
         ];
+
+        // --- LINK DE PAGO DINÁMICO (B14 -> rows[13][1]) ---
+        const payBtnEl = document.getElementById('payButton');
+        const rawPay = (rows[13]?.[1] || "").replace(/"/g, "").trim(); // B14
+
+        if (rawPay && rawPay.toLowerCase() !== "off") {{
+          // agrega https:// si falta
+          PAYMENT_URL = /^https?:\/\//i.test(rawPay) ? rawPay : ("https://" + rawPay);
+          payBtnEl.href = PAYMENT_URL;
+        }} else {{
+          PAYMENT_URL = "";
+          payBtnEl.removeAttribute("href");
+        }}
+
+        // por si ya había selección antes de que llegara FIJOS
+        updateTotal();
 
         const socialsDiv = document.getElementById('headerSocials');
         socialsDiv.innerHTML = "";
@@ -998,6 +1073,63 @@ fetch(CSV_URL)
     let url = this.href.split('?')[0] + `?text=${{mensaje}}`;
     window.open(url, '_blank');
   }});
+
+  function parsePrice(str) {{
+    if (!str) return 0;
+    const cleaned = String(str).replace(/[^\d.,-]/g, '').trim();
+    if (!cleaned) return 0;
+
+    let numStr = cleaned;
+    const lastComma = cleaned.lastIndexOf(',');
+    const lastDot = cleaned.lastIndexOf('.');
+
+    // si tiene ambos separadores, usamos el último como decimal
+    if (lastComma > -1 && lastDot > -1) {{
+      if (lastComma > lastDot) {{
+        numStr = cleaned.replace(/\./g, '').replace(',', '.'); // 1.234,56
+      }} else {{
+        numStr = cleaned.replace(/,/g, ''); // 1,234.56
+      }}
+    }} else if (lastComma > -1) {{
+      numStr = cleaned.replace(/\./g, '').replace(',', '.');   // 1.234 -> 1234 ; 123,45 -> 123.45
+    }} else {{
+      numStr = cleaned.replace(/,/g, '');                      // 1,234 -> 1234
+    }}
+
+    const v = parseFloat(numStr);
+    return isNaN(v) ? 0 : v;
+  }}
+
+  function formatMoney(n) {{
+    try {{
+      return new Intl.NumberFormat('es-AR', { style:'currency', currency:'ARS', minimumFractionDigits:0 }).format(n || 0);
+    }} catch(e) {{
+      // fallback simple
+      return '$' + Math.round(n || 0).toString();
+    }}
+  }}
+
+  // --- helpers existentes (parsePrice, formatMoney) sirven tal cual ---
+
+  function updateTotal(){{
+    const prices = document.querySelectorAll('.menu-item.selected .menu-price');
+    let total = 0;
+    prices.forEach(el => total += parsePrice(el.textContent));
+
+    // 👇 ahora actualizamos el span, no todo el div
+    document.getElementById('totalText').textContent = `Total: ${{formatMoney(total)}}`;
+
+    // mostrar/ocultar botón de pago
+    const payBtn = document.getElementById('payButton');
+    if (prices.length > 0 && PAYMENT_URL){{
+      payBtn.classList.add('show');
+    }} else {{
+      payBtn.classList.remove('show');
+    }}
+  }}
+
+  // por si ya hay items seleccionados antes de que llegue FIJOS
+  updateTotal();
 
   </script>
 </body>
