@@ -1102,7 +1102,7 @@ fetch(CSV_URL)
 
   function formatMoney(n) {{
     try {{
-      return new Intl.NumberFormat('es-AR', { style:'currency', currency:'ARS', minimumFractionDigits:0 }).format(n || 0);
+      return new Intl.NumberFormat('es-AR', {{ style:'currency', currency:'ARS', minimumFractionDigits:0 }}).format(n || 0);
     }} catch(e) {{
       // fallback simple
       return '$' + Math.round(n || 0).toString();
