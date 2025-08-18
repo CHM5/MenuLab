@@ -1158,3 +1158,20 @@ input:focus, select:focus, textarea:focus {
     align-items: center;
     gap: 8px;
 }
+
+/* --- Descuentos --- */
+#discountBox{
+  display:flex; align-items:center; gap:8px; flex-wrap:wrap;
+}
+#discountCode{
+  padding:.45rem .75rem; border:1px solid #ccd; border-radius:999px; min-width:160px;
+  font-size:.95rem;
+}
+#applyDiscountBtn, #clearDiscountBtn{
+  background:transparent; border:1px solid #457B9D; color:#457B9D;
+  border-radius:999px; padding:.45rem .75rem; font-weight:600; cursor:pointer;
+}
+#clearDiscountBtn{ border-color:#999; color:#666; display:none; }
+#discountMsg{ font-size:.9rem; }
+#discountMsg.ok{ color:#198754; }
+#discountMsg.error{ color:#dc3545; }

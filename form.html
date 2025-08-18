@@ -23,7 +23,7 @@
                 <div class="form-header" style="background: linear-gradient(90deg, #4f8cff 0%, #6dd5ed 100%); border-radius: 18px; padding: 32px 24px 24px 24px; box-shadow: 0 4px 24px rgba(79,140,255,0.10); margin-bottom: 32px; color: #fff; text-align: center; position: relative;">
                     <div style="position: absolute; top: 18px; left: 24px; font-size: 2.2rem; opacity: 0.15; pointer-events: none;">🚀</div>
                     <h3 style="font-size: 1.5rem; font-weight: 700; letter-spacing: 1px; margin-bottom: 10px; color: #fff; text-shadow: 0 2px 8px rgba(0,0,0,0.08);">
-                        Productos Seccionados
+                        Productos Seleccionados
                     </h3>
                     <h2 style="font-size: 1.15rem; font-weight: 400; margin-bottom: 18px; color: #e3f2fd;">
                         Completá los pasos para activar tu sitio y acceder a los beneficios de tu compra
@@ -76,7 +76,7 @@
                         <label><input type="checkbox" class="product-checkbox cart-checkbox" data-product="combobase" data-price="336000"> <b>Combo Base:</b> MicroSite, carta doble faz e individual</label>
                         <label><input type="checkbox" class="product-checkbox cart-checkbox" data-product="combopro" data-price="600000"> <b>Combo Pro:</b> ProSite, carta Anillada, portavasos y tarjeta de descuento</label>
                     </div>
-                    <div id="totalAmount" class="form-group"><strong>Total: $0</strong></div>
+                    <div id="totalAmount" aria-live="polite" style="margin-top:12px;font-weight:700;"></div>
                     <div id="formError" class="form-error" style="display:none;"></div>
                     <div class="form-buttons">
                         <button type="button" class="btn next-btn">Continuar</button>
@@ -100,7 +100,7 @@
                     </div>
                     <div class="form-group">
                         <label for="phone">Teléfono de contacto</label>
-                        <input type="tel" id="phone" name="phone" required .>
+                        <input type="tel" id="phone" name="phone" required>
                     </div>
                     <div class="form-buttons">
                         <button type="button" class="btn prev-btn">Atrás</button>
@@ -117,7 +117,7 @@
                     </div>
                     <div class="form-group">
                         <label for="websiteUrl">Dirección</label>
-                        <input type="url" id="websiteUrl" name="websiteUrl">
+                        <input type="text" id="websiteUrl" name="websiteUrl">
                     </div>
                     <div class="form-group">
                         <label for="sponsorshipLevel">País</label>
@@ -186,7 +186,7 @@
                                     name="MP-payButton"
                                     class="blue-button"
                                     target="_blank"
-                                    rel="noopener noreferrer">Suscribirme</a>
+                                    rel="noopener noreferrer">Comprar</a>
                             </div>
                         </div>
                     </div>
@@ -246,11 +246,22 @@
 
             // Actualiza el total en el paso 1 en tiempo real
             document.querySelectorAll('.product-checkbox').forEach(cb => {
-                cb.addEventListener('change', function () {
-                    updateSelectedProducts();
-                    document.getElementById('totalAmount').innerHTML = `<strong>Total: $${total.toLocaleString()}</strong>`;
-                });
+            cb.addEventListener('change', function () {
+                updateSelectedProducts();
+
+                const pctNow = Number(sessionStorage.getItem('discountPct') || 0);
+                const discountedNow = pctNow ? Math.round(total * (1 - pctNow/100)) : total;
+
+                document.getElementById('totalAmount').innerHTML = pctNow
+                ? `<strong>Total: <s>$${total.toLocaleString('es-AR')}</s> $${discountedNow.toLocaleString('es-AR')} (-${pctNow}%)</strong>`
+                : `<strong>Total: $${total.toLocaleString('es-AR')}</strong>`;
             });
+               
+            // ⬇️ si estás en el Paso 4, re-renderizá el detalle (y botón) en vivo
+            const step4Active = document.querySelector('.form-step[data-step="4"]')?.classList.contains('active');
+            if (step4Active) showSelectedProductsDetail();
+
+        });
 
             // Al avanzar de paso, guarda la selección
             document.querySelectorAll('.next-btn').forEach(btn => {
@@ -259,24 +270,125 @@
                 });
             });
 
+            // --- Códigos de descuento disponibles ---
+            const DISCOUNT_CODES = {
+            "MLAB-5-5A8DA": 5,   // Emprendedor Mensual
+            "MLAB-10-6B7EB": 10, // Profesional Mensual
+            "MLAB-15-7C6FC": 15, // Corporativo Mensual
+            "MLAB-10-08E5GD": 10, // Emprendedor Anual
+            "MLAB-20-9F4HE": 20, // Profesional Anual
+            "MLAB-30-0G3IF": 30  // Corporativo Anual
+            };
+
             // Mostrar detalle en el paso 4
             function showSelectedProductsDetail() {
                 const detailDiv = document.getElementById('selectedProductsDetail');
                 const products = JSON.parse(sessionStorage.getItem('selectedProducts') || '[]');
                 const total = Number(sessionStorage.getItem('selectedTotal') || 0);
+
+                // Datos de descuento persistidos (si ya se aplicó antes)
+                const savedPct = Number(sessionStorage.getItem('discountPct') || 0);
+                const savedCode = (sessionStorage.getItem('discountCode') || '');
+
                 if (products.length === 0) {
                     detailDiv.innerHTML = "<em>No seleccionaste productos.</em>";
                     return;
                 }
+
+                // Lista de productos
                 let html = "<strong>Productos seleccionados:</strong><ul style='margin:8px 0 8px 16px;'>";
                 products.forEach(p => {
-                    html += `<li>${p.name} <span style="color:#888;">$${p.price.toLocaleString()}</span></li>`;
+                    html += `<li>${p.name} <span style="color:#888;">$${Number(p.price).toLocaleString('es-AR')}</span></li>`;
                 });
-                html += `</ul><strong>Total a pagar: $${total.toLocaleString()}</strong>`;
+                html += "</ul>";
+
+                // --- Row de descuento ---
+                html += `
+                    <div id="discountRow" style="
+                    margin:12px 0; padding:10px; background:#f8f9fa; border-radius:10px;
+                    display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
+                    <input id="discountCode" type="text" placeholder="Código de descuento"
+                            value="${savedCode}"
+                            style="flex:1 1 180px; padding:.5rem .75rem; border:1px solid #ccd; border-radius:999px;">
+                    <button id="applyDiscountBtn" type="button"
+                            style="padding:.5rem .9rem; border-radius:999px; border:1px solid #457B9D; background:#fff; color:#457B9D; font-weight:600;">
+                        Aplicar
+                    </button>
+                    <button id="clearDiscountBtn" type="button"
+                            style="padding:.5rem .9rem; border-radius:999px; border:1px solid #bbb; background:#fff; color:#666; font-weight:600; ${savedPct ? '' : 'display:none;'}">
+                        Quitar
+                    </button>
+                    <span id="discountMsg" style="font-size:.9rem; ${savedPct ? 'color:#198754' : ''}">
+                        ${savedPct ? `Código aplicado (-${savedPct}%)` : ''}
+                        </span>
+                        </div>
+                `;
+
+                // Cálculo con descuento si aplica
+                const pct = savedPct > 0 ? savedPct : 0;
+                const discounted = pct ? Math.round(total * (1 - pct / 100)) : total;
+    
+                // Actualiza el texto del botón de pago con el total final
+                const payBtn = document.querySelector('a.blue-button[name="MP-payButton"]');
+                if (payBtn) {
+                const hasProducts = products.length > 0;
+                payBtn.textContent = hasProducts
+                    ? (pct ? `Pagar $${discounted.toLocaleString('es-AR')}` : `Pagar $${total.toLocaleString('es-AR')}`)
+                    : 'Comprar';
+                }
+
+                if (pct) {
+                    html += `<div><strong>Total a pagar: <s>$${total.toLocaleString('es-AR')}</s> $${discounted.toLocaleString('es-AR')} (-${pct}%)</strong></div>`;
+                } else {
+                    html += `<div><strong>Total a pagar: $${total.toLocaleString('es-AR')}</strong></div>`;
+                }
+
                 detailDiv.innerHTML = html;
-                // También actualiza el total en el span principal
+
+                // También actualiza el total en el span principal si existe
                 const priceValue = document.querySelector('.priceValue');
-                if (priceValue) priceValue.textContent = total.toLocaleString();
+                if (priceValue) priceValue.textContent = discounted.toLocaleString('es-AR');
+
+                // Listeners de la row
+                const applyBtn = document.getElementById('applyDiscountBtn');
+                const clearBtn = document.getElementById('clearDiscountBtn');
+                const input    = document.getElementById('discountCode');
+                const msg      = document.getElementById('discountMsg');
+
+                function applyDiscount() {
+                    const code = (input.value || '').toUpperCase().trim();
+                    const found = DISCOUNT_CODES[code];
+                    if (found) {
+                    sessionStorage.setItem('discountCode', code);
+                    sessionStorage.setItem('discountPct', String(found));
+                    // re-render para refrescar totales y UI (tachado, botón quitar, etc.)
+                    showSelectedProductsDetail();
+                    } else {
+                    msg.style.color = '#dc3545';
+                    msg.textContent = 'Código inválido';
+                    }
+                }
+
+                function clearDiscount() {
+                    sessionStorage.removeItem('discountCode');
+                    sessionStorage.removeItem('discountPct');
+                    showSelectedProductsDetail();
+                }
+
+                applyBtn.addEventListener('click', applyDiscount);
+                input.addEventListener('keyup', e => { if (e.key === 'Enter') applyDiscount(); });
+                clearBtn.addEventListener('click', clearDiscount);
+
+                const _t  = Number(sessionStorage.getItem('selectedTotal') || 0);
+                const _pc = Number(sessionStorage.getItem('discountPct') || 0);
+                const _td = _pc ? Math.round(_t * (1 - _pc/100)) : _t;
+                const totalAmountEl = document.getElementById('totalAmount');
+                if (totalAmountEl) {
+                totalAmountEl.innerHTML = _pc
+                    ? `<strong>Total: <s>$${_t.toLocaleString('es-AR')}</s> $${_td.toLocaleString('es-AR')} (-${_pc}%)</strong>`
+                    : `<strong>Total: $${_td.toLocaleString('es-AR')}</strong>`;
+                }
+
             }
 
             // Detecta cuando se muestra el paso 4 y actualiza el detalle
@@ -290,7 +402,17 @@
 
             // Inicializa el total al cargar
             updateSelectedProducts();
-            document.getElementById('totalAmount').innerHTML = `<strong>Total: $${total.toLocaleString()}</strong>`;
+            {
+                const _t = Number(sessionStorage.getItem('selectedTotal') || 0);
+                const _pct = Number(sessionStorage.getItem('discountPct') || 0);
+                const _td = _pct ? Math.round(_t * (1 - _pct/100)) : _t;
+                const totalAmountEl = document.getElementById('totalAmount');
+                if (totalAmountEl) {
+                    totalAmountEl.innerHTML = _pct
+                    ? `<strong>Total: <s>$${_t.toLocaleString('es-AR')}</s> $${_td.toLocaleString('es-AR')} (-${_pct}%)</strong>`
+                    : `<strong>Total: $${_td.toLocaleString('es-AR')}</strong>`;
+                }
+            }
 
             // Validación de términos y condiciones en el paso 3
             document.querySelectorAll('.form-step[data-step="3"] .next-btn').forEach(btn => {
