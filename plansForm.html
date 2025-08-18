@@ -474,7 +474,7 @@
                     };
                     console.log("📦 Enviando registro previo:", dataObj);
                     // Enviamos al Apps Script antes de redirigir
-                    fetch("hthttps://script.google.com/macros/s/AKfycbyLSRd2Fa4Czd6N8j8KQA2U3ULgP0fmcPyEeoZnRPzfIuDlWK5tMRGkVYx_YwFBES6J/exec", {
+                    fetch("https://script.google.com/macros/s/AKfycbyLSRd2Fa4Czd6N8j8KQA2U3ULgP0fmcPyEeoZnRPzfIuDlWK5tMRGkVYx_YwFBES6J/exec", {
                         method: "POST",
                         headers: { "Content-Type": "application/x-www-form-urlencoded" },
                         body: new URLSearchParams(dataObj).toString()
@@ -533,7 +533,7 @@
                     console.log("a");
 
                     // Enviar datos a Apps Script usando form-urlencoded
-                    const url = "hthttps://script.google.com/macros/s/AKfycbyLSRd2Fa4Czd6N8j8KQA2U3ULgP0fmcPyEeoZnRPzfIuDlWK5tMRGkVYx_YwFBES6J/exec"
+                    const url = "https://script.google.com/macros/s/AKfycbyLSRd2Fa4Czd6N8j8KQA2U3ULgP0fmcPyEeoZnRPzfIuDlWK5tMRGkVYx_YwFBES6J/exec"
                     fetch(url, {
                         method: "POST",
                         mode: "no-cors",
@@ -573,7 +573,7 @@
             if (preapprovalId) {
                 console.log("🔁 Detected preapproval_id, enviando a Apps Script:", preapprovalId);
                 
-                fetch("hthttps://script.google.com/macros/s/AKfycbyLSRd2Fa4Czd6N8j8KQA2U3ULgP0fmcPyEeoZnRPzfIuDlWK5tMRGkVYx_YwFBES6J/exec", {
+                fetch("https://script.google.com/macros/s/AKfycbyLSRd2Fa4Czd6N8j8KQA2U3ULgP0fmcPyEeoZnRPzfIuDlWK5tMRGkVYx_YwFBES6J/exec", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/x-www-form-urlencoded"

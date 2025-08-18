@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
         // Puedes incluir información adicional, p.ej: plan, etc.
         // Llamada a Apps Script
-        fetch("hthttps://script.google.com/macros/s/AKfycbyLSRd2Fa4Czd6N8j8KQA2U3ULgP0fmcPyEeoZnRPzfIuDlWK5tMRGkVYx_YwFBES6J/exec", {
+        fetch("https://script.google.com/macros/s/AKfycbyLSRd2Fa4Czd6N8j8KQA2U3ULgP0fmcPyEeoZnRPzfIuDlWK5tMRGkVYx_YwFBES6J/exec", {
           method: "POST",
           headers: {
             "Content-Type": "application/x-www-form-urlencoded"
