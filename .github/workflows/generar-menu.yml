@@ -162,7 +162,7 @@ jobs:
                     <td style="padding:2rem;">
                       <p style="font-size:1.1rem;">¡Hola <strong>${{ github.event.client_payload.nombreCompleto }}</strong>!</p>
 
-                      <p>Nos alegra informarte que tu menú digital para ya está activo y listo para compartir.</p>
+                      <p>Nos alegra informarte que tu menú digital ya está listo!</p>
 
                       <p>🔗 Accedé a tu carta online desde el siguiente enlace:<br>
                       👉 <a href="https://menulab.com.ar/${{ steps.paths.outputs.menu_url }}" style="color:#007bff;">Ver menú</a></p>
