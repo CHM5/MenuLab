@@ -772,16 +772,6 @@ html = f"""<!DOCTYPE html>
   </div>
   <script data-cfasync="false">
 
-
-    if (promoUrl) {{
-      document.getElementById("promoImage").src = promoUrl;
-      document.getElementById("promoPopup").style.display = "flex";
-    }} else {{
-      // si no hay URL -> eliminar el popup del DOM
-      const popup = document.getElementById("promoPopup");
-      if (popup) popup.remove();
-    }}
-
     const POPUP_CSV_URL = "{popup_csv_url}";
     const CSV_URL = "{menu_csv_url }";
     const FIJOS_URL = "{fijos_csv_url}";
@@ -1228,6 +1218,7 @@ fetch(CSV_URL)
         totalUnits += qty;
       }}
     }});
+    document.getElementById('totalText').textContent = `Total: ${{formatMoney(total)}}`;
 
     const payBtn = document.getElementById('payButton');
     if (totalUnits > 0 && PAYMENT_URL){{

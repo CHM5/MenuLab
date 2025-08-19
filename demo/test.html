@@ -100,6 +100,7 @@
         font-size: 0.97rem;
         padding: 0.5rem 0.7rem;
       }
+  }
 
     .menu-item-inner {
       display: flex;
@@ -116,11 +117,7 @@
       height: auto;
       margin-bottom: 0.5rem;
     }
-  }
 
-.menu-text {
-  flex: 1;
-}
     @media (max-width: 480px) {
       header {
         font-size: 1.2rem;
@@ -195,34 +192,16 @@
       flex-shrink: 0;
     }
 
-    .menu-name {
+    .menu-price {
       font-size: 1.1rem;
-      margin: 0;
-      font-weight: 600;
+      font-weight: bold;
+      color: #111;
+      margin-top: 0.4rem;
     }
-
-  .menu-description {
-  margin: 0.2rem 0 0 0;
-  font-size: 0.95rem;
-  color: #666;
-}
-
-.menu-price {
-  font-size: 1.1rem;
-  font-weight: bold;
-  color: #111;
-  margin-top: 0.4rem;
-}
 
     @media (max-width: 600px) {
       .menu-name {
         font-size: 1rem;
-      }
-      .menu-price {
-        font-size: 1rem;
-      }
-      .menu-description {
-        font-size: 0.9rem;
       }
     }
     .menu-content {
@@ -372,7 +351,7 @@
       height: 12px;
     }
     .menu-item.selected {
-      background: #457B9D !important; /* azul oscuro */
+      background: var(--bgScrollbar) !important;
       color: #fff !important;
       border-radius: 10px;
       padding: 0rem 0rem;
@@ -429,6 +408,71 @@
       font: var(--font-horarios);
       color: var(--horarios);
     }
+
+    #totalBar {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: #fff;
+      border-top: 1px solid #e9ecef;
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.06);
+      padding: 0.8rem 1rem;
+      font-weight: 700;
+      font-size: 1.05rem;
+      text-align: center;
+      z-index: 1100; /* por encima del contenido y debajo del popup */
+    }
+
+    /* para que el contenido no quede tapado por la barra */
+    body { padding-bottom: 72px; }
+
+    /* que el botón de WhatsApp no quede escondido detrás de la barra */
+    #whatsapp-float { bottom: 90px; }
+    @media (max-width: 600px) {
+      #whatsapp-float { bottom: 88px; }
+    }
+
+    /* Barra de total fija */
+    #totalBar{
+      position: fixed; left: 0; right: 0; bottom: 0;
+      background: #fff; border-top: 1px solid #e9ecef;
+      box-shadow: 0 -2px 10px rgba(0,0,0,.06);
+      padding: .8rem 1rem;
+      font-weight: 700; font-size: 1.05rem;
+      z-index: 1100;
+      display: flex; justify-content: center; align-items: center; gap: 12px;
+    }
+
+    /* que nada quede tapado por la barra */
+    body{ padding-bottom: 72px; }
+
+    /* botón pagar */
+    #payButton{
+      display: none;           /* se muestra solo con selección */
+      background: #457B9D;     /* tu color */
+      color: #fff; 
+      text-decoration: none;
+      border-radius: 999px; padding: .55rem 1rem;
+      font-weight: 700; font-size: .98rem;
+    }
+    #payButton.show{ display: inline-block; }
+
+    .qty {
+      display:flex; align-items:center; gap:8px;
+      margin-top:.5rem; user-select:none;
+    }
+    .qty button{
+      width:28px; height:28px; border-radius:6px; border:1px solid #ddd;
+      background:#f6f6f6; font-weight:700; cursor:pointer;
+    }
+    .qty input{
+      width:48px; text-align:center; border:1px solid #ddd; border-radius:6px; padding:4px 6px;
+    }
+    .line-total{
+      display: none !important;
+    }
+    .menu-item.selected .line-total{ color:#fff; }
 
   </style>
 </head>
@@ -487,19 +531,37 @@
   <div id="promoPopup" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.45); z-index:3000; justify-content:center; align-items:center;">
     <div id="promoContent" style="position:relative; background:#fff; border-radius:16px; box-shadow:0 4px 32px #0003; padding:0; max-width:90vw; max-height:80vh; display:flex; flex-direction:column; align-items:center;">
       <!-- Botón de cierre -->
-      <button onclick="if (!window.__cfRLUnblockHandlers) return false; document.getElementById('promoPopup').style.display='none'" style="position:absolute; top:10px; right:12px; background:transparent; border:none; font-size:1.5rem; color:#999; cursor:pointer;" data-cf-modified-7fc1f7d4d616dbdea3a0c3ae-="">
+      <button onclick="if (!window.__cfRLUnblockHandlers) return false; document.getElementById('promoPopup').style.display='none'" style="position:absolute; top:10px; right:12px; background:transparent; border:none; font-size:1.5rem; color:#999; cursor:pointer;" data-cf-modified-1e79b037c97f97ff3796c427-="">
         &times;
       </button>
-      <img id="promoImage" src="" alt="Promo de Temporada" 
+      <img id="promoImage" alt="Promo de Temporada" 
           style="width:100%; max-width:400px; height:auto; border-radius:12px; display:block;">
       <!-- Puedes agregar texto o botón si querés -->
     </div>
   </div>
-  <script>
-    const CSV_URL = "https://docs.google.com/spreadsheets/d/1tBnXAlc0XsGlShSjM0usjewKiK-7fTJ7O3zBYbi8r7o/gviz/tq?tqx=out:csv&sheet=Menu";
-    const FIJOS_URL = "https://docs.google.com/spreadsheets/d/1tBnXAlc0XsGlShSjM0usjewKiK-7fTJ7O3zBYbi8r7o/gviz/tq?tqx=out:csv&sheet=Datos%20Permanentes";
-    const PERSONALIZACION_URL = "https://docs.google.com/spreadsheets/d/1tBnXAlc0XsGlShSjM0usjewKiK-7fTJ7O3zBYbi8r7o/gviz/tq?tqx=out:csv&sheet=Personalizacion";
+  <div id="totalBar" aria-live="polite">
+    <span id="totalText">Total: $0</span>
+    <a id="payButton" href="#" target="_blank" rel="noopener">Pagar</a>
+  </div>
+  <script data-cfasync="false">
 
+
+    if (promoUrl) {
+      document.getElementById("promoImage").src = promoUrl;
+      document.getElementById("promoPopup").style.display = "flex";
+    } else {
+      // si no hay URL -> eliminar el popup del DOM
+      const popup = document.getElementById("promoPopup");
+      if (popup) popup.remove();
+    }
+
+    const POPUP_CSV_URL = "https://docs.google.com/spreadsheets/d/1MgaN02ieg7A-V6o3WGdOrN0fJWUL8-rk9MsX730Slv4/gviz/tq?tqx=out:csv&sheet=Menu&range=B2";
+    const CSV_URL = "https://docs.google.com/spreadsheets/d/1MgaN02ieg7A-V6o3WGdOrN0fJWUL8-rk9MsX730Slv4/gviz/tq?tqx=out:csv&sheet=Menu&range=A5:F";
+    const FIJOS_URL = "https://docs.google.com/spreadsheets/d/1MgaN02ieg7A-V6o3WGdOrN0fJWUL8-rk9MsX730Slv4/gviz/tq?tqx=out:csv&sheet=Datos%20Permanentes";
+    const PERSONALIZACION_URL = "https://docs.google.com/spreadsheets/d/1MgaN02ieg7A-V6o3WGdOrN0fJWUL8-rk9MsX730Slv4/gviz/tq?tqx=out:csv&sheet=Personalizacion";
+
+    let PAYMENT_URL = "";
+    let allRows = [];
     function renderCategoryMenu(rows) {
       const categories = [...new Set(rows.map(r => r[0].trim()).filter(Boolean))];
       const menuDiv = document.getElementById('categoryMenu');
@@ -529,7 +591,8 @@
       const agrupado = {};
 
       rows.forEach(cols => {
-        const [cat, subcat, nombre, desc, precio, imagen] = cols.map(c => c.trim());
+        const [cat='', subcat='', nombre='', desc='', precio='', imagen=''] =
+          (cols || []).map(c => (c || '').trim());
         if (!cat || !nombre) return;
 
         if (!agrupado[cat]) agrupado[cat] = {};
@@ -556,29 +619,86 @@
 
           items.forEach(item => {
             const itemDiv = document.createElement("div");
+            const precioNum = parsePrice(item.precio);
             itemDiv.className = "menu-item";
             itemDiv.setAttribute("data-nombre", item.nombre);
+            itemDiv.setAttribute("data-precio", String(precioNum));
+            itemDiv.setAttribute("data-qty", "0");
 
             itemDiv.innerHTML = `
               <div class="menu-item-inner">
-                <h4 class="menu-name">${item.nombre}</h4>
-                <p class="menu-description">${item.desc}</p>
-                <span class="menu-price">$${item.precio}</span>
+                <div class="menu-text">
+                  <h4 class="menu-name">${item.nombre}</h4>
+                  <p class="menu-description">${item.desc || ""}</p>
+                  <span class="menu-price">$${item.precio}</span>
+                  <div class="qty">
+                    <button class="qty-minus" type="button" aria-label="Restar">−</button>
+                    <input class="qty-input" type="number" value="0" min="0" inputmode="numeric" />
+                    <button class="qty-plus" type="button" aria-label="Sumar">+</button>
+                    <span class="line-total">—</span>
+                  </div>
+                </div>
+                ${item.imagen ? `<img src="${item.imagen}" alt="${item.nombre}" class="menu-img">` : ""}
               </div>
-              ${item.imagen ? `<img src="${item.imagen}" alt="${item.nombre}" class="menu-img">` : ""}
-            </div>
             `;
 
             // Selección visual y lógica
-            itemDiv.addEventListener('click', function() {
-              itemDiv.classList.toggle('selected');
+            itemDiv.addEventListener('click', function(e) {
+              if (e.target.closest('.qty')) return; // no hacer toggle si se clickeó en los controles
+              const currentQty = Number(itemDiv.getAttribute('data-qty')||"0");
+              // Toggle visual si no hay cantidad cargada
+              if (currentQty === 0) {
+                // 👉 Primera vez que lo selecciona: setear cantidad = 1
+                qtyInput.value = 1;
+                itemDiv.setAttribute('data-qty', "1");
+                itemDiv.classList.toggle('selected');
+
+                // refrescar línea total
+                const price = Number(itemDiv.getAttribute('data-precio') || "0");
+                const lineTotalEl = itemDiv.querySelector('.line-total');
+                lineTotalEl.textContent = formatMoney(price);
+
+              updateTotal();
+              } else {
+                // 👉 Si ya tiene cantidad, simplemente lo deselecciona (opcional)
+                qtyInput.value = 0;
+                itemDiv.setAttribute('data-qty', "0");
+                itemDiv.classList.remove('selected');
+                const lineTotalEl = itemDiv.querySelector('.line-total');
+                lineTotalEl.textContent = "—";
+                updateTotal();
+              }
             });
+            const minusBtn = itemDiv.querySelector('.qty-minus');
+            const plusBtn  = itemDiv.querySelector('.qty-plus');
+            const qtyInput = itemDiv.querySelector('.qty-input');
+            const lineTotalEl = itemDiv.querySelector('.line-total');
+
+            function refreshLine(){
+              let qty = Math.max(0, parseInt(qtyInput.value || "0", 10));
+              if (Number.isNaN(qty)) qty = 0;
+              qtyInput.value = String(qty);
+              itemDiv.setAttribute('data-qty', String(qty));
+
+              const price = Number(itemDiv.getAttribute('data-precio') || "0");
+              const line = qty * price;
+              lineTotalEl.textContent = qty > 0 ? formatMoney(line) : "—";
+
+              // estado visual “seleccionado” sólo si qty>0
+              itemDiv.classList.toggle('selected', qty > 0);
+              updateTotal();
+            }
+
+            minusBtn.addEventListener('click', (e)=>{ e.stopPropagation(); qtyInput.value = Math.max(0, (parseInt(qtyInput.value||"0",10) || 0) - 1); refreshLine(); });
+            plusBtn .addEventListener('click', (e)=>{ e.stopPropagation(); qtyInput.value = (parseInt(qtyInput.value||"0",10) || 0) + 1; refreshLine(); });
+            qtyInput.addEventListener('input', (e)=>{ e.stopPropagation(); refreshLine(); });
 
             group.appendChild(itemDiv);
           });
         });
 
         container.appendChild(group);
+        updateTotal();
       });
     }
 
@@ -595,6 +715,7 @@
       const filtered = filterMenuRows(allRows, this.value);
       renderMenuGrouped(filtered);
       renderCategoryMenu(filtered);
+      updateTotal();
       document.getElementById('noResults').style.display = filtered.length === 0 ? "block" : "none";
     });
 
@@ -616,9 +737,7 @@ function parseCSV(text) {
     } else if (char === ',' && !inQuotes) {
       row.push(cell);
       cell = '';
-    } else if ((char === '
-' || char === '
-') && !inQuotes) {
+    } else if ((char === "\n" || char === "\r") && !inQuotes) {
       if (cell.length || row.length) {
         row.push(cell);
         rows.push(row);
@@ -636,59 +755,57 @@ function parseCSV(text) {
   return rows;
 }
 
-// === Nuevo fetch del CSV de Menu ===
-//  - Lee B2 para el popup
-//  - Renderiza desde la fila 5 (índice 4) en adelante
-let allRows = [];
+// --- POPUP: B2 directo (sin indexar filas) ---
+fetch(POPUP_CSV_URL)
+  .then(r => r.text())
+  .then(txt => {
+    const url = txt.trim().replace(/^"|"$/g, ''); // quita comillas del CSV
+    const img = document.getElementById('promoImage');
+    const pop = document.getElementById('promoPopup');
+    if (url && /^https?:\/\//i.test(url) && url.toLowerCase() !== 'off') {
+      if (img && pop) { 
+        img.src = url; 
+        pop.style.display = 'flex'; 
+        
+        // cerrar al clickear afuera
+        pop.onclick = (e) => {
+          if (e.target === pop) pop.style.display = 'none';
+        };
+      }
+    } else {
+      if (pop) pop.remove();
+    }
+  })
+  .catch(console.error);
+
+// MENÚ: A2:F directo
 fetch(CSV_URL)
   .then(r => r.text())
   .then(text => {
     const rows = parseCSV(text);
-
-    // 1) POPUP desde Menu!B2 (fila 2 = índice 1, col 2 = índice 1)
-    const popupUrl = (rows[1]?.[1] || '').trim();
-    if (popupUrl) {
-      const promoImg = document.getElementById('promoImage');
-      const popup    = document.getElementById('promoPopup');
-      if (promoImg && popup) {
-        promoImg.src = popupUrl;
-        popup.style.display = 'flex'; // mostrar automáticamente si hay URL
-      }
-    }
-
-    // 2) Datos de platos desde fila 5 (index 4). Fila 4 (index 3) son encabezados "Categoría,Subcategoría,..."
-    const dataRows = rows.slice(4)  // <-- desde la fila 5
-      .map(r => r.map(c => (c || '').trim()))
-      .filter(r =>
-        // mantener filas con al menos categoría + plato o imagen/descripcion/precio
-        (r[0] && r[2]) || r[5] || r[3] || r[4]
-      );
-
-    // Estructura esperada: [cat, subcat, nombre, desc, precio, imagen]
-    allRows = dataRows.map(r => [
-      r[0] || '', // A Categoría
-      r[1] || '', // B Subcategoría
-      r[2] || '', // C Plato
-      r[3] || '', // D Descripción
-      r[4] || '', // E Precio
-      r[5] || ''  // F Enlace Foto
-    ]);
-
+    allRows = rows
+      .map(r => {
+        const [a='',b='',c='',d='',e='',f=''] = r;
+        return [a.trim(), b.trim(), c.trim(), d.trim(), e.trim(), f.trim()];
+      })
+      .filter(r => r.some(Boolean));
     renderMenuGrouped(allRows);
     renderCategoryMenu(allRows);
+    updateTotal();
     document.getElementById('noResults').style.display = allRows.length ? "none" : "block";
   })
   .catch(err => {
     console.error('Error CSV:', err);
-    document.getElementById("noResults").style.display = "block";
-    document.getElementById("noResults").textContent = "Error al cargar el menú.";
+    const el = document.getElementById("noResults");
+    el.style.display = "block";
+    el.textContent = "Error al cargar el menú.";
   });
 
 
     fetch(FIJOS_URL)
       .then(r => r.text())
       .then(data => {
-        const rows = data.split("\n").map(r => r.split(","));
+        const rows = parseCSV(data);
         document.getElementById("nombre-resto").textContent    = rows[1]?.[1]?.replace(/"/g, "").trim() || "";
         document.getElementById("subtitulo-resto").textContent = rows[2]?.[1]?.replace(/"/g, "").trim() || "";
         document.getElementById("direccion-resto").textContent = rows[3]?.[1]?.replace(/"/g, "").trim() || "";
@@ -728,6 +845,22 @@ fetch(CSV_URL)
           }
         ];
 
+        // --- LINK DE PAGO DINÁMICO (B14 -> rows[13][1]) ---
+        const payBtnEl = document.getElementById('payButton');
+        const rawPay = (rows[13]?.[1] || "").replace(/"/g, "").trim(); // B14
+
+        if (rawPay && rawPay.toLowerCase() !== "off") {
+          // agrega https:// si falta
+          PAYMENT_URL = /^https?:\/\//i.test(rawPay) ? rawPay : ("https://" + rawPay);
+          payBtnEl.href = PAYMENT_URL;
+        } else {
+          PAYMENT_URL = "";
+          payBtnEl.removeAttribute("href");
+        }
+
+        // por si ya había selección antes de que llegara FIJOS
+        updateTotal();
+
         const socialsDiv = document.getElementById('headerSocials');
         socialsDiv.innerHTML = "";
         socialLinks.forEach(social => {
@@ -747,7 +880,7 @@ fetch(CSV_URL)
 
     const FONTS_URL =
       'https://script.google.com/macros/s/AKfycbzY3jLo0hK4roVIvWLbaQUcwCz4DR4rVaT2h1Q8MkFu_o63OAcj-yEkEVfsj_B7fDBc/exec?action=fonts&sheet_url=' +
-      encodeURIComponent("https://docs.google.com/spreadsheets/d/1tBnXAlc0XsGlShSjM0usjewKiK-7fTJ7O3zBYbi8r7o/edit?usp=drivesdk");
+      encodeURIComponent("https://docs.google.com/spreadsheets/d/1MgaN02ieg7A-V6o3WGdOrN0fJWUL8-rk9MsX730Slv4/edit?usp=drivesdk");
 
     // Aplica dinámicamente shorthand CSS (p. ej. "italic 1rem 'Poppins', sans-serif")
     fetch(FONTS_URL)
@@ -762,7 +895,7 @@ fetch(CSV_URL)
 
     const COLORS_URL =
       'https://script.google.com/macros/s/AKfycbzY3jLo0hK4roVIvWLbaQUcwCz4DR4rVaT2h1Q8MkFu_o63OAcj-yEkEVfsj_B7fDBc/exec?action=colors&sheet_url=' +
-      encodeURIComponent("https://docs.google.com/spreadsheets/d/1tBnXAlc0XsGlShSjM0usjewKiK-7fTJ7O3zBYbi8r7o/edit?usp=drivesdk");
+      encodeURIComponent("https://docs.google.com/spreadsheets/d/1MgaN02ieg7A-V6o3WGdOrN0fJWUL8-rk9MsX730Slv4/edit?usp=drivesdk");
 
     fetch(COLORS_URL)
       .then(r => r.json())
@@ -774,6 +907,110 @@ fetch(CSV_URL)
       })
       .catch(err => console.error("Personalizacion BG error:", err));
 
+    // Mostrar el popup de promo al cargar
+    window.onload = () => {
+      setTimeout(() => {
+        const popup = document.getElementById('promoPopup');
+        popup.style.display = 'flex';
+
+        // Cerrar el popup al hacer clic fuera de la caja de contenido
+        popup.onclick = (e) => {
+          if (e.target === popup) {
+            popup.style.display = 'none';
+          }
+        };
+      }, 2000); // 2000ms = 2 segundos
+    };
+
+  document.getElementById('whatsapp-float').addEventListener('click', function(e) {
+    e.preventDefault();
+      const items = document.querySelectorAll('.menu-item');
+      const seleccion = [];
+      items.forEach(it=>{
+        const qty = Number(it.getAttribute('data-qty')||"0");
+        if (qty > 0){
+          const nombre = it.getAttribute('data-nombre') || 'Plato';
+          seleccion.push(`${nombre} x${qty}`);
+        }
+      });
+
+      if (seleccion.length === 0) {
+      window.open(this.href, '_blank');
+      return;
+      }
+
+      // Total formateado en el mensaje
+      let total = 0;
+      items.forEach(it=>{
+        const qty = Number(it.getAttribute('data-qty')||"0");
+        const price = Number(it.getAttribute('data-precio')||"0");
+        total += qty * price;
+    });
+    const mensaje = encodeURIComponent(`Hola, quisiera pedir:\n- ${seleccion.join('\n- ')}\n\nTotal estimado: ${formatMoney(total)}`);
+    const url = this.href.split('?')[0] + `?text=${mensaje}`;
+    window.open(url, '_blank');
+  });
+
+  function parsePrice(str) {
+    if (!str) return 0;
+    const cleaned = String(str).replace(/[^\d.,-]/g, '').trim();
+    if (!cleaned) return 0;
+
+    let numStr = cleaned;
+    const lastComma = cleaned.lastIndexOf(',');
+    const lastDot = cleaned.lastIndexOf('.');
+
+    // si tiene ambos separadores, usamos el último como decimal
+    if (lastComma > -1 && lastDot > -1) {
+      if (lastComma > lastDot) {
+        numStr = cleaned.replace(/\./g, '').replace(',', '.'); // 1.234,56
+      } else {
+        numStr = cleaned.replace(/,/g, ''); // 1,234.56
+      }
+    } else if (lastComma > -1) {
+      numStr = cleaned.replace(/\./g, '').replace(',', '.');   // 1.234 -> 1234 ; 123,45 -> 123.45
+    } else {
+      numStr = cleaned.replace(/,/g, '');                      // 1,234 -> 1234
+    }
+
+    const v = parseFloat(numStr);
+    return isNaN(v) ? 0 : v;
+  }
+
+  function formatMoney(n) {
+    try {
+      return new Intl.NumberFormat('es-AR', { style:'currency', currency:'ARS', minimumFractionDigits:0 }).format(n || 0);
+    } catch(e) {
+      // fallback simple
+      return '$' + Math.round(n || 0).toString();
+    }
+  }
+
+  function updateTotal(){
+    const items = document.querySelectorAll('.menu-item');
+    let total = 0;
+    let countLines = 0; // cuántos platos distintos llevan cantidad > 0
+    let totalUnits = 0; // suma de unidades
+
+    items.forEach(it => {
+      const qty = Number(it.getAttribute('data-qty') || "0");
+      if (qty > 0){
+        const price = Number(it.getAttribute('data-precio') || "0");
+        total += qty * price;
+        countLines++;
+        totalUnits += qty;
+      }
+    });
+
+    const payBtn = document.getElementById('payButton');
+    if (totalUnits > 0 && PAYMENT_URL){
+      payBtn.classList.add('show');
+    } else {
+      payBtn.classList.remove('show');
+    }
+  }
+
+
   </script>
-<script src="/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" data-cf-settings="7fc1f7d4d616dbdea3a0c3ae-|49" defer></script></body>
+<script src="/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" data-cf-settings="1e79b037c97f97ff3796c427-|49" defer></script></body>
 </html>
