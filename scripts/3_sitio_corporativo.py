@@ -772,8 +772,6 @@ html = f"""<!DOCTYPE html>
   </div>
   <script data-cfasync="false">
 
-    // URL de la promo (dejá "" vacío si no querés mostrar nada)
-     const promoUrl = "https://res.cloudinary.com/drxznqm61/image/upload/v1752803985/Felices_Pascuas_Instagram_story_etspb5.jpg";
 
     if (promoUrl) {{
       document.getElementById("promoImage").src = promoUrl;
@@ -872,7 +870,7 @@ html = f"""<!DOCTYPE html>
             `;
 
             // Selección visual y lógica
-            itemDiv.addEventListener('click', function() {{
+            itemDiv.addEventListener('click', function(e) {{
               if (e.target.closest('.qty')) return; // no hacer toggle si se clickeó en los controles
               const currentQty = Number(itemDiv.getAttribute('data-qty')||"0");
               // Toggle visual si no hay cantidad cargada
@@ -989,10 +987,20 @@ fetch(POPUP_CSV_URL)
   .then(r => r.text())
   .then(txt => {{
     const url = txt.trim().replace(/^"|"$/g, ''); // quita comillas del CSV
+    const img = document.getElementById('promoImage');
+    const pop = document.getElementById('promoPopup');
     if (url && /^https?:\/\//i.test(url) && url.toLowerCase() !== 'off') {{
-      const img = document.getElementById('promoImage');
-      const pop = document.getElementById('promoPopup');
-      if (img && pop) {{ img.src = url; pop.style.display = 'flex'; }}
+      if (img && pop) {{ 
+        img.src = url; 
+        pop.style.display = 'flex'; 
+        
+        // cerrar al clickear afuera
+        pop.onclick = (e) => {{
+          if (e.target === pop) pop.style.display = 'none';
+        }};
+      }}
+    }} else {{
+      if (pop) pop.remove();
     }}
   }})
   .catch(console.error);
@@ -1164,7 +1172,7 @@ fetch(CSV_URL)
         const qty = Number(it.getAttribute('data-qty')||"0");
         const price = Number(it.getAttribute('data-precio')||"0");
         total += qty * price;
-    }}}
+    }});
     const mensaje = encodeURIComponent(`Hola, quisiera pedir:\\n- ${{seleccion.join('\\n- ')}}\\n\\nTotal estimado: ${{formatMoney(total)}}`);
     const url = this.href.split('?')[0] + `?text=${{mensaje}}`;
     window.open(url, '_blank');
