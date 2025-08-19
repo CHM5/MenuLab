@@ -326,6 +326,7 @@ html = f"""<!DOCTYPE html>
         font-size: 0.97rem;
         padding: 0.5rem 0.7rem;
       }}
+  }}
 
     .menu-item-inner {{
       display: flex;
@@ -342,11 +343,7 @@ html = f"""<!DOCTYPE html>
       height: auto;
       margin-bottom: 0.5rem;
     }}
-  }}
 
-.menu-text {{
-  flex: 1;
-}}
     @media (max-width: 480px) {{
       header {{
         font-size: 1.2rem;
@@ -421,12 +418,12 @@ html = f"""<!DOCTYPE html>
       flex-shrink: 0;
     }}
 
-    .menu-name {{
+    .menu-price {{
       font-size: 1.1rem;
-      margin: 0;
-      font-weight: 600;
+      font-weight: bold;
+      color: #111;
+      margin-top: 0.4rem;
     }}
-
 
     @media (max-width: 600px) {{
       .menu-name {{
@@ -580,7 +577,7 @@ html = f"""<!DOCTYPE html>
       height: 12px;
     }}
     .menu-item.selected {{
-      background: var(--bgScrollbar) !important; /* azul oscuro */
+      background: var(--bgScrollbar) !important;
       color: #fff !important;
       border-radius: 10px;
       padding: 0rem 0rem;
@@ -687,6 +684,22 @@ html = f"""<!DOCTYPE html>
     }}
     #payButton.show{{ display: inline-block; }}
 
+    .qty {{
+      display:flex; align-items:center; gap:8px;
+      margin-top:.5rem; user-select:none;
+    }}
+    .qty button{{
+      width:28px; height:28px; border-radius:6px; border:1px solid #ddd;
+      background:#f6f6f6; font-weight:700; cursor:pointer;
+    }}
+    .qty input{{
+      width:48px; text-align:center; border:1px solid #ddd; border-radius:6px; padding:4px 6px;
+    }}
+    .line-total{{
+      display: none !important;
+    }}
+    .menu-item.selected .line-total{{ color:#fff; }}
+
   </style>
 </head>
 <body>
@@ -748,7 +761,7 @@ html = f"""<!DOCTYPE html>
               style="position:absolute; top:10px; right:12px; background:transparent; border:none; font-size:1.5rem; color:#999; cursor:pointer;">
         &times;
       </button>
-      <img id="promoImage" src="" alt="Promo de Temporada" 
+      <img id="promoImage" alt="Promo de Temporada" 
           style="width:100%; max-width:400px; height:auto; border-radius:12px; display:block;">
       <!-- Puedes agregar texto o botón si querés -->
     </div>
@@ -758,6 +771,19 @@ html = f"""<!DOCTYPE html>
     <a id="payButton" href="#" target="_blank" rel="noopener">Pagar</a>
   </div>
   <script data-cfasync="false">
+
+    // URL de la promo (dejá "" vacío si no querés mostrar nada)
+     const promoUrl = "https://res.cloudinary.com/drxznqm61/image/upload/v1752803985/Felices_Pascuas_Instagram_story_etspb5.jpg";
+
+    if (promoUrl) {{
+      document.getElementById("promoImage").src = promoUrl;
+      document.getElementById("promoPopup").style.display = "flex";
+    }} else {{
+      // si no hay URL -> eliminar el popup del DOM
+      const popup = document.getElementById("promoPopup");
+      if (popup) popup.remove();
+    }}
+
     const POPUP_CSV_URL = "{popup_csv_url}";
     const CSV_URL = "{menu_csv_url }";
     const FIJOS_URL = "{fijos_csv_url}";
@@ -822,15 +848,24 @@ html = f"""<!DOCTYPE html>
 
           items.forEach(item => {{
             const itemDiv = document.createElement("div");
+            const precioNum = parsePrice(item.precio);
             itemDiv.className = "menu-item";
             itemDiv.setAttribute("data-nombre", item.nombre);
+            itemDiv.setAttribute("data-precio", String(precioNum));
+            itemDiv.setAttribute("data-qty", "0");
 
             itemDiv.innerHTML = `
               <div class="menu-item-inner">
                 <div class="menu-text">
                   <h4 class="menu-name">${{item.nombre}}</h4>
-                  <p class="menu-description">${{item.desc}}</p>
+                  <p class="menu-description">${{item.desc || ""}}</p>
                   <span class="menu-price">$${{item.precio}}</span>
+                  <div class="qty">
+                    <button class="qty-minus" type="button" aria-label="Restar">−</button>
+                    <input class="qty-input" type="number" value="0" min="0" inputmode="numeric" />
+                    <button class="qty-plus" type="button" aria-label="Sumar">+</button>
+                    <span class="line-total">—</span>
+                  </div>
                 </div>
                 ${{item.imagen ? `<img src="${{item.imagen}}" alt="${{item.nombre}}" class="menu-img">` : ""}}
               </div>
@@ -838,9 +873,54 @@ html = f"""<!DOCTYPE html>
 
             // Selección visual y lógica
             itemDiv.addEventListener('click', function() {{
-              itemDiv.classList.toggle('selected');
+              if (e.target.closest('.qty')) return; // no hacer toggle si se clickeó en los controles
+              const currentQty = Number(itemDiv.getAttribute('data-qty')||"0");
+              // Toggle visual si no hay cantidad cargada
+              if (currentQty === 0) {{
+                // 👉 Primera vez que lo selecciona: setear cantidad = 1
+                qtyInput.value = 1;
+                itemDiv.setAttribute('data-qty', "1");
+                itemDiv.classList.toggle('selected');
+
+                // refrescar línea total
+                const price = Number(itemDiv.getAttribute('data-precio') || "0");
+                const lineTotalEl = itemDiv.querySelector('.line-total');
+                lineTotalEl.textContent = formatMoney(price);
+
               updateTotal();
+              }} else {{
+                // 👉 Si ya tiene cantidad, simplemente lo deselecciona (opcional)
+                qtyInput.value = 0;
+                itemDiv.setAttribute('data-qty', "0");
+                itemDiv.classList.remove('selected');
+                const lineTotalEl = itemDiv.querySelector('.line-total');
+                lineTotalEl.textContent = "—";
+                updateTotal();
+              }}
             }});
+            const minusBtn = itemDiv.querySelector('.qty-minus');
+            const plusBtn  = itemDiv.querySelector('.qty-plus');
+            const qtyInput = itemDiv.querySelector('.qty-input');
+            const lineTotalEl = itemDiv.querySelector('.line-total');
+
+            function refreshLine(){{
+              let qty = Math.max(0, parseInt(qtyInput.value || "0", 10));
+              if (Number.isNaN(qty)) qty = 0;
+              qtyInput.value = String(qty);
+              itemDiv.setAttribute('data-qty', String(qty));
+
+              const price = Number(itemDiv.getAttribute('data-precio') || "0");
+              const line = qty * price;
+              lineTotalEl.textContent = qty > 0 ? formatMoney(line) : "—";
+
+              // estado visual “seleccionado” sólo si qty>0
+              itemDiv.classList.toggle('selected', qty > 0);
+              updateTotal();
+            }}
+
+            minusBtn.addEventListener('click', (e)=>{{ e.stopPropagation(); qtyInput.value = Math.max(0, (parseInt(qtyInput.value||"0",10) || 0) - 1); refreshLine(); }});
+            plusBtn .addEventListener('click', (e)=>{{ e.stopPropagation(); qtyInput.value = (parseInt(qtyInput.value||"0",10) || 0) + 1; refreshLine(); }});
+            qtyInput.addEventListener('input', (e)=>{{ e.stopPropagation(); refreshLine(); }});
 
             group.appendChild(itemDiv);
           }});
@@ -1063,14 +1143,30 @@ fetch(CSV_URL)
 
   document.getElementById('whatsapp-float').addEventListener('click', function(e) {{
     e.preventDefault();
-    const selectedItems = document.querySelectorAll('.menu-item.selected');
-    if (selectedItems.length === 0) {{
+      const items = document.querySelectorAll('.menu-item');
+      const seleccion = [];
+      items.forEach(it=>{{
+        const qty = Number(it.getAttribute('data-qty')||"0");
+        if (qty > 0){{
+          const nombre = it.getAttribute('data-nombre') || 'Plato';
+          seleccion.push(`${{nombre}} x${{qty}}`);
+        }}
+      }});
+
+      if (seleccion.length === 0) {{
       window.open(this.href, '_blank');
       return;
-    }}
-    let pedido = Array.from(selectedItems).map(div => div.getAttribute('data-nombre')).join(', ');
-    let mensaje = encodeURIComponent(`Hola, quisiera pedir: ${{pedido}}`);
-    let url = this.href.split('?')[0] + `?text=${{mensaje}}`;
+      }}
+
+      // Total formateado en el mensaje
+      let total = 0;
+      items.forEach(it=>{{
+        const qty = Number(it.getAttribute('data-qty')||"0");
+        const price = Number(it.getAttribute('data-precio')||"0");
+        total += qty * price;
+    }}}
+    const mensaje = encodeURIComponent(`Hola, quisiera pedir:\\n- ${{seleccion.join('\\n- ')}}\\n\\nTotal estimado: ${{formatMoney(total)}}`);
+    const url = this.href.split('?')[0] + `?text=${{mensaje}}`;
     window.open(url, '_blank');
   }});
 
@@ -1109,27 +1205,30 @@ fetch(CSV_URL)
     }}
   }}
 
-  // --- helpers existentes (parsePrice, formatMoney) sirven tal cual ---
-
   function updateTotal(){{
-    const prices = document.querySelectorAll('.menu-item.selected .menu-price');
+    const items = document.querySelectorAll('.menu-item');
     let total = 0;
-    prices.forEach(el => total += parsePrice(el.textContent));
+    let countLines = 0; // cuántos platos distintos llevan cantidad > 0
+    let totalUnits = 0; // suma de unidades
 
-    // 👇 ahora actualizamos el span, no todo el div
-    document.getElementById('totalText').textContent = `Total: ${{formatMoney(total)}}`;
+    items.forEach(it => {{
+      const qty = Number(it.getAttribute('data-qty') || "0");
+      if (qty > 0){{
+        const price = Number(it.getAttribute('data-precio') || "0");
+        total += qty * price;
+        countLines++;
+        totalUnits += qty;
+      }}
+    }});
 
-    // mostrar/ocultar botón de pago
     const payBtn = document.getElementById('payButton');
-    if (prices.length > 0 && PAYMENT_URL){{
+    if (totalUnits > 0 && PAYMENT_URL){{
       payBtn.classList.add('show');
     }} else {{
       payBtn.classList.remove('show');
     }}
   }}
 
-  // por si ya hay items seleccionados antes de que llegue FIJOS
-  updateTotal();
 
   </script>
 </body>

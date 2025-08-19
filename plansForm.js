@@ -235,11 +235,11 @@ if (mpRedirectBtn) {
             planDesc = `
                 <ul>
                     <li><strong>Incluye todo lo del plan Profesional, más:</strong></li>
-                    <li>✅ Fotos de Platos</li>
+                    <li>✅ Integración de Fotos</li>
                     <li>✅ Promos por Temporada</li>
                     <li>✅ Pedidos por web</li>
                     <li>✅ Link de pago</li>
-                    <li>✅ Dominio Propio</li>
+                    <li>✅ Cantidad de Platos</li>
                     <li>✅ Atención Prioritaria</li>
                     <li>
                         <strong>Extras:</strong>

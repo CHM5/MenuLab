@@ -51,11 +51,11 @@ document.addEventListener('DOMContentLoaded', () => {
       prices: { monthly: '$72.000', yearly: '$720.000' }, ids: { monthly: 3, yearly: 6 },
       intro:'todo lo anterior, más:',
       features: [
-        { label: '<br></br>📷 Fotos de Platos', info: 'Galería fotográfica para mostrar tus productos' },
+        { label: '<br></br>📷 Integración de Fotos', info: 'Integración de galería fotográfica para mostrar tus productos' },
         { label: '🛍️ Promos por Temporada', info: 'Mensajes pop up promocionales' },
         { label: '🛒 Pedidos por web', info: 'Permití que tus clientes hagan pedidos directamente desde la carta online' },
         { label: '💳 Link de pago ', info: 'Agregá un link de pago para que tus clientes paguen online' },
-        { label: '🌐 Dominio Propio', info: 'URL personalizable www.tunegocio.com.ar' },
+        { label: '🍽️ Cantidad de Platos', info: 'Agregá el total de platos que tus clientes eligen en su pedido' },
         { label: '📞 Atención Prioritaria', info: 'Tiempo de respuesta en menos de 24h' },
         { label: '<div style="text-align:center;"><b><br></br>EXTRA</b></div>' },
         { label: '<div style="text-align:center;">✅15%OFF en <a href="#productos" style="color:#1976d2;text-decoration:underline;cursor:pointer;">Productos</a></div>', modes: ['monthly']},
