@@ -699,11 +699,11 @@ html = f"""<!DOCTYPE html>
       display: none !important;
     }}
     .menu-item.selected .line-total{{ color:#fff; }}
-
+    img[src=""], img:not([src]) {{ display: none !important; }}
   </style>
 </head>
 <body>
-    <img id="banner-resto" src="" alt="Banner" style="width:100%;display:block;margin-bottom:0.5rem;">    
+    <img id="banner-resto" alt="Banner" style="width:100%;display:block;margin-bottom:0.5rem;" hidden>   
     <div class="container">
     <div class="header-flex">
       <div class="header-left">
@@ -749,10 +749,11 @@ html = f"""<!DOCTYPE html>
     </a>
   </footer>
   <!-- Botón de WhatsApp flotante (sin href fijo) -->
-  <a href="#" target="_blank" id="whatsapp-float" aria-label="WhatsApp">
+  <a href="#" target="_blank" id="whatsapp-float" aria-label="WhatsApp" hidden>
+    <span class="whatsapp-tooltip">Hacé tu pedido por WhatsApp</span>
     <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" style="width:56px;height:56px;">
   </a>
-    
+      
   <!-- Promo PopUp -->
   <div id="promoPopup" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.45); z-index:3000; justify-content:center; align-items:center;">
     <div id="promoContent" style="position:relative; background:#fff; border-radius:16px; box-shadow:0 4px 32px #0003; padding:0; max-width:90vw; max-height:80vh; display:flex; flex-direction:column; align-items:center;">
@@ -1018,6 +1019,21 @@ fetch(CSV_URL)
     el.textContent = "Error al cargar el menú.";
   }});
 
+  function buildWhatsAppLink(raw) {{
+    if (!raw) return "";
+    const trimmed = String(raw).trim();
+
+    // Si ya vino un link completo, lo usamos como está
+    if (/^https?:\/\//i.test(trimmed)) return trimmed;
+
+    // Si vino un teléfono, quedate con dígitos
+    const digits = trimmed.replace(/\D/g, "");
+    if (!digits) return "";
+
+    // Si querés, acá podrías forzar código de país (ej: '54' para AR).
+    // return `https://wa.me/54${{digits}}`;
+    return `https://wa.me/${{digits}}`;
+  }}
 
     fetch(FIJOS_URL)
       .then(r => r.text())
@@ -1027,8 +1043,30 @@ fetch(CSV_URL)
         document.getElementById("subtitulo-resto").textContent = rows[2]?.[1]?.replace(/"/g, "").trim() || "";
         document.getElementById("direccion-resto").textContent = rows[3]?.[1]?.replace(/"/g, "").trim() || "";
         document.getElementById("horarios-resto").textContent  = rows[4]?.[1]?.replace(/"/g, "").trim() || "";
-        document.getElementById("banner-resto").src            = rows[5]?.[1]?.replace(/"/g, "").trim() || "";
-        document.getElementById("whatsapp-float").href         = "https://wa.me/" + (rows[7]?.[1]?.replace(/"/g, "").trim() || "");
+       
+        const img = document.getElementById('banner-resto');
+        const bannerUrl = (rows[5]?.[1] || '').replace(/"/g,'').trim();
+        const hasBanner = bannerUrl && bannerUrl.toLowerCase() !== 'off';
+
+        if (hasBanner) {{
+          img.src = bannerUrl;
+          img.hidden = false;              
+          img.addEventListener('error', () => img.remove());
+        }} else {{
+          img.remove();                   
+        }}
+
+        const waEl = document.getElementById("whatsapp-float");
+        const rawPhone = (rows[7]?.[1] || "").replace(/"/g, "").trim(); // B8 (ajustá el índice si tu sheet cambia)
+        const waLink = buildWhatsAppLink(rawPhone);
+
+        if (waLink) {{
+          waEl.href = waLink;
+          waEl.hidden = false;   // mostrar si hay número/link
+        }} else {{
+          waEl.remove();         // sin número => no se muestra nada
+        }}
+
         const socialLinks = [
           {{
             href: rows[8]?.[1]?.replace(/"/g, "").trim() || "",
@@ -1139,34 +1177,41 @@ fetch(CSV_URL)
       }}, 2000); // 2000ms = 2 segundos
     }};
 
-  document.getElementById('whatsapp-float').addEventListener('click', function(e) {{
+const waBtn = document.getElementById('whatsapp-float');
+if (waBtn) {{
+  waBtn.addEventListener('click', function (e) {{
     e.preventDefault();
-      const items = document.querySelectorAll('.menu-item');
-      const seleccion = [];
-      items.forEach(it=>{{
-        const qty = Number(it.getAttribute('data-qty')||"0");
-        if (qty > 0){{
-          const nombre = it.getAttribute('data-nombre') || 'Plato';
-          seleccion.push(`${{nombre}} x${{qty}}`);
-        }}
-      }});
+    if (!this.href || this.href === '#') return; // por las dudas
 
-      if (seleccion.length === 0) {{
+    const items = document.querySelectorAll('.menu-item');
+    const seleccion = [];
+    let total = 0;
+
+    items.forEach(it => {{
+      const qty = Number(it.getAttribute('data-qty') || "0");
+      if (qty > 0) {{
+        const nombre = it.getAttribute('data-nombre') || 'Plato';
+        const price  = Number(it.getAttribute('data-precio') || "0");
+        total += qty * price;
+        seleccion.push(`${{nombre}} x${{qty}}`);
+      }}
+    }});
+
+    // si no hay selección, abrí el link “limpio”
+    if (seleccion.length === 0) {{
       window.open(this.href, '_blank');
       return;
-      }}
+    }}
 
-      // Total formateado en el mensaje
-      let total = 0;
-      items.forEach(it=>{{
-        const qty = Number(it.getAttribute('data-qty')||"0");
-        const price = Number(it.getAttribute('data-precio')||"0");
-        total += qty * price;
-    }});
-    const mensaje = encodeURIComponent(`Hola, quisiera pedir:\\n- ${{seleccion.join('\\n- ')}}\\n\\nTotal estimado: ${{formatMoney(total)}}`);
-    const url = this.href.split('?')[0] + `?text=${{mensaje}}`;
-    window.open(url, '_blank');
+    const mensaje = `Hola, quisiera pedir:\\n- ${{seleccion.join('\\n- ')}}\\n\\nTotal estimado: ${{formatMoney(total)}}`;
+
+    // preserva parámetros existentes y setea/actualiza ?text=
+    const urlObj = new URL(this.href, window.location.href);
+    urlObj.searchParams.set('text', mensaje);
+    window.open(urlObj.toString(), '_blank');
   }});
+}}
+
 
   function parsePrice(str) {{
     if (!str) return 0;
