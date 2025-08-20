@@ -308,7 +308,7 @@ html = f"""<!DOCTYPE html>
 </head>
 <body>
   <header class="header-style">
-      <img id="banner-resto" src="" alt="Banner" style="width:100%;display:block;margin-bottom:0.5rem;">    
+      <img id="banner-resto" alt="Banner" style="width:100%;display:block;margin-bottom:0.5rem;" hidden>    
       <div class="container">
       <div class="header-flex">
         <div class="header-left">
@@ -467,7 +467,17 @@ html = f"""<!DOCTYPE html>
         document.getElementById("subtitulo-resto").textContent = rows[2]?.[1]?.replace(/"/g, "").trim() || "";
         document.getElementById("direccion-resto").textContent = rows[3]?.[1]?.replace(/"/g, "").trim() || "";
         document.getElementById("horarios-resto").textContent  = rows[4]?.[1]?.replace(/"/g, "").trim() || "";
-        document.getElementById("banner-resto").src            = rows[5]?.[1]?.replace(/"/g, "").trim() || "";
+        const img = document.getElementById('banner-resto');
+        const bannerUrl = (rows[5]?.[1] || '').replace(/"/g,'').trim();
+        const hasBanner = bannerUrl && bannerUrl.toLowerCase() !== 'off';
+
+        if (hasBanner) {{
+          img.src = bannerUrl;
+          img.hidden = false;              
+          img.addEventListener('error', () => img.remove());
+        }} else {{
+          img.remove();                   
+        }}
       }});
   </script>
 </body>
