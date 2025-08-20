@@ -860,7 +860,7 @@ html = f"""<!DOCTYPE html>
     }}
 
     // Cuando recibís {{ ok, vars }} desde tu FONTS_URL:
-    fetch(FONTS_URL).then(r=>r.json()).then(({ok, vars})=>{{
+    fetch(FONTS_URL).then(r=>r.json()).then(({{ok, vars}})=>{{
       if (!ok || !vars) return;
 
       // 1) familias únicas usadas
