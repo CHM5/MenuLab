@@ -859,17 +859,6 @@ html = f"""<!DOCTYPE html>
       document.head.appendChild(link);
     }}
 
-    // Cuando recibís {{ ok, vars }} desde tu FONTS_URL:
-    fetch(FONTS_URL).then(r=>r.json()).then(({{ok, vars}})=>{{
-      if (!ok || !vars) return;
-
-      // 1) familias únicas usadas
-      const fams = new Set();
-      Object.values(vars).forEach(sh => {{
-        const fam = firstFamilyFromShorthand(sh);
-        if (fam) fams.add(fam);
-      }});
-
       // 2) cargá por Google Fonts todo lo que NO sea web-safe ni propietaria mapeada
       const toLoad = [];
       [...fams].forEach(f => {{
