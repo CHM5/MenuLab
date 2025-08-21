@@ -7,7 +7,7 @@ from googleapiclient.discovery import build
 import hashlib
 
 # === CONFIGURACIÓN ===
-MENU_RANGE = "Menu!A2:E"
+MENU_RANGE = "Menu!A2:F"
 FIJOS_RANGE = "Datos Permanentes!B2:B17"
 fecha_id = datetime.now().strftime("%Y%m%d")
 
@@ -27,11 +27,11 @@ if not sheet_url:
 
 # Extraer ID y armar URLs válidas
 sheet_id = sheet_url.split("/d/")[1].split("/")[0]
-csv_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet=Menu"
+menu_csv_url  = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet=Menu&range=A5:F"
 fijos_csv_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet=Datos%20Permanentes"
 personalizacion_csv_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet=Personalizacion"
 
-print("🔗 CSV menú:", csv_url)
+print("🔗 CSV menú:", menu_csv_url )
 print("🔗 CSV fijos:", fijos_csv_url)
 
 # === VALIDAR CONEXIÓN (sin cortar si falla) ===
@@ -220,7 +220,7 @@ except Exception as e:
 hash_input = f"{fecha_id}-{sheet_url}".encode("utf-8")
 hash_str = hashlib.sha1(hash_input).hexdigest()[:5]
 
-output_dir = Path(f"planes/menu-profesional-{fecha_id}-{hash_str}")
+output_dir = Path(f"planes/menu-corporativo-{fecha_id}-{hash_str}")
 output_dir.mkdir(parents=True, exist_ok=True)
 html_file = output_dir / "index.html"
 
@@ -325,7 +325,8 @@ html = f"""<!DOCTYPE html>
         font-size: 0.97rem;
         padding: 0.5rem 0.7rem;
       }}
-    }}
+  }}
+
     @media (max-width: 480px) {{
       header {{
         font-size: 1.2rem;
@@ -381,11 +382,8 @@ html = f"""<!DOCTYPE html>
       align-items: center;
       padding: 0 0.5rem;
     }}
-    .menu-name {{
-      font-size: 1.1rem;
-      margin: 0;
-      font-weight: 600;
-    }}
+
+
 
     @media (max-width: 600px) {{
       .menu-name {{
@@ -532,6 +530,24 @@ html = f"""<!DOCTYPE html>
     .header-socials img:hover {{
       transform: scale(1.1);
     }}
+    .whatsapp-tooltip {{
+      display: none;
+      position: absolute;
+      bottom: 70px;
+      right: 0;
+      background: rgba(0, 0, 0, 0.7);
+      color: #fff;
+      padding: 0.5rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      white-space: nowrap;
+      z-index: 1001;
+    }}
+
+    #whatsapp-float:hover .whatsapp-tooltip {{
+      display: block;
+    }}
+
     .style-nombre {{
       font: var(--font-businessName);
       color:var(--businessName); 
@@ -553,8 +569,22 @@ html = f"""<!DOCTYPE html>
       font: var(--font-horarios);
       color: var(--horarios);
     }}
-    img[src=""], img:not([src]) {{ display: none !important; }}
 
+    /* que el botón de WhatsApp no quede escondido detrás de la barra */
+    #whatsapp-float {{ bottom: 90px; }}
+    @media (max-width: 600px) {{
+      #whatsapp-float {{ bottom: 88px; }}
+    }}
+
+
+    /* que nada quede tapado por la barra */
+    body{{ padding-bottom: 72px; }}
+
+    .line-total{{
+      display: none !important;
+    }}
+    .menu-item.selected .line-total{{ color:#fff; }}
+    img[src=""], img:not([src]) {{ display: none !important; }}
   </style>
 </head>
 <body>
@@ -608,11 +638,13 @@ html = f"""<!DOCTYPE html>
     <span class="whatsapp-tooltip">Hacé tu pedido por WhatsApp</span>
     <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" style="width:56px;height:56px;">
   </a>
-  <script data-cfasync="false">
-    const CSV_URL = "{csv_url}";
-    const FIJOS_URL = "{fijos_csv_url}";
-    const PERSONALIZACION_URL = "{personalizacion_csv_url}";
 
+  <script data-cfasync="false">
+
+    const CSV_URL = "{menu_csv_url}";
+    const FIJOS_URL = "{fijos_csv_url}";
+
+    let PAYMENT_URL = "";
     let allRows = [];
     function renderCategoryMenu(rows) {{
       const categories = [...new Set(rows.map(r => r[0].trim()).filter(Boolean))];
@@ -643,13 +675,14 @@ html = f"""<!DOCTYPE html>
       const agrupado = {{}};
 
       rows.forEach(cols => {{
-        const [cat, subcat, nombre, desc, precio] = cols.map(c => c.trim());
+        const [cat='', subcat='', nombre='', desc='', precio='', imagen=''] =
+          (cols || []).map(c => (c || '').trim());
         if (!cat || !nombre) return;
 
         if (!agrupado[cat]) agrupado[cat] = {{}};
         const sub = subcat || "-";
         if (!agrupado[cat][sub]) agrupado[cat][sub] = [];
-        agrupado[cat][sub].push({{ nombre, desc, precio }});
+        agrupado[cat][sub].push({{ nombre, desc, precio, imagen }});
       }});
 
       Object.entries(agrupado).forEach(([cat, subcategorias]) => {{
@@ -673,9 +706,9 @@ html = f"""<!DOCTYPE html>
             itemDiv.className = "menu-item";
             itemDiv.innerHTML = `
               <div class="menu-item-header">
-                <h4 class="menu-name">${{item.nombre}}</h4>
-                <span class="menu-price">$${{item.precio}}</span>
-              </div>
+                  <h4 class="menu-name">${{item.nombre}}</h4>
+                  <span class="menu-price">$${{item.precio}}</span>
+                </div>
               <p class="menu-description">${{item.desc}}</p>
             `;
             group.appendChild(itemDiv);
@@ -702,23 +735,84 @@ html = f"""<!DOCTYPE html>
       document.getElementById('noResults').style.display = filtered.length === 0 ? "block" : "none";
     }});
 
-    let allRows = [];
-    fetch(CSV_URL)
-      .then(r => r.text())
-      .then(data => {{
-        allRows = data.split("\\n").slice(1).map(r => r.split(",").map(c => c.replace(/\"/g, "")));
-        renderMenuGrouped(allRows);
-        renderCategoryMenu(allRows);
+// === CSV robusto (soporta comillas) ===
+function parseCSV(text) {{
+  const rows = [];
+  let row = [], cell = '', inQuotes = false;
+
+  for (let i = 0; i < text.length; i++) {{
+    const char = text[i], next = text[i + 1];
+
+    if (char === '"') {{
+      if (inQuotes && next === '"') {{ // comilla escapada
+        cell += '"';
+        i++;
+      }} else {{
+        inQuotes = !inQuotes;
+      }}
+    }} else if (char === ',' && !inQuotes) {{
+      row.push(cell);
+      cell = '';
+    }} else if ((char === "\\n" || char === "\\r") && !inQuotes) {{
+      if (cell.length || row.length) {{
+        row.push(cell);
+        rows.push(row);
+        row = [];
+        cell = '';
+      }}
+    }} else {{
+      cell += char;
+    }}
+  }}
+  if (cell.length || row.length) {{
+    row.push(cell);
+    rows.push(row);
+  }}
+  return rows;
+}}
+
+// MENÚ: A2:F directo
+fetch(CSV_URL)
+  .then(r => r.text())
+  .then(text => {{
+    const rows = parseCSV(text);
+    allRows = rows
+      .map(r => {{
+        const [a='',b='',c='',d='',e='',f=''] = r;
+        return [a.trim(), b.trim(), c.trim(), d.trim(), e.trim(), f.trim()];
       }})
-      .catch(err => {{
-        document.getElementById("noResults").style.display = "block";
-        document.getElementById("noResults").textContent = "Error al cargar el menú.";
-      }});
+      .filter(r => r.some(Boolean));
+    renderMenuGrouped(allRows);
+    renderCategoryMenu(allRows);
+    document.getElementById('noResults').style.display = allRows.length ? "none" : "block";
+  }})
+  .catch(err => {{
+    console.error('Error CSV:', err);
+    const el = document.getElementById("noResults");
+    el.style.display = "block";
+    el.textContent = "Error al cargar el menú.";
+  }});
+
+  function buildWhatsAppLink(raw) {{
+    if (!raw) return "";
+    const trimmed = String(raw).trim();
+
+    // Si ya vino un link completo, lo usamos como está
+    if (/^https?:\/\//i.test(trimmed)) return trimmed;
+
+    // Si vino un teléfono, quedate con dígitos
+    const digits = trimmed.replace(/\D/g, "");
+    if (!digits) return "";
+
+    // Si querés, acá podrías forzar código de país (ej: '54' para AR).
+    // return `https://wa.me/54${{digits}}`;
+    return `https://wa.me/${{digits}}`;
+  }}
 
     fetch(FIJOS_URL)
       .then(r => r.text())
       .then(data => {{
-        const rows = data.split("\\n").map(r => r.split(","));
+        const rows = parseCSV(data);
         document.getElementById("nombre-resto").textContent    = rows[1]?.[1]?.replace(/"/g, "").trim() || "";
         document.getElementById("subtitulo-resto").textContent = rows[2]?.[1]?.replace(/"/g, "").trim() || "";
         document.getElementById("direccion-resto").textContent = rows[3]?.[1]?.replace(/"/g, "").trim() || "";
@@ -781,7 +875,6 @@ html = f"""<!DOCTYPE html>
         ];
 
         const socialsDiv = document.getElementById('headerSocials');
-        socialsDiv.innerHTML = "";
         socialLinks.forEach(social => {{
           if (social.href && social.href.trim() !== "") {{
             const a = document.createElement('a');
@@ -826,60 +919,30 @@ html = f"""<!DOCTYPE html>
       }})
       .catch(err => console.error("Personalizacion BG error:", err));
 
-    const WEB_SAFE = new Set([
-      'Arial','Helvetica','Verdana','Tahoma','Trebuchet MS','Geneva',
-      'Times New Roman','Times','Georgia','Palatino Linotype','Book Antiqua','Palatino',
-      'Courier New','Courier','Consolas','Lucida Console',
-      'Segoe UI','system-ui','Helvetica Neue','Roboto','Noto Sans','Monaco','Menlo',
-      'serif','sans-serif','monospace'
-    ]);
+const waBtn = document.getElementById('whatsapp-float');
+if (waBtn) {{
+  waBtn.addEventListener('click', function (e) {{
+    e.preventDefault();
+    if (!this.href || this.href === '#') return; // por las dudas
 
-    // mapeos de propietarias a stacks parecidas
-    const FALLBACK_MAP = {{
-      'calibri': "system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
-      'cambria': "Georgia, 'Times New Roman', Times, serif",
-      'segoe ui': "system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif"
-    }};
+    const items = document.querySelectorAll('.menu-item');
+    const seleccion = [];
+    let total = 0;
 
-    function firstFamilyFromShorthand(sh) {{
-      // toma la primera familia (entre comillas o hasta la coma)
-      const m = sh.match(/'([^']+)'/);
-      if (m) return m[1];
-      return (sh.split(',')[0] || '').trim();
+    // si no hay selección, abrí el link “limpio”
+    if (seleccion.length === 0) {{
+      window.open(this.href, '_blank');
+      return;
     }}
 
-    function loadGoogleFonts(families) {{
-      if (!families.length) return;
-      const qs = families
-        .map(f => 'family=' + encodeURIComponent(f.replace(/\s+/g, '+')))
-        .join('&');
-      const link = document.createElement('link');
-      link.rel = 'stylesheet';
-      link.href = 'https://fonts.googleapis.com/css2?' + qs + '&display=swap';
-      document.head.appendChild(link);
-    }}
+    const mensaje = `Hola, quisiera pedir:\\n- ${{seleccion.join('\\n- ')}}\\n`;
 
-      // 2) cargá por Google Fonts todo lo que NO sea web-safe ni propietaria mapeada
-      const toLoad = [];
-      [...fams].forEach(f => {{
-        const key = f.toLowerCase();
-        if (FALLBACK_MAP[key]) return;     // propietaria → se cae al stack
-        if (WEB_SAFE.has(f)) return;       // ya está en el sistema
-        toLoad.push(f);                    // intentamos Google Fonts
-      }});
-      loadGoogleFonts(toLoad);
-
-      // 3) Aplicá shorthand, ajustando propietarias a sus stacks
-      Object.entries(vars).forEach(([cssVar, sh]) => {{
-        const fam = firstFamilyFromShorthand(sh).toLowerCase();
-        if (FALLBACK_MAP[fam]) {{
-          // reemplaza sólo la parte de font-family dejando tamaño/estilo
-          const cleaned = sh.replace(/('[^']+'|[^,]+)\s*,?/, FALLBACK_MAP[fam] + ',');
-          document.documentElement.style.setProperty(cssVar, cleaned);
-        }} else {{
-          document.documentElement.style.setProperty(cssVar, sh);
-        }}
-      }}).catch(console.error);
+    // preserva parámetros existentes y setea/actualiza ?text=
+    const urlObj = new URL(this.href, window.location.href);
+    urlObj.searchParams.set('text', mensaje);
+    window.open(urlObj.toString(), '_blank');
+  }});
+}}
 
   </script>
 </body>
@@ -894,6 +957,6 @@ print("📄 Planilla conectada:", sheet_url)
 
 # === EXPORTAR PATHS PARA WORKFLOW
 with open("menu_url.txt", "w") as f:
-    f.write(f"planes/menu-profesional-{fecha_id}-{hash_str}/index.html")
+    f.write(f"planes/menu-corporativo-{fecha_id}-{hash_str}/index.html")
 with open("sheet_url.txt", "w") as f:
     f.write(sheet_url)
