@@ -27,7 +27,7 @@ if not sheet_url:
 
 # Extraer ID y armar URLs válidas
 sheet_id = sheet_url.split("/d/")[1].split("/")[0]
-menu_csv_url  = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet=Menu&range=A5:F"
+menu_csv_url  = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet=Menu&range=A2:F"
 fijos_csv_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet=Datos%20Permanentes"
 personalizacion_csv_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet=Personalizacion"
 
