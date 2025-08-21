@@ -879,9 +879,7 @@ html = f"""<!DOCTYPE html>
         }} else {{
           document.documentElement.style.setProperty(cssVar, sh);
         }}
-      }});
-    }}).catch(console.error);
-
+      }}).catch(console.error);
 
   </script>
 </body>
