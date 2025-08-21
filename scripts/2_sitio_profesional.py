@@ -608,7 +608,7 @@ html = f"""<!DOCTYPE html>
     <span class="whatsapp-tooltip">Hacé tu pedido por WhatsApp</span>
     <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" style="width:56px;height:56px;">
   </a>
-  <script>
+  <script data-cfasync="false">
     const CSV_URL = "{csv_url}";
     const FIJOS_URL = "{fijos_csv_url}";
     const PERSONALIZACION_URL = "{personalizacion_csv_url}";
