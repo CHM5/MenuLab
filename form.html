@@ -42,30 +42,49 @@
                             <div class="progress-fill"></div>
                         </div>
                         <div class="progress-steps">
-                            <div class="step active" data-step="1">    
-                                <div class="step-label">Selección</div>
-                            </div>                        
-                            <div class="step" data-step="2">    
-                                <div class="step-label">Datos Personales</div>
+                            <div class="step active" data-step="1">
+                                <div class="step-label">Menú</div>
+                            </div>
+                            <div class="step" data-step="2">
+                                <div class="step-label">Complementos y Web</div>
                             </div>
                             <div class="step" data-step="3">
-                                <div class="step-label">Datos Negocio</div>
+                                <div class="step-label">Datos Personales</div>
                             </div>
                             <div class="step" data-step="4">
+                                <div class="step-label">Datos Negocio</div>
+                            </div>
+                            <div class="step" data-step="5">
                                 <div class="step-label">Pago</div>
                             </div>
                         </div>
                     </div>
                     
-                    <!-- Step 1: Selección de Productos -->
+                    <!-- Step 1: Menú y Combos -->
                     <div class="form-step active" data-step="1" id="step1">
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" class="product-checkbox cart-checkbox" data-product="cartadoblefaz" data-price="150000"> Menú Dúo</label>
+                        <label><input type="checkbox" class="product-checkbox cart-checkbox" data-product="cartadoblefaza3" data-price="200000"> Menú Dúo XL</label>
+                        <label><input type="checkbox" class="product-checkbox cart-checkbox" data-product="cartalibro4caras" data-price="200000"> Menú Dúo Pro</label>
+                        <label><input type="checkbox" class="product-checkbox cart-checkbox" data-product="cartatriptica" data-price="200000"> Menú Triple Impacto</label>
+                        <label><input type="checkbox" class="product-checkbox cart-checkbox" data-product="cartaanillada" data-price="250000"> Menú Sin Límite</label>
+                        <label><input type="checkbox" class="product-checkbox cart-checkbox" data-product="paquete1" data-price="350000"> Paquete Doble Menú (2 menues)</label>
+                        <label><input type="checkbox" class="product-checkbox cart-checkbox" data-product="paquete2" data-price="400000"> Paquete Físico (consultoría + menú + 3 complementos)</label>
+                        <label><input type="checkbox" class="product-checkbox cart-checkbox" data-product="paquete3" data-price="500000"> Paquete Digital (consultoría + ProSite + menú)</label>
+                    </div>
+                    <div id="totalAmount" aria-live="polite" style="margin-top:12px;font-weight:700;"></div>
+                    <div id="formError" class="form-error" style="display:none;"></div>
+                    <div class="form-buttons">
+                        <button type="button" class="btn next-btn">Continuar</button>
+                    </div>
+                    </div>
+                
+                <!-- Step 2: Complementos y Web -->
+                <div class="form-step" data-step="2">
                     <div class="checkbox-group">
                         <label><input type="checkbox" class="product-checkbox cart-checkbox" data-product="microsite" data-price="120000"> MicroSite</label>
                         <label><input type="checkbox" class="product-checkbox cart-checkbox" data-product="prosite" data-price="300000"> ProSite</label>
                         <label><input type="checkbox" class="product-checkbox cart-checkbox" data-product="cartasimplefaz" data-price="100000"> Carta Simple Faz</label>
-                        <label><input type="checkbox" class="product-checkbox cart-checkbox" data-product="cartadoblefaz" data-price="180000"> Carta Doble Faz</label>
-                        <label><input type="checkbox" class="product-checkbox cart-checkbox" data-product="cartatriptica" data-price="200000"> Carta Tríptico A3</label>
-                        <label><input type="checkbox" class="product-checkbox cart-checkbox" data-product="cartaanillada" data-price="300000"> Carta Anillada</label>
                         <label><input type="checkbox" class="product-checkbox cart-checkbox" data-product="individual" data-price="150000"> Individual de Mesa</label>
                         <label><input type="checkbox" class="product-checkbox cart-checkbox" data-product="portavasos" data-price="50000"> Diseño de Portavasos</label>
                         <label><input type="checkbox" class="product-checkbox cart-checkbox" data-product="traduccion" data-price="75000"> Traducción de Carta al Inglés</label>
@@ -73,18 +92,16 @@
                         <label><input type="checkbox" class="product-checkbox cart-checkbox" data-product="tarjeta" data-price="50000"> Diseño de Tarjeta de Descuento</label>
                         <label><input type="checkbox" class="product-checkbox cart-checkbox" data-product="flyer" data-price="50000"> Flyers Promocionales</label>
                         <label><input type="checkbox" class="product-checkbox cart-checkbox" data-product="menumesas" data-price="50000"> Menú Vertical para Mesas</label>
-                        <label><input type="checkbox" class="product-checkbox cart-checkbox" data-product="combobase" data-price="336000"> <b>Combo Base:</b> MicroSite, carta doble faz e individual</label>
-                        <label><input type="checkbox" class="product-checkbox cart-checkbox" data-product="combopro" data-price="600000"> <b>Combo Pro:</b> ProSite, carta Anillada, portavasos y tarjeta de descuento</label>
                     </div>
-                    <div id="totalAmount" aria-live="polite" style="margin-top:12px;font-weight:700;"></div>
-                    <div id="formError" class="form-error" style="display:none;"></div>
+                    <div id="totalAmountStep2" aria-live="polite" style="margin-top:12px;font-weight:700;"></div>
                     <div class="form-buttons">
+                        <button type="button" class="btn prev-btn">Atrás</button>
                         <button type="button" class="btn next-btn">Continuar</button>
                     </div>
                 </div>
-                
-                <!-- Step 2: Personal Information -->
-                <div class="form-step" data-step="2">
+
+                <!-- Step 3: Personal Information -->
+                <div class="form-step" data-step="3">
                     <h2>Información Personal</h2>
                     <div class="form-group">
                         <label for="firstName">Nombre</label>
@@ -108,8 +125,8 @@
                     </div>
                 </div>
                 
-                <!-- Step 3: Sponsorship Details -->
-                <div class="form-step" data-step="3">
+                <!-- Step 4: Sponsorship Details -->
+                <div class="form-step" data-step="4">
                     <h2>Información de tu Negocio</h2>
                     <div class="form-group">
                         <label for="companyName">Nombre de tu Negocio</label>
@@ -169,8 +186,8 @@
                 </div>
                 
                 
-                <!-- Step 4: Payment -->
-                <div class="form-step" data-step="4">
+                <!-- Step 5: Payment -->
+                <div class="form-step" data-step="5">
                     <div id="planInfo"></div>
                     <div id="selectedProductsDetail" style="margin-bottom:16px;"></div>
                     <div class="success-message">
@@ -244,24 +261,28 @@
                 sessionStorage.setItem('selectedTotal', total);
             }
 
-            // Actualiza el total en el paso 1 en tiempo real
+            // Actualiza el total en el paso 1 y paso 2 en tiempo real
             document.querySelectorAll('.product-checkbox').forEach(cb => {
-            cb.addEventListener('change', function () {
-                updateSelectedProducts();
+                cb.addEventListener('change', function () {
+                    updateSelectedProducts();
 
-                const pctNow = Number(sessionStorage.getItem('discountPct') || 0);
-                const discountedNow = pctNow ? Math.round(total * (1 - pctNow/100)) : total;
+                    // Total SOLO de productos del paso 1
+                    let totalStep1 = 0;
+                    document.querySelectorAll('.form-step[data-step="1"] .product-checkbox:checked').forEach(cb1 => {
+                        totalStep1 += Number(cb1.dataset.price);
+                    });
+                    document.getElementById('totalAmount').innerHTML =
+                        `<strong>Total: $${totalStep1.toLocaleString('es-AR')}</strong>`;
 
-                document.getElementById('totalAmount').innerHTML = pctNow
-                ? `<strong>Total: <s>$${total.toLocaleString('es-AR')}</s> $${discountedNow.toLocaleString('es-AR')} (-${pctNow}%)</strong>`
-                : `<strong>Total: $${total.toLocaleString('es-AR')}</strong>`;
+                    // Total general (todos los productos seleccionados)
+                    const _t = Number(sessionStorage.getItem('selectedTotal') || 0);
+                    const _pct = Number(sessionStorage.getItem('discountPct') || 0);
+                    const _td = _pct ? Math.round(_t * (1 - _pct/100)) : _t;
+                    document.getElementById('totalAmountStep2').innerHTML = _pct
+                        ? `<strong>Total: <s>$${_t.toLocaleString('es-AR')}</s> $${_td.toLocaleString('es-AR')} (-${_pct}%)</strong>`
+                        : `<strong>Total: $${_td.toLocaleString('es-AR')}</strong>`;
+                });
             });
-               
-            // ⬇️ si estás en el Paso 4, re-renderizá el detalle (y botón) en vivo
-            const step4Active = document.querySelector('.form-step[data-step="4"]')?.classList.contains('active');
-            if (step4Active) showSelectedProductsDetail();
-
-        });
 
             // Al avanzar de paso, guarda la selección
             document.querySelectorAll('.next-btn').forEach(btn => {
