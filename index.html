@@ -1787,6 +1787,56 @@
         </footer>
       </footer4-wrapper>
 
+      <!-- WhatsApp flotante -->
+      <a href="https://wa.me/5491130625858?text=Hola%20quisiera%20consultar%20acerca%20de..." 
+        class="whatsapp-float" target="_blank" rel="noopener" aria-label="WhatsApp MenuLab">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" />
+      </a>
+      <style>
+      .whatsapp-float {
+        position: fixed;
+        right: 22px;
+        bottom: 22px;
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 62px;
+        height: 62px;
+        background: #25d366;
+        border-radius: 50%;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+        transition: box-shadow 0.2s, transform 0.2s;
+        animation: wa-pop 0.7s cubic-bezier(.4,2,.6,1);
+      }
+      .whatsapp-float img {
+        width: 38px;
+        height: 38px;
+        filter: drop-shadow(0 1px 2px #0002);
+      }
+      .whatsapp-float:hover {
+        box-shadow: 0 8px 32px rgba(30,30,60,0.18);
+        transform: scale(1.08);
+      }
+      @media (max-width: 600px) {
+        .whatsapp-float {
+          right: 12px;
+          bottom: 12px;
+          width: 54px;
+          height: 54px;
+        }
+        .whatsapp-float img {
+          width: 32px;
+          height: 32px;
+        }
+      }
+      @keyframes wa-pop {
+        0% { transform: scale(0.7); opacity: 0; }
+        80% { transform: scale(1.1); opacity: 1; }
+        100% { transform: scale(1); }
+      }
+      </style>
+
     <script src="script.js"></script>
     <link rel="stylesheet" href="reserva.css">
   </body>
