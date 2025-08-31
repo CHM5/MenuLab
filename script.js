@@ -6,10 +6,10 @@ document.addEventListener('DOMContentLoaded', () => {
       prices: { monthly: 'GRATIS', yearly: 'GRATIS' }, ids: { monthly: 0, yearly: 0 },
       intro:'de por vida',
       features: [
-        { label: '<br></br>🍽️ Menu Online', info: 'Actualizá tu carta en tiempo real' },
-        { label: '🔄 Actualizaciones', info: 'Actualizá tu carta en tiempo real' },
+        { label: '<br></br>🍽️ Menu Online', info: 'Actualizá tu menú en tiempo real' },
+        { label: '🔄 Actualizaciones', info: 'Actualizá tu menú en tiempo real' },
         { label: '📱Diseño Responsivo', info: 'Compatible con móviles y tablets' },
-        { label: '🍝 Hasta 25 Ítems', info: 'Podés cargar hasta 25 ítems en tu carta' },
+        { label: '🍝 Hasta 25 Ítems', info: 'Podés cargar hasta 25 ítems en tu menú' },
         { label: '🏪 Data Negocio', info: 'Dirección, horarios de atencion, etc' },
         { label: '🔐 Sitio Seguro SSL', info: 'Certificado SSL incluido' }
       ]
@@ -19,11 +19,11 @@ document.addEventListener('DOMContentLoaded', () => {
       prices: { monthly: '$18.000', yearly: '$180.000' }, ids: { monthly: 1, yearly: 4 },
       intro:'todo lo anterior, más:',
       features: [
-        { label: '<br></br>🤳 Código QR', info: 'Código QR único para tu carta' },
-        { label: '🪧 Sin Publicidad', info: 'Carta sin banners ni anuncios externos' },
-        { label: '🛏️ Hosting 24/7', info: 'Acceso permanente a la carta online' },
+        { label: '<br></br>🤳 Código QR', info: 'Código QR único para tu menú' },
+        { label: '🪧 Sin Publicidad', info: 'Menú sin banners ni anuncios externos' },
+        { label: '🛏️ Hosting 24/7', info: 'Acceso permanente a la menú online' },
         { label: '🍝 Ítems Ilimitados', info: 'Sin límite de carga de ítems' },
-        { label: '🔎 Búsqueda de Platos', info: 'Buscar rápidamente platos dentro de tu carta digital' },
+        { label: '🔎 Búsqueda de Platos', info: 'Buscar rápidamente platos dentro de tu menú digital' },
         { label: '📞 Atención Virtual', info: 'Tiempo de respuesta en menos de 72h' },
         { label: '<div style="text-align:center;"><b><br></br>EXTRA</b></div>' },
         { label: '<div style="text-align:center;">✅5%OFF en <a href="#productos" style="color:#1976d2;text-decoration:underline;cursor:pointer;">Productos</a></div>', modes: ['monthly']},
@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
       features: [
         { label: '<br></br>💬 Integración WhatsApp', info: 'Contacto directo vía WhatsApp' },
         { label: '🛵 Integración Rappi/PedidosYa', info: 'Enlaces a aplicaciones de delivery' },
-        { label: '🗣️ Integración Instagram/Facebook', info: 'Enlaces a redes sociales desde tu carta' },
+        { label: '🗣️ Integración Instagram/Facebook', info: 'Enlaces a redes sociales desde tu menú' },
         { label: '📍 Integración Google Maps', info: 'Enlace con dirección de tu negocio' },
         { label: '🎨 Tema Personalizable', info: 'Elegí tipo de letra y paleta de colores' },
         { label: '📞 Atención Personalizada', info: 'Tiempo de respuesta en menos de 42h' },
@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
       features: [
         { label: '<br></br>📷 Integración de Fotos', info: 'Integración de galería fotográfica para mostrar tus productos' },
         { label: '🛍️ Promos por Temporada', info: 'Mensajes pop up promocionales' },
-        { label: '🛒 Pedidos por web', info: 'Permití que tus clientes hagan pedidos directamente desde la carta online' },
+        { label: '🛒 Pedidos por web', info: 'Permití que tus clientes hagan pedidos directamente desde la menú online' },
         { label: '💳 Link de pago ', info: 'Agregá un link de pago para que tus clientes paguen online' },
         { label: '🍽️ Cantidad de Platos', info: 'Agregá el total de platos que tus clientes eligen en su pedido' },
         { label: '📞 Atención Prioritaria', info: 'Tiempo de respuesta en menos de 24h' },

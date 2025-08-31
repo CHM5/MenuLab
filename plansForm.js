@@ -190,7 +190,7 @@ if (mpRedirectBtn) {
                 <ul>
                     <li>✅ Menú Online</li>
                     <li>✅ Certificado SSL incluido</li>
-                    <li>⚠️ asta 25 ítems en tu carta</li>
+                    <li>⚠️ Hasta 25 ítems en tu menú</li>
                     <li>⚠️ ctualizaciones del software limitadas</li>
                     <li>⚠️ Hosting limitado</li>
                 </ul>

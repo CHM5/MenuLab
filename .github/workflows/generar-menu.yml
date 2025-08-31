@@ -164,7 +164,7 @@ jobs:
 
                       <p>Nos alegra informarte que tu menú digital ya está listo!</p>
 
-                      <p>🔗 Accedé a tu carta online desde el siguiente enlace:<br>
+                      <p>🔗 Accedé a tu menú online desde el siguiente enlace:<br>
                       👉 <a href="https://menulab.com.ar/${{ steps.paths.outputs.menu_url }}" style="color:#007bff;">Ver menú</a></p>
 
                       <p>📝 Si querés modificar platos, precios o descripciones, podés hacerlo directamente desde tu planilla de gestión:<br>
