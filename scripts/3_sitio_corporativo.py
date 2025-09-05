@@ -767,7 +767,9 @@ html = f"""<!DOCTYPE html>
   </div>
   <div id="totalBar" aria-live="polite">
     <span id="totalText">Total: $0</span>
-    <a id="payButton" href="#" target="_blank" rel="noopener">Pagar</a>
+    <span id="whatsappMsg" style="display:none; color:#25D366; font-weight:700; font-size:1.08rem; margin-left:16px;">
+      Hacé tu pedido por WhatsApp!
+    </span>
   </div>
   <script data-cfasync="false">
 
@@ -1249,28 +1251,26 @@ if (waBtn) {{
   function updateTotal(){{
     const items = document.querySelectorAll('.menu-item');
     let total = 0;
-    let countLines = 0; // cuántos platos distintos llevan cantidad > 0
-    let totalUnits = 0; // suma de unidades
+    let totalUnits = 0;
 
     items.forEach(it => {{
       const qty = Number(it.getAttribute('data-qty') || "0");
       if (qty > 0){{
         const price = Number(it.getAttribute('data-precio') || "0");
         total += qty * price;
-        countLines++;
         totalUnits += qty;
       }}
     }});
     document.getElementById('totalText').textContent = `Total: ${{formatMoney(total)}}`;
 
-    const payBtn = document.getElementById('payButton');
-    if (totalUnits > 0 && PAYMENT_URL){{
-      payBtn.classList.add('show');
-    }} else {{
-      payBtn.classList.remove('show');
-    }}
+  // Mostrar mensaje WhatsApp cuando haya al menos 1 unidad
+  const whatsappMsg = document.getElementById('whatsappMsg');
+  if (totalUnits > 0){{
+    whatsappMsg.style.display = "inline-block";
+  }} else {{
+    whatsappMsg.style.display = "none";
   }}
-
+}}
 
   </script>
 </body>

@@ -145,6 +145,7 @@
       object-fit: cover;
       border-radius: 10px;
       flex-shrink: 0;
+      margin: 0;
     }
 
 
@@ -488,7 +489,7 @@
 
   <!-- Botón de WhatsApp flotante con viñeta -->
   <a href="https://wa.me/5491130625858" target="_blank" id="whatsapp-float" aria-label="WhatsApp">
-    <span class="whatsapp-tooltip">Hacé tu pedido por WhatsApp</span>
+    <span class="whatsapp-tooltip">¡Hacé tu pedido por WhatsApp!</span>
     <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" style="width:56px;height:56px;">
   </a>
 
@@ -506,8 +507,10 @@
   </div>
   <div id="totalBar" aria-live="polite">
     <span id="totalText">Total: $0</span>
-    <a id="payButton" href="https://link.mercadopago.com.ar/barmodelo" target="_blank" rel="noopener">Pagar</a>
-  </div>
+    <span id="whatsappMsg" style="display:none; color:#25D366; font-weight:700; font-size:1.08rem; margin-left:16px;">
+      Hacé tu pedido por WhatsApp!
+    </span>
+</div>
   <script>
     // URL de la promo (dejá "" vacío si no querés mostrar nada)
     const promoUrl = "https://res.cloudinary.com/drxznqm61/image/upload/v1752803985/Felices_Pascuas_Instagram_story_etspb5.jpg";
@@ -868,33 +871,29 @@
 
   // --- helpers existentes (parsePrice, formatMoney) sirven tal cual ---
   function updateTotal(){
-    const items = document.querySelectorAll('.menu-item');
-    let total = 0;
-    let countLines = 0; // cuántos platos distintos llevan cantidad > 0
-    let totalUnits = 0; // suma de unidades
+  const items = document.querySelectorAll('.menu-item');
+  let total = 0;
+  let totalUnits = 0;
 
-    items.forEach(it => {
-      const qty = Number(it.getAttribute('data-qty') || "0");
-      if (qty > 0){
-        const price = Number(it.getAttribute('data-precio') || "0");
-        total += qty * price;
-        countLines++;
-        totalUnits += qty;
-      }
-    });
-
-    // Texto: Total + unidades
-    document.getElementById('totalText').textContent = `Total: ${formatMoney(total)}`;
-
-    // Mostrar botón pagar cuando haya al menos 1 unidad
-    const payBtn = document.getElementById('payButton');
-    if (totalUnits > 0 && PAYMENT_URL){
-      payBtn.classList.add('show');
-    } else {
-      payBtn.classList.remove('show');
+  items.forEach(it => {
+    const qty = Number(it.getAttribute('data-qty') || "0");
+    if (qty > 0){
+      const price = Number(it.getAttribute('data-precio') || "0");
+      total += qty * price;
+      totalUnits += qty;
     }
-  }
+  });
 
+  document.getElementById('totalText').textContent = `Total: ${formatMoney(total)}`;
+
+  // Mostrar mensaje WhatsApp cuando haya al menos 1 unidad
+  const whatsappMsg = document.getElementById('whatsappMsg');
+  if (totalUnits > 0){
+    whatsappMsg.style.display = "inline-block";
+  } else {
+    whatsappMsg.style.display = "none";
+  }
+}
 
   </script>
 </body>
