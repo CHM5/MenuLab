@@ -510,7 +510,8 @@
   </div>
   <script>
     // URL de la promo (dejá "" vacío si no querés mostrar nada)
-    const promoUrl = "https://res.cloudinary.com/drxznqm61/image/upload/v1752803985/Felices_Pascuas_Instagram_story_etspb5.jpg";
+//    const promoUrl = "https://res.cloudinary.com/drxznqm61/image/upload/v1752803985/Felices_Pascuas_Instagram_story_etspb5.jpg";
+    const promoUrl = "";
 
     if (promoUrl) {
       document.getElementById("promoImage").src = promoUrl;
@@ -522,21 +523,21 @@
     }
 
     const allRows = [
-      ["Cafetería", "Clásicos", "Café Doble", "Café espresso doble.", "$1200", "https://res.cloudinary.com/drxznqm61/image/upload/v1752718317/Caf%C3%A9espressodoble_n1nmlh.png"],
-      ["Cafetería", "Clásicos", "Café con Leche", "Café espresso con leche caliente.", "$1300", "https://res.cloudinary.com/drxznqm61/image/upload/v1752718317/Caf%C3%A9espressodoble_n1nmlh.png"],
-      ["Cafetería", "Clásicos", "Café Americano", "Café filtrado suave, taza grande.", "$1100"],
-      ["Cafetería", "Especiales", "Flat White", "Espresso doble con leche microespumada.", "$1500"],
+      ["Cafetería", "Clásicos", "Café en Jarrito", "Café espresso", "$1200", "https://res.cloudinary.com/drxznqm61/image/upload/v1757092774/jarrito-removebg-preview_1_mk6kdz.png"],
+      ["Cafetería", "Clásicos", "Café con Leche", "Café espresso con leche caliente.", "$1300"],
+      ["Cafetería", "Clásicos", "Café Americano", "Café filtrado suave, taza grande.", "$1100", "https://res.cloudinary.com/drxznqm61/image/upload/v1757093211/tazon-removebg-preview_sdkftc.png"],
+      ["Cafetería", "Especiales", "Flat White", "Espresso doble con leche microespumada.", "$1500", "https://res.cloudinary.com/drxznqm61/image/upload/v1757093642/76cbc8bc-eca2-40ca-a094-cce4551354c0-removebg-preview_xhzbsi.png"],
       ["Cafetería", "Especiales", "Latte Vainilla", "Café con leche y sirope de vainilla.", "$1600"],
       ["Cafetería", "Especiales", "Cappuccino", "Espresso, leche y espuma, decorado con cacao.", "$1400"],
       ["Cafetería", "Fríos", "Cold Brew", "Café infusionado en frío por 12 horas.", "$1700"],
-      ["Cafetería", "Fríos", "Iced Latte", "Café espresso, leche y hielo.", "$1600"],
-      ["Pastelería", "Tortas", "Cheesecake", "Porción de cheesecake casero.", "$2200"],
-      ["Pastelería", "Tortas", "Brownie", "Brownie de chocolate con nuez.", "$1800"],
+      ["Cafetería", "Fríos", "Iced Latte", "Café espresso, leche y hielo.", "$1600", "https://res.cloudinary.com/drxznqm61/image/upload/v1757093806/espresso_tonic_1-removebg-preview_zkjdj8.png"],
+      ["Pastelería", "Tortas", "Cheesecake", "Porción de cheesecake casero.", "$2200", "https://res.cloudinary.com/drxznqm61/image/upload/v1757094394/cheesecake-removebg-preview_1_ob73z1.png"],
+      ["Pastelería", "Tortas", "Brownie", "Brownie de chocolate con nuez y bocha de helado de limón.", "$1800", "https://res.cloudinary.com/drxznqm61/image/upload/v1757094737/brownie-removebg-preview_ahn7yw.png"],
       ["Pastelería", "Tortas", "Carrot Cake", "Bizcocho húmedo de zanahoria y especias.", "$2100"],
       ["Pastelería", "Tortas", "Lemon Pie", "Tarta de limón con merengue italiano.", "$2000"],
-      ["Pastelería", "Cookies", "Cookie Chips", "Galleta artesanal con chips de chocolate.", "$900"],
+      ["Pastelería", "Cookies", "Cookie Chips", "Galleta artesanal con chips de chocolate.", "$900", "https://res.cloudinary.com/drxznqm61/image/upload/v1757095030/The-Best-Chocolate-Chip-Cookies-2-removebg-preview_1_iacu2g.png"],
       ["Pastelería", "Cookies", "Cookie Red Velvet", "Galleta roja con chocolate blanco.", "$950"],
-      ["Sandwiches", "", "Tostado de Jamón y Queso", "Pan de campo, jamón cocido y queso.", "$2000"],
+      ["Sandwiches", "", "Tostado de Jamón y Queso", "Pan casero, jamón cocido y queso.", "$2000"],
       ["Sandwiches", "", "Bagel Capresse", "Bagel artesanal, tomate, mozzarella y albahaca.", "$2300", "https://res.cloudinary.com/drxznqm61/image/upload/v1753625624/Bagel-de-salmon-removebg-preview_jia8vv.png"],
       ["Sandwiches", "", "Croissant Veggie", "Croissant con vegetales grillados y queso.", "$2200"],
       ["Desayunos", "", "Combo Central", "Café + jugo + tostadas + mermelada y manteca.", "$2500"],
@@ -548,11 +549,11 @@
       ["Desayunos", "", "Tostadas Avocado", "Pan integral, palta, tomate y semillas.", "$2100"],
       ["Cafetería", "Especiales", "Mocha Latte", "Café espresso con leche vaporizada y chocolate.", "$1700"],
       ["Cafetería", "Especiales", "Caramel Macchiato", "Espresso con leche, espuma y toque de caramelo.", "$1750"],
-      ["Cafetería", "Especiales", "Espresso Tonic", "Espresso servido sobre tónica y hielo.", "$1600"],
-      ["Cafetería", "Especiales", "Affogato", "Helado de vainilla bañado con espresso caliente.", "$1900"],
+      ["Cafetería", "Fríos", "Espresso Tonic", "Espresso servido sobre tónica y hielo.", "$1600"],
+      ["Cafetería", "Fríos  ", "Affogato", "Helado de vainilla bañado con espresso caliente.", "$1900", "https://res.cloudinary.com/drxznqm61/image/upload/v1757093536/afogato-removebg-preview_1_ufg02m.png"],
       ["Cafetería", "Fríos", "Iced Matcha Latte", "Té matcha japonés con leche vegetal y hielo.", "$1800"],
       ["Cafetería", "Fríos", "Frappuccino Oreo", "Frappé de café con galletas Oreo y crema.", "$2000"],
-      ["Cafetería", "Fríos", "Limonada Menta & Jengibre", "Refrescante, casera y natural.", "$1500"],
+      ["Cafetería", "Fríos", "Limonada Menta & Jengibre", "Refrescante, casera y natural.", "$1500", "https://res.cloudinary.com/drxznqm61/image/upload/v1757094184/7WPPD5GSSZH4LG7KHWVEWCPBFM-removebg-preview_ves6p0.png"],
       ["Cafetería", "Fríos", "Smoothie Frutos Rojos", "Batido con yogur natural y frutas del bosque.", "$1900"],
       ["Pastelería", "Vegano", "Muffin de Banana Vegano", "Sin lácteos, sin huevo, con nueces y banana.", "$1300"],
       ["Pastelería", "Sin Gluten", "Brownie sin TACC", "Brownie húmedo con almendras sin gluten.", "$1400"],
