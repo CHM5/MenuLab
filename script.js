@@ -6,12 +6,12 @@ document.addEventListener('DOMContentLoaded', () => {
       prices: { monthly: 'GRATIS', yearly: 'GRATIS' }, ids: { monthly: 0, yearly: 0 },
       intro:'de por vida',
       features: [
-        { label: '<br></br>🍽️ Menu Online', info: 'Actualizá tu menú en tiempo real' },
+        { label: '<br></br>🍽️ Menu Online', info: 'Tené ya mismo tu Menú online' },
         { label: '🔄 Actualizaciones', info: 'Actualizá tu menú en tiempo real' },
         { label: '📱Diseño Responsivo', info: 'Compatible con móviles y tablets' },
         { label: '🍝 Hasta 25 Ítems', info: 'Podés cargar hasta 25 ítems en tu menú' },
         { label: '🏪 Data Negocio', info: 'Dirección, horarios de atencion, etc' },
-        { label: '🔐 Sitio Seguro SSL', info: 'Certificado SSL incluido' }
+        { label: '🔐 Certificado web segura', info: 'Certificado SSL incluido' }
       ]
     },
     {
@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { label: '🍝 Ítems Ilimitados', info: 'Sin límite de carga de ítems' },
         { label: '🔎 Búsqueda de Platos', info: 'Buscar rápidamente platos dentro de tu menú digital' },
         { label: '📞 Atención Virtual', info: 'Tiempo de respuesta en menos de 72h' },
-        { label: '<div style="text-align:center;"><b><br></br>EXTRA</b></div>' },
+        { label: '<div style="text-align:center;"><b><br></br></b></div>' },
         { label: '<div style="text-align:center;">✅5%OFF en <a href="#productos" style="color:#1976d2;text-decoration:underline;cursor:pointer;">Productos</a></div>', modes: ['monthly']},
         { label: '<div style="text-align:center;">✅<b>10%OFF</b> en <a href="#productos" style="color:#1976d2;text-decoration:underline;cursor:pointer;">Productos</a></div>', modes: ['yearly']}
       ]
@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { label: '📍 Integración Google Maps', info: 'Enlace con dirección de tu negocio' },
         { label: '🎨 Tema Personalizable', info: 'Elegí tipo de letra y paleta de colores' },
         { label: '📞 Atención Personalizada', info: 'Tiempo de respuesta en menos de 42h' },
-        { label: '<div style="text-align:center;"><b><br></br>EXTRA</b></div>' },
+        { label: '<div style="text-align:center;"><b><br></br></b></div>' },
         { label: '<div style="text-align:center;">✅10%OFF en <a href="#productos" style="color:#1976d2;text-decoration:underline;cursor:pointer;">Productos</a></div>', modes: ['monthly']},
         { label: '<div style="text-align:center;">✅<b>20%OFF</b> en <a href="#productos" style="color:#1976d2;text-decoration:underline;cursor:pointer;">Productos</a></div>', modes: ['yearly']}
       ]
@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { label: '💳 Link de pago ', info: 'Agregá un link de pago para que tus clientes paguen online' },
         { label: '🍽️ Cantidad de Platos', info: 'Agregá el total de platos que tus clientes eligen en su pedido' },
         { label: '📞 Atención Prioritaria', info: 'Tiempo de respuesta en menos de 24h' },
-        { label: '<div style="text-align:center;"><b><br></br>EXTRA</b></div>' },
+        { label: '<div style="text-align:center;"><b><br></br></b></div>' },
         { label: '<div style="text-align:center;">✅15%OFF en <a href="#productos" style="color:#1976d2;text-decoration:underline;cursor:pointer;">Productos</a></div>', modes: ['monthly']},
         { label: '<div style="text-align:center;">✅<b>30%OFF</b> en <a href="#productos" style="color:#1976d2;text-decoration:underline;cursor:pointer;">Productos</a></div>', modes: ['yearly']}
       ]
