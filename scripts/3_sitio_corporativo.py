@@ -576,23 +576,21 @@ html = f"""<!DOCTYPE html>
       width: 12px;
       height: 12px;
     }}
-    .menu-item.selected {{
-      background: var(--bgScrollbar) !important;
-      color: #fff !important;
+    
+    .menu-item.selected .menu-item-inner {{
+      background: #457B9D !important; /* azul oscuro */
       border-radius: 10px;
-      padding: 0rem 0rem;
     }}
+
     .menu-item.selected .menu-name,
     .menu-item.selected .menu-description,
     .menu-item.selected .menu-price {{
       color: #fff !important;
     }}
+
     .menu-item.selected .menu-img {{
       filter: none !important;
       opacity: 1 !important;
-    }}
-    .menu-item.selected .menu-item-inner {{
-      background: transparent !important;
     }}
 
     .whatsapp-tooltip {{
@@ -677,7 +675,7 @@ html = f"""<!DOCTYPE html>
     #payButton{{
       display: none;           /* se muestra solo con selección */
       background: #457B9D;     /* tu color */
-      color: #fff; 
+      color: var(--bgScrollbar); 
       text-decoration: none;
       border-radius: 999px; padding: .55rem 1rem;
       font-weight: 700; font-size: .98rem;
