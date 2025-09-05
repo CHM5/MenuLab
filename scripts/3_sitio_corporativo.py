@@ -578,7 +578,7 @@ html = f"""<!DOCTYPE html>
     }}
     
     .menu-item.selected .menu-item-inner {{
-      background: #457B9D !important; /* azul oscuro */
+      background: var(--bgScrollbar) !important; /* azul oscuro */
       border-radius: 10px;
     }}
 
@@ -674,8 +674,8 @@ html = f"""<!DOCTYPE html>
     /* botón pagar */
     #payButton{{
       display: none;           /* se muestra solo con selección */
-      background: #457B9D;     /* tu color */
-      color: var(--bgScrollbar); 
+      background: var(--bgScrollbar);     /* tu color */
+      color: #fff; 
       text-decoration: none;
       border-radius: 999px; padding: .55rem 1rem;
       font-weight: 700; font-size: .98rem;
