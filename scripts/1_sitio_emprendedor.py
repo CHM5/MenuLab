@@ -480,7 +480,7 @@ html = f"""<!DOCTYPE html>
         }}
       }});
 
-  const TRACK_URL = "https://script.google.com/macros/s/AKfycbzY3jLo0hK4roVIvWLbaQUcwCz4DR4rVaT2h1Q8MkFu_o63OAcj-yEkEVfsj_B7fDBc/exec";
+  const TRACK_URL = "https://script.google.com/macros/s/AKfycbxZMZlAi1jUtJ3DVuWoQyaRzvMoDku3KLOdrPVP8xmpIN2s-O7avujf8YGNuV8fvlyc/exec";
 
   function trackEvent(action, item, category) {{
     fetch(TRACK_URL, {{
