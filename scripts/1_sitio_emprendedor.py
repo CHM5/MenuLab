@@ -479,6 +479,44 @@ html = f"""<!DOCTYPE html>
           img.remove();                   
         }}
       }});
+
+  const TRACK_URL = "https://script.google.com/macros/s/AKfycbzY3jLo0hK4roVIvWLbaQUcwCz4DR4rVaT2h1Q8MkFu_o63OAcj-yEkEVfsj_B7fDBc/exec";
+
+  function trackEvent(action, item, category) {{
+    fetch(TRACK_URL, {{
+      method: "POST",
+      headers: {{"Content-Type": "application/json"}},
+      body: JSON.stringify({{
+        action,
+        item,
+        category,
+        page: location.href,
+        session: Date.now() + "-" + Math.random().toString(36).substring(2,8)
+      }})
+    }});
+  }}
+
+  // 🔹 Ejemplo: trackear clic en cada item
+  document.addEventListener("click", (e) => {{
+    const itemDiv = e.target.closest(".menu-item");
+    if (itemDiv) {{
+      const name = itemDiv.querySelector(".menu-name")?.textContent.trim();
+      const cat = itemDiv.closest(".menu-group")?.getAttribute("data-cat");
+      trackEvent("click", name, cat);
+    }}
+  }});
+
+  // 🔹 Ejemplo: trackear scroll a categorías
+  document.addEventListener("scroll", () => {{
+    document.querySelectorAll(".menu-group").forEach(group => {{
+      const rect = group.getBoundingClientRect();
+      if (rect.top >= 0 && rect.top < window.innerHeight * 0.5) {{
+        const cat = group.getAttribute("data-cat");
+        trackEvent("view_category", "", cat);
+      }}
+    }});
+  }});
+
   </script>
 </body>
 </html>
