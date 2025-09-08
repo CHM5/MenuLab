@@ -200,3 +200,14 @@ jobs:
           SHEET_URL: ${{ steps.paths.outputs.sheet_url }}
         run: |
           python scripts/add_links.py
+
+      # 11) Setear mostrar_descuento
+      - name: Setear mostrar_descuento
+        id: mostrar_descuento
+        shell: bash
+        run: |
+          if [ -n "${{ steps.descuento.outputs.codigo_descuento }}" ]; then
+            echo "mostrar_descuento=true" >> $GITHUB_OUTPUT
+          else
+            echo "mostrar_descuento=false" >> $GITHUB_OUTPUT
+          fi
