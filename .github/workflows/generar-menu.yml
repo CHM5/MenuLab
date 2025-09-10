@@ -134,6 +134,22 @@ jobs:
             *) echo "codigo_descuento=" >> $GITHUB_OUTPUT; echo "porcentaje_descuento=" >> $GITHUB_OUTPUT ;;
           esac
 
+      # 8.2) Setear HTML del mensaje de descuento solo para planes 1, 2 y 3
+      - name: Setear HTML del mensaje de descuento
+        id: descuento_html
+        shell: bash
+        run: |
+          case "${{ steps.vars.outputs.plan }}" in
+            "1"|"2"|"3")
+              echo "descuento_html<<EOF" >> $GITHUB_OUTPUT
+              echo "<p style='color:#008000; font-weight:bold;'>🎁 Te regalamos el ${{ steps.descuento.outputs.porcentaje_descuento }}% de descuento ingresando este código sin tope en cualquiera de nuestros productos!<br>Código de descuento: <b>${{ steps.descuento.outputs.codigo_descuento }}</b><br>👉 <a href='https://menulab.com.ar/#productos' style='color:#007bff;'>Ver productos</a></p>" >> $GITHUB_OUTPUT
+              echo "EOF" >> $GITHUB_OUTPUT
+              ;;
+            *)
+              echo "descuento_html=" >> $GITHUB_OUTPUT
+              ;;
+          esac
+
       # 9) Send client email
       - name: Enviar e‑mail al cliente
         uses: dawidd6/action-send-mail@v3
@@ -174,11 +190,7 @@ jobs:
 
                       <p>💡 Recordá que podés actualizar el contenido del menú en tiempo real desde tu planilla, sin necesidad de reenviar el enlace.</p>
 
-                      <p style="color:#008000; font-weight:bold;">
-                        🎁 Te regalamos el ${{ steps.descuento.outputs.porcentaje_descuento }}% de descuento ingresando este código sin tope en cualquiera de nuestros productos!<br>
-                        Código de descuento: <b>${{ steps.descuento.outputs.codigo_descuento }}</b><br>
-                        👉 <a href="https://menulab.com.ar/#productos" style="color:#007bff;">Ver productos</a>
-                      </p>
+                      ${{ steps.descuento_html }}
 
                       <p style="margin-top:2rem;">¡Gracias por confiar en <strong>MenuLab</strong>!<br>
                       Estamos a tu disposición para lo que necesites.<br><br>
