@@ -150,6 +150,19 @@ jobs:
               ;;
           esac
 
+      # 8.3) Setear HTML del mensaje de productos solo para plan 0
+      - name: Setear HTML del mensaje de productos para plan 0
+        id: productos_html
+        shell: bash
+        run: |
+          if [ "${{ steps.vars.outputs.plan }}" = "0" ]; then
+            echo "productos_html<<EOF" >> $GITHUB_OUTPUT
+            echo "<p style='color:#1976d2; font-weight:500;'>No dejes de conocer nuestros productos como diseño de menú físico totalmente personalizado, menú obligatorio de calle o tarjetas de descuento para clientes frecuentes. <a href='https://menulab.com.ar/#productos' style='color:#007bff;'>Ver productos</a></p>" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+          else
+            echo "productos_html=" >> $GITHUB_OUTPUT
+          fi
+
       # 9) Send client email
       - name: Enviar e‑mail al cliente
         uses: dawidd6/action-send-mail@v3
@@ -191,7 +204,8 @@ jobs:
                       <p>💡 Recordá que podés actualizar el contenido del menú en tiempo real desde tu planilla, sin necesidad de reenviar el enlace.</p>
 
                       ${{ steps.descuento_html.outputs.descuento_html }}
- 
+                      ${{ steps.productos_html.outputs.productos_html }}
+
                       <p style="margin-top:2rem;">¡Gracias por confiar en <strong>MenuLab</strong>!<br>
                       Estamos a tu disposición para lo que necesites.<br><br>
                       — El equipo de MenuLab</p>
