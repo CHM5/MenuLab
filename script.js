@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
       features: [
         { label: '<br></br>🤳 Código QR', info: 'Código QR único para tu menú' },
         { label: '🪧 Sin Publicidad', info: 'Menú sin banners ni anuncios externos' },
+        { label: '🌐 Traducción Automática', info: 'Traducción al inglés y portugués por Google' },
         { label: '🛏️ Hosting 24/7', info: 'Acceso permanente a la menú online' },
         { label: '🍝 Ítems Ilimitados', info: 'Sin límite de carga de ítems' },
         { label: '🔎 Búsqueda de Platos', info: 'Buscar rápidamente platos dentro de tu menú digital' },
@@ -53,9 +54,9 @@ document.addEventListener('DOMContentLoaded', () => {
       features: [
         { label: '<br></br>📷 Integración de Fotos', info: 'Integración de galería fotográfica para mostrar tus productos' },
         { label: '🛍️ Promos por Temporada', info: 'Mensajes pop up promocionales' },
-        { label: '🛒 Pedidos por web', info: 'Permití que tus clientes hagan pedidos directamente desde la menú online' },
-        { label: '💳 Link de pago ', info: 'Agregá un link de pago para que tus clientes paguen online' },
-        { label: '🍽️ Cantidad de Platos', info: 'Agregá el total de platos que tus clientes eligen en su pedido' },
+        { label: '🍽️ Selección de Platos', info: 'Agregá el total de platos que tus clientes eligen en su pedido' },
+        { label: '🛒 Pedidos por Web', info: 'Permití que tus clientes hagan pedidos directamente desde la menú online' },
+        { label: '📅 Integración de Reservas', info: 'Permití que tus clientes reserven mesas un Google forms' },
         { label: '📞 Atención Prioritaria', info: 'Tiempo de respuesta en menos de 24h' },
         { label: '<div style="text-align:center;"><b><br></br></b></div>' },
         { label: '<div style="text-align:center;">✅15%OFF en <a href="#productos" style="color:#1976d2;text-decoration:underline;cursor:pointer;">Productos</a></div>', modes: ['monthly']},

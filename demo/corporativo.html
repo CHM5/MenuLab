@@ -453,8 +453,13 @@
       </div>
     </div>
   </div>
-  <div class="header-socials" id="headerSocials">
-  </div>
+  <div id="reservaBtnContainer" style="text-align:center; margin-bottom: 0.7rem; display:none;">
+  <button id="btnReserva" class="category-btn" style="font-size:1.08rem; padding:8px 28px; margin-top:0.5rem;">
+    📅 Reserva tu mesa
+  </button>
+</div>
+<div class="header-socials" id="headerSocials">
+</div>
     <div class="search-menu">
     <input
       id="menuSearch"
@@ -512,15 +517,6 @@
     </span>
   </div>
   <div id="google_translate_element" style="position:fixed;top:8px;right:8px;z-index:9999;"></div>
-  <script type="text/javascript">
-  function googleTranslateElementInit() {
-    new google.translate.TranslateElement({
-      pageLanguage: 'es',
-      includedLanguages: 'es,en,pt', // elegí los idiomas que quieras permitir
-      layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-    }, 'google_translate_element');
-  }
-  </script>
   <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
   
   <script>
@@ -877,10 +873,6 @@
     }
   }
 
-  // (Opcional) definir el link de pago una sola vez:
-  const PAYMENT_URL = "https://link.mercadopago.com.ar/barmodelo";
-  document.getElementById('payButton').href = PAYMENT_URL;
-
   // --- helpers existentes (parsePrice, formatMoney) sirven tal cual ---
   function updateTotal(){
   const items = document.querySelectorAll('.menu-item');
@@ -907,6 +899,15 @@
   }
 }
 
+  // URL del formulario de reservas (dejá vacío "" si no hay)
+  const reservaUrl = "https://docs.google.com/forms/d/e/1FAIpQLSfKYNJPno7YlifWkBb_oMX_2ZVz0iopmEzwiHL7sxUh_7Polg/viewform?usp=dialog"; // <-- poné tu link aquí
+
+  if (reservaUrl && reservaUrl.trim() !== "") {
+    document.getElementById('reservaBtnContainer').style.display = "block";
+    document.getElementById('btnReserva').onclick = function() {
+      window.open(reservaUrl, '_blank');
+    };
+  }
   </script>
 </body>
 </html>
