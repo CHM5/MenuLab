@@ -872,25 +872,8 @@ fetch(CSV_URL)
             label: "Google Maps"
           }
         ];
-
-        // --- LINK DE PAGO DINÁMICO (B14 -> rows[13][1]) ---
-        const payBtnEl = document.getElementById('payButton');
-        const rawPay = (rows[13]?.[1] || "").replace(/"/g, "").trim(); // B14
-
-        if (rawPay && rawPay.toLowerCase() !== "off") {
-          // agrega https:// si falta
-          PAYMENT_URL = /^https?:\/\//i.test(rawPay) ? rawPay : ("https://" + rawPay);
-          payBtnEl.href = PAYMENT_URL;
-        } else {
-          PAYMENT_URL = "";
-          payBtnEl.removeAttribute("href");
-        }
-
-        // por si ya había selección antes de que llegara FIJOS
-        updateTotal();
-
+        
         const socialsDiv = document.getElementById('headerSocials');
-        socialsDiv.innerHTML = "";
         socialLinks.forEach(social => {
           if (social.href && social.href.trim() !== "") {
             const a = document.createElement('a');
