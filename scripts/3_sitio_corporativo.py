@@ -29,7 +29,7 @@ if not sheet_url:
 sheet_id = sheet_url.split("/d/")[1].split("/")[0]
 popup_csv_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet=Menu&range=B2"
 menu_csv_url  = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet=Menu&range=A5:F"
-fijos_csv_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet=Datos%20Permanentes"
+fijos_csv_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet=Datos%20Permanentes&range=A2:B14"
 personalizacion_csv_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet=Personalizacion"
 
 print("🔗 CSV menú:", menu_csv_url )
@@ -1288,3 +1288,4 @@ with open("menu_url.txt", "w") as f:
     f.write(f"planes/menu-corporativo-{fecha_id}-{hash_str}/index.html")
 with open("sheet_url.txt", "w") as f:
     f.write(sheet_url)
+
