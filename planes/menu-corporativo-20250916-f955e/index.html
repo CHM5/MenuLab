@@ -873,11 +873,7 @@ fetch(CSV_URL)
           }
         ];
 
-        // por si ya había selección antes de que llegara FIJOS
-        updateTotal();
-
         const socialsDiv = document.getElementById('headerSocials');
-        socialsDiv.innerHTML = "";
         socialLinks.forEach(social => {
           if (social.href && social.href.trim() !== "") {
             const a = document.createElement('a');
