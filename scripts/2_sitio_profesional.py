@@ -220,7 +220,7 @@ except Exception as e:
 hash_input = f"{fecha_id}-{sheet_url}".encode("utf-8")
 hash_str = hashlib.sha1(hash_input).hexdigest()[:5]
 
-output_dir = Path(f"planes/menu-corporativo-{fecha_id}-{hash_str}")
+output_dir = Path(f"planes/menu-profesional-{fecha_id}-{hash_str}")
 output_dir.mkdir(parents=True, exist_ok=True)
 html_file = output_dir / "index.html"
 
@@ -957,6 +957,7 @@ print("📄 Planilla conectada:", sheet_url)
 
 # === EXPORTAR PATHS PARA WORKFLOW
 with open("menu_url.txt", "w") as f:
-    f.write(f"planes/menu-corporativo-{fecha_id}-{hash_str}/index.html")
+    f.write(f"planes/menu-profesional-{fecha_id}-{hash_str}/index.html")
 with open("sheet_url.txt", "w") as f:
     f.write(sheet_url)
+
