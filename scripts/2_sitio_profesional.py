@@ -639,6 +639,18 @@ html = f"""<!DOCTYPE html>
     <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" style="width:56px;height:56px;">
   </a>
 
+  <div id="google_translate_element" style="position:fixed;top:8px;right:8px;z-index:9999;"></div>
+  <script type="text/javascript">
+  function googleTranslateElementInit() {{
+    new google.translate.TranslateElement({{
+      pageLanguage: 'es',
+      includedLanguages: 'es,en,pt', // elegí los idiomas que quieras permitir
+      layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+    }}, 'google_translate_element');
+  }}
+  </script>
+  <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  
   <script data-cfasync="false">
 
     const CSV_URL = "{menu_csv_url}";

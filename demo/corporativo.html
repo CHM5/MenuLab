@@ -510,7 +510,19 @@
     <span id="whatsappMsg" style="display:none; color:#25D366; font-weight:700; font-size:1.08rem; margin-left:16px;">
       Hacé tu pedido por WhatsApp!
     </span>
-</div>
+  </div>
+  <div id="google_translate_element" style="position:fixed;top:8px;right:8px;z-index:9999;"></div>
+  <script type="text/javascript">
+  function googleTranslateElementInit() {
+    new google.translate.TranslateElement({
+      pageLanguage: 'es',
+      includedLanguages: 'es,en,pt', // elegí los idiomas que quieras permitir
+      layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+    }, 'google_translate_element');
+  }
+  </script>
+  <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  
   <script>
     // URL de la promo (dejá "" vacío si no querés mostrar nada)
     //const promoUrl = "https://res.cloudinary.com/drxznqm61/image/upload/v1752803985/Felices_Pascuas_Instagram_story_etspb5.jpg";

@@ -771,6 +771,19 @@ html = f"""<!DOCTYPE html>
       Hacé tu pedido por WhatsApp!
     </span>
   </div>
+
+  <div id="google_translate_element" style="position:fixed;top:8px;right:8px;z-index:9999;"></div>
+  <script type="text/javascript">
+  function googleTranslateElementInit() {{
+    new google.translate.TranslateElement({{
+      pageLanguage: 'es',
+      includedLanguages: 'es,en,pt', // elegí los idiomas que quieras permitir
+      layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+    }}, 'google_translate_element');
+  }}
+  </script>
+  <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
   <script data-cfasync="false">
 
     const POPUP_CSV_URL = "{popup_csv_url}";
