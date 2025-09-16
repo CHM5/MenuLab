@@ -29,7 +29,7 @@ if not sheet_url:
 sheet_id = sheet_url.split("/d/")[1].split("/")[0]
 popup_csv_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet=Menu&range=B2"
 menu_csv_url  = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet=Menu&range=A5:F"
-fijos_csv_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet=Datos%20Permanentes&range=A2:B14"
+fijos_csv_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet=Datos%20Permanentes"
 personalizacion_csv_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet=Personalizacion"
 
 print("🔗 CSV menú:", menu_csv_url )
@@ -1100,24 +1100,7 @@ fetch(CSV_URL)
           }}
         ];
 
-        // --- LINK DE PAGO DINÁMICO (B14 -> rows[13][1]) ---
-        const payBtnEl = document.getElementById('payButton');
-        const rawPay = (rows[13]?.[1] || "").replace(/"/g, "").trim(); // B14
-
-        if (rawPay && rawPay.toLowerCase() !== "off") {{
-          // agrega https:// si falta
-          PAYMENT_URL = /^https?:\/\//i.test(rawPay) ? rawPay : ("https://" + rawPay);
-          payBtnEl.href = PAYMENT_URL;
-        }} else {{
-          PAYMENT_URL = "";
-          payBtnEl.removeAttribute("href");
-        }}
-
-        // por si ya había selección antes de que llegara FIJOS
-        updateTotal();
-
         const socialsDiv = document.getElementById('headerSocials');
-        socialsDiv.innerHTML = "";
         socialLinks.forEach(social => {{
           if (social.href && social.href.trim() !== "") {{
             const a = document.createElement('a');
