@@ -54,10 +54,10 @@ document.addEventListener('DOMContentLoaded', () => {
       features: [
         { label: '<br></br>📷 Integración de Fotos', info: 'Integración de galería fotográfica para mostrar tus productos' },
         { label: '🛍️ Promos por Temporada', info: 'Mensajes pop up promocionales' },
-        { label: '🍽️ Selección de Platos', info: 'Agregá el total de platos que tus clientes eligen en su pedido' },
-        { label: '🛒 Pedidos por Web', info: 'Permití que tus clientes hagan pedidos directamente desde la menú online' },
         { label: '📅 Integración de Reservas', info: 'Permití que tus clientes reserven mesas un Google forms' },
+        { label: '🛒 Pedidos por Web', info: 'Permití que tus clientes hagan pedidos directamente desde la menú online' },
         { label: '📞 Atención Prioritaria', info: 'Tiempo de respuesta en menos de 24h' },
+        { label: '🛵 Integración Delivery', info: 'Al hacer clic, tus clientes podrán enviar un mensaje de WhatsApp pidiendo delivery' },
         { label: '<div style="text-align:center;"><b><br></br></b></div>' },
         { label: '<div style="text-align:center;">✅15%OFF en <a href="#productos" style="color:#1976d2;text-decoration:underline;cursor:pointer;">Productos</a></div>', modes: ['monthly']},
         { label: '<div style="text-align:center;">✅<b>30%OFF</b> en <a href="#productos" style="color:#1976d2;text-decoration:underline;cursor:pointer;">Productos</a></div>', modes: ['yearly']}
