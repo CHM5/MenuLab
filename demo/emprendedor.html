@@ -9,6 +9,7 @@
   <meta http-equiv="Expires" content="0">
   <link rel="icon" type="image/png" href="../../MLfavicon.png" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <style>
     :root {
       --primary: #ffc107;
@@ -171,7 +172,7 @@
       gap: 12px;
       justify-content: center;
       align-items: center;
-      margin: -10000px 0 0.5rem 0;
+      margin: 0 0 0.5rem 0;
       flex-wrap: nowrap;
       overflow-x: auto;
       padding-top: 8px;
@@ -184,7 +185,7 @@
       background: var(#457B9D); /* o #f1f1f1 si no estás usando variables */
     }
     #categoryMenu {
-      margin-top: -0.2rem; /* Opcional: reducí espacio si ves separación */
+      margin-top: -0.2rem; 
     }
     .category-menu::-webkit-scrollbar {
       height: 6px;
@@ -197,7 +198,7 @@
       text-align: center;
       margin: 1rem 0;
       position: sticky;
-      top: 0;
+      margin-top: 0px;
       padding-top: 8px;
     }
     .category-btn {
@@ -223,24 +224,22 @@
       flex-wrap: wrap;
       gap: 0.5rem;
       font-family: 'Poppins', sans-serif;
+      flex-direction: column !important;
+      align-items: center !important;
+      text-align: center !important;
     }
-    .header-left {
-      text-align: left;
-      min-width: 200px;
-      flex: 1 1 60px;
+    .header-left, .header-right {
+      width: 100% !important;
+      text-align: center !important;
     }
     .header-right {
-      text-align: right;
-      min-width: 180px;
-      flex: 1 1 180px;
-      color:#000;
-      font: italic 0.9rem 'Segoe UI', sans-serif;
+      margin-top: 0.5rem !important;
     }
     @media (max-width: 600px) {
       .header-flex {
         flex-direction: column;
         gap: 0.2rem;
-        margin-bottom: -100px;
+        margin-bottom: 0px;
       }
       .header-left {
         text-align: left;
@@ -261,6 +260,22 @@
         margin-top: 0.3rem; /* acercálo al bloque superior */
       }
     }
+
+    .style-subtitulo {
+      font: var(--font-slogan);
+      color:var(--slogan);
+      margin:0.2rem 0 0.3rem 0;
+      font-weight:400;
+      font-style:italic;
+    }
+    .style-direccion {
+      font: var(--font-address);
+      color: var(--address);
+    }
+    .style-horarios {
+      font: var(--font-horarios);
+      color: var(--horarios);
+    }
   </style>
 </head>
 <body>
@@ -268,18 +283,16 @@
     <div class="container">
       <div class="header-flex">
         <div class="header-left">
-          <h1 id="nombre-resto" style="font-size:1.8rem; color:#000; margin-bottom:0; margin-top:0;">Café Central</h1>
-          <h2 id="subtitulo-resto" style="margin:0.2rem 0 0.3rem 0;font-size:1rem;font-weight:400;color:#000;font-style:italic;">
+        <h1 id="nombre-resto" class="style-nombre">Café Central</h1>
+        <h2 id="subtitulo-resto" class="style-subtitulo">
             Todo rico, todo el día
           </h2>
         </div>
         <div class="header-right">
           <div>
-            <span>Av. Siempre Viva 123 📍</span>
-          </div>
+          <span class="style-direccion"><i class="fa-solid fa-map-marker-alt"></i> Av. Corrientes 123</span>        </div>
           <div>
-            <span>de Lun a Dom 8 a 20hs 🕒</span>
-          </div>
+          <span class="style-horarios"><i class="fa-solid fa-clock"></i> de Martes a Domingos de 8 a 20hs</span>
         </div>
       </div>
     </div>
@@ -417,7 +430,7 @@
       Object.entries(agrupado).forEach(([cat, subcategorias]) => {
         const group = document.createElement("div");
         group.className = "menu-group";
-        group.setAttribute('data-cat', cat); // <-- Para el scroll
+        group.setAttribute('data-cat', cat); 
 
         const catTitle = document.createElement("h2");
         catTitle.textContent = cat;
