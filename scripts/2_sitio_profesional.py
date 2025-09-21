@@ -383,6 +383,11 @@ html = f"""<!DOCTYPE html>
       padding: 0 0.5rem;
     }}
 
+    .menu-name {{
+      font-size: 1.1rem;
+      margin: 0;
+      font-weight: 600;
+    }}
 
 
     @media (max-width: 600px) {{
@@ -423,7 +428,7 @@ html = f"""<!DOCTYPE html>
       text-align: center;
       margin: 1rem 0;
       position: sticky;
-      top: 0;
+      margin-top: -15px;
       padding-top: 8px;
     }}
     .category-btn {{
@@ -448,19 +453,23 @@ html = f"""<!DOCTYPE html>
       flex-wrap: wrap;
       gap: 0.5rem;
       font-family: 'Poppins', sans-serif;
+      flex-direction: column !important;
+      align-items: center !important;
+      text-align: center !important;
     }}
-    .header-left {{
-      text-align: left;
-      min-width: 200px;
-      flex: 1 1 60px;
+    .header-left, .header-right {{
+      width: 100% !important;
+      text-align: center !important;
     }}
     .header-right {{
-      text-align: right;
-      min-width: 180px;
-      flex: 1 1 180px;
+      margin-top: 0.5rem !important;
     }}
     @media (max-width: 600px) {{
-      .header-flex {{ flex-direction: column; gap: 0.2rem; margin-bottom: -100px; }}
+      .header-flex {
+        flex-direction: column;
+        gap: 0.2rem;
+        margin-bottom: 0px;
+      }}
       .header-left {{
         text-align: left;
         margin-top: 0px;
@@ -514,6 +523,7 @@ html = f"""<!DOCTYPE html>
         background-color: var(--bg); /* gris clarito */
         border-radius: 10px; /* bordes redondeados */
         padding: 0.5rem 1rem; /* opcional, para que respire */
+        margin-top: 0.2rem !important;
     }}
 
     .header-socials a {{
@@ -596,8 +606,8 @@ html = f"""<!DOCTYPE html>
         <h2 id="subtitulo-resto" class="style-subtitulo"></h2>
       </div>
       <div class="header-right">
-        <div><span id="direccion-resto" class="style-direccion"></span></div>
-        <div><span id="horarios-resto" class="style-horarios"></span></div>
+        <div><span id="direccion-resto" class="style-direccion"><i class="fa-solid fa-map-marker-alt"></i></span></div>
+        <div><span id="horarios-resto" class="style-horarios"><i class="fa-solid fa-map-marker-alt"></i></span></div>
       </div>
     </div>
   </div>
