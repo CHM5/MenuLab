@@ -465,7 +465,7 @@ html = f"""<!DOCTYPE html>
       margin-top: 0.5rem !important;
     }}
     @media (max-width: 600px) {{
-      .header-flex {
+      .header-flex {{
         flex-direction: column;
         gap: 0.2rem;
         margin-bottom: 0px;
@@ -982,4 +982,3 @@ with open("menu_url.txt", "w") as f:
     f.write(f"planes/menu-profesional-{fecha_id}-{hash_str}/index.html")
 with open("sheet_url.txt", "w") as f:
     f.write(sheet_url)
-
