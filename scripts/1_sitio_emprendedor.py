@@ -264,21 +264,23 @@ html = f"""<!DOCTYPE html>
       flex-wrap: wrap;
       gap: 0.5rem;
       font-family: 'Poppins', sans-serif;
+      flex-direction: column !important;
+      align-items: center !important;
+      text-align: center !important;
     }}
-    .header-left {{
-      text-align: left;
-      min-width: 200px;
-      flex: 1 1 60px;
+    .header-left, .header-right {{
+      width: 100% !important;
+      text-align: center !important;
     }}
     .header-right {{
-      text-align: right;
-      min-width: 180px;
-      flex: 1 1 180px;
-      color:#000;
-      font: italic 0.9rem 'Segoe UI', sans-serif;
+      margin-top: 0.5rem !important;
     }}
     @media (max-width: 600px) {{
-      .header-flex {{ flex-direction: column; gap: 0.2rem; margin-bottom: -100px; }}
+      .header-flex {{
+        flex-direction: column;
+        gap: 0.2rem;
+        margin-bottom: 0px;
+      }}
       .header-left {{
         text-align: left;
         margin-top: 0px;
@@ -316,8 +318,8 @@ html = f"""<!DOCTYPE html>
           <h2 id="subtitulo-resto" style="font-size:1rem; font-style:italic; font-weight:400; color:#000;"></h2>
         </div>
         <div class="header-right">
-          <div><span id="direccion-resto"></span></div>
-          <div><span id="horarios-resto"></span></div>
+          <div><span id="direccion-resto"><i class="fa-solid fa-map-marker-alt"></i></span></div>
+          <div><span id="horarios-resto"><i class="fa-solid fa-clock"></span></div>
         </div>
       </div>
     </div>
