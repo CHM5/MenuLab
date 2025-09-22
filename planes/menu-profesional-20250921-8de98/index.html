@@ -685,7 +685,7 @@ fetch(CSV_URL)
             a.href = social.href;
             a.target = "_blank";
             a.setAttribute('aria-label', social.label);
-            const img = document.createElement('img');
+            a.innerHTML = link.svg; // inserta el SVG directamente
             img.src = social.img;
             img.alt = social.alt;
             a.appendChild(img);
