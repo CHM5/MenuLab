@@ -276,33 +276,102 @@
       font: var(--font-horarios);
       color: var(--horarios);
     }
+
+        .resto-header {
+      display: flex;
+      justify-content: center;  /* centra todo el bloque */
+      align-items: center;       /* alinea verticalmente */
+      gap: 1rem;                 /* espacio entre logo y texto */
+      margin-bottom: 1.5rem;
+      break-inside: avoid;       /* que no se corte */
+    }
+
+    .resto-header img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .resto-text {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .resto-header h1 {
+      margin: 0;
+      font-size: 1.5rem;
+    }
+
+    .resto-header h2 {
+      margin: 0.2rem 0 0;
+      font-size: 1rem;
+      font-weight: normal;
+      font-style: italic;
+      color: #555;
+    }
+    .resto-header {
+      display: flex;
+      justify-content: center;  /* centra todo el bloque */
+      align-items: center;       /* alinea verticalmente */
+      gap: 1rem;                 /* espacio entre logo y texto */
+      margin-bottom: 1.5rem;
+      break-inside: avoid;       /* que no se corte */
+    }
+
+    .resto-header img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .resto-text {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .resto-header h1 {
+      margin: 0;
+      font-size: 1.5rem;
+    }
+
+    .resto-header h2 {
+      margin: 0.2rem 0 0;
+      font-size: 1rem;
+      font-weight: normal;
+      font-style: italic;
+      color: #555;
+    }
+
   </style>
 </head>
 <body>
-    <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1752632048/cafe-central_ne83eh.png" alt="Banner Cafe Central" style="width:100%;display:block;margin-bottom:0.5rem;">
-    <div class="container">
-      <div class="header-flex">
-        <div class="header-left">
-        <h1 id="nombre-resto" class="style-nombre">Café Central</h1>
-        <h2 id="subtitulo-resto" class="style-subtitulo">
-            Todo rico, todo el día
-          </h2>
-        </div>
-        <div class="header-right">
-          <div>
-          <span class="style-direccion"><i class="fa-solid fa-map-marker-alt"></i> Av. Corrientes 123</span>        </div>
-          <div>
-          <span class="style-horarios"><i class="fa-solid fa-clock"></i> de Martes a Domingos de 8 a 20hs</span>
-        </div>
+  <!-- 📌 Encabezado del restaurante -->
+  <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1752632048/cafe-central_ne83eh.png" alt="Banner Cafe Central" style="width:100%;display:block;margin-bottom:0.5rem;">
+  <div class="resto-header">
+    <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1758652390/The_Pent_2_a8vhtp.jpg
+    " alt="Logo Café Central">
+    <div class="resto-text">
+      <h1 id="nombre-resto" class="style-nombre">Café Central</h1>
+      <h2 id="subtitulo-resto" class="style-subtitulo">Todo rico, todo el día</h2>
+      <div>
+        <span class="style-direccion"><i class="fa-solid fa-map-marker-alt"></i> Av. Corrientes 123</span>        </div>
+      <div>
+        <span class="style-horarios"><i class="fa-solid fa-clock"></i> de Martes a Domingos de 8 a 20hs</span>
       </div>
     </div>
-    <div class="search-menu">
+  </div>
+  <div class="header-socials" id="headerSocials"></div>
+  <div class="search-menu">
     <input
-      id="menuSearch"
-      type="text"
-      placeholder="Buscar en el menú..."
-      style="padding: 0.5rem 1rem; border-radius: 20px; border: 1px solid #ccc; width: 90%; max-width: 400px; font-size: 1rem;"
-    />
+    id="menuSearch"
+    type="text"
+    placeholder="Buscar en el menú..."
+    style="padding: 0.5rem 1rem; border-radius: 20px; border: 1px solid #ccc; width: 90%; max-width: 400px; font-size: 1rem;"
+  />
   </div>
   <div id="categoryMenu" class="category-menu"></div>
   <div class="container">
