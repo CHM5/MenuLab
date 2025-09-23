@@ -289,14 +289,14 @@ html = f"""<!DOCTYPE html>
       }}
     }}
 
-    .style-subtitulo {
+    .style-subtitulo {{
       font: var(--font-slogan);
       color:var(--slogan);
       margin:0.2rem 0 0.3rem 0;
       font-weight:400;
       font-style:italic;
     }}
-    .style-direccion {
+    .style-direccion {{
       font: var(--font-address);
       color: var(--address);
     }}
