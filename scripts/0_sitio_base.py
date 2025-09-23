@@ -288,33 +288,74 @@ html = f"""<!DOCTYPE html>
         margin-top: 0.3rem; /* acercálo al bloque superior */
       }}
     }}
-    .header-style {{
-      background: var(--header);
-      color: #000;
-      padding: 0.8rem 1rem 0.5rem 1rem;
-      border-radius: 0 0 var(--radius) var(--radius);
+
+    .style-subtitulo {
+      font: var(--font-slogan);
+      color:var(--slogan);
+      margin:0.2rem 0 0.3rem 0;
+      font-weight:400;
+      font-style:italic;
     }}
+    .style-direccion {
+      font: var(--font-address);
+      color: var(--address);
+    }}
+    .style-horarios {{
+      font: var(--font-horarios);
+      color: var(--horarios);
+    }}
+        .resto-header {{
+      display: flex;
+      justify-content: center;  /* centra todo el bloque */
+      align-items: center;       /* alinea verticalmente */
+      gap: 1rem;                 /* espacio entre logo y texto */
+      margin-bottom: 1.5rem;
+      break-inside: avoid;       /* que no se corte */
+    }}
+
+    .resto-header img {{
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+    }}
+
+    .resto-text {{
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }}
+    .resto-header h1 {{
+      margin: 0;
+      font-size: 1.5rem;
+    }}
+    .resto-header h2 {{
+      margin: 0.2rem 0 0;
+      font-size: 1rem;
+      font-weight: normal;
+      font-style: italic;
+      color: #555;
+    }}
+
   </style>
 </head>
 <body>
-  <header style="background: var(--header); color: #000; padding: 0.8rem 1rem 0.5rem 1rem; border-radius: 0 0 var(--radius) var(--radius);">
-    <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1752632048/cafe-central_ne83eh.png" alt="Banner Cafe Central" style="width:100%;display:block;margin-bottom:0.5rem;">
-    <div class="container">
-      <div class="header-flex">
-        <div class="header-left">
-          <h1 id="nombre-resto" style="font-size:1.8rem; color:#000;">Café Central</h1>
-          <h2 id="subtitulo-resto" style="font-size:1rem; font-style:italic; font-weight:400; color:#000;"></h2>
-        </div>
-        <div class="header-right">
-          <div><span id="direccion-resto"><i class="fa-solid fa-map-marker-alt"></i></span></div>
-          <div><span id="horarios-resto"><i class="fa-solid fa-clock"></i></span></div>
-        </div>
+  <div class="container">
+    <a href="https://menulab.com.ar" target="_blank" rel="noopener">
+      <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1756611989/bannerML_klpu9y.jpg" alt="Banner MenuLab" style="width:100%;display:block;margin-bottom:0.5rem;">
+    </a>
+    <div class="resto-header">
+      <a href="https://menulab.com.ar" target="_blank" rel="noopener">
+        <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1758652390/The_Pent_2_a8vhtp.jpg" alt="Banner MenuLab">
+      </a>    
+      <div class="resto-text">
+        <h1 id="nombre-resto" class="style-nombre">Café Central</h1>
+        <h2 id="subtitulo-resto" class="style-subtitulo"></h2>
+        <div><span class="style-direccion" id="direccion-resto"><i class="fa-solid fa-map-marker-alt"></i></span></div>
+        <div><span class="style-horarios" id="horarios-resto"><i class="fa-solid fa-clock"></i></span></div>
       </div>
     </div>
-  </header>
-
   <div id="categoryMenu" class="category-menu"></div>
-
   <div class="container">
     <div style="overflow-x:auto;">
       <div id="menuTable" class="menu-content"></div>
