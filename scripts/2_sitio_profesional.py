@@ -561,7 +561,6 @@ html = f"""<!DOCTYPE html>
     .style-nombre {{
       font: var(--font-businessName);
       color:var(--businessName); 
-      margin-bottom:0; 
       margin-top:0;
     }}
     .style-subtitulo {{
@@ -580,35 +579,53 @@ html = f"""<!DOCTYPE html>
       color: var(--horarios);
     }}
 
-    /* que el botón de WhatsApp no quede escondido detrás de la barra */
-    #whatsapp-float {{ bottom: 90px; }}
-    @media (max-width: 600px) {{
-      #whatsapp-float {{ bottom: 88px; }}
+    .resto-header {{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      break-inside: avoid;
     }}
 
-
-    /* que nada quede tapado por la barra */
-    body{{ padding-bottom: 72px; }}
-
-    .line-total{{
-      display: none !important;
+    .resto-header img {{
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
     }}
-    .menu-item.selected .line-total{{ color:#fff; }}
-    img[src=""], img:not([src]) {{ display: none !important; }}
+
+    .resto-text {{
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }}
+
+    .resto-header h1 {{
+      margin: 0;
+      font-size: 1.5rem;
+    }}
+
+    .resto-header h2 {{
+      margin: 0.2rem 0 0;
+      font-size: 1rem;
+      font-weight: normal;
+      font-style: italic;
+      color: #555;
+    }}
+
   </style>
 </head>
 <body>
+  <!-- 📌 Encabezado del restaurante -->
     <img id="banner-resto" alt="Banner" style="width:100%;display:block;margin-bottom:0.5rem;" hidden>   
-    <div class="container">
-    <div class="header-flex">
-      <div class="header-left">
+    <div class="resto-header">
+      <img id="banner-resto" alt="Banner" style="width:100%;display:block;margin-bottom:0.5rem;" hidden>   
+      <div class="resto-text">
         <h1 id="nombre-resto" class="style-nombre"></h1>
         <h2 id="subtitulo-resto" class="style-subtitulo"></h2>
-      </div>
-      <div class="header-right">
         <div><span id="direccion-resto" class="style-direccion"><i class="fa-solid fa-map-marker-alt"></i></span></div>
         <div><span id="horarios-resto" class="style-horarios"><i class="fa-solid fa-map-marker-alt"></i></span></div>
-      </div>
     </div>
   </div>
   <div class="header-socials" id="headerSocials"></div>
@@ -621,7 +638,6 @@ html = f"""<!DOCTYPE html>
     />
   </div>
   <div id="categoryMenu" class="category-menu"></div>
-
   <div class="container">
     <div style="overflow-x:auto;">
       <div id="menuTable" class="menu-content"></div>
@@ -630,7 +646,6 @@ html = f"""<!DOCTYPE html>
       No se encontraron platos con ese criterio.
     </div>
   </div>
-
   <footer style="background:#f1f1f1;color:#333;text-align:center;padding:1rem 0 1.2rem 0;font-size:1rem;">
     <span class="thq-body-small">Desarrollado por</span>  
     <a href="https://menulab.com.ar" target="_blank" rel="noopener">
