@@ -621,7 +621,7 @@ html = f"""<!DOCTYPE html>
   <!-- 📌 Encabezado del restaurante -->
     <img id="banner-resto" alt="Banner" style="width:100%;display:block;margin-bottom:0.5rem;" hidden>   
     <div class="resto-header">
-      <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1758652390/The_Pent_2_a8vhtp.jpg" alt="Logo Café Central">
+      <img id="perfil-resto" alt="Logo Café Central" hidden>
       <div class="resto-text">
         <h1 id="nombre-resto" class="style-nombre"></h1>
         <h2 id="subtitulo-resto" class="style-subtitulo"></h2>
@@ -856,16 +856,17 @@ fetch(CSV_URL)
         document.getElementById("direccion-resto").textContent = rows[3]?.[1]?.replace(/"/g, "").trim() || "";
         document.getElementById("horarios-resto").textContent  = rows[4]?.[1]?.replace(/"/g, "").trim() || "";
        
-        const img = document.getElementById('banner-resto');
+        const banner = document.getElementById('banner-resto');
         const bannerUrl = (rows[5]?.[1] || '').replace(/"/g,'').trim();
         const hasBanner = bannerUrl && bannerUrl.toLowerCase() !== 'off';
+        const perfil = document.getElementById('perfil-resto');
 
         if (hasBanner) {{
-          img.src = bannerUrl;
-          img.hidden = false;              
-          img.addEventListener('error', () => img.remove());
+          banner.src = bannerUrl;
+          banner.hidden = false;              
+          banner.addEventListener('error', () => ibannermg.remove());
         }} else {{
-          img.remove();                   
+          banner.remove();                   
         }}
 
         const waEl = document.getElementById("whatsapp-float");

@@ -65,6 +65,70 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   ];
 
+  const plansProds = [
+    {
+      name: 'Plan Base',
+      prices: { monthly: 'GRATIS', yearly: 'GRATIS' }, ids: { monthly: 0, yearly: 0 },
+      intro:'de por vida',
+      features: [
+        { label: '<br></br>🍽️ Tienda MenuLab Online', info: 'Tené ya mismo tu Menú online' },
+        { label: '🔄 Actualizaciones', info: 'Actualizá tu tienda en tiempo real' },
+        { label: '📱Diseño Responsivo', info: 'Compatible con móviles y tablets' },
+        { label: '🍝 Hasta 25 Productos', info: 'Podés cargar hasta 25 productos' },
+        { label: '🏪 Data Negocio', info: 'Dirección, horarios de atencion, etc' },
+        { label: '🔐 Certificado web segura', info: 'Certificado SSL incluido' }
+      ]
+    },
+    {
+      name: 'Plan Emprendedor',
+      prices: { monthly: '$18.000', yearly: '$180.000' }, ids: { monthly: 1, yearly: 4 },
+      intro:'todo lo anterior, más:',
+      features: [
+        { label: '<br></br>🤳 Código QR', info: 'Código QR único para tu menú' },
+        { label: '🪧 Sin Publicidad', info: 'Menú sin banners ni anuncios externos' },
+        { label: '🌐 Traducción Automática', info: 'Traducción al inglés y portugués por Google' },
+        { label: '🛏️ Hosting 24/7', info: 'Acceso permanente a la menú online' },
+        { label: '🍝 Productos Ilimitados', info: 'Sin límite de carga de ítems' },
+        { label: '🔎 Búsqueda de Productos', info: 'Buscar rápidamente productos dentro de tu tienda' },
+        { label: '📞 Atención Virtual', info: 'Tiempo de respuesta en menos de 72h' },
+        { label: '<div style="text-align:center;"><b><br></br></b></div>' },
+        { label: '<div style="text-align:center;">✅5%OFF en <a href="#productos" style="color:#1976d2;text-decoration:underline;cursor:pointer;">Productos</a></div>', modes: ['monthly']},
+        { label: '<div style="text-align:center;">✅<b>10%OFF</b> en <a href="#productos" style="color:#1976d2;text-decoration:underline;cursor:pointer;">Productos</a></div>', modes: ['yearly']}
+      ]
+    },
+    {
+      name: 'Plan Profesional',
+      prices: { monthly: '$36.000', yearly: '$360.000' }, ids: { monthly: 2, yearly: 5 },
+      intro:'Todo lo anterior, más:',
+      features: [
+        { label: '<br></br>💬 Integración WhatsApp', info: 'Contacto directo vía WhatsApp' },
+        { label: '🛵 Integración Rappi/PedidosYa', info: 'Enlaces a aplicaciones de delivery' },
+        { label: '🗣️ Integración Instagram/Facebook', info: 'Enlaces a redes sociales desde tu menú' },
+        { label: '📍 Integración Google Maps', info: 'Enlace con dirección de tu negocio' },
+        { label: '🎨 Tema Personalizable', info: 'Elegí tipo de letra y paleta de colores' },
+        { label: '📞 Atención Personalizada', info: 'Tiempo de respuesta en menos de 42h' },
+        { label: '<div style="text-align:center;"><b><br></br></b></div>' },
+        { label: '<div style="text-align:center;">✅10%OFF en <a href="#productos" style="color:#1976d2;text-decoration:underline;cursor:pointer;">Productos</a></div>', modes: ['monthly']},
+        { label: '<div style="text-align:center;">✅<b>20%OFF</b> en <a href="#productos" style="color:#1976d2;text-decoration:underline;cursor:pointer;">Productos</a></div>', modes: ['yearly']}
+      ]
+    },
+    {
+      name: 'Plan Corporativo',
+      prices: { monthly: '$72.000', yearly: '$720.000' }, ids: { monthly: 3, yearly: 6 },
+      intro:'todo lo anterior, más:',
+      features: [
+        { label: '<br></br>📷 Integración de Fotos', info: 'Integración de galería fotográfica para mostrar tus productos' },
+        { label: '🛍️ Promos por Temporada', info: 'Mensajes pop up promocionales' },
+        { label: '📅 Integración de Reservas', info: 'Permití que tus clientes reserven mesas un Google forms' },
+        { label: '🛒 Pedidos por Web', info: 'Permití que tus clientes hagan pedidos directamente desde la menú online' },
+        { label: '📞 Atención Prioritaria', info: 'Tiempo de respuesta en menos de 24h' },
+        { label: '🛵 Integración Delivery', info: 'Al hacer clic, tus clientes podrán enviar un mensaje de WhatsApp pidiendo delivery' },
+        { label: '<div style="text-align:center;"><b><br></br></b></div>' },
+        { label: '<div style="text-align:center;">✅15%OFF en <a href="#productos" style="color:#1976d2;text-decoration:underline;cursor:pointer;">Productos</a></div>', modes: ['monthly']},
+        { label: '<div style="text-align:center;">✅<b>30%OFF</b> en <a href="#productos" style="color:#1976d2;text-decoration:underline;cursor:pointer;">Productos</a></div>', modes: ['yearly']}
+      ]
+    }
+  ];
   
   let currentMode = 'monthly';
   
