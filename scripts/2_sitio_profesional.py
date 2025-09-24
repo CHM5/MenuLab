@@ -235,6 +235,7 @@ html = f"""<!DOCTYPE html>
   <meta http-equiv="Expires" content="0">
   <link rel="icon" type="image/png" href="../../MLfavicon.png" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <style>
     :root {{
       /* Colores */
@@ -620,7 +621,7 @@ html = f"""<!DOCTYPE html>
   <!-- 📌 Encabezado del restaurante -->
     <img id="banner-resto" alt="Banner" style="width:100%;display:block;margin-bottom:0.5rem;" hidden>   
     <div class="resto-header">
-      <img id="banner-resto" alt="Banner" style="width:100%;display:block;margin-bottom:0.5rem;" hidden>   
+      <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1758652390/The_Pent_2_a8vhtp.jpg" alt="Logo Café Central">
       <div class="resto-text">
         <h1 id="nombre-resto" class="style-nombre"></h1>
         <h2 id="subtitulo-resto" class="style-subtitulo"></h2>

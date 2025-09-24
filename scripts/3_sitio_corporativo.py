@@ -236,6 +236,7 @@ html = f"""<!DOCTYPE html>
   <meta http-equiv="Expires" content="0">
   <link rel="icon" type="image/png" href="../../MLfavicon.png" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <style>
     :root {{
       /* Colores */
@@ -330,7 +331,7 @@ html = f"""<!DOCTYPE html>
 
     .menu-item-inner {{
       display: flex;
-      align-items: center; /* Alinea verticalmente al centro */
+      align-items: center; 
     }}
     .menu-text {{
       width: 100%;
@@ -521,7 +522,7 @@ html = f"""<!DOCTYPE html>
         margin: 0.2rem 0; 
       }}
       .header-right div {{
-        margin-top: 0.3rem; /* acercálo al bloque superior */
+        margin-top: 0.3rem; 
       }}
     }}
     /* Estilos para el botón de WhatsApp flotante */
@@ -580,7 +581,6 @@ html = f"""<!DOCTYPE html>
       width: 12px;
       height: 12px;
     }}
-    
     .menu-item.selected .menu-item-inner {{
       background: var(--bgScrollbar) !important; /* azul oscuro */
       border-radius: 10px;
@@ -649,7 +649,7 @@ html = f"""<!DOCTYPE html>
       font-weight: 700;
       font-size: 1.05rem;
       text-align: center;
-      z-index: 1100; /* por encima del contenido y debajo del popup */
+      z-index: 1100; 
     }}
 
     /* para que el contenido no quede tapado por la barra */
@@ -677,8 +677,8 @@ html = f"""<!DOCTYPE html>
 
     /* botón pagar */
     #payButton{{
-      display: none;           /* se muestra solo con selección */
-      background: var(--bgScrollbar);     /* tu color */
+      display: none;           
+      background: var(--bgScrollbar);     
       color: #fff; 
       text-decoration: none;
       border-radius: 999px; padding: .55rem 1rem;
@@ -743,7 +743,7 @@ html = f"""<!DOCTYPE html>
   <!-- 📌 Encabezado del restaurante -->
     <img id="banner-resto" alt="Banner" style="width:100%;display:block;margin-bottom:0.5rem;" hidden>   
     <div class="resto-header">
-      <img id="banner-resto" alt="Banner" style="width:100%;display:block;margin-bottom:0.5rem;" hidden>   
+      <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1758652390/The_Pent_2_a8vhtp.jpg" alt="Logo Café Central">
       <div class="resto-text">
         <h1 id="nombre-resto" class="style-nombre"></h1>
         <h2 id="subtitulo-resto" class="style-subtitulo"></h2>
