@@ -859,14 +859,23 @@ fetch(CSV_URL)
         const banner = document.getElementById('banner-resto');
         const bannerUrl = (rows[5]?.[1] || '').replace(/"/g,'').trim();
         const hasBanner = bannerUrl && bannerUrl.toLowerCase() !== 'off';
-        const perfil = document.getElementById('perfil-resto');
-
         if (hasBanner) {{
           banner.src = bannerUrl;
           banner.hidden = false;              
           banner.addEventListener('error', () => ibannermg.remove());
         }} else {{
           banner.remove();                   
+        }}
+
+        const perfil = document.getElementById('perfil-resto');
+        const perfilUrl = (rows[6]?.[1] || '').replace(/"/g,'').trim();
+        const hasperfil = perfilUrl && perfilUrl.toLowerCase() !== 'off';
+        if (hasperfilr) {{
+          perfil.src = perfilUrl;
+          perfil.hidden = false;              
+          perfil.addEventListener('error', () => perfil.remove());
+        }} else {{
+          perfil.remove();                   
         }}
 
         const waEl = document.getElementById("whatsapp-float");
