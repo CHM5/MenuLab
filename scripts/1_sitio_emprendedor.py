@@ -356,7 +356,6 @@ html = f"""<!DOCTYPE html>
   </style>
 </head>
 <body>
-  <!-- 📌 Encabezado del restaurante -->
     <img id="banner-resto" alt="Banner" style="width:100%;display:block;margin-bottom:0.5rem;" hidden>   
     <div class="resto-header">
       <img id="perfil-resto" alt="Logo Café Central" hidden>

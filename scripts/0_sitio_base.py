@@ -56,6 +56,7 @@ html = f"""<!DOCTYPE html>
   <meta http-equiv="Expires" content="0">
   <link rel="icon" type="image/png" href="../../MLfavicon.png" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <style>
     :root {{
       --primary: #ffc107;
@@ -304,13 +305,14 @@ html = f"""<!DOCTYPE html>
       font: var(--font-horarios);
       color: var(--horarios);
     }}
-        .resto-header {{
+
+    .resto-header {{
       display: flex;
-      justify-content: center;  /* centra todo el bloque */
-      align-items: center;       /* alinea verticalmente */
-      gap: 1rem;                 /* espacio entre logo y texto */
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
       margin-bottom: 1.5rem;
-      break-inside: avoid;       /* que no se corte */
+      break-inside: avoid;
     }}
 
     .resto-header img {{
@@ -325,10 +327,12 @@ html = f"""<!DOCTYPE html>
       flex-direction: column;
       align-items: flex-start;
     }}
+
     .resto-header h1 {{
       margin: 0;
       font-size: 1.5rem;
     }}
+
     .resto-header h2 {{
       margin: 0.2rem 0 0;
       font-size: 1rem;
@@ -345,16 +349,14 @@ html = f"""<!DOCTYPE html>
       <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1756611989/bannerML_klpu9y.jpg" alt="Banner MenuLab" style="width:100%;display:block;margin-bottom:0.5rem;">
     </a>
     <div class="resto-header">
-      <a href="https://menulab.com.ar" target="_blank" rel="noopener">
-        <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1758652390/The_Pent_2_a8vhtp.jpg" alt="Banner MenuLab">
-      </a>    
+      <img id="perfil-resto" alt="Logo Café Central" hidden>
       <div class="resto-text">
         <h1 id="nombre-resto" class="style-nombre">Café Central</h1>
         <h2 id="subtitulo-resto" class="style-subtitulo"></h2>
         <div><span class="style-direccion" id="direccion-resto"><i class="fa-solid fa-map-marker-alt"></i></span></div>
         <div><span class="style-horarios" id="horarios-resto"><i class="fa-solid fa-clock"></i></span></div>
       </div>
-    </div>
+  </div>
   <div id="categoryMenu" class="category-menu"></div>
   <div class="container">
     <div style="overflow-x:auto;">
@@ -364,7 +366,6 @@ html = f"""<!DOCTYPE html>
       No se encontraron platos con ese criterio.
     </div>
   </div>
-
   <footer style="background:#f1f1f1;color:#333;text-align:center;padding:1rem 0 1.2rem 0;font-size:1rem;">
     <span class="thq-body-small">Desarrollado por</span>  
     <a href="https://menulab.com.ar" target="_blank" rel="noopener">
@@ -395,7 +396,7 @@ html = f"""<!DOCTYPE html>
     const FIJOS_URL = "{fijos_csv_url}";
 
     function renderCategoryMenu(rows) {{
-      const categories = [...new Set(rows.map(r => r[0]?.trim()).filter(Boolean))];
+      const categories = [...new Set(rows.map(r => r[0].trim()).filter(Boolean))];
       const menuDiv = document.getElementById('categoryMenu');
       menuDiv.innerHTML = '';
 
@@ -486,6 +487,16 @@ html = f"""<!DOCTYPE html>
         document.getElementById("subtitulo-resto").textContent = rows[2]?.[1]?.replace(/"/g, "").trim() || "";
         document.getElementById("direccion-resto").textContent = rows[3]?.[1]?.replace(/"/g, "").trim() || "";
         document.getElementById("horarios-resto").textContent  = rows[4]?.[1]?.replace(/"/g, "").trim() || "";
+        const perfil = document.getElementById('perfil-resto');
+        const perfilUrl = (rows[5]?.[1] || '').replace(/"/g,'').trim();
+        const hasperfil = perfilUrl && perfilUrl.toLowerCase() !== 'off';
+        if (hasperfil) {{
+          perfil.src = perfilUrl;
+          perfil.hidden = false;              
+          perfil.addEventListener('error', () => perfil.remove());
+        }} else {{
+          perfil.remove();                   
+        }}
       }});
   </script>
 </body>
