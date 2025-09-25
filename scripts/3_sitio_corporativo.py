@@ -482,6 +482,7 @@ html = f"""<!DOCTYPE html>
     .category-btn:hover, .category-btn.active {{
       background: #457B9D;
     }}
+
     .header-flex {{
       display: flex;
       justify-content: space-between;
@@ -753,12 +754,12 @@ html = f"""<!DOCTYPE html>
     </div>
   <div class="header-socials" id="headerSocials"></div>
   <div id="reservaBtnContainer" style="text-align:center; margin-bottom: 0.7rem; display:none;">
-    <button id="btnReserva" class="category-btn" style="font-size:1.08rem; padding:8px 28px; margin-top:0.5rem;">
+    <button id="btnReserva" class="category-btn">
       📅 Reservá tu mesa
     </button>
   </div>
   <div id="deliveryBtnContainer" style="text-align:center; margin-bottom: 0.7rem; display:none;">
-    <button id="btnDelivery" class="category-btn" style="font-size:1.08rem; padding:8px 28px; margin-top:0.5rem;">
+    <button id="btnDelivery" class="category-btn">
       <i class="fa-solid fa-burger" style="margin-right:8px;"></i>Pedí Delivery
     </button>
   </div>

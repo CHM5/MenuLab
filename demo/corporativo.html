@@ -197,10 +197,11 @@
     }
     .search-menu {
       text-align: center;
-      margin: 1rem 0;
+      margin: 0;
       position: sticky;
-      margin-top: -15px;
-      padding-top: 8px;
+      top: 0;
+      padding: 0.8rem 0;
+      z-index: 1100;
     }
     .category-btn {
       background: #457B9D;
@@ -240,17 +241,13 @@
       .header-flex {
         flex-direction: column;
         gap: 0.2rem;
-        margin-bottom: 0px;
       }
       .header-left {
         text-align: left;
-        margin-top: 0px;
-        margin-bottom: 0px;
         width: 100%;
       }
       .header-right {
         margin-top: 0.3rem;
-        margin-bottom: 0px;
         width: 100%;
         min-width: unset;
       }
@@ -293,9 +290,8 @@
     .header-socials {
         text-align: center;
         margin: 0rem 10px 0.5rem 10px;
-        background-color: #f1f1f1; /* gris clarito */
         border-radius: 10px; /* bordes redondeados */
-        padding: 0.5rem 1rem; /* opcional, para que respire */
+        padding: 0.5rem 0.5rem; /* opcional, para que respire */
         margin-top: 0.2rem !important;
     }
 
@@ -312,6 +308,14 @@
 
     .header-socials img:hover {
       transform: scale(1.1);
+    }
+
+    .social-icon {
+      fill: #457B9D; /* 🎨 tu color */
+      transition: fill 0.3s;
+    }
+    .social-icon:hover {
+      fill: #457B9D; /* 🎨 hover */
     }
 
     .pedido-checkbox {
@@ -430,12 +434,11 @@
     }
     .menu-item.selected .line-total{ color:#fff; }
 
-        .resto-header {
+    .resto-header {
       display: flex;
       justify-content: center;
       align-items: center;
       gap: 1rem;
-      margin-bottom: 1.5rem;
       break-inside: avoid;
     }
 
@@ -465,6 +468,10 @@
       color: #555;
     }
 
+    .icon-color {
+      margin-right:8px; 
+      color:#fff;
+    }
   </style>
 </head>
 <body>
@@ -480,19 +487,19 @@
     </div>
   </div>
   <div class="header-socials" id="headerSocials"></div>
-  <div id="reservaBtnContainer" style="text-align:center; margin-bottom: 0.7rem; display:none;">
-    <button id="btnReserva" class="category-btn" style="font-size:1.08rem; padding:8px 28px; margin-top:0.5rem;">
-      📅 Reservá tu mesa
-    </button>
-  </div>
-  <div id="deliveryBtnContainer" style="text-align:center; margin-bottom: 0.7rem; display:none;">
-    <button id="btnDelivery" class="category-btn" style="font-size:1.08rem; padding:8px 28px; margin-top:0.5rem;">
-      <i class="fa-solid fa-burger" style="margin-right:8px;"></i>Pedí Delivery
-    </button>
+  <div id="actionButtons" style="text-align:center; display:flex; justify-content:center; gap:10px;">
+    <div id="reservaBtnContainer" style="text-align:center; display:none;">
+      <button id="btnReserva" class="category-btn">
+        <i class="fa-solid fa-calendar-check icon-color"></i>Reservá tu mesa
+      </button>
+    </div>
+    <div id="deliveryBtnContainer" style="text-align:center; display:none;">
+      <button id="btnDelivery" class="category-btn">
+        <i class="fa-solid fa-burger icon-color"></i>Pedí Delivery
+      </button>
+    </div>
   </div>
 
-<div class="header-socials" id="headerSocials">
-</div>
 <div class="search-menu">
   <input
     id="menuSearch"
@@ -781,32 +788,53 @@
     const socialLinks = [
       {
         href: "https://www.rappi.com.ar/",
-        img: "https://res.cloudinary.com/drxznqm61/image/upload/v1752716379/rappi_oul48p.png",
-        alt: "Rappi",
+        svg: `<svg xmlns="http://www.w3.org/2000/svg" class="social-icon" viewBox="0 0 32 32" width="30" height="30">
+                <g transform="translate(0,34) scale(0.1,-0.1)">
+                  <path d="M82 189c-18-12-41-19-52-16-17 4-18 2-9-14
+                          25-48 98-61 130-23 10 13 14 13 28 0
+                          41-37 104-26 130 23 9 16 8 18-9 14
+                          -10-3-35 5-55 17-32 20-38 21-58 7
+                          -20-13-26-13-42-1-24 18-24 18-63-7z"/>
+                </g>
+              </svg>`,
         label: "Rappi"
       },
       {
         href: "https://www.pedidosya.com.ar/",
-        img: "https://res.cloudinary.com/drxznqm61/image/upload/v1752716289/pedidosya_q40sz4.png",
-        alt: "PedidosYa",
+        svg: `<svg xmlns="http://www.w3.org/2000/svg" class="social-icon" width="30" height="30" viewBox="0 0 225 225" preserveAspectRatio="xMidYMid meet">
+                <g transform="translate(0,225) scale(0.1,-0.1)">
+                  <path d="M307 1953c-13-13-7-219 8-269 17-59 70-114 137-144 
+                          75-33 184-40 633-40 401 0 421-1 453-20 
+                          97-59 96-192-1-264-28-21-39-21-510-24 
+                          -265-1-485-6-489-10-12-13-227-862-222-877 
+                          5-12 35-15 173-15 153 0 170 2 211 23 
+                          65 33 77 59 150 334l22 81 346 4 
+                          c385 5 391 6 527 76 246 128 378 443 299 714 
+                          -46 156-168 305-304 371-139 68-127 67-810 67 
+                          -339 0-620-3-623-7z"/>
+                </g>
+              </svg>`,
         label: "PedidosYa"
       },
       {
         href: "https://www.instagram.com/menulab.ok",
-        img: "https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png",
-        alt: "Instagram",
+        svg: `<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" class="social-icon" viewBox="0 0 24 24">
+                <path d="M7 2C4.2 2 2 4.2 2 7v10c0 2.8 2.2 5 5 5h10c2.8 0 5-2.2 5-5V7c0-2.8-2.2-5-5-5H7zm10 2c1.7 0 3 1.3 3 3v10c0 1.7-1.3 3-3 3H7c-1.7 0-3-1.3-3-3V7c0-1.7 1.3-3 3-3h10zm-5 3a5 5 0 100 10 5 5 0 000-10zm0 2a3 3 0 110 6 3 3 0 010-6zm4.8-.8a1 1 0 100 2 1 1 0 000-2z"/>
+              </svg>`,
         label: "Instagram"
       },
       {
         href: "https://www.facebook.com/",
-        img: "https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg",
-        alt: "Facebook",
+        svg: `<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" class="social-icon" viewBox="0 0 24 24">
+                <path d="M22 12c0-5.5-4.5-10-10-10S2 6.5 2 12c0 5 3.7 9.1 8.4 9.9v-7h-2.5V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.2c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.4v7C18.3 21.1 22 17 22 12z"/>
+              </svg>`,
         label: "Facebook"
       },
       {
         href: "https://maps.google.com/?q=Av.+Siempre+Viva+123",
-        img: "https://res.cloudinary.com/drxznqm61/image/upload/v1752716133/googlemaps-removebg-preview_xh3ivm.png",
-        alt: "Google Maps",
+        svg: `<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" class="social-icon" viewBox="0 0 24 24">
+                <path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5c-1.4 0-2.5-1.1-2.5-2.5S10.6 6.5 12 6.5s2.5 1.1 2.5 2.5S13.4 11.5 12 11.5z"/>
+              </svg>`,
         label: "Google Maps"
       }
     ];
@@ -819,9 +847,7 @@
         a.target = "_blank";
         a.setAttribute('aria-label', social.label);
         const img = document.createElement('img');
-        img.src = social.img;
-        img.alt = social.alt;
-        a.appendChild(img);
+        a.innerHTML = social.svg;
         socialsDiv.appendChild(a);
       }
     });
@@ -942,13 +968,37 @@
     };
   }
 
-  // URL del delivery (dejá vacío "" si no hay)
   const deliveryUrl = "https://wa.me/5491130625858"; // <-- poné tu link aquí
 
   if (deliveryUrl && deliveryUrl.trim() !== "") {
     document.getElementById('deliveryBtnContainer').style.display = "block";
-    document.getElementById('btnDelivery').onclick = function() {
-      window.open(deliveryUrl, '_blank');
+    document.getElementById('btnDelivery').onclick = function(e) {
+      e.preventDefault();
+
+      const items = document.querySelectorAll('.menu-item');
+      const seleccion = [];
+      let total = 0;
+
+      items.forEach(it => {
+        const qty = Number(it.getAttribute('data-qty') || "0");
+        if (qty > 0) {
+          const nombre = it.getAttribute('data-nombre') || 'Plato';
+          const precio = Number(it.getAttribute('data-precio') || "0");
+          seleccion.push(`${nombre} x${qty}`);
+          total += qty * precio;
+        }
+      });
+
+      if (seleccion.length === 0) {
+        alert("👉 Hacé tu pedido primero.");
+        return;
+      }
+
+      const mensaje = encodeURIComponent(
+        `Hola, quisiera pedir:\n- ${seleccion.join("\n- ")}\n\nTotal estimado: ${formatMoney(total)}`
+      );
+      const url = deliveryUrl.split('?')[0] + `?text=${mensaje}`;
+      window.open(url, "_blank");
     };
   }
 
