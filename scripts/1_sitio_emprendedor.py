@@ -352,53 +352,19 @@ html = f"""<!DOCTYPE html>
       font-style: italic;
       color: #555;
     }}
-    .resto-header {{
-      display: flex;
-      justify-content: center;  /* centra todo el bloque */
-      align-items: center;       /* alinea verticalmente */
-      gap: 1rem;                 /* espacio entre logo y texto */
-      margin-bottom: 1.5rem;
-      break-inside: avoid;       /* que no se corte */
-    }}
-
-    .resto-header img {{
-      width: 100px;
-      height: 100px;
-      border-radius: 50%;
-      object-fit: cover;
-    }}
-
-    .resto-text {{
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-    }}
-
-    .resto-header h1 {{
-      margin: 0;
-      font-size: 1.5rem;
-    }}
-
-    .resto-header h2 {{
-      margin: 0.2rem 0 0;
-      font-size: 1rem;
-      font-weight: normal;
-      font-style: italic;
-      color: #555;
-    }}
 
   </style>
 </head>
 <body>
   <!-- 📌 Encabezado del restaurante -->
-  <img id="banner-resto" alt="Banner" style="width:100%;display:block;margin-bottom:0.5rem;" hidden>    
-  <div class="resto-header">
-    <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1758652390/The_Pent_2_a8vhtp.jpg" alt="Banner">    
-    <div class="resto-text">
-      <h1 id="nombre-resto" class="style-nombre"></h1>
-      <h2 id="subtitulo-resto" class="style-subtitulo"></h2>
-      <div><span class="style-direccion" id="direccion-resto"><i class="fa-solid fa-map-marker-alt"></i></span></div>
-      <div><span class="style-horarios" id="horarios-resto"><i class="fa-solid fa-clock"></span></div>
+    <img id="banner-resto" alt="Banner" style="width:100%;display:block;margin-bottom:0.5rem;" hidden>   
+    <div class="resto-header">
+      <img id="perfil-resto" alt="Logo Café Central" hidden>
+      <div class="resto-text">
+        <h1 id="nombre-resto" class="style-nombre"></h1>
+        <h2 id="subtitulo-resto" class="style-subtitulo"></h2>
+        <div><span id="direccion-resto" class="style-direccion"><i class="fa-solid fa-map-marker-alt"></i></span></div>
+        <div><span id="horarios-resto" class="style-horarios"><i class="fa-solid fa-clock"></i></span></div>
     </div>
   </div>
   <div class="search-menu">
@@ -433,13 +399,13 @@ html = f"""<!DOCTYPE html>
 
   <div id="google_translate_element" style="position:fixed;top:8px;right:8px;z-index:9999;"></div>
   <script type="text/javascript">
-  function googleTranslateElementInit() {{
-    new google.translate.TranslateElement({{
-      pageLanguage: 'es',
-      includedLanguages: 'es,en,pt', // elegí los idiomas que quieras permitir
-      layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-    }}, 'google_translate_element');
-  }}
+    function googleTranslateElementInit() {{
+      new google.translate.TranslateElement({{
+        pageLanguage: 'es',
+        includedLanguages: 'es,en,pt', // elegí los idiomas que quieras permitir
+        layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+      }}, 'google_translate_element');
+    }}
   </script>
   <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
@@ -556,16 +522,27 @@ html = f"""<!DOCTYPE html>
         document.getElementById("subtitulo-resto").textContent = rows[2]?.[1]?.replace(/"/g, "").trim() || "";
         document.getElementById("direccion-resto").textContent = rows[3]?.[1]?.replace(/"/g, "").trim() || "";
         document.getElementById("horarios-resto").textContent  = rows[4]?.[1]?.replace(/"/g, "").trim() || "";
-        const img = document.getElementById('banner-resto');
+       
+        const banner = document.getElementById('banner-resto');
         const bannerUrl = (rows[5]?.[1] || '').replace(/"/g,'').trim();
         const hasBanner = bannerUrl && bannerUrl.toLowerCase() !== 'off';
-
         if (hasBanner) {{
-          img.src = bannerUrl;
-          img.hidden = false;              
-          img.addEventListener('error', () => img.remove());
+          banner.src = bannerUrl;
+          banner.hidden = false;              
+          banner.addEventListener('error', () => ibannermg.remove());
         }} else {{
-          img.remove();                   
+          banner.remove();                   
+        }}
+
+        const perfil = document.getElementById('perfil-resto');
+        const perfilUrl = (rows[6]?.[1] || '').replace(/"/g,'').trim();
+        const hasperfil = perfilUrl && perfilUrl.toLowerCase() !== 'off';
+        if (hasperfil) {{
+          perfil.src = perfilUrl;
+          perfil.hidden = false;              
+          perfil.addEventListener('error', () => perfil.remove());
+        }} else {{
+          perfil.remove();                   
         }}
       }});
 

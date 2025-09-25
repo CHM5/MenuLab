@@ -522,7 +522,7 @@ html = f"""<!DOCTYPE html>
         margin: 0.2rem 0; 
       }}
       .header-right div {{
-        margin-top: 0.3rem; 
+        margin-top: 0.3rem;
       }}
     }}
     /* Estilos para el botón de WhatsApp flotante */
@@ -556,9 +556,10 @@ html = f"""<!DOCTYPE html>
     .header-socials {{
         text-align: center;
         margin: 0rem 10px 0.5rem 10px;
-        background-color: var(--bg); /* gris clarito */
-        border-radius: 10px; /* bordes redondeados */
-        padding: 0.5rem 1rem; /* opcional, para que respire */
+        background-color: var(--bg);
+        border-radius: 10px;
+        padding: 0.5rem 1rem;
+        margin-top: 0.2rem !important;
     }}
 
     .header-socials a {{
@@ -618,7 +619,6 @@ html = f"""<!DOCTYPE html>
     .style-nombre {{
       font: var(--font-businessName);
       color:var(--businessName); 
-      margin-bottom:0; 
       margin-top:0;
     }}
     .style-subtitulo {{
@@ -743,7 +743,7 @@ html = f"""<!DOCTYPE html>
   <!-- 📌 Encabezado del restaurante -->
     <img id="banner-resto" alt="Banner" style="width:100%;display:block;margin-bottom:0.5rem;" hidden>   
     <div class="resto-header">
-      <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1758652390/The_Pent_2_a8vhtp.jpg" alt="Logo Café Central">
+      <img id="perfil-resto" alt="Logo Café Central" hidden>
       <div class="resto-text">
         <h1 id="nombre-resto" class="style-nombre"></h1>
         <h2 id="subtitulo-resto" class="style-subtitulo"></h2>
@@ -762,7 +762,7 @@ html = f"""<!DOCTYPE html>
       <i class="fa-solid fa-burger" style="margin-right:8px;"></i>Pedí Delivery
     </button>
   </div>
-<div class="header-socials" id="headerSocials"></div>
+  <div class="header-socials" id="headerSocials"></div>
   <div class="search-menu">
     <input
       id="menuSearch"
@@ -772,7 +772,6 @@ html = f"""<!DOCTYPE html>
     />
   </div>
   <div id="categoryMenu" class="category-menu"></div>
-
   <div class="container">
     <div style="overflow-x:auto;">
       <div id="menuTable" class="menu-content"></div>
@@ -781,7 +780,6 @@ html = f"""<!DOCTYPE html>
       No se encontraron platos con ese criterio.
     </div>
   </div>
-
   <footer style="background:#f1f1f1;color:#333;text-align:center;padding:1rem 0 1.2rem 0;font-size:1rem;">
     <span class="thq-body-small">Desarrollado por</span>  
     <a href="https://menulab.com.ar" target="_blank" rel="noopener">
@@ -831,7 +829,6 @@ html = f"""<!DOCTYPE html>
   }}
   </script>
   <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-
   <script data-cfasync="false">
 
     const POPUP_CSV_URL = "{popup_csv_url}";
@@ -1105,20 +1102,30 @@ fetch(CSV_URL)
         document.getElementById("direccion-resto").textContent = rows[3]?.[1]?.replace(/"/g, "").trim() || "";
         document.getElementById("horarios-resto").textContent  = rows[4]?.[1]?.replace(/"/g, "").trim() || "";
        
-        const img = document.getElementById('banner-resto');
+        const banner = document.getElementById('banner-resto');
         const bannerUrl = (rows[5]?.[1] || '').replace(/"/g,'').trim();
         const hasBanner = bannerUrl && bannerUrl.toLowerCase() !== 'off';
-
         if (hasBanner) {{
-          img.src = bannerUrl;
-          img.hidden = false;              
-          img.addEventListener('error', () => img.remove());
+          banner.src = bannerUrl;
+          banner.hidden = false;              
+          banner.addEventListener('error', () => ibannermg.remove());
         }} else {{
-          img.remove();                   
+          banner.remove();                   
+        }}
+
+        const perfil = document.getElementById('perfil-resto');
+        const perfilUrl = (rows[6]?.[1] || '').replace(/"/g,'').trim();
+        const hasperfil = perfilUrl && perfilUrl.toLowerCase() !== 'off';
+        if (hasperfil) {{
+          perfil.src = perfilUrl;
+          perfil.hidden = false;              
+          perfil.addEventListener('error', () => perfil.remove());
+        }} else {{
+          perfil.remove();                   
         }}
 
         const waEl = document.getElementById("whatsapp-float");
-        const rawPhone = (rows[7]?.[1] || "").replace(/"/g, "").trim(); // B8 (ajustá el índice si tu sheet cambia)
+        const rawPhone = (rows[8]?.[1] || "").replace(/"/g, "").trim();
         const waLink = buildWhatsAppLink(rawPhone);
 
         if (waLink) {{
@@ -1130,31 +1137,31 @@ fetch(CSV_URL)
 
         const socialLinks = [
           {{
-            href: rows[8]?.[1]?.replace(/"/g, "").trim() || "",
+            href: rows[9]?.[1]?.replace(/"/g, "").trim() || "",
             img: "https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png",
             alt: "Instagram",
             label: "Instagram"
           }},
           {{
-            href: rows[9]?.[1]?.replace(/"/g, "").trim() || "",
+            href: rows[10]?.[1]?.replace(/"/g, "").trim() || "",
             img: "https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg",
             alt: "Facebook",
             label: "Facebook"
           }},
           {{
-            href: rows[10]?.[1]?.replace(/"/g, "").trim() || "",
+            href: rows[11]?.[1]?.replace(/"/g, "").trim() || "",
             img: "https://res.cloudinary.com/drxznqm61/image/upload/v1752716379/rappi_oul48p.png",
             alt: "Rappi",
             label: "Rappi"
           }},
           {{
-            href: rows[11]?.[1]?.replace(/"/g, "").trim() || "",
+            href: rows[12]?.[1]?.replace(/"/g, "").trim() || "",
             img: "https://res.cloudinary.com/drxznqm61/image/upload/v1752716289/pedidosya_q40sz4.png",
             alt: "PedidosYa",
             label: "PedidosYa"
           }},
           {{
-            href: rows[12]?.[1]?.replace(/"/g, "").trim() || "",
+            href: rows[13]?.[1]?.replace(/"/g, "").trim() || "",
             img: "https://res.cloudinary.com/drxznqm61/image/upload/v1752716133/googlemaps-removebg-preview_xh3ivm.png",
             alt: "Google Maps",
             label: "Google Maps"

@@ -487,7 +487,7 @@ html = f"""<!DOCTYPE html>
         margin: 0.2rem 0; 
       }}
       .header-right div {{
-        margin-top: 0.3rem; /* acercálo al bloque superior */
+        margin-top: 0.3rem;
       }}
     }}
     /* Estilos para el botón de WhatsApp flotante */
@@ -521,9 +521,9 @@ html = f"""<!DOCTYPE html>
     .header-socials {{
         text-align: center;
         margin: 0rem 10px 0.5rem 10px;
-        background-color: var(--bg); /* gris clarito */
-        border-radius: 10px; /* bordes redondeados */
-        padding: 0.5rem 1rem; /* opcional, para que respire */
+        background-color: var(--bg);
+        border-radius: 10px;
+        padding: 0.5rem 1rem;
         margin-top: 0.2rem !important;
     }}
 
@@ -626,7 +626,7 @@ html = f"""<!DOCTYPE html>
         <h1 id="nombre-resto" class="style-nombre"></h1>
         <h2 id="subtitulo-resto" class="style-subtitulo"></h2>
         <div><span id="direccion-resto" class="style-direccion"><i class="fa-solid fa-map-marker-alt"></i></span></div>
-        <div><span id="horarios-resto" class="style-horarios"><i class="fa-solid fa-map-marker-alt"></i></span></div>
+        <div><span id="horarios-resto" class="style-horarios"><i class="fa-solid fa-clock"></i></span></div>
     </div>
   </div>
   <div class="header-socials" id="headerSocials"></div>
@@ -667,16 +667,15 @@ html = f"""<!DOCTYPE html>
 
   <div id="google_translate_element" style="position:fixed;top:8px;right:8px;z-index:9999;"></div>
   <script type="text/javascript">
-  function googleTranslateElementInit() {{
-    new google.translate.TranslateElement({{
-      pageLanguage: 'es',
-      includedLanguages: 'es,en,pt', // elegí los idiomas que quieras permitir
-      layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-    }}, 'google_translate_element');
-  }}
+    function googleTranslateElementInit() {{
+      new google.translate.TranslateElement({{
+        pageLanguage: 'es',
+        includedLanguages: 'es,en,pt', // elegí los idiomas que quieras permitir
+        layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+      }}, 'google_translate_element');
+    }}
   </script>
   <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-  
   <script data-cfasync="false">
 
     const CSV_URL = "{menu_csv_url}";
@@ -879,7 +878,7 @@ fetch(CSV_URL)
         }}
 
         const waEl = document.getElementById("whatsapp-float");
-        const rawPhone = (rows[7]?.[1] || "").replace(/"/g, "").trim(); // B8 (ajustá el índice si tu sheet cambia)
+        const rawPhone = (rows[8]?.[1] || "").replace(/"/g, "").trim();
         const waLink = buildWhatsAppLink(rawPhone);
 
         if (waLink) {{
@@ -891,31 +890,31 @@ fetch(CSV_URL)
 
         const socialLinks = [
           {{
-            href: rows[8]?.[1]?.replace(/"/g, "").trim() || "",
+            href: rows[9]?.[1]?.replace(/"/g, "").trim() || "",
             img: "https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png",
             alt: "Instagram",
             label: "Instagram"
           }},
           {{
-            href: rows[9]?.[1]?.replace(/"/g, "").trim() || "",
+            href: rows[10]?.[1]?.replace(/"/g, "").trim() || "",
             img: "https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg",
             alt: "Facebook",
             label: "Facebook"
           }},
           {{
-            href: rows[10]?.[1]?.replace(/"/g, "").trim() || "",
+            href: rows[11]?.[1]?.replace(/"/g, "").trim() || "",
             img: "https://res.cloudinary.com/drxznqm61/image/upload/v1752716379/rappi_oul48p.png",
             alt: "Rappi",
             label: "Rappi"
           }},
           {{
-            href: rows[11]?.[1]?.replace(/"/g, "").trim() || "",
+            href: rows[12]?.[1]?.replace(/"/g, "").trim() || "",
             img: "https://res.cloudinary.com/drxznqm61/image/upload/v1752716289/pedidosya_q40sz4.png",
             alt: "PedidosYa",
             label: "PedidosYa"
           }},
           {{
-            href: rows[12]?.[1]?.replace(/"/g, "").trim() || "",
+            href: rows[13]?.[1]?.replace(/"/g, "").trim() || "",
             img: "https://res.cloudinary.com/drxznqm61/image/upload/v1752716133/googlemaps-removebg-preview_xh3ivm.png",
             alt: "Google Maps",
             label: "Google Maps"
