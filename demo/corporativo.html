@@ -180,7 +180,7 @@
       padding-top: 8px;
       padding-bottom: 8px;
       scrollbar-width: thin;
-      scrollbar-color: #457B9D #eee;
+      scrollbar-color: #b7a992 #eee;
       position: sticky;
       top: 50px;
       z-index: 1000;
@@ -192,7 +192,7 @@
       height: 6px;
     }
     .category-menu::-webkit-scrollbar-thumb {
-      background: #457B9D;
+      background: #b7a992;
       border-radius: 10px;
     }
     .search-menu {
@@ -204,7 +204,7 @@
       z-index: 1100;
     }
     .category-btn {
-      background: #457B9D;
+      background: #b7a992;
       color: #fff;
       border: none;
       border-radius: 20px;
@@ -216,7 +216,7 @@
       flex: 0 0 auto;
     }
     .category-btn:hover, .category-btn.active {
-      background: #457B9D;
+      background: #b7a992;
     }
 
     .header-flex {
@@ -311,11 +311,11 @@
     }
 
     .social-icon {
-      fill: #457B9D; /* 🎨 tu color */
+      fill: #b7a992; /* 🎨 tu color */
       transition: fill 0.3s;
     }
     .social-icon:hover {
-      fill: #457B9D; /* 🎨 hover */
+      fill: #b7a992; /* 🎨 hover */
     }
 
     .pedido-checkbox {
@@ -324,7 +324,7 @@
       height: 12px;
     }
     .menu-item.selected .menu-item-inner {
-      background: #457B9D !important; /* azul oscuro */
+      background: #b7a992 !important; /* azul oscuro */
       border-radius: 10px;
     }
 
@@ -357,16 +357,23 @@
     }
     .style-nombre {
       font-size:1.8rem;
-      color:#000; 
+      color:#6d4130; 
       margin-top:0;
     }
     .style-subtitulo {
       font-size:1rem;
-      color:#000; 
+      color:#6d4130; 
       margin-top:0; 
       margin-bottom:0.3rem; 
       font-style:italic; 
       font-weight:400;
+    }
+
+    .style-direccion, .style-horarios {
+      font-size:0.95rem; 
+      color:#6d4130; 
+      margin-top:0.2rem; 
+      display:block;
     }
 
     #totalBar {
@@ -410,7 +417,7 @@
     /* botón pagar */
     #payButton{
       display: none;           
-      background: #457B9D;     
+      background: #b28051;     
       color: #fff; 
       text-decoration: none;
       border-radius: 999px; padding: .55rem 1rem;
@@ -465,13 +472,13 @@
       font-size: 1rem;
       font-weight: normal;
       font-style: italic;
-      color: #555;
     }
 
     .icon-color {
       margin-right:8px; 
       color:#fff;
     }
+    
   </style>
 </head>
 <body>
@@ -523,7 +530,7 @@
       <span style="display: inline-block; margin-left: 12px;">
         <h1 style="font-family: 'Unbounded', sans-serif; font-weight: 600; font-size: 100%;
           margin-left: -10px;
-          background: linear-gradient(90deg, #E639A6, #457B9D);
+          background: linear-gradient(90deg, #E639A6, #b28051);
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;">
           MenuLab
