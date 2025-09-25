@@ -870,7 +870,7 @@ fetch(CSV_URL)
         const perfil = document.getElementById('perfil-resto');
         const perfilUrl = (rows[6]?.[1] || '').replace(/"/g,'').trim();
         const hasperfil = perfilUrl && perfilUrl.toLowerCase() !== 'off';
-        if (hasperfilr) {{
+        if (hasperfil) {{
           perfil.src = perfilUrl;
           perfil.hidden = false;              
           perfil.addEventListener('error', () => perfil.remove());
