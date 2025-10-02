@@ -17,15 +17,13 @@ document.addEventListener('DOMContentLoaded', () => {
     {
       name: 'Plan Emprendedor',
       prices: { monthly: '$18.000', yearly: '$180.000' }, ids: { monthly: 1, yearly: 4 },
-      intro:'todo lo anterior, más:',
+      intro:'Editá e imprimí tu menú en segundos',
       features: [
-        { label: '<br></br>🤳 Código QR', info: 'Código QR único para tu menú' },
+        { label: '<br></br>📖 Menú Imprimible', info: 'Generá un archivo listo para imprimir al instante' },
+        { label: '✏️ Edición Completa', info: 'Modificá tu menú directamente en Google Sheets' },
+        { label: '🎨 Menú Personalizable', info: 'Colores y tamaños editables para tu impresión' },
+        { label: '➕ Ítems Ilimitados', info: 'Agregá todos los platos que necesites' },
         { label: '🪧 Sin Publicidad', info: 'Menú sin banners ni anuncios externos' },
-        { label: '🌐 Traducción Automática', info: 'Traducción al inglés y portugués por Google' },
-        { label: '🛏️ Hosting 24/7', info: 'Acceso permanente a la menú online' },
-        { label: '🍝 Ítems Ilimitados', info: 'Sin límite de carga de ítems' },
-        { label: '🔎 Búsqueda de Platos', info: 'Buscar rápidamente platos dentro de tu menú digital' },
-        { label: '📞 Atención Virtual', info: 'Tiempo de respuesta en menos de 72h' },
         { label: '<div style="text-align:center;"><b><br></br></b></div>' },
         { label: '<div style="text-align:center;">✅5%OFF en <a href="#productos" style="color:#1976d2;text-decoration:underline;cursor:pointer;">Productos</a></div>', modes: ['monthly']},
         { label: '<div style="text-align:center;">✅<b>10%OFF</b> en <a href="#productos" style="color:#1976d2;text-decoration:underline;cursor:pointer;">Productos</a></div>', modes: ['yearly']}
@@ -36,12 +34,11 @@ document.addEventListener('DOMContentLoaded', () => {
       prices: { monthly: '$36.000', yearly: '$360.000' }, ids: { monthly: 2, yearly: 5 },
       intro:'Todo lo anterior, más:',
       features: [
-        { label: '<br></br>💬 Integración WhatsApp', info: 'Contacto directo vía WhatsApp' },
-        { label: '🛵 Integración Rappi/PedidosYa', info: 'Enlaces a aplicaciones de delivery' },
-        { label: '🗣️ Integración Instagram/Facebook', info: 'Enlaces a redes sociales desde tu menú' },
-        { label: '📍 Integración Google Maps', info: 'Enlace con dirección de tu negocio' },
-        { label: '🎨 Tema Personalizable', info: 'Elegí tipo de letra y paleta de colores' },
-        { label: '📞 Atención Personalizada', info: 'Tiempo de respuesta en menos de 42h' },
+        { label: '<br></br>🤳 Código QR', info: 'Generá un QR único para tu menú' },
+        { label: '📲 Integración Whatsapp, Instagram y Facebook', info: 'Enlaces a redes sociales desde tu menú' },
+        { label: '📍 Integración Rappi y PedidosYa', info: 'Conectá tu negocio apps de delivery' },
+        { label: '🎨 Paleta Personalizable', info: 'Adaptá tu menú a los colores de tu marca' },
+        { label: '🌍 Traducción Automática', info: 'Tu menú disponible en varios idiomas' },
         { label: '<div style="text-align:center;"><b><br></br></b></div>' },
         { label: '<div style="text-align:center;">✅10%OFF en <a href="#productos" style="color:#1976d2;text-decoration:underline;cursor:pointer;">Productos</a></div>', modes: ['monthly']},
         { label: '<div style="text-align:center;">✅<b>20%OFF</b> en <a href="#productos" style="color:#1976d2;text-decoration:underline;cursor:pointer;">Productos</a></div>', modes: ['yearly']}
@@ -54,10 +51,10 @@ document.addEventListener('DOMContentLoaded', () => {
       features: [
         { label: '<br></br>📷 Integración de Fotos', info: 'Integración de galería fotográfica para mostrar tus productos' },
         { label: '🛍️ Promos por Temporada', info: 'Mensajes pop up promocionales' },
-        { label: '📅 Integración de Reservas', info: 'Permití que tus clientes reserven mesas un Google forms' },
+        { label: '📅 Integración de Reservas y Google Maps', info: 'Permití que tus clientes reserven mesas un Google forms' },
+        { label: '🛵 Integración Delivery', info: 'Al hacer clic, tus clientes podrán enviar un mensaje de WhatsApp pidiendo delivery' },
         { label: '🛒 Pedidos por Web', info: 'Permití que tus clientes hagan pedidos directamente desde la menú online' },
         { label: '📞 Atención Prioritaria', info: 'Tiempo de respuesta en menos de 24h' },
-        { label: '🛵 Integración Delivery', info: 'Al hacer clic, tus clientes podrán enviar un mensaje de WhatsApp pidiendo delivery' },
         { label: '<div style="text-align:center;"><b><br></br></b></div>' },
         { label: '<div style="text-align:center;">✅15%OFF en <a href="#productos" style="color:#1976d2;text-decoration:underline;cursor:pointer;">Productos</a></div>', modes: ['monthly']},
         { label: '<div style="text-align:center;">✅<b>30%OFF</b> en <a href="#productos" style="color:#1976d2;text-decoration:underline;cursor:pointer;">Productos</a></div>', modes: ['yearly']}
@@ -65,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   ];
 
-  const plansProds = [
+  const tiendaVirtual = [
     {
       name: 'Plan Base',
       prices: { monthly: 'GRATIS', yearly: 'GRATIS' }, ids: { monthly: 0, yearly: 0 },

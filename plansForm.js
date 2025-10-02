@@ -198,13 +198,12 @@ if (mpRedirectBtn) {
         } else if (nameLower.includes('emprendedor')) {
             planDesc = `
                 <ul>
-                    <li>✅ Código QR</li>
-                    <li>✅ Sin publicidad</li>
-                    <li>✅ Hosting 24/7</li>
-                    <li>✅ Productos ilimitados</li>
-                    <li>✅ Búsqueda de Platos</li>
-                    <li>✅ Certificado SSL incluido</li>
-                    <li>✅ Atención Virtual</li>
+                    <li>✅ Menu Imprimible</li>
+                    <li>✅ Edición Completa</li>
+                    <li>✅ Menú Personalizable</li>
+                    <li>✅ Ítems Ilimitados</li>
+                    <li>✅ Sin Publicidad</li>
+                    <li>✅ Menú Imprimible</li>
                     <li>
                         <strong>Extra:</strong>
                         <ul>
@@ -217,12 +216,12 @@ if (mpRedirectBtn) {
             planDesc = `
                 <ul>
                     <li><strong>Incluye todo lo del plan Emprendedor, más:</strong></li>
-                    <li>✅ Integración WhatsApp</li>
-                    <li>✅ Integración Rappi/PedidosYa</li>
-                    <li>✅ Integración Instagram/Facebook</li>
-                    <li>✅ Integración Google Maps</li>
-                    <li>✅ Tema Personalizable</li>
-                    <li>✅ Atención Personalizada</li>
+                    <li>✅ Código QR</li>
+                    <li>✅ Integración Whatsapp, Instagram y Facebook</li>
+                    <li>✅ Integración Rappi y PedidosYa</li>
+                    <li>✅ Paleta Personalizable</li>
+                    <li>✅ Traducción Automática</li>
+                    <li>✅ Certificado SSL incluido</li>
                     <li>
                         <strong>Extras:</strong>
                         <ul>
@@ -237,9 +236,9 @@ if (mpRedirectBtn) {
                     <li><strong>Incluye todo lo del plan Profesional, más:</strong></li>
                     <li>✅ Integración de Fotos</li>
                     <li>✅ Promos por Temporada</li>
+                    <li>✅ Integración de Reservas y Google Maps</li>
+                    <li>✅ Integración Delivery</li>
                     <li>✅ Pedidos por web</li>
-                    <li>✅ Integración de Reservas</li>
-                    <li>✅ Integración de Delivery</li>
                     <li>✅ Atención Prioritaria</li>
                     <li>
                         <strong>Extras:</strong>
