@@ -25,18 +25,25 @@
     }
 
     h2 { 
-      font-size: 1.1rem; 
+      font-size: 1.5rem; 
       text-align: center; 
       break-after: avoid;
       page-break-after: avoid;
+      text-decoration: underline;
     }
     h3 { 
       font-size: 1rem; 
+      font-style: italic;
       text-align: left;
       break-after: avoid;
       page-break-after: avoid;
+      color: #444;
     }
-    h4 { font-size: 0.9rem; margin: 0.2rem 0; }
+
+    h4 { 
+      font-size: 0.9rem; 
+      margin: 0.2rem 0; 
+    }
 
     .menu-item {
       break-inside: avoid-column;
@@ -45,13 +52,18 @@
       border-bottom: 1px solid #eee;
       display: flex;
       justify-content: space-between;
-      align-items: flex-start;  
+      align-items: stretch;   /* 👈 importante: que los hijos tengan misma altura */
       border-bottom: 1px solid #eee;
     }
-    .menu-text { max-width: 80%; }
+    .menu-plate { max-width: 80%; color: #457B9D;}
     .menu-description { margin: 0.2rem 0; font-size: 0.8rem; color: #555; }
-    .menu-price { font-weight: bold; font-size: 0.85rem; }
-    .menu-img { width: 35px; height: 35px; object-fit: cover; margin-left: 8px; }
+    .menu-price { font-weight: bold; font-size: 0.85rem; color: #457B9D;}
+    .menu-img { 
+      height: 3.5em; 
+      width: auto; 
+      object-fit: contain; 
+      margin-left: 8px; 
+    }
 
     #printBtn {
       position: fixed;
@@ -125,10 +137,10 @@
 
     .resto-header h1 {
       margin: 0;
-      font-size: 1.5rem;
+      font-size: 2rem;
     }
 
-    .resto-header h2 {
+    .resto-header h3 {
       margin: 0.2rem 0 0;
       font-size: 1rem;
       font-weight: normal;
@@ -146,7 +158,7 @@
       <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1758652390/The_Pent_2_a8vhtp.jpg" alt="Logo Café Central">
       <div class="resto-text">        
         <h1 id="nombre-resto">Café Central</h1>
-        <h2 id="subtitulo-resto">Todo rico, todo el día</h2>
+        <h3 id="subtitulo-resto">Todo rico, todo el día</h3>
       </div>
     </div>
 
@@ -192,7 +204,7 @@
       ["Cafetería", "Fríos", "Frappuccino Oreo", "Frappé de café con galletas Oreo y crema.", "$2000"],
       ["Cafetería", "Fríos", "Limonada Menta & Jengibre", "Refrescante, casera y natural.", "$1500", "https://res.cloudinary.com/drxznqm61/image/upload/v1757094184/7WPPD5GSSZH4LG7KHWVEWCPBFM-removebg-preview_ves6p0.png"],
       ["Cafetería", "Fríos", "Smoothie Frutos Rojos", "Batido con yogur natural y frutas del bosque.", "$1900"],
-      ["Pastelería", "Vegano", "Muffin de Banana Vegano", "Sin lácteos, sin huevo, con nueces y banana.", "$1300"],
+      ["Pastelería", "", "Muffin de Banana Vegano", "Sin lácteos, sin huevo, con nueces y banana.", "$1300"],
       ["Pastelería", "Sin Gluten", "Brownie sin TACC", "Brownie húmedo con almendras sin gluten.", "$1400"],
       ["Pastelería", "Repostería", "Cinnamon Roll", "Roll de canela con glaseado de vainilla.", "$1600"],
       ["Pastelería", "Repostería", "Mini Tarta de Manzana", "Tarta individual con manzana caramelizada.", "$1700"],
@@ -200,7 +212,6 @@
       ["Sandwiches", "", "Croissant Capresse", "Croissant con tomate, albahaca y mozzarella.", "$2300"],
       ["Sandwiches", "", "Tostado Vegano", "Pan integral, hummus, palta y tomate seco.", "$2100"],
       ["Sandwiches", "", "Bagel de Salmón", "Salmón ahumado, queso crema y alcaparras.", "$2700", "https://res.cloudinary.com/drxznqm61/image/upload/v1753625624/Bagel-de-salmon-removebg-preview_jia8vv.png"],
-      ["Desayunos", "", "Açai Bowl", "Base de açai con frutas, granola y coco.", "$2000"],
       ["Desayunos", "", "Tostadas Francesas", "Pan brioche con canela, miel y frutos secos.", "$1900"],
       ["Desayunos", "", "Huevos Benedicto", "Pan de campo, jamón cocido, huevo poché y salsa holandesa.", "$2600"],
       ["Desayunos", "", "Brunch Central", "Huevos, tostadas, café, jugo y mini torta.", "$3200"]
@@ -234,7 +245,7 @@
             const div = document.createElement("div");
             div.className = "menu-item";
             div.innerHTML = `
-              <div class="menu-text">
+              <div class="menu-plate">
                 <h4>${item.nombre}</h4>
                 <p class="menu-description">${item.desc || ""}</p>
                 <span class="menu-price">${item.precio}</span>
