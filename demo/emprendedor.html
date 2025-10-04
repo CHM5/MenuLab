@@ -33,14 +33,33 @@
         }
     body {
       font-family: Arial, sans-serif;
-      margin-left: 250px;
-      margin-right: 250px;
+      margin: 0 auto;
       padding: 0 0 70px 0;
       column-count: 2;           
       column-gap: 20px;
       position: relative;
       background: var(--color-bg);
     }
+
+    /* 📱 Celulares y tablets: márgenes reducidos */
+    @media screen and (max-width: 991px) {
+      body {
+        margin-left: 10px;
+        margin-right: 10px;
+        column-count: 2;   /* mantiene 2 columnas */
+        column-gap: 15px;
+      }
+    }
+
+    /* 💻 PC grandes: mantener 250px */
+    @media screen and (min-width: 992px) {
+      body {
+        margin-left: 250px;
+        margin-right: 250px;
+        column-count: 2;
+      }
+    }
+
 
     h2 { 
       font-size: 1.5rem; 
@@ -117,13 +136,13 @@
 
     /* 👉 ocultar botón en preview y en la hoja impresa */
     @media print {
-      #printBtn { display: none !important; }
       body { 
         padding-bottom: 70px; 
-        margin-left: 0 !important;
-        margin-right: 0 !important;
+        margin: 0;
+        column-count: 2 !important;
         background: var(--color-bg) !important;
       }
+      #printBtn { display: none !important; }
       .footer {
         position: fixed;
         bottom: 0;
