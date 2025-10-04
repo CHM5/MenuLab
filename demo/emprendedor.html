@@ -142,16 +142,14 @@
     @media print {
       body {
         margin: 0;
-        background: #fff !important;
-      }
-      #printBtn { display: none !important; }
-      #printArea {
-        width: 210mm;       /* ancho A4 */
-        max-width: 210mm;
-        margin: 0 auto;
+        background: var(--color-bg) !important;
         column-count: 2 !important;
         column-gap: 15px !important;
+        width: 210mm !important;       /* ancho A4 */
+        max-width: 210mm !important;
+        padding: 0 !important;
       }
+      #printBtn { display: none !important; }
       .footer {
         position: fixed;
         bottom: 0;
