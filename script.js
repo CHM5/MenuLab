@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
     },
     {
       name: 'Plan Emprendedor',
-      prices: { monthly: '$18.000', yearly: '$180.000' }, ids: { monthly: 1, yearly: 4 },
+      prices: { monthly: '$15.000', yearly: '$180.000' }, ids: { monthly: 1, yearly: 4 },
       intro:'Editá e imprimí tu menú en segundos',
       features: [
         { label: '<br></br>📖 Menú Imprimible', info: 'Generá un archivo listo para imprimir al instante' },
@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
     },
     {
       name: 'Plan Profesional',
-      prices: { monthly: '$36.000', yearly: '$360.000' }, ids: { monthly: 2, yearly: 5 },
+      prices: { monthly: '$30.000', yearly: '$360.000' }, ids: { monthly: 2, yearly: 5 },
       intro:'Todo lo anterior, más:',
       features: [
         { label: '<br></br>🤳 Código QR', info: 'Generá un QR único para tu menú' },
@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
     },
     {
       name: 'Plan Corporativo',
-      prices: { monthly: '$72.000', yearly: '$720.000' }, ids: { monthly: 3, yearly: 6 },
+      prices: { monthly: '$45.000', yearly: '$720.000' }, ids: { monthly: 3, yearly: 6 },
       intro:'todo lo anterior, más:',
       features: [
         { label: '<br></br>📷 Integración de Fotos', info: 'Integración de galería fotográfica para mostrar tus productos' },
@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
     },
     {
       name: 'Plan Emprendedor',
-      prices: { monthly: '$18.000', yearly: '$180.000' }, ids: { monthly: 1, yearly: 4 },
+      prices: { monthly: '$15.000', yearly: '$180.000' }, ids: { monthly: 1, yearly: 4 },
       intro:'todo lo anterior, más:',
       features: [
         { label: '<br></br>🤳 Código QR', info: 'Código QR único para tu menú' },
@@ -95,7 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
     },
     {
       name: 'Plan Profesional',
-      prices: { monthly: '$36.000', yearly: '$360.000' }, ids: { monthly: 2, yearly: 5 },
+      prices: { monthly: '$30.000', yearly: '$360.000' }, ids: { monthly: 2, yearly: 5 },
       intro:'Todo lo anterior, más:',
       features: [
         { label: '<br></br>💬 Integración WhatsApp', info: 'Contacto directo vía WhatsApp' },
@@ -111,7 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
     },
     {
       name: 'Plan Corporativo',
-      prices: { monthly: '$72.000', yearly: '$720.000' }, ids: { monthly: 3, yearly: 6 },
+      prices: { monthly: '$45.000', yearly: '$720.000' }, ids: { monthly: 3, yearly: 6 },
       intro:'todo lo anterior, más:',
       features: [
         { label: '<br></br>📷 Integración de Fotos', info: 'Integración de galería fotográfica para mostrar tus productos' },

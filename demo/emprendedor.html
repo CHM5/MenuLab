@@ -6,6 +6,22 @@
 <head>
   <meta charset="UTF-8">
   <style>
+    :root {
+      --nombre-restaurante: "Café Central";
+      --subtitulo-restaurante: "Todo rico, todo el día";
+      --direccion-restaurante: "Av. Corrientes 123";
+      --horario-restaurante: "Martes a Domingos de 8 a 20hs";
+      --telefono-restaurante: "+54 11 1234-5678";
+      --color-nombre-resto: #000;
+      --color-nombre-slogan: #000;
+      --color-categoria: #000;
+      --color-subcategoria: #000;
+      --color-plato: #000;
+      --color-descripcion: #555;
+      --color-precio: #000;
+      --color-info-resto: #000;
+      --color-bg: #fff  ;
+    }
     @page { size: A4; }
     @page {
         @top-left { content: none; }
@@ -17,12 +33,13 @@
         }
     body {
       font-family: Arial, sans-serif;
-      margin-left: 60px;
-      margin-right: 60px;
+      margin-left: 250px;
+      margin-right: 250px;
       padding: 0 0 70px 0;
       column-count: 2;           
       column-gap: 20px;
       position: relative;
+      background: var(--color-bg);
     }
 
     h2 { 
@@ -31,6 +48,7 @@
       break-after: avoid;
       page-break-after: avoid;
       text-decoration: underline;
+      color: var(--color-categoria);
     }
     h3 { 
       font-size: 1rem; 
@@ -38,7 +56,7 @@
       text-align: left;
       break-after: avoid;
       page-break-after: avoid;
-      color: #444;
+      color: var(--color-subcategoria);
     }
 
     h4 { 
@@ -53,12 +71,12 @@
       border-bottom: 1px solid #eee;
       display: flex;
       justify-content: space-between;
-      align-items: stretch;   /* 👈 importante: que los hijos tengan misma altura */
+      align-items: stretch;
       border-bottom: 1px solid #eee;
     }
-    .menu-plate { max-width: 80%; color: #457B9D;}
-    .menu-description { margin: 0.2rem 0; font-size: 0.8rem; color: #555; }
-    .menu-price { font-weight: bold; font-size: 0.85rem; color: #457B9D;}
+    .menu-plate { max-width: 80%; color: var(--color-plato);}
+    .menu-description { margin: 0.2rem 0; font-size: 0.8rem; color: var(--color-descripcion); }
+    .menu-price { font-weight: bold; font-size: 0.85rem; color: var(--color-precio);}
     .menu-img { 
       height: 3.5em; 
       width: auto; 
@@ -79,26 +97,22 @@
       font-size: 0.9rem;
       z-index: 1000;
     }
-    #printBtn:hover {
-      background: #1d3557;
-    }
 
     .footer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    text-align: center;
-    font-size: 0.8rem;
-    color: #444;
-    border-top: 1px solid #ddd;
-    padding: 8px 0;
-    background: #fff; /* opcional: fondo blanco para destacar */
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-size: 0.8rem;
+      color: #444;
+      border-top: 1px solid #ddd;
+      padding: 8px 0;
     }
 
     .footer span {
     margin: 0 8px;
-    white-space: nowrap; /* que no corte en varias líneas */
+    white-space: nowrap;
     }
 
     /* 👉 ocultar botón en preview y en la hoja impresa */
@@ -108,7 +122,8 @@
         padding-bottom: 70px; 
         margin-left: 0 !important;
         margin-right: 0 !important;
-      } /* asegura espacio al imprimir */
+        background: var(--color-bg) !important;
+      }
       .footer {
         position: fixed;
         bottom: 0;
@@ -117,7 +132,7 @@
       }
     }
 
-        /* 🔥 Encabezado del restaurante */
+    /* 🔥 Encabezado del restaurante */
     .resto-header {
       display: flex;
       justify-content: center;  /* centra todo el bloque */
@@ -154,6 +169,19 @@
       color: #b28051;
     }
 
+    #nombre-resto {
+      color: var(--color-nombre-resto);
+    }
+
+    #subtitulo-resto{
+      color: var(--color-nombre-slogan);
+    }
+
+    #direccion-resto,
+    #horario-resto,
+    #telefono-resto {
+      color: var(--color-info-resto);
+    }
   </style>
 </head>
 <body>
@@ -163,8 +191,8 @@
     <div class="resto-header">
       <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1758652390/The_Pent_2_a8vhtp.jpg" alt="Logo Café Central">
       <div class="resto-text">        
-        <h1 id="nombre-resto">Café Central</h1>
-        <h3 id="subtitulo-resto">Todo rico, todo el día</h3>
+        <h1 id="nombre-resto"></h1>
+        <h3 id="subtitulo-resto"></h3>
       </div>
     </div>
 
@@ -172,8 +200,9 @@
 
     <!-- 📌 Footer -->
     <div class="footer">
-    <span class="style-direccion"><i class="fa-solid fa-map-marker-alt"></i> Av. Corrientes 123</span> &nbsp; | &nbsp;
-    <span class="style-horarios"><i class="fa-solid fa-clock"></i> Martes a Domingos de 8 a 20hs</span>
+    <span class="style-direccion"><i class="fa-solid fa-map-marker-alt"></i> <span id="direccion-resto"></span></span> &nbsp; | &nbsp;
+    <span class="style-horarios"><i class="fa-solid fa-clock"></i> <span id="horario-resto"></span></span> &nbsp; | &nbsp;
+    <span class="style-telefono"><i class="fa-solid fa-phone"></i> <span id="telefono-resto"></span></span>
     </div>
 
   <script>
@@ -265,6 +294,13 @@
     }
 
     renderMenuForPrint(allRows);
+
+    // Set texts from CSS variables
+    document.getElementById("nombre-resto").textContent = getComputedStyle(document.documentElement).getPropertyValue('--nombre-restaurante').replace(/"/g, '').trim();
+    document.getElementById("subtitulo-resto").textContent = getComputedStyle(document.documentElement).getPropertyValue('--subtitulo-restaurante').replace(/"/g, '').trim();
+    document.getElementById("direccion-resto").textContent = getComputedStyle(document.documentElement).getPropertyValue('--direccion-restaurante').replace(/"/g, '').trim();
+    document.getElementById("horario-resto").textContent = getComputedStyle(document.documentElement).getPropertyValue('--horario-restaurante').replace(/"/g, '').trim();
+    document.getElementById("telefono-resto").textContent = getComputedStyle(document.documentElement).getPropertyValue('--telefono-restaurante').replace(/"/g, '').trim();
 
     // 🔥 abrir vista previa de impresión automáticamente
     window.onload = () => window.print();
