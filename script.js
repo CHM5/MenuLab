@@ -10,8 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { label: '🔄 Actualizaciones', info: 'Actualizá tu menú en tiempo real' },
         { label: '📱Diseño Responsivo', info: 'Compatible con móviles y tablets' },
         { label: '🍝 Hasta 25 Ítems', info: 'Podés cargar hasta 25 ítems en tu menú' },
-        { label: '🏪 Data Negocio', info: 'Dirección, horarios de atencion, etc' },
-        { label: '🔐 Certificado web segura', info: 'Certificado SSL incluido' }
+        { label: '🏪 Data Negocio', info: 'Dirección, horarios de atencion, etc' }
       ]
     },
     {
@@ -21,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
       features: [
         { label: '<br></br>📖 Menú Imprimible', info: 'Generá un archivo listo para imprimir al instante' },
         { label: '✏️ Edición Completa', info: 'Modificá tu menú directamente en Google Sheets' },
-        { label: '🎨 Menú Personalizable', info: 'Colores y tamaños editables para tu impresión' },
+        { label: '🎨 Paleta Personalizable', info: 'Adaptá tu menú a los colores de tu marca' },
         { label: '➕ Ítems Ilimitados', info: 'Agregá todos los platos que necesites' },
         { label: '🪧 Sin Publicidad', info: 'Menú sin banners ni anuncios externos' },
         { label: '<div style="text-align:center;"><b><br></br></b></div>' },
@@ -34,10 +33,11 @@ document.addEventListener('DOMContentLoaded', () => {
       prices: { monthly: '$30.000', yearly: '$360.000' }, ids: { monthly: 2, yearly: 5 },
       intro:'Todo lo anterior, más:',
       features: [
-        { label: '<br></br>🤳 Código QR', info: 'Generá un QR único para tu menú' },
+        { label: '<br></br>🤳 Menú Imprimible + Online', info: 'Generá un QR único para tu menú' },
+        { label: '🤳 Código QR', info: 'Generá un QR único para tu menú' },
         { label: '📲 Integración Whatsapp, Instagram y Facebook', info: 'Enlaces a redes sociales desde tu menú' },
-        { label: '📍 Integración Rappi y PedidosYa', info: 'Conectá tu negocio apps de delivery' },
-        { label: '🎨 Paleta Personalizable', info: 'Adaptá tu menú a los colores de tu marca' },
+        { label: '🛵 Integración Rappi y PedidosYa', info: 'Conectá tu negocio apps de delivery' },
+        { label: '📍 Integración de Google Maps', info: 'Adaptá tu menú a los colores de tu marca' },
         { label: '🌍 Traducción Automática', info: 'Tu menú disponible en varios idiomas' },
         { label: '<div style="text-align:center;"><b><br></br></b></div>' },
         { label: '<div style="text-align:center;">✅10%OFF en <a href="#productos" style="color:#1976d2;text-decoration:underline;cursor:pointer;">Productos</a></div>', modes: ['monthly']},
@@ -51,8 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
       features: [
         { label: '<br></br>📷 Integración de Fotos', info: 'Integración de galería fotográfica para mostrar tus productos' },
         { label: '🛍️ Promos por Temporada', info: 'Mensajes pop up promocionales' },
-        { label: '📅 Integración de Reservas y Google Maps', info: 'Permití que tus clientes reserven mesas un Google forms' },
-        { label: '🛵 Integración Delivery', info: 'Al hacer clic, tus clientes podrán enviar un mensaje de WhatsApp pidiendo delivery' },
+        { label: '📅 Integración de Reservas', info: 'Permití que tus clientes reserven mesas un Google forms' },
         { label: '🛒 Pedidos por Web', info: 'Permití que tus clientes hagan pedidos directamente desde la menú online' },
         { label: '📞 Atención Prioritaria', info: 'Tiempo de respuesta en menos de 24h' },
         { label: '<div style="text-align:center;"><b><br></br></b></div>' },

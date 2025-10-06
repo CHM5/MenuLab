@@ -21,6 +21,8 @@
       --color-precio: #000;
       --color-info-resto: #000;
       --color-bg: #fff  ;
+      --bg-opacity: 0.2;
+      --menu-font-size: 1rem;
     }
     @page { size: A4; }
     @page {
@@ -31,27 +33,27 @@
         @bottom-center { content: none; }
         @bottom-right { content: none; }
         }
+        
     body {
       font-family: Arial, sans-serif;
       margin: 0 auto;
-      padding: 0 0 70px 0;
+      padding-top: 70px; 
       column-count: 2;           
       column-gap: 20px;
       position: relative;
       background: var(--color-bg);
+      font-size: var(--menu-font-size);
     }
 
-    /* 📱 Celulares y tablets: márgenes reducidos */
     @media screen and (max-width: 991px) {
       body {
         margin-left: 10px;
         margin-right: 10px;
-        column-count: 2;   /* mantiene 2 columnas */
+        column-count: 2;
         column-gap: 15px;
       }
     }
 
-    /* 💻 PC grandes: mantener 250px */
     @media screen and (min-width: 992px) {
       body {
         margin-left: 250px;
@@ -93,7 +95,6 @@
       page-break-inside: avoid;
     }
 
-    /* Bloque izquierdo: nombre + descripción */
     .menu-plate {
       flex: 1;
       color: var(--color-plato);
@@ -101,7 +102,6 @@
       flex-direction: column;
     }
 
-    /* Nombre del plato */
     .menu-plate h4 {
       margin: 0;
       font-size: 0.95rem;
@@ -109,14 +109,12 @@
       color: var(--color-plato);
     }
 
-    /* Descripción debajo del nombre */
     .menu-description {
       margin: 0.15rem 0 0;
       font-size: 0.8rem;
       color: var(--color-descripcion);
     }
 
-    /* Precio alineado arriba a la derecha del bloque */
     .menu-price {
       font-weight: bold;
       font-size: 0.9rem;
@@ -128,9 +126,6 @@
 
 
     #printBtn {
-      position: fixed;
-      top: 10px;
-      right: 10px;
       background: #457B9D;
       color: #fff;
       border: none;
@@ -139,6 +134,7 @@
       cursor: pointer;
       font-size: 0.9rem;
       z-index: 1000;
+      margin: 0;         
     }
 
     .footer {
@@ -175,7 +171,14 @@
       }
 
       #printBtn { display: none !important; }
-
+      #fontSelector,
+      select#fontSelector,
+      div > #fontSelector {
+        display: none !important;
+      }
+      #topMenu {
+        display: none !important;
+      }
       .footer {
         position: fixed !important;
         bottom: 0;
@@ -186,16 +189,27 @@
         padding: 4px 0;
         page-break-before: always;
       }
+      
+      .print-background {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-size: 60%;
+        opacity: var(--bg-opacity);
+        -webkit-print-color-adjust: exact; /* 👈 fuerza a mostrar colores y fondos en print */
+        print-color-adjust: exact;
+      }
     }
 
-    /* 🔥 Encabezado del restaurante */
     .resto-header {
       display: flex;
-      justify-content: center;  /* centra todo el bloque */
-      align-items: center;       /* alinea verticalmente */
-      gap: 1rem;                 /* espacio entre logo y texto */
+      justify-content: center;
+      align-items: center;      
+      gap: 1rem;                
       margin-bottom: 1.5rem;
-      break-inside: avoid;       /* que no se corte */
+      break-inside: avoid;      
     }
 
     .resto-header img {
@@ -238,10 +252,168 @@
     #telefono-resto {
       color: var(--color-info-resto);
     }
+
+    #topMenu {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: #fff;
+      padding: 10px 20px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 10px;      
+    }
+
+    #topMenu select {
+      padding: 6px 10px;
+      border-radius: 6px;
+      border: 1px solid #ddd;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+
+    #topMenu label {
+      font-size: 0.9rem;
+      color: #333;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    #topMenu input[type="color"] {
+      width: 40px;
+      height: 40px;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      border-radius: 4px;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    #topMenu input[type="color"]::-webkit-color-swatch {
+      border: none;
+      border-radius: 4px;
+    }
+
+    #topMenu input[type="color"]::-webkit-color-swatch {
+      border: none;
+      border-radius: 4px;
+    }
+
+    #topMenu input[type="color"]:focus {
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(69, 123, 157, 0.5);
+    }
+
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .dropbtn {
+      background-color: #457B9D;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #f9f9f9;
+      min-width: 160px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      z-index: 1;
+      border-radius: 6px;
+      padding: 10px;
+    }
+
+    .dropdown-content label {
+      display: block;
+      margin: 8px 0;
+      font-size: 0.9rem;
+      color: #333;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    .print-background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url("https://res.cloudinary.com/drxznqm61/image/upload/v1758652390/The_Pent_2_a8vhtp.jpg")
+                  no-repeat center center;
+      background-size: 60%;
+      opacity: 0.2; /* 20 % de transparencia */
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    body, .resto-header, #menuTable, .footer {
+      position: relative;
+      z-index: 1;
+    }
+
   </style>
+<link href="https://fonts.googleapis.com/css?family=Oswald:400,700|Roboto+Slab:400,700|Pacifico|Lato:400,700|Merriweather:400,700|Montserrat:400,700|Indie+Flower|Playfair+Display:400,700|Source+Code+Pro:400,700&display=swap" rel="stylesheet">  
+<link href="https://fonts.googleapis.com/css?family=Oswald:400,700&display=swap" rel="stylesheet">
 </head>
 <body>
-<button id="printBtn" onclick="window.print()">🖨️ Imprimir</button>
+  <div class="print-background"></div>
+  <div id="topMenu">
+    <label>
+      Tamaño letra
+      <input type="range" id="font-size-range" min="0.7" max="2" step="0.01" value="1" style="width:80px;">
+    </label>
+    <div class="dropdown">
+      <button class="dropbtn">🖋️ Fuente</button>
+      <div class="dropdown-content">
+        <select id="fontSelector" style="width:100%;">
+          <option value="arial">Arial (Actual)</option>
+          <option value="oswald">Condensed Grotesk (Oswald)</option>
+          <option value="roboto-slab">Serif Moderna (Roboto Slab)</option>
+          <option value="pacifico">Manuscrita Cursiva (Pacifico)</option>
+          <option value="lato">Sans Elegante (Lato)</option>
+          <option value="merriweather">Serif Clásica (Merriweather)</option>
+          <option value="montserrat">Sans Moderna (Montserrat)</option>
+          <option value="indie-flower">Manuscrita Casual (Indie Flower)</option>
+          <option value="playfair">Serif Fashion (Playfair Display)</option>
+          <option value="source-code">Monoespaciada (Source Code Pro)</option>
+        </select>
+      </div>
+    </div>
+    <div class="dropdown">
+      <button class="dropbtn">🎨 Colores</button>
+      <div class="dropdown-content">
+        <label>Nombre <input type="color" id="color-nombre-resto"></label>
+        <label>Slogan <input type="color" id="color-nombre-slogan"></label>
+        <label>Categoria <input type="color" id="color-categoria"></label>
+        <label>Subcategoria <input type="color" id="color-subcategoria"></label>
+        <label>Plato <input type="color" id="color-plato"></label>
+        <label>Descripción <input type="color" id="color-descripcion"></label>
+        <label>Precio <input type="color" id="color-precio"></label>
+        <label>Info <input type="color" id="color-info-resto"></label>
+        <label>Fondo <input type="color" id="color-bg"></label>
+      </div>
+    </div>
+    <label>
+      Fondo Opacidad
+      <input type="range" id="bg-opacity" min="0" max="1" step="0.01" value="0.2" style="width:80px;">
+    </label>
+    <button id="printBtn" onclick="window.print()">🖨️ Imprimir</button>
+  </div>
   
     <!-- 📌 Encabezado del restaurante -->
     <div class="resto-header">
@@ -359,6 +531,107 @@
 
     // 🔥 abrir vista previa de impresión automáticamente
     window.onload = () => window.print();
+
+    // Selector de fuente
+    document.getElementById('fontSelector').addEventListener('change', function(e) {
+      const val = e.target.value;
+      if (val === 'arial') {
+        document.body.style.fontFamily = 'Arial, sans-serif';
+      } else if (val === 'oswald') {
+        document.body.style.fontFamily = "'Oswald', Arial, sans-serif";
+      } else if (val === 'roboto-slab') {
+        document.body.style.fontFamily = "'Roboto Slab', serif";
+      } else if (val === 'pacifico') {
+        document.body.style.fontFamily = "'Pacifico', cursive";
+      } else if (val === 'lato') {
+        document.body.style.fontFamily = "'Lato', Arial, sans-serif";
+      } else if (val === 'merriweather') {
+        document.body.style.fontFamily = "'Merriweather', serif";
+      } else if (val === 'montserrat') {
+        document.body.style.fontFamily = "'Montserrat', Arial, sans-serif";
+      } else if (val === 'indie-flower') {
+        document.body.style.fontFamily = "'Indie Flower', cursive";
+      } else if (val === 'playfair') {
+        document.body.style.fontFamily = "'Playfair Display', serif";
+      } else if (val === 'source-code') {
+        document.body.style.fontFamily = "'Source Code Pro', monospace";
+      }
+      localStorage.setItem('font-family', val);
+    });
+
+    // Cambiar colores de las variables CSS
+    document.querySelectorAll('#topMenu input[type="color"]').forEach(input => {
+      input.addEventListener('input', function() {
+        const varName = this.id;
+        const color = this.value;
+        document.documentElement.style.setProperty(`--${varName}`, color);
+        localStorage.setItem(varName, color); 
+      });
+    });
+
+    // Recuperar colores guardados
+    document.querySelectorAll('#topMenu input[type="color"]').forEach(input => {
+      const saved = localStorage.getItem(input.id);
+      if (saved) {
+        input.value = saved;
+        document.documentElement.style.setProperty(`--${input.id}`, saved);
+      }
+    });
+
+    // Recuperar fuente guardada
+    const savedFont = localStorage.getItem('font-family');
+    if (savedFont) {
+      document.getElementById('fontSelector').value = savedFont;
+      // Aplica la fuente guardada
+      if (savedFont === 'arial') {
+        document.body.style.fontFamily = 'Arial, sans-serif';
+      } else if (savedFont === 'oswald') {
+        document.body.style.fontFamily = "'Oswald', Arial, sans-serif";
+      } else if (savedFont === 'roboto-slab') {
+        document.body.style.fontFamily = "'Roboto Slab', serif";
+      } else if (savedFont === 'pacifico') {
+        document.body.style.fontFamily = "'Pacifico', cursive";
+      } else if (savedFont === 'lato') {
+        document.body.style.fontFamily = "'Lato', Arial, sans-serif";
+      } else if (savedFont === 'merriweather') {
+        document.body.style.fontFamily = "'Merriweather', serif";
+      } else if (savedFont === 'montserrat') {
+        document.body.style.fontFamily = "'Montserrat', Arial, sans-serif";
+      } else if (savedFont === 'indie-flower') {
+        document.body.style.fontFamily = "'Indie Flower', cursive";
+      } else if (savedFont === 'playfair') {
+        document.body.style.fontFamily = "'Playfair Display', serif";
+      } else if (savedFont === 'source-code') {
+        document.body.style.fontFamily = "'Source Code Pro', monospace";
+      }
+    }
+    const fontSizeInput = document.getElementById('font-size-range');
+    fontSizeInput.value = localStorage.getItem('menu-font-size') || '1';
+    document.documentElement.style.setProperty('--menu-font-size', fontSizeInput.value + 'rem');
+
+    fontSizeInput.addEventListener('input', function() {
+      document.documentElement.style.setProperty('--menu-font-size', this.value + 'rem');
+      localStorage.setItem('menu-font-size', this.value);
+    });
+    const savedFontSize = localStorage.getItem('menu-font-size');
+    if (savedFontSize) {
+      fontSizeInput.value = savedFontSize;
+      document.documentElement.style.setProperty('--menu-font-size', savedFontSize + 'rem');
+    }
+
+    const bgOpacityInput = document.getElementById('bg-opacity');
+    bgOpacityInput.value = localStorage.getItem('bg-opacity') || '0.2';
+    document.documentElement.style.setProperty('--bg-opacity', bgOpacityInput.value);
+
+    bgOpacityInput.addEventListener('input', function() {
+      document.documentElement.style.setProperty('--bg-opacity', this.value);
+      localStorage.setItem('bg-opacity', this.value);
+    });
+    const savedBgOpacity = localStorage.getItem('bg-opacity');
+    if (savedBgOpacity) {
+      bgOpacityInput.value = savedBgOpacity;
+      document.documentElement.style.setProperty('--bg-opacity', savedBgOpacity);
+    }
   </script>
 </body>
 </html>
