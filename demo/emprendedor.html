@@ -64,7 +64,7 @@
 
 
     h2 { 
-      font-size: 1.5rem; 
+      font-size: calc(1.5 * var(--menu-font-size)); 
       text-align: center; 
       break-after: avoid;
       page-break-after: avoid;
@@ -72,7 +72,7 @@
       color: var(--color-categoria);
     }
     h3 { 
-      font-size: 1rem; 
+      font-size: calc(1 * var(--menu-font-size)); 
       font-style: italic;
       text-align: left;
       break-after: avoid;
@@ -81,7 +81,7 @@
     }
 
     h4 { 
-      font-size: 0.9rem; 
+      font-size: calc(0.9 * var(--menu-font-size)); 
       margin: 0.2rem 0; 
     }
 
@@ -104,46 +104,50 @@
 
     .menu-plate h4 {
       margin: 0;
-      font-size: 0.95rem;
+      font-size: calc(0.95 * var(--menu-font-size));
       font-weight: bold;
       color: var(--color-plato);
     }
 
     .menu-description {
       margin: 0.15rem 0 0;
-      font-size: 0.8rem;
+      font-size: calc(0.8 * var(--menu-font-size));
       color: var(--color-descripcion);
     }
 
     .menu-price {
       font-weight: bold;
-      font-size: 0.9rem;
+      font-size: calc(0.9 * var(--menu-font-size));
       color: var(--color-precio);
       margin-left: 12px;
       white-space: nowrap;
       align-self: flex-start;
     }
 
-
+    .dropbtn,
     #printBtn {
-      background: #457B9D;
-      color: #fff;
+      background-color: #457B9D;
+      color: white;
+      padding: 10px 20px;
       border: none;
-      padding: 8px 14px;
       border-radius: 6px;
       cursor: pointer;
       font-size: 0.9rem;
-      z-index: 1000;
-      margin: 0;         
+      transition: background 0.3s ease;
+    }
+
+    .dropbtn:hover,
+    #printBtn:hover {
+      background-color: #1D3557;
     }
 
     .footer {
-      position: fixed;
+      position: fixed !important;
       bottom: 0;
       left: 0;
       right: 0;
       text-align: center;
-      font-size: 0.8rem;
+      font-size: calc(0.8 * var(--menu-font-size));
       color: #444;
       border-top: 1px solid #ddd;
       padding: 8px 0;
@@ -198,7 +202,7 @@
         height: 100%;
         background-size: 60%;
         opacity: var(--bg-opacity);
-        -webkit-print-color-adjust: exact; /* 👈 fuerza a mostrar colores y fondos en print */
+        -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
       }
     }
@@ -228,12 +232,12 @@
 
     .resto-header h1 {
       margin: 0;
-      font-size: 2rem;
+      font-size: calc(2 * var(--menu-font-size));
     }
 
     .resto-header h3 {
       margin: 0.2rem 0 0;
-      font-size: 1rem;
+      font-size: calc(1 * var(--menu-font-size));
       font-weight: normal;
       font-style: italic;
       color: #b28051;
@@ -262,10 +266,22 @@
       padding: 10px 20px;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       z-index: 1000;
+
+      /* 🔹 Layout general */
       display: flex;
-      justify-content: flex-end;
+      justify-content: center; /* centra todo horizontalmente */
       align-items: center;
-      gap: 10px;      
+      flex-wrap: wrap; /* permite varias filas en pantallas chicas */
+      gap: 10px;
+    }
+
+    /* 🔹 Sliders (Letra / Logo) */
+    .font-size-control,
+    .opacity-control {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;     
     }
 
     #topMenu select {
@@ -356,7 +372,7 @@
       background: url("https://res.cloudinary.com/drxznqm61/image/upload/v1758652390/The_Pent_2_a8vhtp.jpg")
                   no-repeat center center;
       background-size: 60%;
-      opacity: 0.2; /* 20 % de transparencia */
+      opacity: var(--bg-opacity);
       z-index: 0;
       pointer-events: none;
     }
@@ -366,6 +382,42 @@
       z-index: 1;
     }
 
+    @media (max-width: 768px) {
+    #topMenu {
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      padding: 10px;
+      gap: 6px;
+    }
+
+    .font-size-control,
+    .opacity-control {
+      width: 48%; /* dos sliders por fila */
+    }
+
+    .dropdown,
+    #printBtn {
+      flex: 1 1 30%; /* los botones se reparten el espacio */
+      text-align: center;
+    }
+
+    .dropbtn,
+    #printBtn {
+      width: 100%;
+      padding: 8px 0;
+      font-size: 0.85rem;
+    }
+
+    label {
+      font-size: 0.8rem;
+    }
+
+    input[type="range"] {
+      width: 100%;
+    }
+  }
+
   </style>
 <link href="https://fonts.googleapis.com/css?family=Oswald:400,700|Roboto+Slab:400,700|Pacifico|Lato:400,700|Merriweather:400,700|Montserrat:400,700|Indie+Flower|Playfair+Display:400,700|Source+Code+Pro:400,700&display=swap" rel="stylesheet">  
 <link href="https://fonts.googleapis.com/css?family=Oswald:400,700&display=swap" rel="stylesheet">
@@ -373,10 +425,6 @@
 <body>
   <div class="print-background"></div>
   <div id="topMenu">
-    <label>
-      Tamaño letra
-      <input type="range" id="font-size-range" min="0.7" max="2" step="0.01" value="1" style="width:80px;">
-    </label>
     <div class="dropdown">
       <button class="dropbtn">🖋️ Fuente</button>
       <div class="dropdown-content">
@@ -394,6 +442,10 @@
         </select>
       </div>
     </div>
+    <div>
+      <label for="font-size-range">Letra</label>
+      <input type="range" id="font-size-range" min="0.7" max="2" step="0.01" value="1" style="width:80px;">
+    </div>
     <div class="dropdown">
       <button class="dropbtn">🎨 Colores</button>
       <div class="dropdown-content">
@@ -408,10 +460,10 @@
         <label>Fondo <input type="color" id="color-bg"></label>
       </div>
     </div>
-    <label>
-      Fondo Opacidad
-      <input type="range" id="bg-opacity" min="0" max="1" step="0.01" value="0.2" style="width:80px;">
-    </label>
+    <div>
+      <label for="bg-opacity" style="align-items: center;">Logo</label>
+      <input type="range" id="bg-opacity" min="0" max="0.5" step="0.01" value="0.2" style="width:80px;">
+    </div>
     <button id="printBtn" onclick="window.print()">🖨️ Imprimir</button>
   </div>
   
@@ -428,9 +480,9 @@
 
     <!-- 📌 Footer -->
     <div class="footer">
-    <span class="style-direccion"><i class="fa-solid fa-map-marker-alt"></i> <span id="direccion-resto"></span></span> &nbsp; | &nbsp;
-    <span class="style-horarios"><i class="fa-solid fa-clock"></i> <span id="horario-resto"></span></span> &nbsp; | &nbsp;
-    <span class="style-telefono"><i class="fa-solid fa-phone"></i> <span id="telefono-resto"></span></span>
+      <span class="style-direccion"><i class="fa-solid fa-map-marker-alt"></i> <span id="direccion-resto"></span></span> &nbsp; | &nbsp;
+      <span class="style-horarios"><i class="fa-solid fa-clock"></i> <span id="horario-resto"></span></span> &nbsp; | &nbsp;
+      <span class="style-telefono"><i class="fa-solid fa-phone"></i> <span id="telefono-resto"></span></span>
     </div>
 
   <script>
