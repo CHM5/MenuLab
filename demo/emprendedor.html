@@ -24,7 +24,6 @@
       --bg-opacity: 0.2;
       --menu-font-size: 1rem;
     }
-    @page { size: A4; }
     @page {
         @top-left { content: none; }
         @top-center { content: none; }
@@ -45,8 +44,7 @@
     }
 
     #menuTable,
-    .resto-header,
-    .footer {
+    .resto-header, .footer {
       font-size: var(--menu-font-size);
     }
 
@@ -146,21 +144,23 @@
       background-color: #1D3557;
     }
 
+    /* --- Footer general --- */
     .footer {
-      position: fixed !important;
-      bottom: 0;
-      left: 0;
-      right: 0;
+      column-span: all;
       text-align: center;
       font-size: calc(0.8 * var(--menu-font-size));
       color: #444;
       border-top: 1px solid #ddd;
       padding: 8px 0;
+      margin-top: 40px;
+      background: var(--color-bg);
+      position: relative;
+      z-index: 10;
     }
 
     .footer span {
-    margin: 0 8px;
-    white-space: nowrap;
+      margin: 0rem 8px;
+      white-space: nowrap;
     }
 
     #printArea {
@@ -169,48 +169,55 @@
     }
 
     @media print {
-      body {
-        margin: 0;
-        background: var(--color-bg) !important;
-        column-count: 2 !important;
-        column-gap: 15px !important;
-        width: 210mm !important;
-        max-width: 210mm !important;
-        padding: 0 !important;
-      }
-
-      #printBtn { display: none !important; }
-      #fontSelector,
-      select#fontSelector,
-      div > #fontSelector {
-        display: none !important;
-      }
-      #topMenu {
-        display: none !important;
-      }
-      .footer {
-        position: fixed !important;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        font-size: 0.7rem;
-        border-top: 1px solid #ddd;
-        padding: 4px 0;
-        page-break-before: always;
-      }
-      
-      .print-background {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-size: 60%;
-        opacity: var(--bg-opacity);
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
-      }
+    body {
+      margin: 0;
+      background: var(--color-bg) !important;
+      column-count: 2 !important;
+      column-gap: 15px !important;
+      width: 210mm !important;
+      max-width: 210mm !important;
+      padding-bottom: 25mm !important;
     }
+
+    #printBtn, #topMenu {
+      display: none !important;
+    }
+
+    #fontSelector,
+    select#fontSelector,
+    div > #fontSelector {
+      display: none !important;
+    }
+
+    .footer {
+      position: fixed;
+      bottom: -40mm;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-size: 0.7rem;
+      border-top: 1px solid #ddd;
+      padding-bottom: 8rem;
+      background: var(--color-bg);
+    }
+
+    @page {
+      size: A4;
+      margin: 0mm 10mm 20mm 10mm;
+    }
+        
+    .print-background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-size: 60%;
+      opacity: var(--bg-opacity);
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+  }
 
     .resto-header {
       display: flex;
@@ -382,7 +389,7 @@
       pointer-events: none;
     }
 
-    body, .resto-header, #menuTable, .footer {
+    body, .resto-header, #menuTable {
       position: relative;
       z-index: 1;
     }
