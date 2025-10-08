@@ -25,14 +25,14 @@
       --menu-font-size: 1rem;
     }
     @page {
-        @top-left { content: none; }
-        @top-center { content: none; }
-        @top-right { content: none; }
-        @bottom-left { content: none; }
-        @bottom-center { content: none; }
-        @bottom-right { content: none; }
-        }
-        
+      @top-left { content: none; }
+      @top-center { content: none; }
+      @top-right { content: none; }
+      @bottom-left { content: none; }
+      @bottom-center { content: none; }
+      @bottom-right { content: none; }
+    }
+    
     body {
       font-family: Arial, sans-serif;
       margin: 0 auto;
@@ -129,7 +129,7 @@
 
     .dropbtn,
     #printBtn {
-      background-color: #457B9D;
+      background-color: #67b0dd;
       color: white;
       padding: 10px 20px;
       border: none;
@@ -144,7 +144,6 @@
       background-color: #1D3557;
     }
 
-    /* --- Footer general --- */
     .footer {
       column-span: all;
       text-align: center;
@@ -220,10 +219,10 @@
     .resto-header {
       display: flex;
       justify-content: center;
-      align-items: center;      
-      gap: 1rem;                
+      align-items: center;
+      gap: 1rem;
       margin-bottom: 1.5rem;
-      break-inside: avoid;      
+      break-inside: avoid;
     }
 
     .resto-header img {
@@ -276,7 +275,6 @@
       padding: 10px 20px;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       z-index: 1000;
-
       display: flex;
       justify-content: center; 
       align-items: center;
@@ -340,7 +338,7 @@
     }
 
     .dropbtn {
-      background-color: #457B9D;
+      background-color: #67b0dd;
       color: white;
       padding: 10px 20px;
       border: none;
@@ -424,6 +422,7 @@
   </style>
 <link href="https://fonts.googleapis.com/css?family=Oswald:400,700|Roboto+Slab:400,700|Pacifico|Lato:400,700|Merriweather:400,700|Montserrat:400,700|Indie+Flower|Playfair+Display:400,700|Source+Code+Pro:400,700&display=swap" rel="stylesheet">  
 <link href="https://fonts.googleapis.com/css?family=Oswald:400,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700&family=Syne:wght@400;700&family=Sora:wght@400;700&family=Staatliches&family=Caveat&family=Yeseva+One&family=Righteous&family=Cormorant+Garamond:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
   <div class="print-background"></div>
@@ -442,6 +441,14 @@
             <option value="indie-flower">Manuscrita Casual (Indie Flower)</option>
             <option value="playfair">Serif Fashion (Playfair Display)</option>
             <option value="source-code">Monoespaciada (Source Code Pro)</option>
+            <option value="unbounded">Futurista Geométrica (Unbounded)</option>
+            <option value="syne">Experimental Bold (Syne)</option>
+            <option value="sora">Tech Elegante (Sora)</option>
+            <option value="staatliches">Bauhaus Brutalista (Staatliches)</option>
+            <option value="caveat">Manuscrita Clara (Caveat)</option>
+            <option value="yeseva-one">Serif Chic (Yeseva One)</option>
+            <option value="righteous">Redondeada Moderna (Righteous)</option>
+            <option value="cormorant-garamond">Gourmet Serif (Cormorant Garamond)</option>
           </select>
         </div>
       </div>
@@ -605,6 +612,22 @@
         document.body.style.fontFamily = "'Playfair Display', serif";
       } else if (val === 'source-code') {
         document.body.style.fontFamily = "'Source Code Pro', monospace";
+      } else if (val === 'unbounded') {
+        document.body.style.fontFamily = "'Unbounded', sans-serif";
+      } else if (val === 'syne') {
+        document.body.style.fontFamily = "'Syne', sans-serif";
+      } else if (val === 'sora') {
+        document.body.style.fontFamily = "'Sora', sans-serif";
+      } else if (val === 'staatliches') {
+        document.body.style.fontFamily = "'Staatliches', sans-serif";
+      } else if (val === 'caveat') {
+        document.body.style.fontFamily = "'Caveat', cursive";
+      } else if (val === 'yeseva-one') {
+        document.body.style.fontFamily = "'Yeseva One', serif";
+      } else if (val === 'righteous') {
+        document.body.style.fontFamily = "'Righteous', cursive";
+      } else if (val === 'cormorant-garamond') {
+        document.body.style.fontFamily = "'Cormorant Garamond', serif";
       }
       localStorage.setItem('font-family', val);
     });

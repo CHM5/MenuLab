@@ -7,8 +7,8 @@ from googleapiclient.discovery import build
 import hashlib
 
 # === CONFIGURACIÓN ===
+FIJOS_RANGE = "Datos!B2:B8"
 MENU_RANGE = "Menu!A2:E"
-FIJOS_RANGE = "Datos Permanentes!B2:B5"
 fecha_id = datetime.now().strftime("%Y%m%d")
 
 # === AUTENTICACIÓN GOOGLE ===
@@ -28,7 +28,7 @@ if not sheet_url:
 # Extraer ID y armar URLs válidas
 sheet_id = sheet_url.split("/d/")[1].split("/")[0]
 csv_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv"
-fijos_csv_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet=Datos%20Permanentes"
+fijos_csv_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet=Datos"
 print("🔗 CSV menú:", csv_url)
 print("🔗 CSV fijos:", fijos_csv_url)
 
@@ -64,259 +64,215 @@ html = f"""<!DOCTYPE html>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <style>
     :root {{
-      --primary: #ffc107;
-      --bg: #f1f1f1;
-      --text: #212529;
-      --header: #d2d0cd;
-      --border: #dee2e6;
-      --radius: 10px;
-    }}
-    body {{
-      font-family: 'Segoe UI', Arial, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      margin: 0;
-      padding: 0;
-    }}
-    header {{
-      background: var(--header);
-      color: #fff;
-      padding: 1.2rem 1rem 0.7rem 1rem;
-      text-align: center;
-      border-radius: 0 0 var(--radius) var(--radius);
-    }}
-    .container {{
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 1rem;
-    }}
-    .fijos {{
-      margin: 1.5rem 0 1rem 0;
-      padding: 0.7rem 1rem;
-      background: #f8f9fa;
-      border-radius: var(--radius);
-      font-size: 1rem;
-      color: #444;
-    }}
-    table {{
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 1rem;
-      background: #fff;
-      border-radius: var(--radius);
-      overflow: hidden;
-      box-shadow: 0 2px 8px #0001;
-    }}
-    th, td {{
-      padding: 0.8rem 0.5rem;
-      border-bottom: 1px solid var(--border);
-      text-align: left;
-      font-size: 1rem;
-    }}
-    th {{
-      background: #f1f1f1;
-      font-weight: 700;
-      color: #343a40;
-    }}
-    tr:last-child td {{
-      border-bottom: none;
-    }}
-    @media (max-width: 700px) {{
-      .container {{
-        padding: 0.5rem;
-      }}
-      th, td {{
-        font-size: 0.97rem;
-        padding: 0.6rem 0.3rem;
-      }}
-      .fijos {{
-        font-size: 0.97rem;
-        padding: 0.5rem 0.7rem;
-      }}
-    }}
-    @media (max-width: 480px) {{
-      header {{
-        font-size: 1.2rem;
-        padding: 0.8rem 0.3rem;
-      }}
-      .container {{
-        padding: 0.2rem;
-      }}
-      th, td {{
-        font-size: 0.93rem;
-        padding: 0.4rem 0.2rem;
-      }}
-    }}
-    .menu-group {{
-      margin-top: 0.5rem;
-      margin-bottom: 1.2rem;
-    }}
-    .menu-group h2 {{
-      font-size: 1.7rem;
-      margin: 2rem 0 0.2rem;
-      border-bottom: 2px solid #ddd;
-      color: #333;
-    }}
-    .menu-group h3 {{
-      font-size: 1.5rem;
-      margin: 1rem 0 0rem;
-      color: #555;
-    }}
-    .menu-group h4 {{
-      font-size: 1.2rem;
-      margin: 1rem 0 0rem;
-      color: #555;
-    }}
-    .menu-item {{
-      border-bottom: 1px solid #eee;
-      margin: -.5rem 0 -.5rem;
-      padding: 0.8rem 0;
-    }}
-    .menu-item-header {{
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0 0.5rem;
-    }}
-    .menu-name {{
-      font-size: 1.1rem;
-      margin: 0;
-      font-weight: 600;
-    }}
-    .menu-price {{
-      font-size: 1.1rem;
-      font-weight: 500;
-      color: #111;
-    }}
-    .menu-description {{
-      margin: 0.2rem 0 0 0;
-      font-size: 0.95rem;
-      color: #666;
-      padding: 0 1rem;
+      --nombre-restaurante: "Café Central";
+      --subtitulo-restaurante: "Todo rico, todo el día";
+      --direccion-restaurante: "Av. Corrientes 123";
+      --horario-restaurante: "Martes a Domingos de 8 a 20hs";
+      --telefono-restaurante: "+54 11 1234-5678";
+      --color-nombre-resto: #000;
+      --color-nombre-slogan: #000;
+      --color-categoria: #000;
+      --color-subcategoria: #000;
+      --color-plato: #000;
+      --color-descripcion: #555;
+      --color-precio: #000;
+      --color-info-resto: #000;
+      --color-bg: #fff  ;
+      --bg-opacity: 0.2;
+      --menu-font-size: 1rem;
     }}
 
-    @media (max-width: 600px) {{
-      .menu-name {{
-        font-size: 1rem;
+    @page {{
+      @top-left {{ content: none; }}
+      @top-center {{ content: none; }}
+      @top-right {{ content: none; }}
+      @bottom-left {{ content: none; }}
+      @bottom-center {{ content: none; }}
+      @bottom-right {{ content: none; }}
+    }}
+    
+    body {{
+      font-family: Arial, sans-serif;
+      margin: 0 auto;
+      padding-top: 70px; 
+      column-count: 2;           
+      column-gap: 20px;
+      position: relative;
+      background: var(--color-bg);
+    }}
+
+    #menuTable,
+    .resto-header, .footer {{
+      font-size: var(--menu-font-size);
+    }}
+
+    @media screen and (max-width: 991px) {{
+      body {{
+        margin-left: 10px;
+        margin-right: 10px;
+        column-count: 2;
+        column-gap: 15px;
       }}
-      .menu-price {{
-        font-size: 1rem;
+    }}
+
+    @media screen and (min-width: 992px) {{
+      body {{
+        margin-left: 250px;
+        margin-right: 250px;
+        column-count: 2;
       }}
-      .menu-description {{
-        font-size: 0.9rem;
-      }}
     }}
-    .menu-content {{
-      margin-top: 2rem;
+
+
+    h2 {{
+      font-size: calc(1.5 * var(--menu-font-size)); 
+      text-align: center; 
+      break-after: avoid;
+      page-break-after: avoid;
+      text-decoration: underline;
+      color: var(--color-categoria);
     }}
-    .category-menu {{
-      display: flex;
-      gap: 12px;
-      justify-content: center;
-      align-items: center;
-      margin: -10000px 0 0.5rem 0;
-      flex-wrap: nowrap;
-      overflow-x: auto;
-      padding-top: 8px;
-      padding-bottom: 8px;
-      scrollbar-width: thin;
-      scrollbar-color: #457B9D #eee;
-      position: sticky;
-      top: 50px;
-      z-index: 1000;
-      background: var(#457B9D);
+    h3 {{
+      font-size: calc(1 * var(--menu-font-size)); 
+      font-style: italic;
+      text-align: left;
+      break-after: avoid;
+      page-break-after: avoid;
+      color: var(--color-subcategoria);
     }}
-    #categoryMenu {{
-      margin-top: -0.2rem;
+
+    h4 {{
+      font-size: calc(0.9 * var(--menu-font-size)); 
+      margin: 0.2rem 0; 
     }}
-    .category-menu::-webkit-scrollbar {{
-      height: 6px;
-    }}
-    .category-menu::-webkit-scrollbar-thumb {{
-      background: #457B9D;
-      border-radius: 10px;
-    }}
-    .search-menu {{
-      text-align: center;
-      margin: 1rem 0;
-      position: sticky;
-      top: 0;
-      padding-top: 8px;
-    }}
-    .category-btn {{
-      background: #457B9D;
-      color: #fff;
-      border: none;
-      border-radius: 20px;
-      padding: 7px 18px;
-      font-weight: 600;
-      cursor: pointer;
-      font-size: 1rem;
-      transition: background 0.2s;
-      flex: 0 0 auto;
-    }}
-    .category-btn:hover, .category-btn.active {{
-      background: #457B9D;
-    }}
-    .header-flex {{
+
+    .menu-item {{
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      font-family: 'Poppins', sans-serif;
-      flex-direction: column !important;
-      align-items: center !important;
-      text-align: center !important;
-    }}
-    .header-left, .header-right {{
-      width: 100% !important;
-      text-align: center !important;
-    }}
-    .header-right {{
-      margin-top: 0.5rem !important;
-    }}
-    @media (max-width: 600px) {{
-      .header-flex {{
-        flex-direction: column;
-        gap: 0.2rem;
-        margin-bottom: 0px;
-      }}
-      .header-left {{
-        text-align: left;
-        margin-top: 0px;
-        margin-bottom: 0px;
-        width: 100%;
-      }}
-      .header-right {{
-        margin-top: 0.3rem;
-        margin-bottom: 0px;
-        width: 100%;
-        min-width: unset;
-      }}
-      .header-left h1, .header-left h2 {{
-        margin: 0.2rem 0; 
-      }}
-      .header-right div {{
-        margin-top: 0.3rem; /* acercálo al bloque superior */
-      }}
+      border-bottom: 1px solid #eee;
+      padding: 0.4rem 0;
+      break-inside: avoid-column;
+      page-break-inside: avoid;
     }}
 
-    .style-subtitulo {{
-      font: var(--font-slogan);
-      color:var(--slogan);
-      margin:0.2rem 0 0.3rem 0;
-      font-weight:400;
-      font-style:italic;
+    .menu-plate {{
+      flex: 1;
+      color: var(--color-plato);
+      display: flex;
+      flex-direction: column;
     }}
-    .style-direccion {{
-      font: var(--font-address);
-      color: var(--address);
+
+    .menu-plate h4 {{
+      margin: 0;
+      font-size: calc(0.95 * var(--menu-font-size));
+      font-weight: bold;
+      color: var(--color-plato);
     }}
-    .style-horarios {{
-      font: var(--font-horarios);
-      color: var(--horarios);
+
+    .menu-description {{
+      margin: 0.15rem 0 0;
+      font-size: calc(0.8 * var(--menu-font-size));
+      color: var(--color-descripcion);
     }}
+
+    .menu-price {{
+      font-weight: bold;
+      font-size: calc(0.9 * var(--menu-font-size));
+      color: var(--color-precio);
+      margin-left: 12px;
+      white-space: nowrap;
+      align-self: flex-start;
+    }}
+
+    .dropbtn,
+    #printBtn {{
+      background-color: #67b0dd;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: background 0.3s ease;
+    }}
+
+    .dropbtn:hover,
+    #printBtn:hover {{
+      background-color: #1D3557;
+    }}
+
+    .footer {{
+      column-span: all;
+      text-align: center;
+      font-size: calc(0.8 * var(--menu-font-size));
+      color: #444;
+      border-top: 1px solid #ddd;
+      padding: 8px 0;
+      background: var(--color-bg);
+      position: relative;
+      z-index: 10;
+    }}
+
+    .footer span {{
+      margin: 0rem 8px;
+      white-space: nowrap;
+    }}
+
+    #printArea {{
+      column-count: 2;
+      column-gap: 20px;
+    }}
+
+    @media print {{
+    body {{
+      margin-top: -70px !important;
+      background: var(--color-bg) !important;
+      column-count: 2 !important;
+      column-gap: 15px !important;
+      width: 210mm !important;
+      max-width: 210mm !important;
+      padding-bottom: 25mm !important;
+    }}
+
+    #printBtn, #topMenu {{
+      display: none !important;
+    }}
+
+    #fontSelector,
+    select#fontSelector,
+    div > #fontSelector {{
+      display: none !important;
+    }}
+
+    .footer {{
+      position: fixed;
+      bottom: 0mm;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-size: 0.7rem;
+      border-top: 1px solid #ddd;
+      background: var(--color-bg);
+    }}
+
+    @page {{
+      size: A4;
+      margin: 10mm 10mm 5mm 10mm;
+    }}
+        
+    .print-background {{
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-size: 60%;
+      opacity: var(--bg-opacity);
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }}
+  }}
 
     .resto-header {{
       display: flex;
@@ -342,221 +298,345 @@ html = f"""<!DOCTYPE html>
 
     .resto-header h1 {{
       margin: 0;
-      font-size: 1.5rem;
+      font-size: calc(2 * var(--menu-font-size));
     }}
 
-    .resto-header h2 {{
+    .resto-header h3 {{
       margin: 0.2rem 0 0;
-      font-size: 1rem;
+      font-size: calc(1 * var(--menu-font-size));
       font-weight: normal;
       font-style: italic;
-      color: #555;
+      color: #b28051;
     }}
 
-  </style>
+    #nombre-resto {{
+      color: var(--color-nombre-resto);
+    }}
+
+    #subtitulo-resto{{
+      color: var(--color-nombre-slogan);
+    }}
+
+    #direccion-resto,
+    #horario-resto,
+    #telefono-resto {{
+      color: var(--color-info-resto);
+    }}
+
+    #topMenu {{
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: #fff;
+      padding: 10px 20px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+      display: flex;
+      justify-content: center; 
+      align-items: center;
+      flex-wrap: wrap; 
+      gap: 10px;
+    }}
+
+    .font-size-control,
+    .opacity-control {{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;     
+    }}
+
+    #topMenu select {{
+      padding: 6px 10px;
+      border-radius: 6px;
+      border: 1px solid #ddd;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }}
+
+    #topMenu label {{
+      font-size: 0.9rem;
+      color: #333;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }}
+
+    #topMenu input[type="color"] {{
+      width: 40px;
+      height: 40px;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      border-radius: 4px;
+      -webkit-appearance: none;
+      appearance: none;
+    }}
+
+    #topMenu input[type="color"]::-webkit-color-swatch {{
+      border: none;
+      border-radius: 4px;
+    }}
+
+    #topMenu input[type="color"]::-webkit-color-swatch {{
+      border: none;
+      border-radius: 4px;
+    }}
+
+    #topMenu input[type="color"]:focus {{
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(69, 123, 157, 0.5);
+    }}
+
+    .dropdown {{
+      position: relative;
+      display: inline-block;
+    }}
+
+    .dropbtn {{
+      background-color: #67b0dd;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }}
+
+    .dropdown-content {{
+      display: none;
+      position: absolute;
+      background-color: #f9f9f9;
+      min-width: 160px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      z-index: 1;
+      border-radius: 6px;
+      padding: 10px;
+    }}
+
+    .dropdown-content label {{
+      display: block;
+      margin: 8px 0;
+      font-size: 0.9rem;
+      color: #333;
+    }}
+
+    .dropdown:hover .dropdown-content {{
+      display: block;
+    }}
+
+    .print-background {{
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url("https://res.cloudinary.com/drxznqm61/image/upload/v1759872998/drilldown-removebg-preview_zczol3.png")
+                  no-repeat center center;
+      background-size: 100%;
+      opacity: var(--bg-opacity);
+      z-index: 0;
+      pointer-events: none;
+    }}
+
+    @media (max-width: 768px) {{
+    #topMenu {{
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      padding: 10px;
+      gap: 6px;
+    }}
+
+    .font-size-control,
+    .opacity-control {{
+      width: 48%;
+    }}
+
+    .dropdown,
+    #printBtn {{
+      flex: 1 1 30%; 
+      text-align: center;
+    }}
+
+    .dropbtn,
+    #printBtn {{
+      width: 100%;
+      padding: 8px 0;
+      font-size: 0.85rem;
+    }}
+
+    label {{
+      font-size: 0.8rem;
+    }}
+
+    input[type="range"] {{
+      width: 100%;
+    }}
+  }}
+
+</style>
+<link href="https://fonts.googleapis.com/css?family=Oswald:400,700|Roboto+Slab:400,700|Pacifico|Lato:400,700|Merriweather:400,700|Montserrat:400,700|Indie+Flower|Playfair+Display:400,700|Source+Code+Pro:400,700&display=swap" rel="stylesheet">  
+<link href="https://fonts.googleapis.com/css?family=Oswald:400,700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <img id="banner-resto" alt="Banner" style="width:100%;display:block;margin-bottom:0.5rem;" hidden>   
-    <div class="resto-header">
-      <img id="perfil-resto" alt="Logo Café Central" hidden>
-      <div class="resto-text">
-        <h1 id="nombre-resto" class="style-nombre"></h1>
-        <h2 id="subtitulo-resto" class="style-subtitulo"></h2>
-        <div><span id="direccion-resto" class="style-direccion"><i class="fa-solid fa-map-marker-alt"></i></span></div>
-        <div><span id="horarios-resto" class="style-horarios"><i class="fa-solid fa-clock"></i></span></div>
+  <div class="print-background"></div>
+  <div id="topMenu">
+    <!-- panel controles como en código 1 -->
+    <div class="dropdown">
+      <button class="dropbtn">🖋️ Fuente</button>
+      <div class="dropdown-content">
+        <select id="fontSelector" style="width:100%;">
+          <option value="arial">Arial (Actual)</option>
+          <option value="oswald">Condensed Grotesk (Oswald)</option>
+          <option value="roboto-slab">Serif Moderna (Roboto Slab)</option>
+          <option value="pacifico">Manuscrita Cursiva (Pacifico)</option>
+          <option value="lato">Sans Elegante (Lato)</option>
+          <option value="merriweather">Serif Clásica (Merriweather)</option>
+          <option value="montserrat">Sans Moderna (Montserrat)</option>
+          <option value="indie-flower">Manuscrita Casual (Indie Flower)</option>
+          <option value="playfair">Serif Fashion (Playfair Display)</option>
+          <option value="source-code">Monoespaciada (Source Code Pro)</option>
+          <option value="unbounded">Futurista Geométrica (Unbounded)</option>
+          <option value="syne">Experimental Bold (Syne)</option>
+          <option value="sora">Tech Elegante (Sora)</option>
+          <option value="staatliches">Bauhaus Brutalista (Staatliches)</option>
+          <option value="caveat">Manuscrita Clara (Caveat)</option>
+          <option value="yeseva-one">Serif Chic (Yeseva One)</option>
+          <option value="righteous">Redondeada Moderna (Righteous)</option>
+          <option value="cormorant-garamond">Gourmet Serif (Cormorant Garamond)</option>
+        </select>
+      </div>
+    </div>
+    <div>
+      <label for="font-size-range">Letra</label>
+      <input type="range" id="font-size-range" min="0.7" max="2" step="0.01" value="1" style="width:80px;">
+    </div>
+    <div class="dropdown">
+      <button class="dropbtn">🎨 Colores</button>
+      <div class="dropdown-content">
+        <label>Nombre <input type="color" id="color-nombre-resto"></label>
+        <label>Slogan <input type="color" id="color-nombre-slogan"></label>
+        <label>Categoria <input type="color" id="color-categoria"></label>
+        <label>Subcategoria <input type="color" id="color-subcategoria"></label>
+        <label>Plato <input type="color" id="color-plato"></label>
+        <label>Descripción <input type="color" id="color-descripcion"></label>
+        <label>Precio <input type="color" id="color-precio"></label>
+        <label>Info <input type="color" id="color-info-resto"></label>
+        <label>Fondo <input type="color" id="color-bg"></label>
+      </div>
+    </div>
+    <div>
+      <label for="bg-opacity">Logo</label>
+      <input type="range" id="bg-opacity" min="0" max="0.5" step="0.01" value="0.2" style="width:80px;">
+    </div>
+    <button id="printBtn" onclick="window.print()">🖨️ Imprimir</button>
+  </div>
+
+  <div class="resto-header">
+    <img id="perfil-resto" alt="Logo del restaurante" style="width:100px;height:100px;border-radius:50%;object-fit:cover;" hidden>
+    <div class="resto-text">
+      <h1 id="nombre-resto"></h1>
+      <h3 id="subtitulo-resto"></h3>
     </div>
   </div>
-  <div class="search-menu">
-    <input
-      id="menuSearch"
-      type="text"
-      placeholder="Buscar en el menú..."
-      style="padding: 0.5rem 1rem; border-radius: 20px; border: 1px solid #ccc; width: 90%; max-width: 400px; font-size: 1rem;"
-    />
+
+  <div id="menuTable"></div>
+
+  <div class="footer">
+    <span><i class="fa-solid fa-map-marker-alt"></i> <span id="direccion-resto"></span></span> |
+    <span><i class="fa-solid fa-clock"></i> <span id="horario-resto"></span></span> |
+    <span><i class="fa-solid fa-phone"></i> <span id="telefono-resto"></span></span>
   </div>
-  <div id="categoryMenu" class="category-menu"></div>
-  <div class="container">
-    <div style="overflow-x:auto;">
-      <div id="menuTable" class="menu-content"></div>
-    </div>
-    <div id="noResults" style="display:none;text-align:center;color:#dc3545;margin-top:1.5rem;font-size:1.1rem;">
-      No se encontraron platos con ese criterio.
-    </div>
-  </div>
-  <footer style="background:#f1f1f1;color:#333;text-align:center;padding:1rem 0 1.2rem 0;font-size:1rem;">
-    <span class="thq-body-small">Desarrollado por</span>  
-    <a href="https://menulab.com.ar" target="_blank" rel="noopener">
-      <span style="display: inline-block; margin-left: 12px;">
-        <h1 style="font-family: 'Unbounded', sans-serif; font-weight: 600; font-size: 100%; margin-left: -10px;
-          background: linear-gradient(90deg, #E639A6, #457B9D);
-          -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
-          MenuLab
-        </h1>
-      </span>
-    </a>
-  </footer>
 
-  <div id="google_translate_element" style="position:fixed;top:8px;right:8px;z-index:9999;"></div>
-  <script type="text/javascript">
-    function googleTranslateElementInit() {{
-      new google.translate.TranslateElement({{
-        pageLanguage: 'es',
-        includedLanguages: 'es,en,pt', // elegí los idiomas que quieras permitir
-        layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-      }}, 'google_translate_element');
-    }}
-  </script>
-  <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+<script>
+  const CSV_URL = "{csv_url}";
+  const FIJOS_URL = "{fijos_csv_url}";
+  let allRows = [];
 
-  <script>
-    const CSV_URL = "{csv_url}";
-    const FIJOS_URL = "{fijos_csv_url}";
-
-    function renderCategoryMenu(rows) {{
-      const categories = [...new Set(rows.map(r => r[0].trim()).filter(Boolean))];
-      const menuDiv = document.getElementById('categoryMenu');
-      menuDiv.innerHTML = '';
-
-      categories.forEach(cat => {{
-        const btn = document.createElement('button');
-        btn.className = 'category-btn';
-        btn.textContent = cat;
-        btn.onclick = () => {{
-          const section = document.querySelector(`.menu-group[data-cat="${{cat}}"]`);
-          if (section) {{
-            section.scrollIntoView({{ behavior: 'smooth', block: 'start' }});
-            document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-          }}
-        }};
-        menuDiv.scrollLeft = 0;
-        menuDiv.appendChild(btn);
-      }});
-    }}
-
-    function renderMenuGrouped(rows) {{
-      const container = document.querySelector("#menuTable");
-      container.innerHTML = "";
-
-      const agrupado = {{}};
-
-      rows.forEach(cols => {{
-        const [cat, subcat, nombre, desc, precio] = cols.map(c => c.trim());
-        if (!cat || !nombre) return;
-
-        if (!agrupado[cat]) agrupado[cat] = {{}};
-        const sub = subcat || "-";
-        if (!agrupado[cat][sub]) agrupado[cat][sub] = [];
-        agrupado[cat][sub].push({{ nombre, desc, precio }});
-      }});
-
-      Object.entries(agrupado).forEach(([cat, subcategorias]) => {{
-        const group = document.createElement("div");
-        group.className = "menu-group";
-        group.setAttribute('data-cat', cat);
-
-        const catTitle = document.createElement("h2");
-        catTitle.textContent = cat;
-        group.appendChild(catTitle);
-
-        Object.entries(subcategorias).forEach(([subcat, items]) => {{
-          if (subcat && subcat !== "-") {{
-            const subTitle = document.createElement("h3");
-            subTitle.textContent = subcat;
-            group.appendChild(subTitle);
-          }}
-
-          items.forEach(item => {{
-            const itemDiv = document.createElement("div");
-            itemDiv.className = "menu-item";
-            itemDiv.innerHTML = `
-              <div class="menu-item-header">
-                <h4 class="menu-name">${{item.nombre}}</h4>
-                <span class="menu-price">$${{item.precio}}</span>
-              </div>
-              <p class="menu-description">${{item.desc}}</p>
-            `;
-            group.appendChild(itemDiv);
-          }});
-        }});
-
-        container.appendChild(group);
-      }});
-    }}
-
-    function filterMenuRows(rows, query) {{
-      if (!query) return rows;
-      const q = query.trim().toLowerCase();
-      return rows.filter(cols =>
-        cols.some(cell => cell && cell.toLowerCase().includes(q))
-      );
-    }}
-
-    const searchInput = document.getElementById('menuSearch');
-    searchInput.addEventListener('input', function () {{
-      const filtered = filterMenuRows(allRows, this.value);
-      renderMenuGrouped(filtered);
-      renderCategoryMenu(filtered);
-      document.getElementById('noResults').style.display = filtered.length === 0 ? "block" : "none";
+  // === Cargar menú ===
+  fetch(CSV_URL)
+    .then(r => r.text())
+    .then(data => {{
+      allRows = data.split("\\n").slice(1).map(r => r.split(",").map(c => c.replace(/\"/g, "")));
+      renderMenu(allRows);
     }});
 
-    let allRows = [];
-    fetch(CSV_URL)
-      .then(r => r.text())
-      .then(data => {{
-        allRows = data.split("\\n").slice(1).map(r => r.split(",").map(c => c.replace(/\"/g, "")));
-        renderMenuGrouped(allRows);
-        renderCategoryMenu(allRows);
-      }})
-      .catch(err => {{
-        document.getElementById("noResults").style.display = "block";
-        document.getElementById("noResults").textContent = "Error al cargar el menú.";
-      }});
-
-    fetch(FIJOS_URL)
-      .then(r => r.text())
-      .then(data => {{
-        const rows = data.split("\\n").map(r => r.split(","));
-        document.getElementById("nombre-resto").textContent    = rows[1]?.[1]?.replace(/"/g, "").trim() || "";
-        document.getElementById("subtitulo-resto").textContent = rows[2]?.[1]?.replace(/"/g, "").trim() || "";
-        document.getElementById("direccion-resto").textContent = rows[3]?.[1]?.replace(/"/g, "").trim() || "";
-        document.getElementById("horarios-resto").textContent  = rows[4]?.[1]?.replace(/"/g, "").trim() || "";
-       
-        const banner = document.getElementById('banner-resto');
-        const bannerUrl = (rows[5]?.[1] || '').replace(/"/g,'').trim();
-        const hasBanner = bannerUrl && bannerUrl.toLowerCase() !== 'off';
-        if (hasBanner) {{
-          banner.src = bannerUrl;
-          banner.hidden = false;              
-          banner.addEventListener('error', () => ibannermg.remove());
-        }} else {{
-          banner.remove();                   
+  // === Renderizar menú agrupado ===
+  function renderMenu(rows) {{
+    const container = document.getElementById("menuTable");
+    container.innerHTML = "";
+    const grouped = {{}};
+    rows.forEach(cols => {{
+      const [cat, sub, name, desc, price] = cols.map(c => c.trim());
+      if (!cat || !name) return;
+      if (!grouped[cat]) grouped[cat] = {{}};
+      const s = sub || "-";
+      if (!grouped[cat][s]) grouped[cat][s] = [];
+      grouped[cat][s].push({{ name, desc, price }});
+    }});
+    Object.entries(grouped).forEach(([cat, subs]) => {{
+      const h2 = document.createElement("h2");
+      h2.textContent = cat;
+      container.appendChild(h2);
+      Object.entries(subs).forEach(([sub, items]) => {{
+        if (sub && sub !== "-") {{
+          const h3 = document.createElement("h3");
+          h3.textContent = sub;
+          container.appendChild(h3);
         }}
-
-        const perfil = document.getElementById('perfil-resto');
-        const perfilUrl = (rows[6]?.[1] || '').replace(/"/g,'').trim();
-        const hasperfil = perfilUrl && perfilUrl.toLowerCase() !== 'off';
-        if (hasperfil) {{
-          perfil.src = perfilUrl;
-          perfil.hidden = false;              
-          perfil.addEventListener('error', () => perfil.remove());
-        }} else {{
-          perfil.remove();                   
-        }}
+        items.forEach(it => {{
+          const div = document.createElement("div");
+          div.className = "menu-item";
+          div.innerHTML = `
+            <div class="menu-plate">
+              <h4>${{it.name}}</h4>
+              <p class="menu-description">${{it.desc}}</p>
+            </div>
+            <span class="menu-price">${{it.price}}</span>`;
+          container.appendChild(div);
+        }});
       }});
+    }});
+  }}
 
-  </script>
+  // === Cargar datos fijos ===
+  fetch(FIJOS_URL)
+    .then(r => r.text())
+    .then(data => {{
+      const rows = data.split("\\n").map(r => r.split(","));
+      const get = i => (rows[i-2] && rows[i-2][1]) ? rows[i-2][1].replace(/\"/g, "").trim() : "";
+      document.getElementById("nombre-resto").textContent = get(2);
+      document.getElementById("subtitulo-resto").textContent = get(3);
+      document.getElementById("direccion-resto").textContent = get(4);
+      document.getElementById("horario-resto").textContent = get(5);
+      document.getElementById("telefono-resto").textContent = get(6);
+      const bg = get(7);
+      const logo = get(8);
+      if (bg && bg.toLowerCase() !== "off") {{
+        document.querySelector(".print-background").style.background = `url('${{bg}}') no-repeat center center`;
+        document.querySelector(".print-background").style.backgroundSize = "100%";
+      }}
+      if (logo && logo.toLowerCase() !== "off") {{
+        const img = document.getElementById("perfil-resto");
+        img.src = logo;
+        img.hidden = false;
+      }}
+    }});
+</script>
 </body>
 </html>
 """
 
+# === GUARDAR HTML ===
 with open(html_file, "w", encoding="utf-8") as f:
     f.write(html)
 
 print("✅ HTML generado:", html_file)
 print("📄 Planilla conectada:", sheet_url)
 
-# === EXPORTAR PATHS PARA WORKFLOW
+# === EXPORTAR PATHS PARA WORKFLOW ===
 with open("menu_url.txt", "w") as f:
     f.write(f"planes/menu-emprendedor-{fecha_id}-{hash_str}/index.html")
 with open("sheet_url.txt", "w") as f:
