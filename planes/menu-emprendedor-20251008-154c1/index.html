@@ -572,6 +572,78 @@
         img.hidden = false;
       }
     });
+
+  // Cambiar fuente
+document.getElementById('fontSelector').addEventListener('change', function(e) {
+  const val = e.target.value;
+  const map = {
+    'arial': 'Arial, sans-serif',
+    'oswald': "'Oswald', Arial, sans-serif",
+    'roboto-slab': "'Roboto Slab', serif",
+    'pacifico': "'Pacifico', cursive",
+    'lato': "'Lato', Arial, sans-serif",
+    'merriweather': "'Merriweather', serif",
+    'montserrat': "'Montserrat', Arial, sans-serif",
+    'indie-flower': "'Indie Flower', cursive",
+    'playfair': "'Playfair Display', serif",
+    'source-code': "'Source Code Pro', monospace",
+    'unbounded': "'Unbounded', sans-serif",
+    'syne': "'Syne', sans-serif",
+    'sora': "'Sora', sans-serif",
+    'staatliches': "'Staatliches', sans-serif",
+    'caveat': "'Caveat', cursive",
+    'yeseva-one': "'Yeseva One', serif",
+    'righteous': "'Righteous', cursive",
+    'cormorant-garamond': "'Cormorant Garamond', serif"
+  };
+  document.body.style.fontFamily = map[val] || 'Arial, sans-serif';
+  localStorage.setItem('font-family', val);
+});
+
+// Restaurar fuente guardada
+const savedFont = localStorage.getItem('font-family');
+if (savedFont) {
+  document.getElementById('fontSelector').value = savedFont;
+  document.body.style.fontFamily = map[savedFont] || 'Arial, sans-serif';
+}
+
+// Cambiar colores
+document.querySelectorAll('#topMenu input[type="color"]').forEach(input => {
+  input.addEventListener('input', function() {
+    const varName = this.id;
+    const color = this.value;
+    document.documentElement.style.setProperty(`--${varName}`, color);
+    localStorage.setItem(varName, color);
+  });
+});
+
+// Restaurar colores
+document.querySelectorAll('#topMenu input[type="color"]').forEach(input => {
+  const saved = localStorage.getItem(input.id);
+  if (saved) {
+    input.value = saved;
+    document.documentElement.style.setProperty(`--${input.id}`, saved);
+  }
+});
+
+// Cambiar tamaño de fuente
+const fontSizeInput = document.getElementById('font-size-range');
+fontSizeInput.value = localStorage.getItem('menu-font-size') || '1';
+document.documentElement.style.setProperty('--menu-font-size', fontSizeInput.value + 'rem');
+fontSizeInput.addEventListener('input', function() {
+  document.documentElement.style.setProperty('--menu-font-size', this.value + 'rem');
+  localStorage.setItem('menu-font-size', this.value);
+});
+
+// Restaurar opacidad fondo
+const bgOpacityInput = document.getElementById('bg-opacity');
+bgOpacityInput.value = localStorage.getItem('bg-opacity') || '0.2';
+document.documentElement.style.setProperty('--bg-opacity', bgOpacityInput.value);
+bgOpacityInput.addEventListener('input', function() {
+  document.documentElement.style.setProperty('--bg-opacity', this.value);
+  localStorage.setItem('bg-opacity', this.value);
+});
+
 </script>
 </body>
 </html>
