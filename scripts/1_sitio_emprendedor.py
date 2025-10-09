@@ -27,10 +27,10 @@ if not sheet_url:
 
 # Extraer ID y armar URLs válidas
 sheet_id = sheet_url.split("/d/")[1].split("/")[0]
-csv_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv"
-fijos_csv_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet=Datos"
+csv_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet=Menu"
+datos_csv_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet=Datos"
 print("🔗 CSV menú:", csv_url)
-print("🔗 CSV fijos:", fijos_csv_url)
+print("🔗 CSV fijos:", datos_csv_url)
 
 # === VALIDAR CONEXIÓN (sin cortar si falla) ===
 try:
@@ -552,7 +552,7 @@ html = f"""<!DOCTYPE html>
 
 <script>
   const CSV_URL = "{csv_url}";
-  const FIJOS_URL = "{fijos_csv_url}";
+  const FIJOS_URL = "{datos_csv_url}";
   let allRows = [];
 
   // === Cargar menú ===
@@ -601,29 +601,108 @@ html = f"""<!DOCTYPE html>
     }});
   }}
 
-  // === Cargar datos fijos ===
-  fetch(FIJOS_URL)
-    .then(r => r.text())
-    .then(data => {{
-      const rows = data.split("\\n").map(r => r.split(","));
-      const get = i => (rows[i-2] && rows[i-2][1]) ? rows[i-2][1].replace(/\"/g, "").trim() : "";
-      document.getElementById("nombre-resto").textContent = get(2);
-      document.getElementById("subtitulo-resto").textContent = get(3);
-      document.getElementById("direccion-resto").textContent = get(4);
-      document.getElementById("horario-resto").textContent = get(5);
-      document.getElementById("telefono-resto").textContent = get(6);
-      const bg = get(7);
-      const logo = get(8);
-      if (bg && bg.toLowerCase() !== "off") {{
-        document.querySelector(".print-background").style.background = `url('${{bg}}') no-repeat center center`;
-        document.querySelector(".print-background").style.backgroundSize = "100%";
-      }}
-      if (logo && logo.toLowerCase() !== "off") {{
-        const img = document.getElementById("perfil-resto");
-        img.src = logo;
-        img.hidden = false;
-      }}
+fetch(FIJOS_URL)
+  .then(r => r.text())
+  .then(data => {{
+    const rows = data.split("\n").map(r => r.split(",").map(c => c.replace(/"/g, "").trim()));
+
+    // ⚙️ En tu CSV, la info útil está en columna B (índice 1)
+    const get = row => (rows[row] && rows[row][1]) ? rows[row][1] : "";
+
+    document.getElementById("nombre-resto").textContent = get(1);   // 🍸 Bar Menulab
+    document.getElementById("subtitulo-resto").textContent = get(2); // ¡La mejor experiencia...
+    document.getElementById("direccion-resto").textContent = get(3); // Av. Corrientes...
+    document.getElementById("horario-resto").textContent = get(4);   // Horarios
+    document.getElementById("telefono-resto").textContent = get(5);  // Teléfono
+
+    const bg = get(6);   // Fondo
+    const logo = get(7); // Logo
+
+    if (bg && bg.toLowerCase() !== "off") {{
+      const bgDiv = document.querySelector(".print-background");
+      bgDiv.style.background = `url('${{bg}}') no-repeat center center`;
+      bgDiv.style.backgroundSize = "100%";
+    }}
+
+    if (logo && logo.toLowerCase() !== "off") {{
+      const img = document.getElementById("perfil-resto");
+      img.src = logo;
+      img.hidden = false;
+    }}
+  }});
+
+  // Cambiar fuente
+  document.getElementById('fontSelector').addEventListener('change', function(e) {{
+    const val = e.target.value;
+    const map = {{
+      'arial': 'Arial, sans-serif',
+      'oswald': "'Oswald', Arial, sans-serif",
+      'roboto-slab': "'Roboto Slab', serif",
+      'pacifico': "'Pacifico', cursive",
+      'lato': "'Lato', Arial, sans-serif",
+      'merriweather': "'Merriweather', serif",
+      'montserrat': "'Montserrat', Arial, sans-serif",
+      'indie-flower': "'Indie Flower', cursive",
+      'playfair': "'Playfair Display', serif",
+      'source-code': "'Source Code Pro', monospace",
+      'unbounded': "'Unbounded', sans-serif",
+      'syne': "'Syne', sans-serif",
+      'sora': "'Sora', sans-serif",
+      'staatliches': "'Staatliches', sans-serif",
+      'caveat': "'Caveat', cursive",
+      'yeseva-one': "'Yeseva One', serif",
+      'righteous': "'Righteous', cursive",
+      'cormorant-garamond': "'Cormorant Garamond', serif"
+    }};
+    document.body.style.fontFamily = map[val] || 'Arial, sans-serif';
+    localStorage.setItem('font-family', val);
+  }});
+
+  // Restaurar fuente guardada
+  const savedFont = localStorage.getItem('font-family');
+  if (savedFont) {{
+    document.getElementById('fontSelector').value = savedFont;
+    document.body.style.fontFamily = map[savedFont] || 'Arial, sans-serif';
+  }}
+
+  // Cambiar colores
+  document.querySelectorAll('#topMenu input[type="color"]').forEach(input => {{
+    input.addEventListener('input', function() {{
+      const varName = this.id;
+      const color = this.value;
+      document.documentElement.style.setProperty(`--${{varName}}`, color);
+      localStorage.setItem(varName, color);
     }});
+  }});
+
+  // Restaurar colores
+  document.querySelectorAll('#topMenu input[type="color"]').forEach(input => {{
+    const saved = localStorage.getItem(input.id);
+    if (saved) {{
+      input.value = saved;
+      document.documentElement.style.setProperty(`--${{input.id}}`, saved);
+    }}
+  }});
+
+  // Cambiar tamaño de fuente
+  const fontSizeInput = document.getElementById('font-size-range');
+  fontSizeInput.value = localStorage.getItem('menu-font-size') || '1';
+  document.documentElement.style.setProperty('--menu-font-size', fontSizeInput.value + 'rem');
+  fontSizeInput.addEventListener('input', function() {{
+    document.documentElement.style.setProperty('--menu-font-size', this.value + 'rem');
+    localStorage.setItem('menu-font-size', this.value);
+  }});
+
+  // Restaurar opacidad fondo
+  const bgOpacityInput = document.getElementById('bg-opacity');
+  bgOpacityInput.value = localStorage.getItem('bg-opacity') || '0.2';
+  document.documentElement.style.setProperty('--bg-opacity', bgOpacityInput.value);
+  bgOpacityInput.addEventListener('input', function() {{
+    document.documentElement.style.setProperty('--bg-opacity', this.value);
+    localStorage.setItem('bg-opacity', this.value);
+  }});
+
+
 </script>
 </body>
 </html>

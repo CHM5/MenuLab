@@ -646,7 +646,7 @@
     document.querySelectorAll('#topMenu input[type="color"]').forEach(input => {
       const saved = localStorage.getItem(input.id);
       if (saved) {
-        input.value = saved;
+        input.value = saved;  
         document.documentElement.style.setProperty(`--${input.id}`, saved);
       }
     });
