@@ -604,7 +604,7 @@ html = f"""<!DOCTYPE html>
 fetch(FIJOS_URL)
   .then(r => r.text())
   .then(data => {{
-    const rows = data.split("\n").map(r => r.split(",").map(c => c.replace(/"/g, "").trim()));
+    const rows = data.split("\\n").map(r => r.split(",").map(c => c.replace(/"/g, "").trim()));
 
     // ⚙️ En tu CSV, la info útil está en columna B (índice 1)
     const get = row => (rows[row] && rows[row][1]) ? rows[row][1] : "";
@@ -631,9 +631,6 @@ fetch(FIJOS_URL)
     }}
   }});
 
-  // Cambiar fuente
-  document.getElementById('fontSelector').addEventListener('change', function(e) {{
-    const val = e.target.value;
     const map = {{
       'arial': 'Arial, sans-serif',
       'oswald': "'Oswald', Arial, sans-serif",
@@ -654,6 +651,10 @@ fetch(FIJOS_URL)
       'righteous': "'Righteous', cursive",
       'cormorant-garamond': "'Cormorant Garamond', serif"
     }};
+
+  // Cambiar fuente
+  document.getElementById('fontSelector').addEventListener('change', function(e) {{
+    const val = e.target.value;
     document.body.style.fontFamily = map[val] || 'Arial, sans-serif';
     localStorage.setItem('font-family', val);
   }});
