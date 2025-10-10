@@ -438,8 +438,72 @@
     input[type="range"] {
       width: 100%;
     }
+
   }
 
+  #colorMenu label{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:6px;
+  }
+
+  /* tamaño/estilo básico del checkbox */
+  #colorMenu .color-group{
+    width:18px;
+    height:18px;
+    accent-color:#457B9D;
+  }
+
+  /* ocultos por defecto */
+  #colorMenu:not(.active) .color-group{
+    display:none;
+  }
+
+  /* visibles cuando activás el modo */
+  #colorMenu.active .color-group{
+    display:inline-block;
+    cursor:pointer;
+  }
+
+  /* pequeño highlight al pasar el mouse en modo activo */
+  #colorMenu.active label:hover{
+    background:#eef6fa;
+    border-radius:4px;
+  }
+
+  /* Cuadradito principal de color */
+  #masterColorContainer {
+    display: none;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  #colorMenu.active #masterColorContainer {
+    display: flex;
+  }
+
+  #masterColor {
+    width: 32px;
+    height: 32px;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: transform 0.2s ease;
+  }
+
+  #masterColor:hover {
+    transform: scale(1.05);
+  }
+
+  #presetSelector {
+    width: 100%;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    padding: 6px;
+    font-size: 0.9rem;
+    cursor: pointer;
+  }
   </style>
 <link href="https://fonts.googleapis.com/css?family=Oswald:400,700|Roboto+Slab:400,700|Pacifico|Lato:400,700|Merriweather:400,700|Montserrat:400,700|Indie+Flower|Playfair+Display:400,700|Source+Code+Pro:400,700&display=swap" rel="stylesheet">  
 <link href="https://fonts.googleapis.com/css?family=Oswald:400,700&display=swap" rel="stylesheet">
@@ -448,9 +512,31 @@
 <body>
   <div class="print-background"></div>
     <div id="topMenu">
+
+      <div class="dropdown">
+        <button class="dropbtn">🌈 Estilos</button>
+        <div class="dropdown-content">
+          <label for="presetSelector">Seleccionar estilo</label>
+          <select id="presetSelector" style="width:100%;">
+            <option value="">Seleccioná un estilo...</option>
+            <option value="1">☕ Vintage</option>
+            <option value="2">🌿 Natural Pastel</option>
+            <option value="3">🖤 Minimalista Oscuro</option>
+            <option value="4">💎 Luxury Dorado</option>
+            <option value="5">📜 Clásico Italiano</option>
+            <option value="6">🩵 Celeste Moderno</option>
+            <option value="7">🍂 Otoñal Suave</option>
+            <option value="8">⚡ Tech Futurista</option>
+            <option value="9">🎨 Pop Alegre</option>
+            <option value="10">🤍 Blanco Neutro</option>
+          </select>
+        </div>
+      </div>
+
       <div class="dropdown">
         <button class="dropbtn">🖋️ Fuente</button>
         <div class="dropdown-content">
+          <label for="fontSelector">Seleccionar fuente</label>
           <select id="fontSelector" style="width:100%;">
             <option value="arial">Arial (Actual)</option>
             <option value="oswald">Condensed Grotesk (Oswald)</option>
@@ -473,33 +559,41 @@
           </select>
         </div>
       </div>
+
       <div>
         <label for="font-size-range">Letra</label>
         <input type="range" id="font-size-range" min="0.7" max="2" step="0.01" value="1" style="width:80px;">
       </div>
+
       <div class="dropdown">
         <button class="dropbtn">🎨 Colores</button>
-        <div class="dropdown-content">
-          <label>Nombre <input type="color" id="color-nombre-resto"></label>
-          <label>Slogan <input type="color" id="color-nombre-slogan"></label>
-          <label>Categoria <input type="color" id="color-categoria"></label>
-          <label>Subcategoria <input type="color" id="color-subcategoria"></label>
-          <label>Plato <input type="color" id="color-plato"></label>
-          <label>Descripción <input type="color" id="color-descripcion"></label>
-          <label>Precio <input type="color" id="color-precio"></label>
-          <label>Info <input type="color" id="color-info-resto"></label>
-          <label>Fondo <input type="color" id="color-bg"></label>
+        <div class="dropdown-content" id="colorMenu">
+          <label>Nombre <input type="checkbox" class="color-group"> <input type="color" id="color-nombre-resto"></label>
+          <label>Slogan <input type="checkbox" class="color-group"> <input type="color" id="color-nombre-slogan"></label>
+          <label>Categoria <input type="checkbox" class="color-group"> <input type="color" id="color-categoria"></label>
+          <label>Subcategoria <input type="checkbox" class="color-group"> <input type="color" id="color-subcategoria"></label>
+          <label>Plato <input type="checkbox" class="color-group"> <input type="color" id="color-plato"></label>
+          <label>Descripción <input type="checkbox" class="color-group"> <input type="color" id="color-descripcion"></label>
+          <label>Precio <input type="checkbox" class="color-group"> <input type="color" id="color-precio"></label>
+          <label>Info <input type="checkbox" class="color-group"> <input type="color" id="color-info-resto"></label>
+          <label>Fondo <input type="checkbox" class="color-group"> <input type="color" id="color-bg"></label>
 
           <hr style="margin:8px 0;">
           <label style="display:flex;align-items:center;gap:6px;font-size:0.85rem;">
             <input type="checkbox" id="sameColorMode">
             Aplicar mismo color a los seleccionados
           </label>
+          <!-- Cuadradito principal de color -->
+          <div id="masterColorContainer" style="display:none;align-items:center;gap:6px;margin-top:6px;">
+            <label style="font-size:0.85rem;">Color principal</label>
+            <input type="color" id="masterColor" value="#000000" style="width:40px;height:40px;cursor:pointer;border:none;border-radius:4px;">
+          </div>
           <small style="display:block;color:#555;font-size:0.75rem;margin-top:4px;">
-            (Seleccioná varios campos y elegí un color para aplicarlo a todos)
+            (Marcá varios campos y elegí un color para aplicarlo a todos)
           </small>
         </div>
       </div>
+
       <div class="dropdown">
         <button class="dropbtn">✨ Firulete</button>
         <div class="dropdown-content">
@@ -521,7 +615,7 @@
         <label for="bg-opacity" style="align-items: center;">Logo</label>
         <input type="range" id="bg-opacity" min="0" max="0.5" step="0.01" value="0.2" style="width:80px;">
       </div>
-      <button id="printBtn" onclick="window.print()">🖨️ Imprimir</button>
+      <button id="printBtn" onclick="window.print()">🖨️ Vista Previa</button>
     </div>
   
     <div class="resto-header">
@@ -768,65 +862,290 @@
       document.documentElement.style.setProperty("--firulete", `"${savedFirulete}"`);
     }
 
-    // === APLICAR MISMO COLOR A VARIOS CAMPOS ===
-    let selectedColorInputs = [];
-    let isSelectingGroup = false;
+    // === APLICAR MISMO COLOR A VARIOS CAMPOS (checkboxes visibles con animación) ===
+    const sameColorToggle = document.getElementById("sameColorMode");
+    const colorMenu = document.getElementById("colorMenu");
+    const colorGroups = document.querySelectorAll(".color-group");
+    const colorPickers = document.querySelectorAll('#colorMenu input[type="color"]');
 
-    document.querySelectorAll('#topMenu input[type="color"]').forEach(input => {
-      input.addEventListener('click', function (e) {
-        const sameMode = document.getElementById('sameColorMode').checked;
-        if (sameMode) {
-          // En modo grupal, seleccionamos/deseleccionamos sin abrir paleta
-          if (!isSelectingGroup) {
-            e.preventDefault(); // evita abrir el selector en los clics de selección
-          }
+    sameColorToggle.addEventListener("change", () => {
+      const active = sameColorToggle.checked;
 
-          if (selectedColorInputs.includes(this)) {
-            this.style.outline = '';
-            selectedColorInputs = selectedColorInputs.filter(i => i !== this);
-          } else {
-            this.style.outline = '2px solid #457B9D';
-            selectedColorInputs.push(this);
-          }
-        }
-      });
+      // Activa/desactiva la clase que muestra los checkboxes
+      if (active) {
+        colorMenu.classList.add("active");
+      } else {
+        colorMenu.classList.remove("active");
+      }
 
-      // Detectar cambio de color
-      input.addEventListener('input', function () {
-        const sameMode = document.getElementById('sameColorMode').checked;
-        const newColor = this.value;
-        const varName = this.id;
+      // Limpia selección al desactivar
+      colorGroups.forEach(cb => (cb.checked = false));
+    });
 
-        // aplica el color normalmente al propio input
+    colorPickers.forEach(picker => {
+      picker.addEventListener("input", () => {
+        const selectedCheckboxes = Array.from(colorGroups).filter(cb => cb.checked);
+        const newColor = picker.value;
+        const varName = picker.id;
+
+        // Aplica color normalmente
         document.documentElement.style.setProperty(`--${varName}`, newColor);
         localStorage.setItem(varName, newColor);
 
-        // si hay modo grupal y varios seleccionados, aplica a todos
-        if (sameMode && selectedColorInputs.length > 1) {
-          selectedColorInputs.forEach(i => {
-            if (i !== this) {
-              i.value = newColor;
-              const name = i.id;
-              document.documentElement.style.setProperty(`--${name}`, newColor);
-              localStorage.setItem(name, newColor);
-            }
+        // Si está activo el modo y hay varios seleccionados → aplica a todos
+        if (sameColorToggle.checked && selectedCheckboxes.length > 1) {
+          selectedCheckboxes.forEach(cb => {
+            const input = cb.nextElementSibling;
+            input.value = newColor;
+            const name = input.id;
+            document.documentElement.style.setProperty(`--${name}`, newColor);
+            localStorage.setItem(name, newColor);
           });
         }
       });
     });
 
-    // Permitir cambiar color solo en el primer click (sin bloquear el selector)
-    document.getElementById('sameColorMode').addEventListener('change', function () {
-      if (this.checked) {
-        selectedColorInputs = [];
-        isSelectingGroup = true;
-      } else {
-        selectedColorInputs.forEach(i => (i.style.outline = ''));
-        selectedColorInputs = [];
-        isSelectingGroup = false;
-      }
+    // === COLOR MAESTRO ===
+    const masterColorContainer = document.getElementById("masterColorContainer");
+    const masterColorInput = document.getElementById("masterColor");
+
+    // Mostrar/ocultar el cuadradito principal cuando se activa el modo
+    sameColorToggle.addEventListener("change", () => {
+      masterColorContainer.style.display = sameColorToggle.checked ? "flex" : "none";
     });
 
+    // Aplicar color maestro a todos los seleccionados
+    masterColorInput.addEventListener("input", () => {
+      if (!sameColorToggle.checked) return;
+
+      const newColor = masterColorInput.value;
+      const selectedCheckboxes = Array.from(document.querySelectorAll("#colorMenu .color-group")).filter(cb => cb.checked);
+
+      selectedCheckboxes.forEach(cb => {
+        const input = cb.nextElementSibling;
+        input.value = newColor;
+        const varName = input.id;
+        document.documentElement.style.setProperty(`--${varName}`, newColor);
+        localStorage.setItem(varName, newColor);
+      });
+    });
+
+    // === PRESETS DE ESTILO ===
+    const presets = {
+      1: { // ☕ Café Vintage
+        font: 'cormorant-garamond',
+        size: '1.0',
+        colors: {
+          'color-nombre-resto': '#4b2e05',
+          'color-nombre-slogan': '#8b5e34',
+          'color-categoria': '#4b2e05',
+          'color-subcategoria': '#6e4429',
+          'color-plato': '#2b1a10',
+          'color-descripcion': '#7a6241',
+          'color-precio': '#4b2e05',
+          'color-info-resto': '#4b2e05',
+          'color-bg': '#fff7ec',
+          'color-firulete': '#b28554'
+        },
+        firulete: '⚜ ⚜ ⚜',
+        bgOpacity: '0.2'
+      },
+      2: { // 🌿 Natural Pastel
+        font: 'lato',
+        size: '1',
+        colors: {
+          'color-nombre-resto': '#466c3f',
+          'color-nombre-slogan': '#6d9964',
+          'color-categoria': '#466c3f',
+          'color-subcategoria': '#688c55',
+          'color-plato': '#3a5037',
+          'color-descripcion': '#6f8d6a',
+          'color-precio': '#55784b',
+          'color-info-resto': '#466c3f',
+          'color-bg': '#f5f9f5',
+          'color-firulete': '#55784b'
+        },
+        firulete: '🍃 ✿ 🍃',
+        bgOpacity: '0.15'
+      },
+      3: { // 🖤 Minimalista Oscuro
+        font: 'montserrat',
+        size: '1',
+        colors: {
+          'color-nombre-resto': '#ffffff',
+          'color-nombre-slogan': '#cccccc',
+          'color-categoria': '#ffffff',
+          'color-subcategoria': '#cccccc',
+          'color-plato': '#ffffff',
+          'color-descripcion': '#aaaaaa',
+          'color-precio': '#ff6464',
+          'color-info-resto': '#dddddd',
+          'color-bg': '#121212',
+          'color-firulete': '#888888'
+        },
+        firulete: '⋄ ⋄ ⋄',
+        bgOpacity: '0.3'
+      },
+      4: { // 💎 Luxury Dorado
+        font: 'playfair',
+        size: '1.1',
+        colors: {
+          'color-nombre-resto': '#c9a44c',
+          'color-nombre-slogan': '#b8974a',
+          'color-categoria': '#b8974a',
+          'color-subcategoria': '#d4b76d',
+          'color-plato': '#222',
+          'color-descripcion': '#666',
+          'color-precio': '#b8974a',
+          'color-info-resto': '#444',
+          'color-bg': '#fdfaf3',
+          'color-firulete': '#b8974a'
+        },
+        firulete: '✤ ✤ ✤',
+        bgOpacity: '0.18'
+      },
+      5: { // 📜 Clásico Italiano
+        font: 'merriweather',
+        size: '1',
+        colors: {
+          'color-nombre-resto': '#8c1d1d',
+          'color-nombre-slogan': '#bf4040',
+          'color-categoria': '#8c1d1d',
+          'color-subcategoria': '#bf4040',
+          'color-plato': '#2e2e2e',
+          'color-descripcion': '#5a5a5a',
+          'color-precio': '#8c1d1d',
+          'color-info-resto': '#5a5a5a',
+          'color-bg': '#fff9f9',
+          'color-firulete': '#a64242'
+        },
+        firulete: '❧ ❧ ❧',
+        bgOpacity: '0.2'
+      },
+      6: { // 🩵 Celeste Moderno
+        font: 'sora',
+        size: '1',
+        colors: {
+          'color-nombre-resto': '#004E89',
+          'color-nombre-slogan': '#2F80ED',
+          'color-categoria': '#004E89',
+          'color-subcategoria': '#0077B6',
+          'color-plato': '#333',
+          'color-descripcion': '#555',
+          'color-precio': '#0077B6',
+          'color-info-resto': '#004E89',
+          'color-bg': '#EAF6FF',
+          'color-firulete': '#0077B6'
+        },
+        firulete: '✦ ✦ ✦',
+        bgOpacity: '0.12'
+      },
+      7: { // 🍂 Otoñal Suave
+        font: 'yeseva-one',
+        size: '1',
+        colors: {
+          'color-nombre-resto': '#b05b2b',
+          'color-nombre-slogan': '#d4844c',
+          'color-categoria': '#b05b2b',
+          'color-subcategoria': '#d4844c',
+          'color-plato': '#3c2b1f',
+          'color-descripcion': '#6b4b36',
+          'color-precio': '#b05b2b',
+          'color-info-resto': '#5a4333',
+          'color-bg': '#fff8f2',
+          'color-firulete': '#b05b2b'
+        },
+        firulete: '✤ ✤ ✤',
+        bgOpacity: '0.18'
+      },
+      8: { // ⚡ Tech Futurista
+        font: 'unbounded',
+        size: '1',
+        colors: {
+          'color-nombre-resto': '#00C6CF',
+          'color-nombre-slogan': '#00F0FF',
+          'color-categoria': '#00C6CF',
+          'color-subcategoria': '#00E5FF',
+          'color-plato': '#E0E0E0',
+          'color-descripcion': '#B0B0B0',
+          'color-precio': '#00E5FF',
+          'color-info-resto': '#FFFFFF',
+          'color-bg': '#0A0A0A',
+          'color-firulete': '#00E5FF'
+        },
+        firulete: '⚡ ⚡ ⚡',
+        bgOpacity: '0.25'
+      },
+      9: { // 🎨 Pop Alegre
+        font: 'righteous',
+        size: '1',
+        colors: {
+          'color-nombre-resto': '#F94144',
+          'color-nombre-slogan': '#F8961E',
+          'color-categoria': '#F3722C',
+          'color-subcategoria': '#F9C74F',
+          'color-plato': '#277DA1',
+          'color-descripcion': '#577590',
+          'color-precio': '#F94144',
+          'color-info-resto': '#F9844A',
+          'color-bg': '#FFF8F0',
+          'color-firulete': '#F3722C'
+        },
+        firulete: '✨ 💫 ✨',
+        bgOpacity: '0.15'
+      },
+      10: { // 🤍 Blanco Neutro
+        font: 'lato',
+        size: '1',
+        colors: {
+          'color-nombre-resto': '#222',
+          'color-nombre-slogan': '#555',
+          'color-categoria': '#333',
+          'color-subcategoria': '#555',
+          'color-plato': '#222',
+          'color-descripcion': '#777',
+          'color-precio': '#000',
+          'color-info-resto': '#333',
+          'color-bg': '#ffffff',
+          'color-firulete': '#aaa'
+        },
+        firulete: '⋄ ⋄ ⋄',
+        bgOpacity: '0.1'
+      }
+    };
+
+    document.getElementById('presetSelector').addEventListener('change', function() {
+      const val = this.value;
+      if (!val || !presets[val]) return;
+      const preset = presets[val];
+
+      // Fuente
+      document.getElementById('fontSelector').value = preset.font;
+      document.body.style.fontFamily = `'${preset.font}', sans-serif`;
+      localStorage.setItem('font-family', preset.font);
+
+      // Tamaño
+      document.documentElement.style.setProperty('--menu-font-size', preset.size + 'rem');
+      localStorage.setItem('menu-font-size', preset.size);
+
+      // Colores
+      for (const [key, color] of Object.entries(preset.colors)) {
+        document.documentElement.style.setProperty(`--${key}`, color);
+        localStorage.setItem(key, color);
+        const input = document.getElementById(key);
+        if (input) input.value = color;
+      }
+
+      // Firulete
+      document.documentElement.style.setProperty('--firulete', `"${preset.firulete}"`);
+      localStorage.setItem('firulete', preset.firulete);
+      document.getElementById('firuleteSelector').value = preset.firulete;
+
+      // Opacidad logo
+      document.documentElement.style.setProperty('--bg-opacity', preset.bgOpacity);
+      localStorage.setItem('bg-opacity', preset.bgOpacity);
+      document.getElementById('bg-opacity').value = preset.bgOpacity;
+    });
 
   </script>
 </body>
