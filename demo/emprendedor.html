@@ -67,13 +67,34 @@
 
 
     h2 { 
-      font-size: calc(1.5 * var(--menu-font-size)); 
-      text-align: center; 
-      break-after: avoid;
-      page-break-after: avoid;
-      text-decoration: underline;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px; /* espacio entre firuletes y texto */
+      font-size: calc(1.5 * var(--menu-font-size));
       color: var(--color-categoria);
+      font-weight: bold;
+      text-align: center;
+      margin: 1.2rem 0 0.8rem;
     }
+    h2::before,
+    h2::after {
+      content: var(--firulete, "✦ ✦ ✦");
+      color: var(--color-categoria, #b28051);
+      font-size: 1rem;
+      opacity: 0.4;
+      white-space: nowrap;
+      flex-shrink: 0; /* evita que se encojan */
+    }
+
+    h2::before {
+      left: calc(50% - 10rem); /* distancia desde el centro hacia la izquierda */
+    }
+
+    h2::after {
+      right: calc(50% - 10rem); /* distancia desde el centro hacia la derecha */
+    }
+
     h3 { 
       font-size: calc(1 * var(--menu-font-size)); 
       font-style: italic;
@@ -81,6 +102,7 @@
       break-after: avoid;
       page-break-after: avoid;
       color: var(--color-subcategoria);
+      border-bottom: 1px solid #eee;
     }
 
     h4 { 
@@ -92,7 +114,6 @@
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      border-bottom: 1px solid #eee;
       padding: 0.4rem 0;
       break-inside: avoid-column;
       page-break-inside: avoid;
@@ -468,8 +489,34 @@
           <label>Precio <input type="color" id="color-precio"></label>
           <label>Info <input type="color" id="color-info-resto"></label>
           <label>Fondo <input type="color" id="color-bg"></label>
+
+          <hr style="margin:8px 0;">
+          <label style="display:flex;align-items:center;gap:6px;font-size:0.85rem;">
+            <input type="checkbox" id="sameColorMode">
+            Aplicar mismo color a los seleccionados
+          </label>
+          <small style="display:block;color:#555;font-size:0.75rem;margin-top:4px;">
+            (Seleccioná varios campos y elegí un color para aplicarlo a todos)
+          </small>
         </div>
       </div>
+      <div class="dropdown">
+        <button class="dropbtn">✨ Firulete</button>
+        <div class="dropdown-content">
+          <label for="firuleteSelector">Tipo de firulete</label>
+          <select id="firuleteSelector" style="width:100%;">
+            <option value="">Ninguno</option>
+            <option value="✦ ✦ ✦">Brillos ✦ ✦ ✦</option>
+            <option value="⚜ ⚜ ⚜">Clásico ⚜ ⚜ ⚜</option>
+            <option value="❧ ❧ ❧">Floral ❧ ❧ ❧</option>
+            <option value="☕ ♡ ☕">Café ☕ ♡ ☕</option>
+            <option value="🍃 ✿ 🍃">Natural 🍃 ✿ 🍃</option>
+            <option value="✤ ✤ ✤">Sello ✤ ✤ ✤</option>
+            <option value="⋄ ⋄ ⋄">Rombo ⋄ ⋄ ⋄</option>
+            <option value="✨ 💫 ✨">Mágico ✨ 💫 ✨</option>
+          </select>
+        </div>
+      </div>      
       <div>
         <label for="bg-opacity" style="align-items: center;">Logo</label>
         <input type="range" id="bg-opacity" min="0" max="0.5" step="0.01" value="0.2" style="width:80px;">
@@ -705,6 +752,82 @@
       bgOpacityInput.value = savedBgOpacity;
       document.documentElement.style.setProperty('--bg-opacity', savedBgOpacity);
     }
+
+    // Tipo de firulete
+    const firuleteSelector = document.getElementById("firuleteSelector");
+    firuleteSelector.addEventListener("change", function () {
+      const val = this.value;
+      document.documentElement.style.setProperty("--firulete", `"${val}"`);
+      localStorage.setItem("firulete", val);
+    });
+
+    // Recuperar tipo guardado
+    const savedFirulete = localStorage.getItem("firulete");
+    if (savedFirulete) {
+      firuleteSelector.value = savedFirulete;
+      document.documentElement.style.setProperty("--firulete", `"${savedFirulete}"`);
+    }
+
+    // === APLICAR MISMO COLOR A VARIOS CAMPOS ===
+    let selectedColorInputs = [];
+    let isSelectingGroup = false;
+
+    document.querySelectorAll('#topMenu input[type="color"]').forEach(input => {
+      input.addEventListener('click', function (e) {
+        const sameMode = document.getElementById('sameColorMode').checked;
+        if (sameMode) {
+          // En modo grupal, seleccionamos/deseleccionamos sin abrir paleta
+          if (!isSelectingGroup) {
+            e.preventDefault(); // evita abrir el selector en los clics de selección
+          }
+
+          if (selectedColorInputs.includes(this)) {
+            this.style.outline = '';
+            selectedColorInputs = selectedColorInputs.filter(i => i !== this);
+          } else {
+            this.style.outline = '2px solid #457B9D';
+            selectedColorInputs.push(this);
+          }
+        }
+      });
+
+      // Detectar cambio de color
+      input.addEventListener('input', function () {
+        const sameMode = document.getElementById('sameColorMode').checked;
+        const newColor = this.value;
+        const varName = this.id;
+
+        // aplica el color normalmente al propio input
+        document.documentElement.style.setProperty(`--${varName}`, newColor);
+        localStorage.setItem(varName, newColor);
+
+        // si hay modo grupal y varios seleccionados, aplica a todos
+        if (sameMode && selectedColorInputs.length > 1) {
+          selectedColorInputs.forEach(i => {
+            if (i !== this) {
+              i.value = newColor;
+              const name = i.id;
+              document.documentElement.style.setProperty(`--${name}`, newColor);
+              localStorage.setItem(name, newColor);
+            }
+          });
+        }
+      });
+    });
+
+    // Permitir cambiar color solo en el primer click (sin bloquear el selector)
+    document.getElementById('sameColorMode').addEventListener('change', function () {
+      if (this.checked) {
+        selectedColorInputs = [];
+        isSelectingGroup = true;
+      } else {
+        selectedColorInputs.forEach(i => (i.style.outline = ''));
+        selectedColorInputs = [];
+        isSelectingGroup = false;
+      }
+    });
+
+
   </script>
 </body>
 </html>
