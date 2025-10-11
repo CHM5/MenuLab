@@ -166,7 +166,6 @@
       transform: translateY(2px);
     }
 
-    /* Opcional: estilos distintivos */
     .menu-item.destacado {
       background: color-mix(in srgb, var(--color-bg) 95%, black);
       border-radius: 6px;
@@ -492,7 +491,6 @@
     input[type="range"] {
       width: 100%;
     }
-
   }
 
   #colorMenu label{
@@ -502,31 +500,26 @@
     gap:6px;
   }
 
-  /* tamaño/estilo básico del checkbox */
   #colorMenu .color-group{
     width:18px;
     height:18px;
     accent-color:#457B9D;
   }
 
-  /* ocultos por defecto */
   #colorMenu:not(.active) .color-group{
     display:none;
   }
 
-  /* visibles cuando activás el modo */
   #colorMenu.active .color-group{
     display:inline-block;
     cursor:pointer;
   }
 
-  /* pequeño highlight al pasar el mouse en modo activo */
   #colorMenu.active label:hover{
     background:#eef6fa;
     border-radius:4px;
   }
 
-  /* Cuadradito principal de color */
   #masterColorContainer {
     display: none;
     justify-content: space-between;
@@ -566,7 +559,6 @@
 <body>
   <div class="print-background"></div>
     <div id="topMenu">
-
       <div class="dropdown">
         <button class="dropbtn">🌈 Estilos</button>
         <div class="dropdown-content">
@@ -586,7 +578,6 @@
           </select>
         </div>
       </div>
-
       <div class="dropdown">
         <button class="dropbtn">🖋️ Fuente</button>
         <div class="dropdown-content">
@@ -613,12 +604,10 @@
           </select>
         </div>
       </div>
-
       <div>
         <label for="font-size-range">Letra</label>
         <input type="range" id="font-size-range" min="0.7" max="2" step="0.01" value="1" style="width:80px;">
       </div>
-
       <div class="dropdown">
         <button class="dropbtn">🎨 Colores</button>
         <div class="dropdown-content" id="colorMenu">
@@ -647,7 +636,6 @@
           </small>
         </div>
       </div>
-
       <div class="dropdown">
         <button class="dropbtn">✨ Firulete</button>
         <div class="dropdown-content">
@@ -664,14 +652,13 @@
             <option value="✨ 💫 ✨">Mágico ✨ 💫 ✨</option>
           </select>
         </div>
-      </div>      
+      </div>
       <div>
         <label for="bg-opacity" style="align-items: center;">Logo</label>
         <input type="range" id="bg-opacity" min="0" max="0.5" step="0.01" value="0.2" style="width:80px;">
       </div>
       <button id="printBtn" onclick="window.print()">🖨️ Vista Previa</button>
     </div>
-  
     <div class="resto-header">
       <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1758652390/The_Pent_2_a8vhtp.jpg" alt="Logo Café Central">
       <div class="resto-text">        
@@ -757,20 +744,17 @@ function renderMenuForPrint(rows) {
     if (!agrupado[cat][sub]) agrupado[cat][sub] = [];
     agrupado[cat][sub].push({ nombre, desc, precio, flags });
   });
-
   Object.entries(agrupado).forEach(([cat, subs]) => {
     const catWrapper = document.createElement("div");
     const catTitle = document.createElement("h2");
     catTitle.textContent = cat;
     catWrapper.appendChild(catTitle);
-
     Object.entries(subs).forEach(([sub, items]) => {
       if (sub && sub !== "-") {
         const subTitle = document.createElement("h3");
         subTitle.textContent = sub;
         catWrapper.appendChild(subTitle);
       }
-
       items.forEach(item => {
         const div = document.createElement("div");
         div.className = "menu-item";
@@ -858,7 +842,6 @@ function renderMenuForPrint(rows) {
       localStorage.setItem('font-family', val);
     });
 
-    // Cambiar colores de las variables CSS
     document.querySelectorAll('#topMenu input[type="color"]').forEach(input => {
       input.addEventListener('input', function() {
         const varName = this.id;
@@ -868,16 +851,14 @@ function renderMenuForPrint(rows) {
       });
     });
 
-    // Recuperar colores guardados
     document.querySelectorAll('#topMenu input[type="color"]').forEach(input => {
       const saved = localStorage.getItem(input.id);
       if (saved) {
-        input.value = saved;  
+        input.value = saved;
         document.documentElement.style.setProperty(`--${input.id}`, saved);
       }
     });
 
-    // Recuperar fuente guardada
     const savedFont = localStorage.getItem('font-family');
     if (savedFont) {
       document.getElementById('fontSelector').value = savedFont;
@@ -947,7 +928,6 @@ function renderMenuForPrint(rows) {
       document.documentElement.style.setProperty("--firulete", `"${savedFirulete}"`);
     }
 
-    // === APLICAR MISMO COLOR A VARIOS CAMPOS (checkboxes visibles con animación) ===
     const sameColorToggle = document.getElementById("sameColorMode");
     const colorMenu = document.getElementById("colorMenu");
     const colorGroups = document.querySelectorAll(".color-group");
@@ -956,14 +936,12 @@ function renderMenuForPrint(rows) {
     sameColorToggle.addEventListener("change", () => {
       const active = sameColorToggle.checked;
 
-      // Activa/desactiva la clase que muestra los checkboxes
       if (active) {
         colorMenu.classList.add("active");
       } else {
         colorMenu.classList.remove("active");
       }
 
-      // Limpia selección al desactivar
       colorGroups.forEach(cb => (cb.checked = false));
     });
 
