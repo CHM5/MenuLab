@@ -65,7 +65,6 @@
       }
     }
 
-
     h2 { 
       display: flex;
       align-items: center;
@@ -95,6 +94,31 @@
       right: calc(50% - 10rem); /* distancia desde el centro hacia la derecha */
     }
 
+    /* === DESTACADOS === */
+    .category-highlight {
+      border: 2px solid var(--color-categoria);
+      border-radius: 10px;
+      padding: 8px 12px;
+      margin: 1.5rem 0;
+      background-color: rgba(255, 235, 200, 0.25);
+      box-shadow: 0 0 6px rgba(0, 0, 0, 0.05);
+      break-inside: avoid;
+    }
+
+    .category-highlight h2 {
+      margin-top: 0.5rem;
+    }
+
+    .category-highlight::before {
+      display: block;
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--color-categoria, #b28051);
+      font-style: italic;
+      margin-bottom: 0.3rem;
+      opacity: 0.8;
+    }
+
     h3 { 
       font-size: calc(1 * var(--menu-font-size)); 
       font-style: italic;
@@ -117,6 +141,36 @@
       padding: 0.4rem 0;
       break-inside: avoid-column;
       page-break-inside: avoid;
+    }
+
+    /* === ICONOS DIETARIOS === */
+    .icon-diet {
+      width: 18px;
+      height: 18px;
+      object-fit: contain;
+      vertical-align: middle;
+      margin-right: -10px;
+      filter: drop-shadow(0 0 1px rgba(0,0,0,0.2));
+    }
+
+    .diet-icons.inline {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-right: 6px;
+      margin-top: 0;
+    }
+
+    .diet-icons.inline span {
+      line-height: 1;
+      transform: translateY(2px);
+    }
+
+    /* Opcional: estilos distintivos */
+    .menu-item.destacado {
+      background: color-mix(in srgb, var(--color-bg) 95%, black);
+      border-radius: 6px;
+      padding: 0.3rem 0.4rem;
     }
 
     .menu-plate {
@@ -635,91 +689,122 @@
     </div>
 
   <script>
-    const allRows = [
-      ["Cafetería", "Clásicos", "Café en Jarrito", "Café espresso", "$1200"],
-      ["Cafetería", "Clásicos", "Café con Leche", "Café espresso con leche caliente.", "$1300"],
-      ["Cafetería", "Clásicos", "Café Americano", "Café filtrado suave, taza grande.", "$1100"],
-      ["Cafetería", "Especiales", "Flat White", "Espresso doble con leche microespumada.", "$1500"],
-      ["Cafetería", "Especiales", "Latte Vainilla", "Café con leche y sirope de vainilla.", "$1600"],
-      ["Cafetería", "Especiales", "Cappuccino", "Espresso, leche y espuma, decorado con cacao.", "$1400"],
-      ["Cafetería", "Fríos", "Cold Brew", "Café infusionado en frío por 12 horas.", "$1700"],
-      ["Cafetería", "Fríos", "Iced Latte", "Café espresso, leche y hielo.", "$1600"],
-      ["Pastelería", "Tortas", "Cheesecake", "Porción de cheesecake casero.", "$2200"],
-      ["Pastelería", "Tortas", "Brownie", "Brownie de chocolate con nuez y bocha de helado de limón.", "$1800"],
-      ["Pastelería", "Tortas", "Carrot Cake", "Bizcocho húmedo de zanahoria y especias.", "$2100"],
-      ["Pastelería", "Tortas", "Lemon Pie", "Tarta de limón con merengue italiano.", "$2000"],
-      ["Pastelería", "Cookies", "Cookie Chips", "Galleta artesanal con chips de chocolate.", "$900"],
-      ["Pastelería", "Cookies", "Cookie Red Velvet", "Galleta roja con chocolate blanco.", "$950"],
-      ["Sandwiches", "", "Tostado de Jamón y Queso", "Pan casero, jamón cocido y queso.", "$2000"],
-      ["Sandwiches", "", "Bagel Capresse", "Bagel artesanal, tomate, mozzarella y albahaca.", "$2300"],
-      ["Sandwiches", "", "Croissant Veggie", "Croissant con vegetales grillados y queso.", "$2200"],
-      ["Desayunos", "", "Combo Central", "Café + jugo + tostadas + mermelada y manteca.", "$2500"],
-      ["Bebidas", "Jugos Naturales", "Jugo de Naranja Natural", "Jugo exprimido al momento.", "$800"],
-      ["Bebidas", "Jugos Naturales", "Jugo de Manzana y Zanahoria", "Fresco y revitalizante.", "$900"],
-      ["Saludables", "Yogur", "Yogur Natural", "Limonada casera con menta y albahaca.", "$850"],
-      ["Saludables", "Yogur", "Yogur con Granola y Frutas", "Yogur natural con granola y frutas de estación", "$2000"],
-      ["Desayunos", "", "Granola Bowl", "Yogur natural, granola casera y frutas frescas.", "$1800"],
-      ["Desayunos", "", "Tostadas Avocado", "Pan integral, palta, tomate y semillas.", "$2100"],
-      ["Cafetería", "Especiales", "Mocha Latte", "Café espresso con leche vaporizada y chocolate.", "$1700"],
-      ["Cafetería", "Especiales", "Caramel Macchiato", "Espresso con leche, espuma y toque de caramelo.", "$1750"],
-      ["Cafetería", "Fríos", "Espresso Tonic", "Espresso servido sobre tónica y hielo.", "$1600"],
-      ["Cafetería", "Fríos  ", "Affogato", "Helado de vainilla bañado con espresso caliente.", "$1900"],
-      ["Cafetería", "Fríos", "Iced Matcha Latte", "Té matcha japonés con leche vegetal y hielo.", "$1800"],
-      ["Cafetería", "Fríos", "Frappuccino Oreo", "Frappé de café con galletas Oreo y crema.", "$2000"],
-      ["Cafetería", "Fríos", "Limonada Menta & Jengibre", "Refrescante, casera y natural.", "$1500"],
-      ["Cafetería", "Fríos", "Smoothie Frutos Rojos", "Batido con yogur natural y frutas del bosque.", "$1900"],
-      ["Pastelería", "", "Muffin de Banana Vegano", "Sin lácteos, sin huevo, con nueces y banana.", "$1300"],
-      ["Pastelería", "Sin Gluten", "Brownie sin TACC", "Brownie húmedo con almendras sin gluten.", "$1400"],
-      ["Pastelería", "Repostería", "Cinnamon Roll", "Roll de canela con glaseado de vainilla.", "$1600"],
-      ["Pastelería", "Repostería", "Mini Tarta de Manzana", "Tarta individual con manzana caramelizada.", "$1700"],
-      ["Sandwiches", "", "Focaccia de Pollo", "Pan focaccia, pollo grillado, rúcula y pesto.", "$2400"],
-      ["Sandwiches", "", "Croissant Capresse", "Croissant con tomate, albahaca y mozzarella.", "$2300"],
-      ["Sandwiches", "", "Tostado Vegano", "Pan integral, hummus, palta y tomate seco.", "$2100"],
-      ["Sandwiches", "", "Bagel de Salmón", "Salmón ahumado, queso crema y alcaparras.", "$2700"],
-      ["Desayunos", "", "Tostadas Francesas", "Pan brioche con canela, miel y frutos secos.", "$1900"],
-      ["Desayunos", "", "Huevos Benedicto", "Pan de campo, jamón cocido, huevo poché y salsa holandesa.", "$2600"],
-      ["Desayunos", "", "Brunch Central", "Huevos, tostadas, café, jugo y mini torta.", "$3200"]
-    ];
+  const allRows = [
+    ["Cafetería", "Clásicos", "Café en Jarrito", "Café espresso", "$1200"],
+    ["Cafetería", "Clásicos", "Café con Leche", "Café espresso con leche caliente.", "$1300"],
+    ["Cafetería", "Clásicos", "Café Americano", "Café filtrado suave, taza grande.", "$1100", "destacado"],
+    ["Cafetería", "Especiales", "Flat White", "Espresso doble con leche microespumada.", "$1500"],
+    ["Cafetería", "Especiales", "Latte Vainilla", "Café con leche y sirope de vainilla.", "$1600"],
+    ["Cafetería", "Especiales", "Cappuccino", "Espresso, leche y espuma, decorado con cacao.", "$1400"],
+    ["Cafetería", "Fríos", "Cold Brew", "Café infusionado en frío por 12 horas.", "$1700"],
+    ["Cafetería", "Fríos", "Iced Latte", "Café espresso, leche y hielo.", "$1600", "celiaco"],
+    
+    ["Pastelería", "Tortas", "Cheesecake", "Porción de cheesecake casero.", "$2200"],
+    ["Pastelería", "Tortas", "Brownie", "Brownie de chocolate con nuez y bocha de helado de limón.", "$1800"],
+    ["Pastelería", "Tortas", "Carrot Cake", "Bizcocho húmedo de zanahoria y especias.", "$2100"],
+    ["Pastelería", "Tortas", "Lemon Pie", "Tarta de limón con merengue italiano.", "$2000", "destacado"],
+    
+    ["Pastelería", "Cookies", "Cookie Chips", "Galleta artesanal con chips de chocolate.", "$900"],
+    ["Pastelería", "Cookies", "Cookie Red Velvet", "Galleta roja con chocolate blanco.", "$950"],
+    
+    ["Sandwiches", "", "Tostado de Jamón y Queso", "Pan casero, jamón cocido y queso.", "$2000"],
+    ["Sandwiches", "", "Bagel Capresse", "Bagel artesanal, tomate, mozzarella y albahaca.", "$2300", "vegetariano"],
+    ["Sandwiches", "", "Croissant Veggie", "Croissant con vegetales grillados y queso.", "$2200", "vegano"],
+    
+    ["Desayunos", "", "Combo Central", "Café + jugo + tostadas + mermelada y manteca.", "$2500"],
+    ["Bebidas", "Jugos Naturales", "Jugo de Naranja Natural", "Jugo exprimido al momento.", "$800"],
+    ["Bebidas", "Jugos Naturales", "Jugo de Manzana y Zanahoria", "Fresco y revitalizante.", "$900"],
+    
+    ["Saludables", "Yogur", "Yogur Natural", "Limonada casera con menta y albahaca.", "$850"],
+    ["Saludables", "Yogur", "Yogur con Granola y Frutas", "Yogur natural con granola y frutas de estación", "$2000", "celiaco"],
+    
+    ["Desayunos", "", "Granola Bowl", "Yogur natural, granola casera y frutas frescas.", "$1800"],
+    ["Desayunos", "", "Tostadas Avocado", "Pan integral, palta, tomate y semillas.", "$2100", "vegano"],
+    
+    ["Cafetería", "Especiales", "Mocha Latte", "Café espresso con leche vaporizada y chocolate.", "$1700"],
+    ["Cafetería", "Especiales", "Caramel Macchiato", "Espresso con leche, espuma y toque de caramelo.", "$1750"],
+    
+    ["Cafetería", "Fríos", "Espresso Tonic", "Espresso servido sobre tónica y hielo.", "$1600"],
+    ["Cafetería", "Fríos", "Affogato", "Helado de vainilla bañado con espresso caliente.", "$1900", "celiaco"],
+    ["Cafetería", "Fríos", "Iced Matcha Latte", "Té matcha japonés con leche vegetal y hielo.", "$1800", "vegano"],
+    
+    ["Cafetería", "Fríos", "Frappuccino Oreo", "Frappé de café con galletas Oreo y crema.", "$2000"],
+    ["Cafetería", "Fríos", "Limonada Menta & Jengibre", "Refrescante, casera y natural.", "$1500"],
+    ["Cafetería", "Fríos", "Smoothie Frutos Rojos", "Batido con yogur natural y frutas del bosque.", "$1900", "celiaco"],
+    
+    ["Pastelería", "", "Muffin de Banana Vegano", "Sin lácteos, sin huevo, con nueces y banana.", "$1300", "vegano"],
+    ["Pastelería", "Repostería", "Cinnamon Roll", "Roll de canela con glaseado de vainilla.", "$1600"],
+    ["Pastelería", "Repostería", "Mini Tarta de Manzana", "Tarta individual con manzana caramelizada.", "$1700"],
+    
+    ["Sandwiches", "", "Focaccia de Pollo", "Pan focaccia, pollo grillado, rúcula y pesto.", "$2400", "destacado"],
+    ["Desayunos", "", "Huevos Benedicto", "Pan de campo, jamón cocido, huevo poché y salsa holandesa.", "$2600"],
+    ["Desayunos", "", "Brunch Central", "Huevos, tostadas, café, jugo y mini torta.", "$3200", "celiaco", "destacado"],
+    
+    ["Pastelería", "Sin Gluten", "Brownie sin TACC", "Brownie húmedo con almendras sin gluten.", "$1400", "celiaco", "destacado"],
+    ["Sandwiches", "", "Tostado Vegano", "Pan integral, hummus, palta y tomate seco.", "$2100", "vegano"],
+    ["Sandwiches", "", "Croissant Capresse", "Croissant con tomate, albahaca y mozzarella.", "$2300", "vegetariano"]
+  ];
 
-    function renderMenuForPrint(rows) {
-      const container = document.querySelector("#menuTable");
-      const agrupado = {};
+function renderMenuForPrint(rows) {
+  const container = document.querySelector("#menuTable");
+  const agrupado = {};
 
-      rows.forEach(cols => {
-        const [cat, subcat, nombre, desc, precio] = cols.map(c => (c || "").trim());
-        if (!cat || !nombre) return;
-        if (!agrupado[cat]) agrupado[cat] = {};
-        const sub = subcat || "-";
-        if (!agrupado[cat][sub]) agrupado[cat][sub] = [];
-        agrupado[cat][sub].push({ nombre, desc, precio });
+  rows.forEach(cols => {
+    const [cat, subcat, nombre, desc, precio, ...flags] = cols.map(c => (c || "").trim());
+    if (!cat || !nombre) return;
+    if (!agrupado[cat]) agrupado[cat] = {};
+    const sub = subcat || "-";
+    if (!agrupado[cat][sub]) agrupado[cat][sub] = [];
+    agrupado[cat][sub].push({ nombre, desc, precio, flags });
+  });
+
+  Object.entries(agrupado).forEach(([cat, subs]) => {
+    const catWrapper = document.createElement("div");
+    const catTitle = document.createElement("h2");
+    catTitle.textContent = cat;
+    catWrapper.appendChild(catTitle);
+
+    Object.entries(subs).forEach(([sub, items]) => {
+      if (sub && sub !== "-") {
+        const subTitle = document.createElement("h3");
+        subTitle.textContent = sub;
+        catWrapper.appendChild(subTitle);
+      }
+
+      items.forEach(item => {
+        const div = document.createElement("div");
+        div.className = "menu-item";
+        if (item.flags.includes("destacado")) div.classList.add("destacado");
+
+        // --- crear íconos según flags ---
+        const icons = [];
+        if (item.flags.includes("celiaco")) {
+          icons.push('<img class="icon-diet" src="https://res.cloudinary.com/drxznqm61/image/upload/v1760150815/download_4_yulmty.png" alt="Sin TACC" title="Sin TACC">');
+        }
+        if (item.flags.includes("vegano")) {
+          icons.push('<img class="icon-diet" src="https://res.cloudinary.com/drxznqm61/image/upload/v1760150943/download_5_pupphw.png" alt="Apto Vegano" title="Apto Vegano">');
+        }
+        const iconsHTML = icons.length ? `<div class="diet-icons">${icons.join("")}</div>` : "";
+
+        div.innerHTML = `
+          <div class="menu-plate">
+            <h4>
+              <span class="diet-icons inline">${iconsHTML}</span>
+              ${item.nombre}
+            </h4>
+            <p class="menu-description">${item.desc || ""}</p>
+          </div>
+          <span class="menu-price">${item.precio}</span>
+        `;
+
+        catWrapper.appendChild(div);
       });
+    });
 
-      Object.entries(agrupado).forEach(([cat, subs]) => {
-        const catTitle = document.createElement("h2");
-        catTitle.textContent = cat;
-        container.appendChild(catTitle);
+    container.appendChild(catWrapper);
+  });
+}
 
-        Object.entries(subs).forEach(([sub, items]) => {
-          if (sub && sub !== "-") {
-            const subTitle = document.createElement("h3");
-            subTitle.textContent = sub;
-            container.appendChild(subTitle);
-          }
-          items.forEach(item => {
-            const div = document.createElement("div");
-            div.className = "menu-item";
-            div.innerHTML = `
-              <div class="menu-plate">
-                <h4>${item.nombre}</h4>
-                <p class="menu-description">${item.desc || ""}</p>
-                </div>
-                <span class="menu-price">${item.precio}</span>
-            `;
-            container.appendChild(div);
-          });
-        });
-      });
-    }
 
     renderMenuForPrint(allRows);
 
