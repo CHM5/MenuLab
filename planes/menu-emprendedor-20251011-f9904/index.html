@@ -11,330 +11,554 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <style>
-:root {
-  --nombre-restaurante: "Café Central";
-  --subtitulo-restaurante: "Todo rico, todo el día";
-  --direccion-restaurante: "Av. Corrientes 123";
-  --horario-restaurante: "Martes a Domingos de 8 a 20hs";
-  --telefono-restaurante: "+54 11 1234-5678";
-  --color-nombre-resto: #000;
-  --color-nombre-slogan: #000;
-  --color-categoria: #000;
-  --color-subcategoria: #000;
-  --color-plato: #000;
-  --color-descripcion: #555;
-  --color-precio: #000;
-  --color-info-resto: #000;
-  --color-bg: #fff;
-  --bg-opacity: 0.2;
-  --menu-font-size: 1rem;
-}
+    :root {
+      --nombre-restaurante: "Café Central";
+      --subtitulo-restaurante: "Todo rico, todo el día";
+      --direccion-restaurante: "Av. Corrientes 123";
+      --horario-restaurante: "Martes a Domingos de 8 a 20hs";
+      --telefono-restaurante: "+54 11 1234-5678";
+      --color-nombre-resto: #000;
+      --color-nombre-slogan: #000;
+      --color-categoria: #000;
+      --color-subcategoria: #000;
+      --color-plato: #000;
+      --color-descripcion: #555;
+      --color-precio: #000;
+      --color-info-resto: #000;
+      --color-bg: #fff  ;
+      --bg-opacity: 0.2;
+      --menu-font-size: 1rem;
+    }
 
-/* --- Reset base --- */
-* {
-  box-sizing: border-box;
-  -webkit-tap-highlight-color: transparent;
-}
+    @page {
+      @top-left { content: none; }
+      @top-center { content: none; }
+      @top-right { content: none; }
+      @bottom-left { content: none; }
+      @bottom-center { content: none; }
+      @bottom-right { content: none; }
+    }
+    
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0 auto;
+      padding-top: 70px; 
+      column-count: 2;           
+      column-gap: 20px;
+      position: relative;
+      background: var(--color-bg);
+    }
 
-body {
-  font-family: 'Poppins', Arial, sans-serif;
-  background: var(--color-bg);
-  color: #222;
-  margin: 0 auto;
-  padding: 80px 12px 80px;
-  column-count: 2;
-  column-gap: 24px;
-  transition: all 0.3s ease;
-  overflow-x: hidden;
-}
+    #menuTable,
+    .resto-header, .footer {
+      font-size: var(--menu-font-size);
+    }
 
-h1, h2, h3, h4 {
-  margin: 0;
-}
+    @media screen and (max-width: 991px) {
+      body {
+        margin-left: 10px;
+        margin-right: 10px;
+        column-count: 2;
+        column-gap: 15px;
+      }
+    }
 
-#menuTable, .resto-header, .footer {
-  font-size: var(--menu-font-size);
-}
+    @media screen and (min-width: 992px) {
+      body {
+        margin-left: 250px;
+        margin-right: 250px;
+        column-count: 2;
+      }
+    }
 
-/* --- Titulares --- */
-h2 { 
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  font-size: clamp(1.2rem, 4vw, 1.5rem);
-  color: var(--color-categoria);
-  font-weight: 700;
-  text-align: center;
-  margin: 1.2rem 0 0.8rem;
-}
 
-h2::before,
-h2::after {
-  content: var(--firulete, "✦ ✦ ✦");
-  color: var(--color-categoria);
-  font-size: 1rem;
-  opacity: 0.4;
-  flex-shrink: 0;
-}
+    h2 { 
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px; /* espacio entre firuletes y texto */
+      font-size: calc(1.5 * var(--menu-font-size));
+      color: var(--color-categoria);
+      font-weight: bold;
+      text-align: center;
+      margin: 1.2rem 0 0.8rem;
+    }
+    h2::before,
+    h2::after {
+      content: var(--firulete, "✦ ✦ ✦");
+      color: var(--color-categoria, #b28051);
+      font-size: 1rem;
+      opacity: 0.4;
+      white-space: nowrap;
+      flex-shrink: 0; /* evita que se encojan */
+    }
 
-/* --- Subcategorías --- */
-h3 {
-  font-size: clamp(1rem, 3vw, 1.2rem);
-  font-style: italic;
-  color: var(--color-subcategoria);
-  margin: 0.3rem 0 0.5rem;
-}
+    h2::before {
+      left: calc(50% - 10rem); /* distancia desde el centro hacia la izquierda */
+    }
 
-/* --- Ítems de menú --- */
-.menu-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  padding: 0.5rem 0;
-  break-inside: avoid-column;
-  border-bottom: 1px solid #eee;
-}
+    h2::after {
+      right: calc(50% - 10rem); /* distancia desde el centro hacia la derecha */
+    }
 
-.menu-plate {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
+    /* === DESTACADOS === */
+    .category-highlight {
+      border: 2px solid var(--color-categoria);
+      border-radius: 10px;
+      padding: 8px 12px;
+      margin: 1.5rem 0;
+      background-color: rgba(255, 235, 200, 0.25);
+      box-shadow: 0 0 6px rgba(0, 0, 0, 0.05);
+      break-inside: avoid;
+    }
 
-.menu-plate h4 {
-  font-size: calc(0.95 * var(--menu-font-size));
-  font-weight: 600;
-  color: var(--color-plato);
-  margin: 0;
-}
+    .category-highlight h2 {
+      margin-top: 0.5rem;
+    }
 
-.menu-description {
-  font-size: calc(0.8 * var(--menu-font-size));
-  color: var(--color-descripcion);
-  margin-top: 0.15rem;
-}
+    .category-highlight::before {
+      display: block;
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--color-categoria, #b28051);
+      font-style: italic;
+      margin-bottom: 0.3rem;
+      opacity: 0.8;
+    }
 
-.menu-price {
-  font-weight: bold;
-  font-size: calc(0.9 * var(--menu-font-size));
-  color: var(--color-precio);
-  margin-left: 10px;
-  white-space: nowrap;
-}
+    h3 { 
+      font-size: calc(1 * var(--menu-font-size)); 
+      font-style: italic;
+      text-align: left;
+      break-after: avoid;
+      page-break-after: avoid;
+      color: var(--color-subcategoria);
+    }
 
-/* --- Header del restaurante --- */
-.resto-header {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
-  break-inside: avoid;
-}
+    h4 {
+      font-size: calc(0.9 * var(--menu-font-size)); 
+      margin: 0.2rem 0; 
+    }
 
-.resto-header img {
-  width: 90px;
-  height: 90px;
-  border-radius: 50%;
-  object-fit: cover;
-}
+    .menu-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 0.4rem 0;
+      break-inside: avoid-column;
+      page-break-inside: avoid;
+    }
 
-.resto-text {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
+    /* === ICONOS DIETARIOS === */
+    .icon-diet {
+      width: 18px;
+      height: 18px;
+      object-fit: contain;
+      vertical-align: middle;
+      margin-right: -10px;
+      filter: drop-shadow(0 0 1px rgba(0,0,0,0.2));
+    }
 
-.resto-header h1 {
-  font-size: clamp(1.4rem, 5vw, 2rem);
-  color: var(--color-nombre-resto);
-}
+    .diet-icons.inline {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-right: 6px;
+      margin-top: 0;
+    }
 
-.resto-header h3 {
-  font-size: clamp(1rem, 4vw, 1.3rem);
-  color: var(--color-nombre-slogan);
-  font-style: italic;
-}
+    .diet-icons.inline span {
+      line-height: 1;
+      transform: translateY(2px);
+    }
 
-/* --- Footer --- */
-.footer {
-  column-span: all;
-  text-align: center;
-  font-size: 0.85rem;
-  color: var(--color-info-resto);
-  border-top: 1px solid #ddd;
-  padding: 10px 0;
-  background: var(--color-bg);
-  position: relative;
-  z-index: 10;
-}
+    .menu-item.destacado {
+      background: color-mix(in srgb, var(--color-bg) 95%, black);
+      border-radius: 6px;
+      padding: 0.3rem 0.4rem;
+    }
 
-.footer span {
-  margin: 0 6px;
-  white-space: nowrap;
-}
+    .menu-plate {
+      flex: 1;
+      color: var(--color-plato);
+      display: flex;
+      flex-direction: column;
+    }
 
-/* --- Botón imprimir --- */
-#printBtn {
-  background: #457B9D;
-  color: #fff;
-  padding: 10px 18px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: background 0.3s ease;
-}
+    .menu-plate h4 {
+      margin: 0;
+      font-size: calc(0.95 * var(--menu-font-size));
+      font-weight: bold;
+      color: var(--color-plato);
+    }
 
-#printBtn:hover {
-  background: #1d3557;
-}
+    .menu-description {
+      margin: 0.15rem 0 0;
+      font-size: calc(0.8 * var(--menu-font-size));
+      color: var(--color-descripcion);
+    }
 
-/* --- Top menu --- */
-#topMenu {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  background: #fff;
-  padding: 10px 15px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 8px;
-}
+    .menu-price {
+      font-weight: bold;
+      font-size: calc(0.9 * var(--menu-font-size));
+      color: var(--color-precio);
+      margin-left: 12px;
+      white-space: nowrap;
+      align-self: flex-start;
+    }
 
-/* --- Inputs y selectores --- */
-#topMenu select,
-#topMenu input[type="color"],
-#topMenu input[type="range"] {
-  border-radius: 6px;
-  border: 1px solid #ddd;
-  cursor: pointer;
-  font-size: 0.9rem;
-}
+    .dropbtn,
+    #printBtn {
+      background-color: #67b0dd;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: background 0.3s ease;
+    }
 
-#topMenu select {
-  padding: 6px 10px;
-}
+    .dropbtn:hover,
+    #printBtn:hover {
+      background-color: #1D3557;
+    }
 
-#topMenu input[type="color"] {
-  width: 38px;
-  height: 38px;
-  border: none;
-}
+    .footer {
+      column-span: all;
+      text-align: center;
+      font-size: calc(0.8 * var(--menu-font-size));
+      color: #444;
+      border-top: 1px solid #ddd;
+      padding: 8px 0;
+      background: var(--color-bg);
+      position: relative;
+      z-index: 10;
+    }
 
-#topMenu input[type="range"] {
-  width: 80px;
-}
+    .footer span {
+      margin: 0rem 8px;
+      white-space: nowrap;
+    }
 
-/* --- Mobile optimización --- */
-@media (max-width: 991px) {
-  body {
-    column-count: 1;
-    column-gap: 0;
-    padding: 70px 14px 60px;
+    #printArea {
+      column-count: 2;
+      column-gap: 20px;
+    }
+
+    @media print {
+    body {
+      margin-top: -70px !important;
+      background: var(--color-bg) !important;
+      column-count: 2 !important;
+      column-gap: 15px !important;
+      width: 210mm !important;
+      max-width: 210mm !important;
+      padding-bottom: 25mm !important;
+    }
+
+    #printBtn, #topMenu {
+      display: none !important;
+    }
+
+    #fontSelector,
+    select#fontSelector,
+    div > #fontSelector {
+      display: none !important;
+    }
+
+    .footer {
+      position: fixed;
+      bottom: 0mm;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-size: 0.7rem;
+      border-top: 1px solid #ddd;
+      background: var(--color-bg);
+    }
+
+    @page {
+      size: A4;
+      margin: 10mm 10mm 5mm 10mm;
+    }
+        
+    .print-background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-size: 60%;
+      opacity: var(--bg-opacity);
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
   }
 
-  .menu-item {
-    flex-direction: column;
-    align-items: flex-start;
+    .resto-header {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      break-inside: avoid;
+    }
+
+    .resto-header img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .resto-text {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .resto-header h1 {
+      margin: 0;
+      font-size: calc(2 * var(--menu-font-size));
+    }
+
+    .resto-header h3 {
+      margin: 0.2rem 0 0;
+      font-size: calc(1 * var(--menu-font-size));
+      font-weight: normal;
+      font-style: italic;
+      color: #b28051;
+    }
+
+    #nombre-resto {
+      color: var(--color-nombre-resto);
+    }
+
+    #subtitulo-resto{
+      color: var(--color-nombre-slogan);
+    }
+
+    #direccion-resto,
+    #horario-resto,
+    #telefono-resto {
+      color: var(--color-info-resto);
+    }
+
+    #topMenu {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: #fff;
+      padding: 10px 20px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+      display: flex;
+      justify-content: center; 
+      align-items: center;
+      flex-wrap: wrap; 
+      gap: 10px;
+    }
+
+    .font-size-control,
+    .opacity-control {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;     
+    }
+
+    #topMenu select {
+      padding: 6px 10px;
+      border-radius: 6px;
+      border: 1px solid #ddd;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+
+    #topMenu label {
+      font-size: 0.9rem;
+      color: #333;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    #topMenu input[type="color"] {
+      width: 40px;
+      height: 40px;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      border-radius: 4px;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    #topMenu input[type="color"]::-webkit-color-swatch {
+      border: none;
+      border-radius: 4px;
+    }
+
+    #topMenu input[type="color"]::-webkit-color-swatch {
+      border: none;
+      border-radius: 4px;
+    }
+
+    #topMenu input[type="color"]:focus {
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(69, 123, 157, 0.5);
+    }
+
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .dropbtn {
+      background-color: #67b0dd;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #f9f9f9;
+      min-width: 160px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      z-index: 1;
+      border-radius: 6px;
+      padding: 10px;
+    }
+
+    .dropdown-content label {
+      display: block;
+      margin: 8px 0;
+      font-size: 0.9rem;
+      color: #333;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    .print-background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url("https://res.cloudinary.com/drxznqm61/image/upload/v1759872998/drilldown-removebg-preview_zczol3.png")
+                  no-repeat center center;
+      background-size: 100%;
+      opacity: var(--bg-opacity);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    @media (max-width: 768px) {
+    #topMenu {
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      padding: 10px;
+      gap: 6px;
+    }
+
+    .font-size-control,
+    .opacity-control {
+      width: 48%;
+    }
+
+    .dropdown,
+    #printBtn {
+      flex: 1 1 30%; 
+      text-align: center;
+    }
+
+    .dropbtn,
+    #printBtn {
+      width: 100%;
+      padding: 8px 0;
+      font-size: 0.85rem;
+    }
+
+    label {
+      font-size: 0.8rem;
+    }
+
+    input[type="range"] {
+      width: 100%;
+    }
   }
 
-  .menu-price {
-    margin-top: 4px;
-    margin-left: 0;
+  #colorMenu label{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:6px;
   }
 
-  .resto-header {
-    flex-direction: column;
-    text-align: center;
+  #colorMenu .color-group{
+    width:18px;
+    height:18px;
+    accent-color:#457B9D;
   }
 
-  .resto-header img {
-    width: 80px;
-    height: 80px;
+  #colorMenu:not(.active) .color-group{
+    display:none;
   }
 
-  #topMenu {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 10px;
-    padding: 12px;
+  #colorMenu.active .color-group{
+    display:inline-block;
+    cursor:pointer;
   }
 
-  #topMenu select,
-  #topMenu input[type="range"],
-  #topMenu input[type="color"],
-  #printBtn {
+  #colorMenu.active label:hover{
+    background:#eef6fa;
+    border-radius:4px;
+  }
+
+  #masterColorContainer {
+    display: none;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  #colorMenu.active #masterColorContainer {
+    display: flex;
+  }
+
+  #masterColor {
+    width: 32px;
+    height: 32px;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: transform 0.2s ease;
+  }
+
+  #masterColor:hover {
+    transform: scale(1.05);
+  }
+
+  #presetSelector {
     width: 100%;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    padding: 6px;
+    font-size: 0.9rem;
+    cursor: pointer;
   }
-
-  .footer {
-    font-size: 0.8rem;
-    line-height: 1.4;
-    padding: 12px;
-  }
-}
-
-/* --- Muy pequeñas pantallas --- */
-@media (max-width: 480px) {
-  body {
-    padding: 60px 10px 50px;
-  }
-
-  h2 {
-    font-size: 1.1rem;
-  }
-
-  .menu-plate h4 {
-    font-size: 1rem;
-  }
-
-  .menu-description {
-    font-size: 0.85rem;
-  }
-
-  .menu-price {
-    font-size: 1rem;
-  }
-
-  #topMenu {
-    padding: 10px;
-  }
-
-  #topMenu select {
-    font-size: 0.85rem;
-  }
-}
-
-/* --- Print --- */
-@media print {
-  #topMenu, #printBtn {
-    display: none !important;
-  }
-
-  body {
-    column-count: 2 !important;
-    margin: 0 !important;
-    background: var(--color-bg);
-  }
-
-  @page {
-    size: A4;
-    margin: 10mm;
-  }
-
-  .footer {
-    position: fixed;
-    bottom: 0;
-  }
-}
   </style>
-<link href="https://fonts.googleapis.com/css?family=Oswald:400,700|Roboto+Slab:400,700|Pacifico|Lato:400,700|Merriweather:400,700|Montserrat:400,700|Indie+Flower|Playfair+Display:400,700|Source+Code+Pro:400,700&display=swap" rel="stylesheet">  
+
+  <link href="https://fonts.googleapis.com/css?family=Oswald:400,700|Roboto+Slab:400,700|Pacifico|Lato:400,700|Merriweather:400,700|Montserrat:400,700|Indie+Flower|Playfair+Display:400,700|Source+Code+Pro:400,700&display=swap" rel="stylesheet">  
 <link href="https://fonts.googleapis.com/css?family=Oswald:400,700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700&family=Syne:wght@400;700&family=Sora:wght@400;700&family=Staatliches&family=Caveat&family=Yeseva+One&family=Righteous&family=Cormorant+Garamond:wght@400;700&display=swap" rel="stylesheet">
 </head>
