@@ -1,7 +1,6 @@
 import os, re
 import json
 from pathlib import Path
-from datetime import datetime
 from google.oauth2.service_account import Credentials
 from googleapiclient.discovery import build
 import hashlib
@@ -41,7 +40,7 @@ except Exception as e:
     print(f"⚠️ Advertencia: no se pudo validar conexión con Sheets: {e}")
 
 # === GENERAR HTML ===
-restaurant_name = os.environ.get("negocio", "Restaurante").strip()
+restaurant_name = os.environ.get("NEGOCIO", "Restaurante").strip()
 slug = re.sub(r'[^a-zA-Z0-9]+', '-', restaurant_name.lower()).strip('-')
 
 output_dir = Path(f"menu/{slug}")
