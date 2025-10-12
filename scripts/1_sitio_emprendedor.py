@@ -788,7 +788,7 @@ html = f"""<!DOCTYPE html>
           <div class="menu-plate">
             <h4>
               <span class="diet-icons inline">${{iconsHTML}}</span>
-              ${{item.nombre}}
+              ${{item.name}}
             </h4>
             <p class="menu-description">${{item.desc || ""}}</p>
           </div>
