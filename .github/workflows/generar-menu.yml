@@ -19,7 +19,7 @@ jobs:
         run: |
           echo "plan=${{ github.event.client_payload.plan }}" >> $GITHUB_OUTPUT
           echo "email=${{ github.event.client_payload.email }}" >> $GITHUB_OUTPUT
-          echo "negocio=${{ github.event.client_payload.negocio || 'Cliente sin nombre de negocio' }}" >> $GITHUB_OUTPUT
+          echo "negocio=${{ github.event.client_payload.negocio }}" >> $GITHUB_OUTPUT
           echo "external_reference=${{ github.event.client_payload.external_reference }}" >> $GITHUB_OUTPUT
           echo "sheet_url=${{ github.event.client_payload.sheet_url }}" >> $GITHUB_OUTPUT
 
@@ -55,6 +55,7 @@ jobs:
           CLIENT_EMAIL: ${{ steps.vars.outputs.email }}
           SHEET_URL: ${{ steps.vars.outputs.sheet_url }} 
           EXTERNAL_REFERENCE: ${{ env.EXTERNAL_REFERENCE }}
+          NEGOCIO: ${{ steps.vars.outputs.negocio }}    
         run: |
           echo "📦 Ejecutando script para plan: ${{ steps.vars.outputs.plan }}"
           case "${{ steps.vars.outputs.plan }}" in
@@ -87,7 +88,7 @@ jobs:
         run: |
           git config user.name "github-actions"
           git config user.email "actions@github.com"
-          git add planes/
+          git add menu/
           git commit -m "🔧 Menú generado para ${{ steps.vars.outputs.negocio }}" || echo "Nada para commitear"
           git remote set-url origin git@github.com:CHM5/menulab.git
           git pull --rebase origin main

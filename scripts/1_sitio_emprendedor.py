@@ -44,13 +44,13 @@ except Exception as e:
 restaurant_name = os.environ.get("negocio", "Restaurante").strip()
 slug = re.sub(r'[^a-zA-Z0-9]+', '-', restaurant_name.lower()).strip('-')
 
-output_dir = Path(f"menues/{slug}")
+output_dir = Path(f"menu/{slug}")
 output_dir.mkdir(parents=True, exist_ok=True)
 html_file = output_dir / "index.html"
 
 print(f"🏷️ Restaurante: {restaurant_name}")
 print(f"📂 Carpeta generada: {output_dir}")
-print(f"🔗 URL pública: https://www.menulab.com.ar/menues/{slug}/")
+print(f"🔗 URL pública: https://www.menulab.com.ar/menu/{slug}/")
 
 html = f"""<!DOCTYPE html>
 <html lang="es">
@@ -1242,6 +1242,6 @@ print("📄 Planilla conectada:", sheet_url)
 
 # === EXPORTAR PATHS PARA WORKFLOW ===
 with open("menu_url.txt", "w") as f:
-    f.write(f"menues/{slug}/index.html")
+    f.write(f"menu/{slug}/index.html")
 with open("sheet_url.txt", "w") as f:
     f.write(sheet_url)
