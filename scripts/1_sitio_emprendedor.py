@@ -1,4 +1,4 @@
-import os
+import os, re
 import json
 from pathlib import Path
 from datetime import datetime
@@ -9,7 +9,6 @@ import hashlib
 # === CONFIGURACIÓN ===
 FIJOS_RANGE = "Datos!B2:B8"
 MENU_RANGE = "Menu!A2:E"
-fecha_id = datetime.now().strftime("%Y%m%d")
 
 # === AUTENTICACIÓN GOOGLE ===
 credentials_info = json.loads(os.environ["GOOGLE_CREDENTIALS"])
@@ -42,13 +41,16 @@ except Exception as e:
     print(f"⚠️ Advertencia: no se pudo validar conexión con Sheets: {e}")
 
 # === GENERAR HTML ===
-# Generar hash único de 5 dígitos usando la fecha y la URL de la planilla
-hash_input = f"{fecha_id}-{sheet_url}".encode("utf-8")
-hash_str = hashlib.sha1(hash_input).hexdigest()[:5]
+restaurant_name = os.environ.get("negocio", "Restaurante").strip()
+slug = re.sub(r'[^a-zA-Z0-9]+', '-', restaurant_name.lower()).strip('-')
 
-output_dir = Path(f"planes/menu-emprendedor-{fecha_id}-{hash_str}")
+output_dir = Path(f"menues/{slug}")
 output_dir.mkdir(parents=True, exist_ok=True)
 html_file = output_dir / "index.html"
+
+print(f"🏷️ Restaurante: {restaurant_name}")
+print(f"📂 Carpeta generada: {output_dir}")
+print(f"🔗 URL pública: https://www.menulab.com.ar/menues/{slug}/")
 
 html = f"""<!DOCTYPE html>
 <html lang="es">
@@ -1240,6 +1242,6 @@ print("📄 Planilla conectada:", sheet_url)
 
 # === EXPORTAR PATHS PARA WORKFLOW ===
 with open("menu_url.txt", "w") as f:
-    f.write(f"planes/menu-emprendedor-{fecha_id}-{hash_str}/index.html")
+    f.write(f"menues/{slug}/index.html")
 with open("sheet_url.txt", "w") as f:
     f.write(sheet_url)
