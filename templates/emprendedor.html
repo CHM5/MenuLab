@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>{{RESTAURANTE}}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/png" href="../../MLfavicon.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <style>
+    {{CSS_EMPRENDEDOR}}
+  </style>
+</head>
+<body>
+  <div class="print-background"></div>
+
+  <div id="topMenu">
+    {{TOP_MENU}}
+  </div>
+
+  <div class="resto-header">
+    <img id="perfil-resto" alt="Logo del restaurante" hidden>
+    <div class="resto-text">
+      <h1 id="nombre-resto"></h1>
+      <h3 id="subtitulo-resto"></h3>
+    </div>
+  </div>
+
+  <div id="menuTable"></div>
+
+  <div class="footer">
+    <span><i class="fa-solid fa-map-marker-alt"></i> <span id="direccion-resto"></span></span> |
+    <span><i class="fa-solid fa-clock"></i> <span id="horario-resto"></span></span> |
+    <span><i class="fa-solid fa-phone"></i> <span id="telefono-resto"></span></span>
+  </div>
+
+  <script>
+    const CSV_URL = "{{CSV_MENU}}";
+    const FIJOS_URL = "{{CSV_FIJOS}}";
+    {{JS_EMPRENDEDOR}}
+  </script>
+</body>
+</html>
