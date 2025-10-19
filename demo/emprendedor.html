@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="es">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" 
-    integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" 
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
-<head>
+  <head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" 
+      integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" 
+      crossorigin="anonymous" referrerpolicy="no-referrer" />
   <meta charset="UTF-8">
   <style>
     :root {
@@ -23,7 +23,7 @@
       --color-bg: #fff;
       --bg-opacity: 0.2;
 
-      /* nuevos: tamaños por elemento (usá rems) */
+      --logo-size: 100px;
       --size-nombre-resto: 2rem;
       --size-nombre-slogan: 1rem;
       --size-categoria: 1.5rem;
@@ -32,6 +32,10 @@
       --size-descripcion: 0.8rem;
       --size-precio: 0.9rem;
       --size-info-resto: 0.8rem;
+
+      --tracking: 0px;
+      
+      --menu-columns: 2;
     }
     @page {
       @top-left { content: none; }
@@ -46,10 +50,16 @@
       font-family: Arial, sans-serif;
       margin: 0 auto;
       padding-top: 70px; 
-      column-count: 2;           
+      column-count: var(--menu-columns);           
       column-gap: 20px;
       position: relative;
       background: var(--color-bg);
+
+      -webkit-column-rule: 1px solid rgba(0,0,0,0.06);
+      -moz-column-rule: 1px solid rgba(0,0,0,0.06);
+      column-rule: 1px solid rgba(0,0,0,0.06);
+      column-rule-gap: 20px;
+      letter-spacing: var(--tracking);
     }
 
     #menuTable,
@@ -61,16 +71,16 @@
       body {
         margin-left: 10px;
         margin-right: 10px;
-        column-count: 2;
+        column-count: var(--menu-columns);
         column-gap: 15px;
       }
     }
 
     @media screen and (min-width: 992px) {
       body {
-        margin-left: 250px;
-        margin-right: 250px;
-        column-count: 2;
+        margin-left: 300px;
+        margin-right: 300px;
+        column-count: var(--menu-columns);
       }
     }
 
@@ -101,31 +111,6 @@
 
     h2::after {
       right: calc(50% - 10rem); /* distancia desde el centro hacia la derecha */
-    }
-
-    /* === DESTACADOS === */
-    .category-highlight {
-      border: 2px solid var(--color-categoria);
-      border-radius: 10px;
-      padding: 8px 12px;
-      margin: 1.5rem 0;
-      background-color: rgba(255, 235, 200, 0.25);
-      box-shadow: 0 0 6px rgba(0, 0, 0, 0.05);
-      break-inside: avoid;
-    }
-
-    .category-highlight h2 {
-      margin-top: 0.5rem;
-    }
-
-    .category-highlight::before {
-      display: block;
-      text-align: center;
-      font-size: 0.8rem;
-      color: var(--color-categoria, #b28051);
-      font-style: italic;
-      margin-bottom: 0.3rem;
-      opacity: 0.8;
     }
 
     h3 {
@@ -244,68 +229,6 @@
       white-space: nowrap;
     }
 
-    #printArea {
-      column-count: 2;
-      column-gap: 20px;
-    }
-
-@media print {
-  @page {
-    size: A4;
-    margin: 10mm 10mm 10mm 10mm;
-  }
-
-  body {
-    margin: 0 !important;
-    background: var(--color-bg) !important;
-    column-count: 2 !important;
-    column-gap: 15px !important;
-    width: 210mm !important;
-    max-width: 210mm !important;
-    padding-bottom: 25mm !important; /* espacio para el footer */
-  }
-
-  #topMenu, #printBtn, #fontSelector, select#fontSelector {
-    display: none !important;
-  }
-
-  /* --- Footer --- */
-  .footer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    text-align: center;
-    font-size: 0.75rem;
-    border-top: 1px solid #ddd;
-    background: var(--color-bg);
-    color: #444;
-    padding: 6px 0;
-  }
-
-  /* --- Ocultar footer en la primera hoja (carátula) --- */
-  .footer {
-    display: none !important;
-  }
-
-  .resto-header ~ .footer {
-    display: block !important;
-  }
-
-  /* --- Logo de fondo --- */
-  .print-background {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-size: 60%;
-    opacity: var(--bg-opacity);
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
-  }
-}
-
     .resto-header {
       display: flex;
       justify-content: center;
@@ -316,8 +239,8 @@
     }
 
     .resto-header img {
-      width: 100px;
-      height: 100px;
+      width: var(--logo-size);
+      height: var(--logo-size);
       border-radius: 50%;
       object-fit: cover;
     }
@@ -332,7 +255,7 @@
     .resto-header h1 { font-size: var(--size-nombre-resto); }
 
     .resto-header h3 {
-      margin: 0.2rem 0 0;
+      margin: 0 0 0;
       font-size: var(--size-nombre-slogan);
       font-weight: normal;
       font-style: italic;
@@ -340,6 +263,7 @@
     }
 
     #nombre-resto {
+      margin-bottom: -5px;
       color: var(--color-nombre-resto);
     }
 
@@ -367,14 +291,6 @@
       align-items: center;
       flex-wrap: wrap; 
       gap: 10px;
-    }
-
-    .font-size-control,
-    .opacity-control {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;     
     }
 
     #topMenu select {
@@ -479,11 +395,6 @@
       gap: 6px;
     }
 
-    .font-size-control,
-    .opacity-control {
-      width: 48%;
-    }
-
     .dropdown,
     #printBtn {
       flex: 1 1 30%; 
@@ -577,15 +488,13 @@
     color: var(--color-nombre-resto);
     background: var(--color-bg);
     column-span: all;
-    z-index: -2 !important;
+    z-index: 1 !important;
   }
-  .footer::after {
-    content: none !important;
-  }
+
   .footer {
     display: block !important;
   }
-  .menu-item, .category-highlight, .resto-header {
+  .menu-item, .resto-header {
     break-inside: avoid;
     page-break-inside: avoid;
   }
@@ -650,14 +559,14 @@
   @media print {
     @page {
       size: A4;
-      margin: 10mm 10mm 10mm 10mm;
+      margin: 10mm 5mm 10mm 10mm;
     }
 
     /* === CONFIGURACIÓN GENERAL === */
     body {
       margin: 0 !important;
       background: var(--color-bg) !important;
-      column-count: 2 !important;
+      column-count: var(--menu-columns) !important;
       column-gap: 15px !important;
       width: 210mm !important;
       max-width: 210mm !important;
@@ -719,7 +628,7 @@
     }
 
     /* Evitar cortes raros */
-    .menu-item, .category-highlight, .resto-header {
+    .menu-item, .resto-header {
       break-inside: avoid;
       page-break-inside: avoid;
     }
@@ -764,9 +673,7 @@
     background-color: #eef6fa;
   }
   </style>
-<link href="https://fonts.googleapis.com/css?family=Oswald:400,700|Roboto+Slab:400,700|Pacifico|Lato:400,700|Merriweather:400,700|Montserrat:400,700|Indie+Flower|Playfair+Display:400,700|Source+Code+Pro:400,700&display=swap" rel="stylesheet">  
-<link href="https://fonts.googleapis.com/css?family=Oswald:400,700&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700&family=Syne:wght@400;700&family=Sora:wght@400;700&family=Staatliches&family=Caveat&family=Yeseva+One&family=Righteous&family=Cormorant+Garamond:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Roboto+Slab:wght@400;700&family=Pacifico&family=Lato:wght@400;700&family=Merriweather:wght@400;700&family=Montserrat:wght@400;700&family=Indie+Flower&family=Playfair+Display:wght@400;700&family=Source+Code+Pro:wght@400;700&family=Unbounded:wght@400;700&family=Syne:wght@400;700&family=Sora:wght@400;700&family=Staatliches&family=Caveat&family=Yeseva+One&family=Righteous&family=Cormorant+Garamond:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
   <div class="print-background"></div>
@@ -815,12 +722,11 @@
         <button class="dropbtn">🔤 Tamaños</button>
         <div class="dropdown-content" id="sizeMenu" style="min-width:220px;">
           
-          <!-- 🔹 Control nuevo: Portada -->
           <label style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
-            <span>Portada</span>
-            <input type="number" id="cover-font-size-number" step="0.01" style="width:64px;">
+            <span>Logo</span>
+            <input type="number" id="logo-size-number" step="1" style="width:64px;">
           </label>
-          <input type="range" id="cover-font-size-range" min="1.5" max="2.4" step="0.01">
+          <input type="range" id="logo-size-range" min="50" max="220" step="1">
 
           <label style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
             <span>Nombre</span>
@@ -838,7 +744,7 @@
             <span>Categoría</span>
             <input type="number" id="size-categoria-number" step="0.01" style="width:64px;">
           </label>
-          <input type="range" id="size-categoria-range" min="0.8" max="4.5" step="0.01">
+          <input type="range" id="size-categoria-range" min="0.8" max="4" step="0.01">
 
           <label style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
             <span>Subcat.</span>
@@ -901,6 +807,14 @@
         </div>
       </div>
       <div class="dropdown">
+        <button class="dropbtn">⬛ Columnas</button>
+        <div class="dropdown-content" id="columnsMenu" style="min-width:160px;">
+          <label data-value="1" class="columns-option" style="display:block;padding:8px 6px;cursor:pointer;">1 columna</label>
+          <label data-value="2" class="columns-option" style="display:block;padding:8px 6px;cursor:pointer;">2 columnas</label>
+          <label data-value="3" class="columns-option" style="display:block;padding:8px 6px;cursor:pointer;">3 columnas</label>
+        </div>
+      </div>
+      <div class="dropdown">
         <button class="dropbtn">✨ Firulete</button>
         <div class="dropdown-content" id="firuleteSelector">
           <label data-value="">Ninguno</label>
@@ -914,20 +828,17 @@
           <label data-value="✨ 💫 ✨">Mágico ✨ 💫 ✨</label>
         </div>
       </div>
-      <div>
-        <label for="bg-opacity" style="align-items: center;">Logo</label>
-        <input type="range" id="bg-opacity" min="0" max="0.5" step="0.01" value="0.2" style="width:80px;">
+      <div class="dropdown">
+        <button class="dropbtn">🖼️ Logo</button>
+        <div class="dropdown-content" style="min-width:200px;">
+          <label style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+            <span>Opacidad fondo</span>
+            <input type="number" id="bg-opacity-number" step="0.01" style="width:64px;">
+          </label>
+          <input type="range" id="bg-opacity" min="0" max="0.5" step="0.01" value="0.2" style="width:100%;">
+        </div>
       </div>
       <button id="printBtn" onclick="window.print()">🖨️ Vista Previa</button>
-    </div>
-    <!-- === CARÁTULA === -->
-    <div class="cover-page">
-      <img id="logo-caratula" src="https://res.cloudinary.com/drxznqm61/image/upload/v1758652390/The_Pent_2_a8vhtp.jpg" alt="Logo Restaurante">
-      <h1 id="nombre-caratula">Café Central</h1>
-      <h3 id="slogan-caratula">Todo rico, todo el día</h3>
-      <p id="direccion-caratula">Av. Corrientes 123</p>
-      <p id="horario-caratula">Martes a Domingos de 8 a 20hs</p>
-      <p id="telefono-caratula">+54 11 1234-5678</p>
     </div>
 
     <div class="resto-header">
@@ -1087,27 +998,15 @@ function renderMenuForPrint(rows) {
       }
     });
 
-    const bgOpacityInput = document.getElementById('bg-opacity');
-    bgOpacityInput.value = localStorage.getItem('bg-opacity') || '0.2';
-    document.documentElement.style.setProperty('--bg-opacity', bgOpacityInput.value);
-
-    bgOpacityInput.addEventListener('input', function() {
-      document.documentElement.style.setProperty('--bg-opacity', this.value);
-      localStorage.setItem('bg-opacity', this.value);
-    });
-    const savedBgOpacity = localStorage.getItem('bg-opacity');
-    if (savedBgOpacity) {
-      bgOpacityInput.value = savedBgOpacity;
-      document.documentElement.style.setProperty('--bg-opacity', savedBgOpacity);
-    }
-
     // Tipo de firulete
     const firuleteSelector = document.getElementById("firuleteSelector");
-    firuleteSelector.addEventListener("change", function () {
-      const val = this.value;
-      document.documentElement.style.setProperty("--firulete", `"${val}"`);
-      localStorage.setItem("firulete", val);
-    });
+    if (firuleteSelector && firuleteSelector.tagName === 'SELECT') {
+      firuleteSelector.addEventListener("change", function () {
+        const val = this.value;
+        document.documentElement.style.setProperty("--firulete", `"${val}"`);
+        localStorage.setItem("firulete", val);
+      });
+    }
 
     // Recuperar tipo guardado
     const savedFirulete = localStorage.getItem("firulete");
@@ -1116,58 +1015,12 @@ function renderMenuForPrint(rows) {
       document.documentElement.style.setProperty("--firulete", `"${savedFirulete}"`);
     }
 
-    const sameColorToggle = document.getElementById("sameColorMode");
-    const colorMenu = document.getElementById("colorMenu");
-    const colorGroups = document.querySelectorAll(".color-group");
-    const colorPickers = document.querySelectorAll('#colorMenu input[type="color"]');
-
-    sameColorToggle.addEventListener("change", () => {
-      const active = sameColorToggle.checked;
-
-      if (active) {
-        colorMenu.classList.add("active");
-      } else {
-        colorMenu.classList.remove("active");
-      }
-
-      colorGroups.forEach(cb => (cb.checked = false));
-    });
-
-    colorPickers.forEach(picker => {
-      picker.addEventListener("input", () => {
-        const selectedCheckboxes = Array.from(colorGroups).filter(cb => cb.checked);
-        const newColor = picker.value;
-        const varName = picker.id;
-
-        // Aplica color normalmente
-        document.documentElement.style.setProperty(`--${varName}`, newColor);
-        localStorage.setItem(varName, newColor);
-
-        // Si está activo el modo y hay varios seleccionados → aplica a todos
-        if (sameColorToggle.checked && selectedCheckboxes.length > 1) {
-          selectedCheckboxes.forEach(cb => {
-            const input = cb.nextElementSibling;
-            input.value = newColor;
-            const name = input.id;
-            document.documentElement.style.setProperty(`--${name}`, newColor);
-            localStorage.setItem(newColor, name);
-          });
-        }
-      });
-    });
-
     // === COLOR MAESTRO ===
     const masterColorContainer = document.getElementById("masterColorContainer");
     const masterColorInput = document.getElementById("masterColor");
 
-    // Mostrar/ocultar el cuadradito principal cuando se activa el modo
-    sameColorToggle.addEventListener("change", () => {
-      masterColorContainer.style.display = sameColorToggle.checked ? "flex" : "none";
-    });
-
     // Aplicar color maestro a todos los seleccionados
     masterColorInput.addEventListener("input", () => {
-      if (!sameColorToggle.checked) return;
 
       const newColor = masterColorInput.value;
       const selectedCheckboxes = Array.from(document.querySelectorAll("#colorMenu .color-group")).filter(cb => cb.checked);
@@ -1376,40 +1229,6 @@ function renderMenuForPrint(rows) {
       }
     };
 
-    document.getElementById("nombre-caratula").textContent = getComputedStyle(document.documentElement).getPropertyValue('--nombre-restaurante').replace(/"/g, '').trim();
-    document.getElementById("slogan-caratula").textContent = getComputedStyle(document.documentElement).getPropertyValue('--subtitulo-restaurante').replace(/"/g, '').trim();
-    document.getElementById("direccion-caratula").textContent = getComputedStyle(document.documentElement).getPropertyValue('--direccion-restaurante').replace(/"/g, '').trim();
-    document.getElementById("horario-caratula").textContent = getComputedStyle(document.documentElement).getPropertyValue('--horario-restaurante').replace(/"/g, '').trim();
-    document.getElementById("telefono-caratula").textContent = getComputedStyle(document.documentElement).getPropertyValue('--telefono-restaurante').replace(/"/g, '').trim();
-
-    // === Control tamaño carátula ===
-    const coverFontRange = document.getElementById('cover-font-size-range');
-    const coverFontNumber = document.getElementById('cover-font-size-number');
-
-    // Cargar valor guardado o usar 1 por defecto
-    const savedCoverFont = localStorage.getItem('cover-font-size') || '1';
-    coverFontRange.value = savedCoverFont;
-    coverFontNumber.value = savedCoverFont;
-    document.documentElement.style.setProperty('--cover-font-size', savedCoverFont);
-
-    // Sincronizar range → number
-    coverFontRange.addEventListener('input', function() {
-      coverFontNumber.value = this.value;
-      document.documentElement.style.setProperty('--cover-font-size', this.value);
-      localStorage.setItem('cover-font-size', this.value);
-    });
-
-    // Sincronizar number → range
-    coverFontNumber.addEventListener('input', function() {
-      let val = parseFloat(this.value);
-      if (isNaN(val)) val = 1;
-      if (val < 1.5) val = 1.5;
-      if (val > 2.4) val = 2.4;
-      coverFontRange.value = val;
-      document.documentElement.style.setProperty('--cover-font-size', val);
-      localStorage.setItem('cover-font-size', val);
-    });
-
     /* === Tamaños por elemento: sincronización range + number + persistencia === */
     const sizeKeys = [
       {key: 'size-nombre-resto', min:1, max:4, step:0.01},
@@ -1467,34 +1286,6 @@ function renderMenuForPrint(rows) {
     });
 
   (function(){
-
-    // BG opacity control (si existe)
-    const bgOpacityInput = document.getElementById('bg-opacity');
-    if (bgOpacityInput) {
-      const savedBgOpacity = localStorage.getItem('bg-opacity') || '0.2';
-      bgOpacityInput.value = savedBgOpacity;
-      document.documentElement.style.setProperty('--bg-opacity', savedBgOpacity);
-      bgOpacityInput.addEventListener('input', function() {
-        document.documentElement.style.setProperty('--bg-opacity', this.value);
-        localStorage.setItem('bg-opacity', this.value);
-      });
-    }
-
-    // Firulete selector guard
-    const firuleteSelector = document.getElementById("firuleteSelector");
-    if (firuleteSelector) {
-      firuleteSelector.addEventListener("change", function () {
-        const val = this.value;
-        document.documentElement.style.setProperty("--firulete", `"${val}"`);
-        localStorage.setItem("firulete", val);
-      });
-      const savedFirulete = localStorage.getItem("firulete");
-      if (savedFirulete) {
-        firuleteSelector.value = savedFirulete;
-        document.documentElement.style.setProperty("--firulete", `"${savedFirulete}"`);
-      }
-    }
-
     // Colores: corrección de almacenamiento y guardado seguro
     const sameColorToggle = document.getElementById("sameColorMode");
     const colorMenu = document.getElementById("colorMenu");
@@ -1561,7 +1352,6 @@ function renderMenuForPrint(rows) {
       });
     }
 
-    
     document.querySelectorAll("#firuleteSelector label").forEach(label => {
       label.addEventListener("click", () => {
         const val = label.dataset.value || "";
@@ -1637,12 +1427,6 @@ function renderMenuForPrint(rows) {
         );
         localStorage.setItem("firulete", preset.firulete);
       }
-      if (preset.bgOpacity) {
-        document.documentElement.style.setProperty("--bg-opacity", preset.bgOpacity);
-        localStorage.setItem("bg-opacity", preset.bgOpacity);
-        const bg = document.getElementById("bg-opacity");
-        if (bg) bg.value = preset.bgOpacity;
-      }
 
       // 🔹 Cierra menú tras clic
       const dropdown = label.closest(".dropdown");
@@ -1690,34 +1474,168 @@ function renderMenuForPrint(rows) {
     });
   });
 
-  // Aplicar fuente guardada al cargar
+  })();
+
   (function(){
-    const saved = localStorage.getItem("font-family");
-    if (!saved) return;
-    const families = {
-      arial: "Arial, sans-serif",
-      oswald: "'Oswald', Arial, sans-serif",
-      "roboto-slab": "'Roboto Slab', serif",
-      pacifico: "'Pacifico', cursive",
-      lato: "'Lato', Arial, sans-serif",
-      merriweather: "'Merriweather', serif",
-      montserrat: "'Montserrat', Arial, sans-serif",
-      "indie-flower": "'Indie Flower', cursive",
-      playfair: "'Playfair Display', serif",
-      "source-code": "'Source Code Pro', monospace",
-      unbounded: "'Unbounded', sans-serif",
-      syne: "'Syne', sans-serif",
-      sora: "'Sora', sans-serif",
-      staatliches: "'Staatliches', sans-serif",
-      caveat: "'Caveat', cursive",
-      "yeseva-one": "'Yeseva One', serif",
-      righteous: "'Righteous', cursive",
-      "cormorant-garamond": "'Cormorant Garamond', serif"
+    const menu = document.getElementById('columnsMenu');
+    if (!menu) return;
+    const options = Array.from(menu.querySelectorAll('label[data-value]'));
+
+    const apply = (v) => {
+      const n = Math.min(3, Math.max(1, parseInt(v) || 2));
+      document.documentElement.style.setProperty('--menu-columns', n);
+      document.body.style.columnCount = n;
+      localStorage.setItem('menu-columns', String(n));
+      options.forEach(opt => opt.classList.toggle('active', String(opt.dataset.value) === String(n)));
     };
+
+    // inicializar desde localStorage o desde la variable CSS
+    const saved = localStorage.getItem('menu-columns') || getComputedStyle(document.documentElement).getPropertyValue('--menu-columns').trim();
+    apply(saved);
+
+    options.forEach(opt => {
+      opt.addEventListener('click', () => {
+        apply(opt.dataset.value);
+        // cerrar dropdown brevemente (mantener comportamiento hover)
+        const dropdown = opt.closest('.dropdown');
+        const content = dropdown?.querySelector('.dropdown-content');
+        if (content) {
+          content.style.display = 'none';
+          setTimeout(() => (content.style.display = ''), 180);
+        }
+      });
+    });
+
+    // observar cambios por JS/presets para sincronizar clases activas
+    const observer = new MutationObserver(() => {
+      const v = getComputedStyle(document.documentElement).getPropertyValue('--menu-columns').trim();
+      options.forEach(opt => opt.classList.toggle('active', String(opt.dataset.value) === String(v)));
+    });
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['style'] });
   })();
 
+  (function(){
+    const range = document.getElementById('logo-size-range');
+    const num = document.getElementById('logo-size-number');
+    if (!range || !num) return;
 
+    // cargar guardado o tomar valor por defecto de :root
+    const saved = localStorage.getItem('logo-size');
+    if (saved) {
+      range.value = saved;
+      num.value = saved;
+      document.documentElement.style.setProperty('--logo-size', saved + 'px');
+    } else {
+      const computed = getComputedStyle(document.documentElement).getPropertyValue('--logo-size').trim();
+      const numeric = parseFloat(computed.replace('px','')) || 100;
+      range.value = numeric;
+      num.value = numeric;
+      document.documentElement.style.setProperty('--logo-size', numeric + 'px');
+    }
+
+    const apply = v => {
+      const n = Math.max(20, Math.min(500, parseInt(v) || 100));
+      range.value = n;
+      num.value = n;
+      document.documentElement.style.setProperty('--logo-size', n + 'px');
+      localStorage.setItem('logo-size', String(n));
+    };
+
+    range.addEventListener('input', e => apply(e.target.value));
+    num.addEventListener('input', e => apply(e.target.value));
   })();
+
+    // ===== BG OPACITY + LOGO URL controls =====
+    (function(){
+      const bgRange = document.getElementById('bg-opacity');
+        const bgNum = document.getElementById('bg-opacity-number');
+        const logoUrlInput = document.getElementById('logo-url-input');
+        const applyLogoBtn = document.getElementById('applyLogoUrl');
+  
+        // init from storage
+        const savedBg = localStorage.getItem('bg-opacity') || bgRange.value || '0.2';
+        if (bgRange) { bgRange.value = savedBg; document.documentElement.style.setProperty('--bg-opacity', savedBg); }
+        if (bgNum) { bgNum.value = savedBg; }
+  
+        bgRange?.addEventListener('input', (e) => {
+          const v = e.target.value;
+          document.documentElement.style.setProperty('--bg-opacity', v);
+          if (bgNum) bgNum.value = v;
+          localStorage.setItem('bg-opacity', v);
+        });
+        bgNum?.addEventListener('input', (e) => {
+          let v = parseFloat(e.target.value);
+          if (isNaN(v)) v = 0;
+          if (v < 0) v = 0; if (v > 0.5) v = 0.5;
+          document.documentElement.style.setProperty('--bg-opacity', v);
+          if (bgRange) bgRange.value = v;
+          localStorage.setItem('bg-opacity', String(v));
+        });
+  
+       // logo url init / apply
+        const savedLogo = localStorage.getItem('logo-url');
+        if (savedLogo) {
+          const imgs = document.querySelectorAll('.resto-header img, .cover-page img, #logo-caratula');
+          imgs.forEach(i => i.src = savedLogo);
+         if (logoUrlInput) logoUrlInput.value = savedLogo;
+        }
+        applyLogoBtn?.addEventListener('click', () => {
+          const url = (logoUrlInput.value || '').trim();
+         if (!url) return;
+          const imgs = document.querySelectorAll('.resto-header img, .cover-page img, #logo-caratula');
+          imgs.forEach(i => i.src = url);
+          localStorage.setItem('logo-url', url);
+        });
+      })();
+  
+      // ===== Tracking (letter-spacing) control =====
+      (function(){
+        // insert UI: (controls already placed in Tamaños dropdown? if not, you can add them there)
+        // Here we expect inputs with ids: tracking-range and tracking-number. If not present, create simple controls programmatically.
+        let trackingRange = document.getElementById('tracking-range');
+        let trackingNum = document.getElementById('tracking-number');
+        // if controls are not in DOM, create hidden ones (graceful)
+        if (!trackingRange || !trackingNum) {
+          // create elements inside sizeMenu if exists
+          const sizeMenu = document.getElementById('sizeMenu');
+          if (sizeMenu) {
+            const label = document.createElement('label');
+            label.style = 'display:flex;justify-content:space-between;align-items:center;gap:8px;';
+            label.innerHTML = `<span>Interespaciado</span><input type="number" id="tracking-number" step="0.1" style="width:64px;">`;
+           sizeMenu.appendChild(label);
+            const range = document.createElement('input');
+            range.type = 'range';
+            range.id = 'tracking-range';
+            range.min = -1; range.max = 4; range.step = 0.1; range.style.width = '100%';
+            sizeMenu.appendChild(range);
+            trackingRange = document.getElementById('tracking-range');
+            trackingNum = document.getElementById('tracking-number');
+          } else {
+            return; // nothing to do
+          }
+        }
+  
+        // init
+        const savedTracking = localStorage.getItem('tracking') || '0';
+        trackingRange.value = savedTracking;
+        trackingNum.value = savedTracking;
+        document.documentElement.style.setProperty('--tracking', savedTracking + 'px');
+  
+        function applyTracking(v){
+          const n = Number(v) || 0;
+          trackingRange.value = n;
+          trackingNum.value = n;
+          document.documentElement.style.setProperty('--tracking', n + 'px');
+         localStorage.setItem('tracking', String(n));
+        }
+  
+        trackingRange.addEventListener('input', (e) => applyTracking(e.target.value));
+        trackingNum.addEventListener('input', (e) => {
+          let v = parseFloat(e.target.value);
+          if (isNaN(v)) v = 0;
+          applyTracking(v);
+        });
+      })();
   </script>
 </body>
 </html>

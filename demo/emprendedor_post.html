@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Menú - MenuLab</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link href="https://fonts.googleapis.com/css?family=Oswald:400,700|Roboto+Slab:400,700|Pacifico|Lato:400,700|Merriweather:400,700|Montserrat:400,700|Indie+Flower|Playfair+Display:400,700|Source+Code+Pro:400,700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700&family=Syne:wght@400;700&family=Sora:wght@400;700&family=Staatliches&family=Caveat&family=Yeseva+One&family=Righteous&family=Cormorant+Garamond:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --nombre-restaurante: "Café Central";
+      --subtitulo-restaurante: "Todo rico, todo el día";
+      --direccion-restaurante: "Av. Corrientes 123";
+      --horario-restaurante: "Martes a Domingos de 8 a 20hs";
+      --telefono-restaurante: "+54 11 1234-5678";
+      --color-nombre-resto: #000;
+      --color-nombre-slogan: #000;
+      --color-categoria: #000;
+      --color-subcategoria: #000;
+      --color-plato: #000;
+      --color-descripcion: #555;
+      --color-precio: #000;
+      --color-info-resto: #000;
+      --color-bg: #fff;
+      --bg-opacity: 0.2;
+      --firulete: "✦ ✦ ✦";
+      --cover-font-size: 1.8;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0 auto;
+      padding-top: 20px;
+      column-count: 2;
+      column-gap: 20px;
+      background: var(--color-bg);
+      transition: all 0.3s ease;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+      text-align: center;
+      color: var(--color-categoria);
+      margin: 1rem 0;
+    }
+
+    h3 {
+      font-size: 1rem;
+      color: var(--color-subcategoria);
+      margin: 0.5rem 0;
+    }
+
+    .menu-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.4rem 0;
+      border-bottom: 1px dotted #ccc;
+    }
+
+    .menu-plate {
+      flex: 1;
+      color: var(--color-plato);
+    }
+
+    .menu-plate h4 {
+      margin: 0;
+      color: var(--color-plato);
+      font-size: 1rem;
+      font-weight: bold;
+    }
+
+    .menu-description {
+      margin: 0.2rem 0 0;
+      color: var(--color-descripcion);
+      font-size: 0.85rem;
+    }
+
+    .menu-price {
+      color: var(--color-precio);
+      font-weight: bold;
+      margin-left: 10px;
+      white-space: nowrap;
+    }
+
+    .resto-header {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      break-inside: avoid;
+      text-align: center;
+    }
+
+    .resto-header img {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    #nombre-resto {
+      color: var(--color-nombre-resto);
+      font-size: 1.8rem;
+      margin: 0;
+    }
+
+    #subtitulo-resto {
+      color: var(--color-nombre-slogan);
+      margin: 0.2rem 0 0;
+      font-size: 1rem;
+      font-style: italic;
+    }
+
+    .footer {
+      column-span: all;
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--color-info-resto);
+      border-top: 1px solid #ddd;
+      padding: 8px 0;
+      margin-top: 20px;
+    }
+
+    .print-background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url("https://res.cloudinary.com/drxznqm61/image/upload/v1759872998/drilldown-removebg-preview_zczol3.png") no-repeat center center;
+      background-size: 100%;
+      opacity: var(--bg-opacity);
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    @media print {
+      body {
+        column-count: 2;
+        padding: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="print-background"></div>
+
+  <div class="resto-header">
+    <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1758652390/The_Pent_2_a8vhtp.jpg" alt="Logo Café Central">
+    <div>
+      <h1 id="nombre-resto">Café Central</h1>
+      <h3 id="subtitulo-resto">Todo rico, todo el día</h3>
+    </div>
+  </div>
+
+  <div id="menuTable"></div>
+
+  <div class="footer">
+    <span><i class="fa-solid fa-map-marker-alt"></i> <span id="direccion-resto">Av. Corrientes 123</span></span> |
+    <span><i class="fa-solid fa-clock"></i> <span id="horario-resto">Martes a Domingos de 8 a 20hs</span></span> |
+    <span><i class="fa-solid fa-phone"></i> <span id="telefono-resto">+54 11 1234-5678</span></span>
+  </div>
+
+  <script>
+    const allRows = [
+      ["Cafetería", "Clásicos", "Café en Jarrito", "Café espresso", "$1200"],
+      ["Cafetería", "Especiales", "Flat White", "Espresso doble con leche microespumada.", "$1500"],
+      ["Pastelería", "Tortas", "Cheesecake", "Porción casera.", "$2200"],
+      ["Sandwiches", "", "Bagel Capresse", "Bagel artesanal con tomate, mozzarella y albahaca.", "$2300"],
+      ["Desayunos", "", "Brunch Central", "Huevos, tostadas, café y jugo.", "$3200"],
+    ];
+
+    function renderMenu(rows) {
+      const container = document.getElementById("menuTable");
+      container.innerHTML = "";
+      const grouped = {};
+
+      rows.forEach(([cat, subcat, nombre, desc, precio]) => {
+        if (!cat) return;
+        if (!grouped[cat]) grouped[cat] = {};
+        const sub = subcat || "-";
+        if (!grouped[cat][sub]) grouped[cat][sub] = [];
+        grouped[cat][sub].push({ nombre, desc, precio });
+      });
+
+      Object.entries(grouped).forEach(([cat, subs]) => {
+        const catDiv = document.createElement("div");
+        const catTitle = document.createElement("h2");
+        catTitle.textContent = cat;
+        catDiv.appendChild(catTitle);
+
+        Object.entries(subs).forEach(([sub, items]) => {
+          if (sub && sub !== "-") {
+            const subTitle = document.createElement("h3");
+            subTitle.textContent = sub;
+            catDiv.appendChild(subTitle);
+          }
+          items.forEach(item => {
+            const div = document.createElement("div");
+            div.className = "menu-item";
+            div.innerHTML = `
+              <div class="menu-plate">
+                <h4>${item.nombre}</h4>
+                <p class="menu-description">${item.desc || ""}</p>
+              </div>
+              <span class="menu-price">${item.precio}</span>`;
+            catDiv.appendChild(div);
+          });
+        });
+
+        container.appendChild(catDiv);
+      });
+    }
+
+    renderMenu(allRows);
+
+    // === ESCUCHA MENSAJES DEL EDITOR ===
+    window.addEventListener('message', event => {
+      const { type, data } = event.data || {};
+      if (!type) return;
+
+      switch (type) {
+        case 'color':
+          document.documentElement.style.setProperty(data.variable, data.value);
+          break;
+
+        case 'opacity':
+          document.documentElement.style.setProperty('--bg-opacity', data);
+          break;
+
+        case 'font':
+          const families = {
+            arial: "Arial, sans-serif",
+            oswald: "'Oswald', Arial, sans-serif",
+            "roboto-slab": "'Roboto Slab', serif",
+            pacifico: "'Pacifico', cursive",
+            lato: "'Lato', Arial, sans-serif",
+            merriweather: "'Merriweather', serif",
+            montserrat: "'Montserrat', Arial, sans-serif",
+            "indie-flower": "'Indie Flower', cursive",
+            playfair: "'Playfair Display', serif",
+            "source-code": "'Source Code Pro', monospace",
+            unbounded: "'Unbounded', sans-serif",
+            syne: "'Syne', sans-serif",
+            sora: "'Sora', sans-serif",
+            staatliches: "'Staatliches', sans-serif",
+            caveat: "'Caveat', cursive",
+            "yeseva-one": "'Yeseva One', serif",
+            righteous: "'Righteous', cursive",
+            "cormorant-garamond": "'Cormorant Garamond', serif"
+          };
+          document.body.style.fontFamily = families[data] || "Arial, sans-serif";
+          break;
+
+        case 'size':
+          document.documentElement.style.setProperty(`--${data.key}`, data.value + 'rem');
+          break;
+
+        case 'firulete':
+          document.documentElement.style.setProperty('--firulete', `"${data}"`);
+          break;
+
+        case 'preset':
+          console.log("Preset recibido:", data);
+          break;
+      }
+    });
+
+    // Comunicar que está listo
+    window.parent.postMessage({ type: 'ready' }, '*');
+  </script>
+</body>
+</html>

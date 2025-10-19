@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Editor de Menú | MenuLab</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link href="https://fonts.googleapis.com/css?family=Oswald:400,700|Roboto+Slab:400,700|Pacifico|Lato:400,700|Merriweather:400,700|Montserrat:400,700|Indie+Flower|Playfair+Display:400,700|Source+Code+Pro:400,700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700&family=Syne:wght@400;700&family=Sora:wght@400;700&family=Staatliches&family=Caveat&family=Yeseva+One&family=Righteous&family=Cormorant+Garamond:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f8f9fa;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    #topMenu {
+      position: sticky;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: #fff;
+      padding: 10px 20px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    iframe {
+      flex: 1;
+      width: 100%;
+      border: none;
+    }
+
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .dropbtn,
+    #printBtn {
+      background-color: #67b0dd;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: background 0.3s ease;
+    }
+
+    .dropbtn:hover,
+    #printBtn:hover {
+      background-color: #1D3557;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #f9f9f9;
+      min-width: 160px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      z-index: 10;
+      border-radius: 6px;
+      padding: 10px;
+    }
+
+    .dropdown-content label {
+      display: block;
+      margin: 8px 0;
+      font-size: 0.9rem;
+      color: #333;
+      cursor: pointer;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    #topMenu select {
+      padding: 6px 10px;
+      border-radius: 6px;
+      border: 1px solid #ddd;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+
+    #topMenu label {
+      font-size: 0.9rem;
+      color: #333;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    #topMenu input[type="color"] {
+      width: 40px;
+      height: 40px;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      border-radius: 4px;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    #topMenu input[type="color"]::-webkit-color-swatch {
+      border: none;
+      border-radius: 4px;
+    }
+
+    #topMenu input[type="color"]:focus {
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(69, 123, 157, 0.5);
+    }
+
+    @media (max-width: 768px) {
+      #topMenu {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        padding: 10px;
+        gap: 6px;
+      }
+
+      .dropdown,
+      #printBtn {
+        flex: 1 1 30%;
+        text-align: center;
+      }
+
+      .dropbtn,
+      #printBtn {
+        width: 100%;
+        padding: 8px 0;
+        font-size: 0.85rem;
+      }
+
+      label {
+        font-size: 0.8rem;
+      }
+
+      input[type="range"] {
+        width: 100%;
+      }
+    }
+
+    /* Color menu toggles */
+    #colorMenu label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+    }
+
+    #colorMenu .color-group {
+      width: 18px;
+      height: 18px;
+      accent-color: #457B9D;
+    }
+
+    #colorMenu:not(.active) .color-group {
+      display: none;
+    }
+
+    #colorMenu.active .color-group {
+      display: inline-block;
+      cursor: pointer;
+    }
+
+    #masterColorContainer {
+      display: none;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    #colorMenu.active #masterColorContainer {
+      display: flex;
+    }
+
+    #masterColor {
+      width: 32px;
+      height: 32px;
+      border: none;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: transform 0.2s ease;
+    }
+
+    #masterColor:hover {
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+  <div id="topMenu">
+    <!-- === ESTILOS === -->
+    <div class="dropdown">
+      <button class="dropbtn">🌈 Estilos</button>
+      <div class="dropdown-content" id="presetSelectorMenu" style="min-width:220px;">
+        <label data-value="1">☕ Vintage</label>
+        <label data-value="2">🌿 Natural Pastel</label>
+        <label data-value="3">🖤 Minimalista Oscuro</label>
+        <label data-value="4">💎 Luxury Dorado</label>
+        <label data-value="5">📜 Clásico Italiano</label>
+        <label data-value="6">🩵 Celeste Moderno</label>
+        <label data-value="7">🍂 Otoñal Suave</label>
+        <label data-value="8">⚡ Tech Futurista</label>
+        <label data-value="9">🎨 Pop Alegre</label>
+        <label data-value="10">🤍 Blanco Neutro</label>
+      </div>
+    </div>
+
+    <!-- === FUENTE === -->
+    <div class="dropdown">
+      <button class="dropbtn">🖋️ Fuente</button>
+      <div class="dropdown-content" id="fontSelectorMenu" style="min-width:260px; max-height:420px; overflow-y:auto;">
+        <label data-value="arial" style="font-family: Arial;">Arial</label>
+        <label data-value="oswald" style="font-family: 'Oswald';">Condensed Grotesk</label>
+        <label data-value="roboto-slab" style="font-family: 'Roboto Slab';">Serif Moderna</label>
+        <label data-value="pacifico" style="font-family: 'Pacifico';">Manuscrita</label>
+        <label data-value="lato" style="font-family: 'Lato';">Sans Elegante</label>
+        <label data-value="merriweather" style="font-family: 'Merriweather';">Serif Clásica</label>
+        <label data-value="montserrat" style="font-family: 'Montserrat';">Sans Moderna</label>
+        <label data-value="indie-flower" style="font-family: 'Indie Flower';">Manuscrita Casual</label>
+        <label data-value="playfair" style="font-family: 'Playfair Display';">Serif Fashion</label>
+        <label data-value="source-code" style="font-family: 'Source Code Pro';">Monoespaciada</label>
+        <label data-value="unbounded" style="font-family: 'Unbounded';">Futurista Geométrica</label>
+        <label data-value="syne" style="font-family: 'Syne';">Experimental Bold</label>
+        <label data-value="sora" style="font-family: 'Sora';">Tech Elegante</label>
+        <label data-value="staatliches" style="font-family: 'Staatliches';">Bauhaus</label>
+        <label data-value="caveat" style="font-family: 'Caveat';">Manuscrita Clara</label>
+        <label data-value="yeseva-one" style="font-family: 'Yeseva One';">Serif Chic</label>
+        <label data-value="righteous" style="font-family: 'Righteous';">Redondeada Moderna</label>
+        <label data-value="cormorant-garamond" style="font-family: 'Cormorant Garamond';">Gourmet Serif</label>
+      </div>
+    </div>
+
+    <!-- === TAMAÑOS === -->
+    <div class="dropdown">
+      <button class="dropbtn">🔤 Tamaños</button>
+      <div class="dropdown-content" id="sizeMenu" style="min-width:220px;">
+        <label style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+          <span>Portada</span>
+          <input type="number" id="cover-font-size-number" step="0.01" style="width:64px;">
+        </label>
+        <input type="range" id="cover-font-size-range" min="1.5" max="2.4" step="0.01">
+
+        <label style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+          <span>Nombre</span>
+          <input type="number" id="size-nombre-resto-number" step="0.01" style="width:64px;">
+        </label>
+        <input type="range" id="size-nombre-resto-range" min="1" max="4" step="0.01">
+
+        <label style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+          <span>Slogan</span>
+          <input type="number" id="size-nombre-slogan-number" step="0.01" style="width:64px;">
+        </label>
+        <input type="range" id="size-nombre-slogan-range" min="0.6" max="2" step="0.01">
+
+        <label style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+          <span>Categoría</span>
+          <input type="number" id="size-categoria-number" step="0.01" style="width:64px;">
+        </label>
+        <input type="range" id="size-categoria-range" min="0.8" max="4" step="0.01">
+
+        <label style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+          <span>Subcat.</span>
+          <input type="number" id="size-subcategoria-number" step="0.01" style="width:64px;">
+        </label>
+        <input type="range" id="size-subcategoria-range" min="0.6" max="2" step="0.01">
+
+        <label style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+          <span>Plato</span>
+          <input type="number" id="size-plato-number" step="0.01" style="width:64px;">
+        </label>
+        <input type="range" id="size-plato-range" min="0.5" max="2" step="0.01">
+
+        <label style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+          <span>Descripción</span>
+          <input type="number" id="size-descripcion-number" step="0.01" style="width:64px;">
+        </label>
+        <input type="range" id="size-descripcion-range" min="0.4" max="1.5" step="0.01">
+
+        <label style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+          <span>Precio</span>
+          <input type="number" id="size-precio-number" step="0.01" style="width:64px;">
+        </label>
+        <input type="range" id="size-precio-range" min="0.5" max="2" step="0.01">
+
+        <label style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+          <span>Info (footer)</span>
+          <input type="number" id="size-info-resto-number" step="0.01" style="width:64px;">
+        </label>
+        <input type="range" id="size-info-resto-range" min="0.4" max="1.5" step="0.01">
+      </div>
+    </div>
+
+    <!-- === COLORES === -->
+    <div class="dropdown">
+      <button class="dropbtn">🎨 Colores</button>
+      <div class="dropdown-content" id="colorMenu">
+        <label>Nombre <input type="checkbox" class="color-group"> <input type="color" data-var="--color-nombre-resto"></label>
+        <label>Slogan <input type="checkbox" class="color-group"> <input type="color" data-var="--color-nombre-slogan"></label>
+        <label>Categoria <input type="checkbox" class="color-group"> <input type="color" data-var="--color-categoria"></label>
+        <label>Subcategoria <input type="checkbox" class="color-group"> <input type="color" data-var="--color-subcategoria"></label>
+        <label>Plato <input type="checkbox" class="color-group"> <input type="color" data-var="--color-plato"></label>
+        <label>Descripción <input type="checkbox" class="color-group"> <input type="color" data-var="--color-descripcion"></label>
+        <label>Precio <input type="checkbox" class="color-group"> <input type="color" data-var="--color-precio"></label>
+        <label>Info <input type="checkbox" class="color-group"> <input type="color" data-var="--color-info-resto"></label>
+        <label>Fondo <input type="checkbox" class="color-group"> <input type="color" data-var="--color-bg"></label>
+
+        <hr style="margin:8px 0;">
+        <label style="display:flex;align-items:center;gap:6px;font-size:0.85rem;">
+          <input type="checkbox" id="sameColorMode">
+          Aplicar mismo color a los seleccionados
+        </label>
+        <div id="masterColorContainer" style="display:none;align-items:center;gap:6px;margin-top:6px;">
+          <label style="font-size:0.85rem;">Color principal</label>
+          <input type="color" id="masterColor" value="#000000" style="width:40px;height:40px;cursor:pointer;border:none;border-radius:4px;">
+        </div>
+        <small style="display:block;color:#555;font-size:0.75rem;margin-top:4px;">
+          (Marcá varios campos y elegí un color para aplicarlo a todos)
+        </small>
+      </div>
+    </div>
+
+    <!-- === FIRULETE === -->
+    <div class="dropdown">
+      <button class="dropbtn">✨ Firulete</button>
+      <div class="dropdown-content" id="firuleteSelector">
+        <label data-value="">Ninguno</label>
+        <label data-value="✦ ✦ ✦">Brillos ✦ ✦ ✦</label>
+        <label data-value="⚜ ⚜ ⚜">Clásico ⚜ ⚜ ⚜</label>
+        <label data-value="❧ ❧ ❧">Floral ❧ ❧ ❧</label>
+        <label data-value="☕ ♡ ☕">Café ☕ ♡ ☕</label>
+        <label data-value="🍃 ✿ 🍃">Natural 🍃 ✿ 🍃</label>
+        <label data-value="✤ ✤ ✤">Sello ✤ ✤ ✤</label>
+        <label data-value="⋄ ⋄ ⋄">Rombo ⋄ ⋄ ⋄</label>
+        <label data-value="✨ 💫 ✨">Mágico ✨ 💫 ✨</label>
+      </div>
+    </div>
+
+    <!-- === OPACIDAD === -->
+    <div>
+      <label for="bg-opacity" style="align-items: center;">Logo</label>
+      <input type="range" id="bg-opacity" min="0" max="0.5" step="0.01" value="0.2" style="width:80px;">
+    </div>
+
+    <button id="printBtn" onclick="document.getElementById('menuFrame').contentWindow.print()">🖨️ Vista Previa</button>
+  </div>
+
+  <!-- === IFRAME === -->
+  <iframe id="menuFrame" src="emprendedor.html"></iframe>
+
+  <script>
+    const frame = document.getElementById('menuFrame');
+
+    function sendUpdate(type, data) {
+      frame.contentWindow.postMessage({ type, data }, '*');
+    }
+
+    // === FUENTES ===
+    document.querySelectorAll('#fontSelectorMenu label').forEach(label => {
+      label.addEventListener('click', () => {
+        sendUpdate('font', label.dataset.value);
+      });
+    });
+
+    // === COLORES ===
+    document.querySelectorAll('#colorMenu input[type="color"]').forEach(input => {
+      input.addEventListener('input', () => {
+        const variable = input.dataset.var;
+        sendUpdate('color', { variable, value: input.value });
+      });
+    });
+
+    // === OPACIDAD ===
+    const bgOpacity = document.getElementById('bg-opacity');
+    bgOpacity.addEventListener('input', () => {
+      sendUpdate('opacity', bgOpacity.value);
+    });
+
+    // === PRESETS ===
+    document.querySelectorAll('#presetSelectorMenu label').forEach(label => {
+      label.addEventListener('click', () => {
+        sendUpdate('preset', label.dataset.value);
+      });
+    });
+
+    // === TAMAÑOS ===
+    const sizeKeys = [
+      'cover-font-size',
+      'size-nombre-resto',
+      'size-nombre-slogan',
+      'size-categoria',
+      'size-subcategoria',
+      'size-plato',
+      'size-descripcion',
+      'size-precio',
+      'size-info-resto'
+    ];
+
+    sizeKeys.forEach(key => {
+      const range = document.getElementById(`${key}-range`);
+      const number = document.getElementById(`${key}-number`);
+
+      if (range) {
+        range.addEventListener('input', () => {
+          const value = range.value;
+          if (number) number.value = value;
+          sendUpdate('size', { key, value });
+        });
+      }
+
+      if (number) {
+        number.addEventListener('input', () => {
+          const value = number.value;
+          if (range) range.value = value;
+          sendUpdate('size', { key, value });
+        });
+      }
+    });
+
+    // === FIRULETE ===
+    document.querySelectorAll('#firuleteSelector label').forEach(label => {
+      label.addEventListener('click', () => {
+        sendUpdate('firulete', label.dataset.value);
+      });
+    });
+
+    // === MODO COLOR COMPARTIDO ===
+    const sameColorToggle = document.getElementById("sameColorMode");
+    const masterColor = document.getElementById("masterColor");
+    const colorGroups = document.querySelectorAll(".color-group");
+    const colorPickers = document.querySelectorAll("#colorMenu input[type='color']");
+
+    sameColorToggle.addEventListener("change", () => {
+      const active = sameColorToggle.checked;
+      document.getElementById("masterColorContainer").style.display = active ? "flex" : "none";
+      colorGroups.forEach(cb => (cb.checked = false));
+    });
+
+    masterColor.addEventListener("input", () => {
+      if (!sameColorToggle.checked) return;
+      const selected = Array.from(colorGroups).filter(cb => cb.checked);
+      selected.forEach(cb => {
+        const input = cb.nextElementSibling;
+        if (input && input.type === "color") {
+          input.value = masterColor.value;
+          sendUpdate('color', { variable: input.dataset.var, value: masterColor.value });
+        }
+      });
+    });
+
+    // === PRESETS AVANZADOS (visuales y fuentes) ===
+    const presets = {
+      1: { name: "Vintage", font: "cormorant-garamond", colors: { bg: "#fff7ec" } },
+      2: { name: "Natural Pastel", font: "lato", colors: { bg: "#f5f9f5" } },
+      3: { name: "Minimalista Oscuro", font: "montserrat", colors: { bg: "#121212" } },
+      4: { name: "Luxury Dorado", font: "playfair", colors: { bg: "#fdfaf3" } },
+      5: { name: "Clásico Italiano", font: "merriweather", colors: { bg: "#fff9f9" } },
+      6: { name: "Celeste Moderno", font: "sora", colors: { bg: "#EAF6FF" } },
+      7: { name: "Otoñal Suave", font: "yeseva-one", colors: { bg: "#fff8f2" } },
+      8: { name: "Tech Futurista", font: "unbounded", colors: { bg: "#0A0A0A" } },
+      9: { name: "Pop Alegre", font: "righteous", colors: { bg: "#FFF8F0" } },
+      10: { name: "Blanco Neutro", font: "lato", colors: { bg: "#ffffff" } },
+    };
+
+    document.querySelectorAll('#presetSelectorMenu label').forEach(label => {
+      label.addEventListener('click', () => {
+        const val = label.dataset.value;
+        if (!val || !presets[val]) return;
+        sendUpdate('preset', val);
+      });
+    });
+
+    // === PERSISTENCIA BÁSICA (opcional) ===
+    window.addEventListener('message', event => {
+      if (event.data && event.data.type === 'ready') {
+        console.log('Emprendedor listo para recibir actualizaciones.');
+      }
+    });
+  </script>
+</body>
+</html>
