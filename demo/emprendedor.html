@@ -380,7 +380,7 @@
       height: 100%;
       background: url("https://res.cloudinary.com/drxznqm61/image/upload/v1759872998/drilldown-removebg-preview_zczol3.png")
                   no-repeat center center;
-      background-size: 100%;
+      background-size: var(--bg-size-scale, 100%);
       opacity: var(--bg-opacity);
       z-index: 0;
       pointer-events: none;
@@ -475,6 +475,34 @@
     font-size: 0.9rem;
     cursor: pointer;
   }
+
+  #sizeMenu label{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:6px;
+  }
+
+  #sizeMenu .size-group{
+    width:14px;
+    height:14px;
+    accent-color:#457B9D;
+  }
+
+  #sizeMenu:not(.active) .size-group{
+    display:none;
+  }
+
+  #sizeMenu.active .size-group{
+    display:inline-block;
+    cursor:pointer;
+  }
+
+  #sizeMenu.active label:hover{
+    background:#eef6fa;
+    border-radius:4px;
+  }
+
   /* === CARÁTULA === */
   .cover-page {
     position: relative;
@@ -585,7 +613,7 @@
       right: 0;
       bottom: 0;
       background: url("https://res.cloudinary.com/drxznqm61/image/upload/v1759872998/drilldown-removebg-preview_zczol3.png") no-repeat center center;
-      background-size: 100%;
+      background-size: var(--bg-size-scale, 100%);
       opacity: var(--bg-opacity);
       z-index: -1;
       -webkit-print-color-adjust: exact;
@@ -672,6 +700,13 @@
   #presetSelectorMenu label:hover {
     background-color: #eef6fa;
   }
+
+  .tamaños {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+  }
   </style>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Roboto+Slab:wght@400;700&family=Pacifico&family=Lato:wght@400;700&family=Merriweather:wght@400;700&family=Montserrat:wght@400;700&family=Indie+Flower&family=Playfair+Display:wght@400;700&family=Source+Code+Pro:wght@400;700&family=Unbounded:wght@400;700&family=Syne:wght@400;700&family=Sora:wght@400;700&family=Staatliches&family=Caveat&family=Yeseva+One&family=Righteous&family=Cormorant+Garamond:wght@400;700&display=swap" rel="stylesheet">
 </head>
@@ -695,7 +730,7 @@
       </div>
       <div class="dropdown">
         <button class="dropbtn">🖋️ Fuente</button>
-        <div class="dropdown-content" id="fontSelectorMenu" style="min-width:260px; max-height:420px; overflow-y:auto;">
+        <div class="dropdown-content" id="fontSelectorMenu" style="min-width:260px;overflow-y: visible;max-height: none;">
           <label data-value="arial" style="font-family: Arial, sans-serif;">Arial</label>
           <label data-value="oswald" style="font-family: 'Oswald', Arial, sans-serif;">Condensed Grotesk</label>
           <label data-value="roboto-slab" style="font-family: 'Roboto Slab', serif;">Serif Moderna</label>
@@ -717,64 +752,88 @@
         </div>
       </div>
 
-      <!-- Nuevo: Tamaños por elemento -->
       <div class="dropdown">
         <button class="dropbtn">🔤 Tamaños</button>
         <div class="dropdown-content" id="sizeMenu" style="min-width:220px;">
           
-          <label style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+          <label class="tamaños">
             <span>Logo</span>
+            <input type="checkbox" class="size-group">
             <input type="number" id="logo-size-number" step="1" style="width:64px;">
           </label>
           <input type="range" id="logo-size-range" min="50" max="220" step="1">
 
-          <label style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+          <label class="tamaños">
             <span>Nombre</span>
+            <input type="checkbox" class="size-group">
             <input type="number" id="size-nombre-resto-number" step="0.01" style="width:64px;">
           </label>
           <input type="range" id="size-nombre-resto-range" min="1" max="4" step="0.01">
 
-          <label style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+          <label class="tamaños">
             <span>Slogan</span>
+            <input type="checkbox" class="size-group">
             <input type="number" id="size-nombre-slogan-number" step="0.01" style="width:64px;">
           </label>
           <input type="range" id="size-nombre-slogan-range" min="0.6" max="2" step="0.01">
 
-          <label style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+          <label class="tamaños">
             <span>Categoría</span>
+            <input type="checkbox" class="size-group">
             <input type="number" id="size-categoria-number" step="0.01" style="width:64px;">
           </label>
           <input type="range" id="size-categoria-range" min="0.8" max="4" step="0.01">
 
-          <label style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+          <label class="tamaños">
             <span>Subcat.</span>
+            <input type="checkbox" class="size-group">
             <input type="number" id="size-subcategoria-number" step="0.01" style="width:64px;">
           </label>
           <input type="range" id="size-subcategoria-range" min="0.6" max="2" step="0.01">
 
-          <label style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+          <label class="tamaños">
             <span>Plato</span>
+            <input type="checkbox" class="size-group">
             <input type="number" id="size-plato-number" step="0.01" style="width:64px;">
           </label>
           <input type="range" id="size-plato-range" min="0.5" max="2" step="0.01">
 
-          <label style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+          <label class="tamaños">
             <span>Descripción</span>
+            <input type="checkbox" class="size-group">
             <input type="number" id="size-descripcion-number" step="0.01" style="width:64px;">
           </label>
           <input type="range" id="size-descripcion-range" min="0.4" max="1.5" step="0.01">
 
-          <label style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+          <label class="tamaños">
             <span>Precio</span>
+            <input type="checkbox" class="size-group">
             <input type="number" id="size-precio-number" step="0.01" style="width:64px;">
           </label>
           <input type="range" id="size-precio-range" min="0.5" max="2" step="0.01">
 
-          <label style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
-            <span>Info (footer)</span>
+          <label class="tamaños">
+            <span>Info</span>
+            <input type="checkbox" class="size-group">
             <input type="number" id="size-info-resto-number" step="0.01" style="width:64px;">
           </label>
           <input type="range" id="size-info-resto-range" min="0.4" max="1.5" step="0.01">
+
+          <hr style="margin:8px 0;">
+          <label style="display:flex;align-items:center;gap:6px;font-size:0.85rem;">
+            <input type="checkbox" id="sameSizeMode">
+            Aplicar mismo tamaño a los seleccionados
+          </label>
+
+          <div id="masterSizeContainer" style="display:none;align-items:center;gap:6px;margin-top:6px;">
+            <label style="font-size:0.85rem;">Tamaño principal</label>
+            <input type="range" id="masterSizeRange" min="0.5" max="4" step="0.01" value="1" style="flex:1;">
+          </div>
+
+          <small style="display:block;color:#555;font-size:0.75rem;margin-top:4px;">
+            (Marcá varios campos y elegí variar el tamaño a la vez)
+          </small>
+
         </div>
       </div>
 
@@ -829,13 +888,22 @@
         </div>
       </div>
       <div class="dropdown">
-        <button class="dropbtn">🖼️ Logo</button>
+        <button class="dropbtn">🖼️ Fondo</button>
         <div class="dropdown-content" style="min-width:200px;">
-          <label style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+          <label class="tamaños">
             <span>Opacidad fondo</span>
             <input type="number" id="bg-opacity-number" step="0.01" style="width:64px;">
           </label>
           <input type="range" id="bg-opacity" min="0" max="0.5" step="0.01" value="0.2" style="width:100%;">
+
+          <label class="tamaños">
+            <span>Tamaño fondo</span>
+            <input type="number" id="bg-size-number" step="1" style="width:64px;">
+          </label>
+          <input type="range" id="bg-size" min="50" max="200" step="1" value="100" style="width:100%;">
+          <small style="display:block;color:#555;font-size:0.75rem;margin-top:4px;">
+            (100% = tamaño original del fondo)
+          </small>
         </div>
       </div>
       <button id="printBtn" onclick="window.print()">🖨️ Vista Previa</button>
@@ -1229,8 +1297,8 @@ function renderMenuForPrint(rows) {
       }
     };
 
-    /* === Tamaños por elemento: sincronización range + number + persistencia === */
     const sizeKeys = [
+      {key: 'logo-size', min: 50, max: 220, step: 1, unit: 'px'},
       {key: 'size-nombre-resto', min:1, max:4, step:0.01},
       {key: 'size-nombre-slogan', min:0.6, max:2, step:0.01},
       {key: 'size-categoria', min:0.8, max:3, step:0.01},
@@ -1247,32 +1315,38 @@ function renderMenuForPrint(rows) {
       const num = document.getElementById(`${key}-number`);
       if (!range || !num) return;
 
+      const unit = cfg.unit || 'rem'; // respeta unit si está definida
+
       // cargar valor guardado o tomar el CSS variable actual
       const saved = localStorage.getItem(key);
       if (saved) {
+        // saved ya está sin unidad
         range.value = saved;
         num.value = saved;
-        document.documentElement.style.setProperty(`--${key}`, saved + 'rem');
+        document.documentElement.style.setProperty(`--${key}`, saved + (unit === 'rem' ? 'rem' : unit));
       } else {
-        // obtener valor desde :root (si existe) y quitar unidad
+        // obtener valor desde :root (si existe) y quitar unidad adecuada
         const computed = getComputedStyle(document.documentElement).getPropertyValue(`--${key}`).trim();
         if (computed) {
-          const numeric = parseFloat(computed.replace('rem','')) || parseFloat(computed);
+          const numeric = parseFloat(computed.replace('rem','').replace('px','')) || parseFloat(computed);
           if (!isNaN(numeric)) {
             range.value = numeric;
             num.value = numeric;
-            document.documentElement.style.setProperty(`--${key}`, numeric + 'rem');
+            document.documentElement.style.setProperty(`--${key}`, numeric + (unit === 'rem' ? 'rem' : unit));
           }
         }
       }
 
       // sincronizar range -> number -> css -> storage
       const apply = v => {
-        const val = String(v);
-        num.value = val;
-        range.value = val;
-        document.documentElement.style.setProperty(`--${key}`, val + 'rem');
-        localStorage.setItem(key, val);
+        // normalizar número
+        const raw = (typeof v === 'string') ? v : String(v);
+        const valNum = unit === 'px' ? Math.round(parseFloat(raw) || cfg.min) : parseFloat(raw) || cfg.min;
+        const out = unit === 'px' ? String(Math.round(valNum)) : String(Number(valNum).toFixed(2));
+        num.value = out;
+        range.value = out;
+        document.documentElement.style.setProperty(`--${key}`, out + (unit === 'rem' ? 'rem' : unit));
+        localStorage.setItem(key, out);
       };
 
       range.addEventListener('input', e => apply(e.target.value));
@@ -1281,7 +1355,8 @@ function renderMenuForPrint(rows) {
         if (isNaN(v)) v = cfg.min;
         if (v < cfg.min) v = cfg.min;
         if (v > cfg.max) v = cfg.max;
-        apply(v.toFixed(2));
+        // aplicar con precision según unidad
+        apply(unit === 'px' ? Math.round(v) : v.toFixed(2));
       });
     });
 
@@ -1514,128 +1589,176 @@ function renderMenuForPrint(rows) {
     observer.observe(document.documentElement, { attributes: true, attributeFilter: ['style'] });
   })();
 
+  // ===== BG OPACITY + LOGO URL controls =====
   (function(){
-    const range = document.getElementById('logo-size-range');
-    const num = document.getElementById('logo-size-number');
-    if (!range || !num) return;
+    const bgRange = document.getElementById('bg-opacity');
+      const bgNum = document.getElementById('bg-opacity-number');
+      const logoUrlInput = document.getElementById('logo-url-input');
+      const applyLogoBtn = document.getElementById('applyLogoUrl');
+      
+      // init from storage
+      const savedBg = localStorage.getItem('bg-opacity') || bgRange.value || '0.2';
+      if (bgRange) { bgRange.value = savedBg; document.documentElement.style.setProperty('--bg-opacity', savedBg); }
+      if (bgNum) { bgNum.value = savedBg; }
 
-    // cargar guardado o tomar valor por defecto de :root
-    const saved = localStorage.getItem('logo-size');
-    if (saved) {
-      range.value = saved;
-      num.value = saved;
-      document.documentElement.style.setProperty('--logo-size', saved + 'px');
-    } else {
-      const computed = getComputedStyle(document.documentElement).getPropertyValue('--logo-size').trim();
-      const numeric = parseFloat(computed.replace('px','')) || 100;
-      range.value = numeric;
-      num.value = numeric;
-      document.documentElement.style.setProperty('--logo-size', numeric + 'px');
-    }
+      bgRange?.addEventListener('input', (e) => {
+        const v = e.target.value;
+        document.documentElement.style.setProperty('--bg-opacity', v);
+        if (bgNum) bgNum.value = v;
+        localStorage.setItem('bg-opacity', v);
+      });
+      bgNum?.addEventListener('input', (e) => {
+        let v = parseFloat(e.target.value);
+        if (isNaN(v)) v = 0;
+        if (v < 0) v = 0; if (v > 0.5) v = 0.5;
+        document.documentElement.style.setProperty('--bg-opacity', v);
+        if (bgRange) bgRange.value = v;
+        localStorage.setItem('bg-opacity', String(v));
+      });
+        
+      // logo url init / apply
+      const savedLogo = localStorage.getItem('logo-url');
+      if (savedLogo) {
+        const imgs = document.querySelectorAll('.resto-header img, .cover-page img, #logo-caratula');
+        imgs.forEach(i => i.src = savedLogo);
+        if (logoUrlInput) logoUrlInput.value = savedLogo;
+      }
+      applyLogoBtn?.addEventListener('click', () => {
+        const url = (logoUrlInput.value || '').trim();
+        if (!url) return;
+        const imgs = document.querySelectorAll('.resto-header img, .cover-page img, #logo-caratula');
+        imgs.forEach(i => i.src = url);
+        localStorage.setItem('logo-url', url);
+      });
 
-    const apply = v => {
-      const n = Math.max(20, Math.min(500, parseInt(v) || 100));
-      range.value = n;
-      num.value = n;
-      document.documentElement.style.setProperty('--logo-size', n + 'px');
-      localStorage.setItem('logo-size', String(n));
-    };
+    const sizeRange = document.getElementById('bg-size');
+    const sizeNum = document.getElementById('bg-size-number');
+    const savedSize = localStorage.getItem('bg-size-scale') || '100';
+    sizeRange.value = savedSize;
+    sizeNum.value = savedSize;
 
-    range.addEventListener('input', e => apply(e.target.value));
-    num.addEventListener('input', e => apply(e.target.value));
-  })();
+    document.documentElement.style.setProperty('--bg-size-scale', savedSize + '%');
+      const applySize = v => {
+        const n = Math.min(200, Math.max(50, parseInt(v) || 100));
+        sizeRange.value = n;
+        sizeNum.value = n;
+        document.documentElement.style.setProperty('--bg-size-scale', n + '%');
+        localStorage.setItem('bg-size-scale', String(n));
+      };
+      sizeRange.addEventListener('input', e => applySize(e.target.value));
+      sizeNum.addEventListener('input', e => applySize(e.target.value));
 
-    // ===== BG OPACITY + LOGO URL controls =====
+    })();
+  
+    // ===== Tracking (letter-spacing) control =====
     (function(){
-      const bgRange = document.getElementById('bg-opacity');
-        const bgNum = document.getElementById('bg-opacity-number');
-        const logoUrlInput = document.getElementById('logo-url-input');
-        const applyLogoBtn = document.getElementById('applyLogoUrl');
-  
-        // init from storage
-        const savedBg = localStorage.getItem('bg-opacity') || bgRange.value || '0.2';
-        if (bgRange) { bgRange.value = savedBg; document.documentElement.style.setProperty('--bg-opacity', savedBg); }
-        if (bgNum) { bgNum.value = savedBg; }
-  
-        bgRange?.addEventListener('input', (e) => {
-          const v = e.target.value;
-          document.documentElement.style.setProperty('--bg-opacity', v);
-          if (bgNum) bgNum.value = v;
-          localStorage.setItem('bg-opacity', v);
-        });
-        bgNum?.addEventListener('input', (e) => {
-          let v = parseFloat(e.target.value);
-          if (isNaN(v)) v = 0;
-          if (v < 0) v = 0; if (v > 0.5) v = 0.5;
-          document.documentElement.style.setProperty('--bg-opacity', v);
-          if (bgRange) bgRange.value = v;
-          localStorage.setItem('bg-opacity', String(v));
-        });
-  
-       // logo url init / apply
-        const savedLogo = localStorage.getItem('logo-url');
-        if (savedLogo) {
-          const imgs = document.querySelectorAll('.resto-header img, .cover-page img, #logo-caratula');
-          imgs.forEach(i => i.src = savedLogo);
-         if (logoUrlInput) logoUrlInput.value = savedLogo;
+      // insert UI: (controls already placed in Tamaños dropdown? if not, you can add them there)
+      // Here we expect inputs with ids: tracking-range and tracking-number. If not present, create simple controls programmatically.
+      let trackingRange = document.getElementById('tracking-range');
+      let trackingNum = document.getElementById('tracking-number');
+      // if controls are not in DOM, create hidden ones (graceful)
+      if (!trackingRange || !trackingNum) {
+        // create elements inside sizeMenu if exists
+        const sizeMenu = document.getElementById('sizeMenu');
+        if (sizeMenu) {
+          const label = document.createElement('label');
+          label.style = 'display:flex;justify-content:space-between;align-items:center;gap:8px;';
+          label.innerHTML = `<span>Interespaciado</span><input type="number" id="tracking-number" step="0.1" style="width:64px;">`;
+          sizeMenu.appendChild(label);
+          const range = document.createElement('input');
+          range.type = 'range';
+          range.id = 'tracking-range';
+          range.min = -1; range.max = 4; range.step = 0.1; range.style.width = '100%';
+          sizeMenu.appendChild(range);
+          trackingRange = document.getElementById('tracking-range');
+          trackingNum = document.getElementById('tracking-number');
+        } else {
+          return; // nothing to do
         }
-        applyLogoBtn?.addEventListener('click', () => {
-          const url = (logoUrlInput.value || '').trim();
-         if (!url) return;
-          const imgs = document.querySelectorAll('.resto-header img, .cover-page img, #logo-caratula');
-          imgs.forEach(i => i.src = url);
-          localStorage.setItem('logo-url', url);
-        });
-      })();
-  
-      // ===== Tracking (letter-spacing) control =====
-      (function(){
-        // insert UI: (controls already placed in Tamaños dropdown? if not, you can add them there)
-        // Here we expect inputs with ids: tracking-range and tracking-number. If not present, create simple controls programmatically.
-        let trackingRange = document.getElementById('tracking-range');
-        let trackingNum = document.getElementById('tracking-number');
-        // if controls are not in DOM, create hidden ones (graceful)
-        if (!trackingRange || !trackingNum) {
-          // create elements inside sizeMenu if exists
-          const sizeMenu = document.getElementById('sizeMenu');
-          if (sizeMenu) {
-            const label = document.createElement('label');
-            label.style = 'display:flex;justify-content:space-between;align-items:center;gap:8px;';
-            label.innerHTML = `<span>Interespaciado</span><input type="number" id="tracking-number" step="0.1" style="width:64px;">`;
-           sizeMenu.appendChild(label);
-            const range = document.createElement('input');
-            range.type = 'range';
-            range.id = 'tracking-range';
-            range.min = -1; range.max = 4; range.step = 0.1; range.style.width = '100%';
-            sizeMenu.appendChild(range);
-            trackingRange = document.getElementById('tracking-range');
-            trackingNum = document.getElementById('tracking-number');
-          } else {
-            return; // nothing to do
-          }
-        }
-  
-        // init
-        const savedTracking = localStorage.getItem('tracking') || '0';
-        trackingRange.value = savedTracking;
-        trackingNum.value = savedTracking;
-        document.documentElement.style.setProperty('--tracking', savedTracking + 'px');
-  
-        function applyTracking(v){
-          const n = Number(v) || 0;
-          trackingRange.value = n;
-          trackingNum.value = n;
-          document.documentElement.style.setProperty('--tracking', n + 'px');
-         localStorage.setItem('tracking', String(n));
-        }
-  
-        trackingRange.addEventListener('input', (e) => applyTracking(e.target.value));
-        trackingNum.addEventListener('input', (e) => {
-          let v = parseFloat(e.target.value);
-          if (isNaN(v)) v = 0;
-          applyTracking(v);
-        });
-      })();
+      }
+
+      // init
+      const savedTracking = localStorage.getItem('tracking') || '0';
+      trackingRange.value = savedTracking;
+      trackingNum.value = savedTracking;
+      document.documentElement.style.setProperty('--tracking', savedTracking + 'px');
+
+      function applyTracking(v){
+        const n = Number(v) || 0;
+        trackingRange.value = n;
+        trackingNum.value = n;
+        document.documentElement.style.setProperty('--tracking', n + 'px');
+        localStorage.setItem('tracking', String(n));
+      }
+
+      trackingRange.addEventListener('input', (e) => applyTracking(e.target.value));
+      trackingNum.addEventListener('input', (e) => {
+        let v = parseFloat(e.target.value);
+        if (isNaN(v)) v = 0;
+        applyTracking(v);
+      });
+    })();
+
+  (function(){
+  const sameSizeToggle = document.getElementById("sameSizeMode");
+  const sizeMenu = document.getElementById("sizeMenu");
+  const sizeGroups = document.querySelectorAll("#sizeMenu .size-group");
+  const masterSizeContainer = document.getElementById("masterSizeContainer");
+  const masterSizeRange = document.getElementById("masterSizeRange");
+
+  // almacenará los valores originales al activar el modo
+  let baseValues = {};
+  let baseMaster = 1;
+
+  sameSizeToggle?.addEventListener("change", () => {
+    const active = sameSizeToggle.checked;
+    sizeMenu.classList.toggle("active", active);
+    sizeGroups.forEach(cb => (cb.checked = false));
+    masterSizeContainer.style.display = active ? "flex" : "none";
+
+    // cuando se activa, registramos los valores actuales
+    if (active) {
+      baseValues = {};
+      document.querySelectorAll('#sizeMenu input[type="number"]').forEach(num => {
+        const id = num.id;
+        baseValues[id] = parseFloat(num.value) || 1;
+      });
+      baseMaster = parseFloat(masterSizeRange.value) || 1;
+    }
+  });
+
+  function getRangeFor(numInput) {
+    const id = numInput.id.replace("-number", "-range");
+    return document.getElementById(id);
+  }
+
+  masterSizeRange?.addEventListener("input", e => {
+    const newMaster = parseFloat(e.target.value);
+    const selected = Array.from(sizeGroups).filter(cb => cb.checked);
+    if (!selected.length || !sameSizeToggle.checked) return;
+
+    // calcular factor proporcional
+    const factor = newMaster / baseMaster;
+
+    selected.forEach(cb => {
+      const numInput = cb.parentElement.querySelector('input[type="number"]');
+      if (!numInput) return;
+      const rangeInput = getRangeFor(numInput);
+      const id = numInput.id;
+      const cssVar = id.replace('-number', '');
+      const isLogo = cssVar === 'logo-size';
+      const unit = isLogo ? 'px' : 'rem';
+
+      const original = baseValues[id] || parseFloat(numInput.value) || 1;
+      const newVal = (original * factor).toFixed(isLogo ? 0 : 2);
+
+      numInput.value = newVal;
+      if (rangeInput) rangeInput.value = newVal;
+      document.documentElement.style.setProperty(`--${cssVar}`, newVal + unit);
+      localStorage.setItem(cssVar, newVal);
+      });
+    });
+  })();
   </script>
 </body>
 </html>
