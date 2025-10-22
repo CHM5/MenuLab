@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <title>Menú - MenuLab</title>
-
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link href="https://fonts.googleapis.com/css?family=Oswald:400,700|Roboto+Slab:400,700|Pacifico|Lato:400,700|Merriweather:400,700|Montserrat:400,700|Indie+Flower|Playfair+Display:400,700|Source+Code+Pro:400,700&display=swap" rel="stylesheet">
@@ -168,10 +167,58 @@
   <script>
     const allRows = [
       ["Cafetería", "Clásicos", "Café en Jarrito", "Café espresso", "$1200"],
+      ["Cafetería", "Clásicos", "Café con Leche", "Café espresso con leche caliente.", "$1300"],
+      ["Cafetería", "Clásicos", "Café Americano", "Café filtrado suave, taza grande.", "$1100", "destacado"],
       ["Cafetería", "Especiales", "Flat White", "Espresso doble con leche microespumada.", "$1500"],
-      ["Pastelería", "Tortas", "Cheesecake", "Porción casera.", "$2200"],
-      ["Sandwiches", "", "Bagel Capresse", "Bagel artesanal con tomate, mozzarella y albahaca.", "$2300"],
-      ["Desayunos", "", "Brunch Central", "Huevos, tostadas, café y jugo.", "$3200"],
+      ["Cafetería", "Especiales", "Latte Vainilla", "Café con leche y sirope de vainilla.", "$1600"],
+      ["Cafetería", "Especiales", "Cappuccino", "Espresso, leche y espuma, decorado con cacao.", "$1400"],
+      ["Cafetería", "Fríos", "Cold Brew", "Café infusionado en frío por 12 horas.", "$1700"],
+      ["Cafetería", "Fríos", "Iced Latte", "Café espresso, leche y hielo.", "$1600", "celiaco"],
+      
+      ["Pastelería", "Tortas", "Cheesecake", "Porción de cheesecake casero.", "$2200"],
+      ["Pastelería", "Tortas", "Brownie", "Brownie de chocolate con nuez y bocha de helado de limón.", "$1800"],
+      ["Pastelería", "Tortas", "Carrot Cake", "Bizcocho húmedo de zanahoria y especias.", "$2100"],
+      ["Pastelería", "Tortas", "Lemon Pie", "Tarta de limón con merengue italiano.", "$2000", "destacado"],
+      
+      ["Pastelería", "Cookies", "Cookie Chips", "Galleta artesanal con chips de chocolate.", "$900"],
+      ["Pastelería", "Cookies", "Cookie Red Velvet", "Galleta roja con chocolate blanco.", "$950"],
+      
+      ["Sandwiches", "", "Tostado de Jamón y Queso", "Pan casero, jamón cocido y queso.", "$2000"],
+      ["Sandwiches", "", "Bagel Capresse", "Bagel artesanal, tomate, mozzarella y albahaca.", "$2300", "vegetariano"],
+      ["Sandwiches", "", "Croissant Veggie", "Croissant con vegetales grillados y queso.", "$2200", "vegano"],
+      
+      ["Desayunos", "", "Combo Central", "Café + jugo + tostadas + mermelada y manteca.", "$2500"],
+      ["Bebidas", "Jugos Naturales", "Jugo de Naranja Natural", "Jugo exprimido al momento.", "$800"],
+      ["Bebidas", "Jugos Naturales", "Jugo de Manzana y Zanahoria", "Fresco y revitalizante.", "$900"],
+      
+      ["Saludables", "Yogur", "Yogur Natural", "Limonada casera con menta y albahaca.", "$850"],
+      ["Saludables", "Yogur", "Yogur con Granola y Frutas", "Yogur natural con granola y frutas de estación", "$2000", "celiaco"],
+      
+      ["Desayunos", "", "Granola Bowl", "Yogur natural, granola casera y frutas frescas.", "$1800"],
+      ["Desayunos", "", "Tostadas Avocado", "Pan integral, palta, tomate y semillas.", "$2100", "vegano"],
+      
+      ["Cafetería", "Especiales", "Mocha Latte", "Café espresso con leche vaporizada y chocolate.", "$1700"],
+      ["Cafetería", "Especiales", "Caramel Macchiato", "Espresso con leche, espuma y toque de caramelo.", "$1750"],
+      
+      ["Cafetería", "Fríos", "Espresso Tonic", "Espresso servido sobre tónica y hielo.", "$1600"],
+      ["Cafetería", "Fríos", "Affogato", "Helado de vainilla bañado con espresso caliente.", "$1900", "celiaco"],
+      ["Cafetería", "Fríos", "Iced Matcha Latte", "Té matcha japonés con leche vegetal y hielo.", "$1800", "vegano"],
+      
+      ["Cafetería", "Fríos", "Frappuccino Oreo", "Frappé de café con galletas Oreo y crema.", "$2000"],
+      ["Cafetería", "Fríos", "Limonada Menta & Jengibre", "Refrescante, casera y natural.", "$1500"],
+      ["Cafetería", "Fríos", "Smoothie Frutos Rojos", "Batido con yogur natural y frutas del bosque.", "$1900", "celiaco"],
+      
+      ["Pastelería", "", "Muffin de Banana Vegano", "Sin lácteos, sin huevo, con nueces y banana.", "$1300", "vegano"],
+      ["Pastelería", "Repostería", "Cinnamon Roll", "Roll de canela con glaseado de vainilla.", "$1600"],
+      ["Pastelería", "Repostería", "Mini Tarta de Manzana", "Tarta individual con manzana caramelizada.", "$1700"],
+      
+      ["Sandwiches", "", "Focaccia de Pollo", "Pan focaccia, pollo grillado, rúcula y pesto.", "$2400", "destacado"],
+      ["Desayunos", "", "Huevos Benedicto", "Pan de campo, jamón cocido, huevo poché y salsa holandesa.", "$2600"],
+      ["Desayunos", "", "Brunch Central", "Huevos, tostadas, café, jugo y mini torta.", "$3200", "celiaco", "destacado"],
+      
+      ["Pastelería", "Sin Gluten", "Brownie sin TACC", "Brownie húmedo con almendras sin gluten.", "$1400", "celiaco", "destacado"],
+      ["Sandwiches", "", "Tostado Vegano", "Pan integral, hummus, palta y tomate seco.", "$2100", "vegano"],
+      ["Sandwiches", "", "Croissant Capresse", "Croissant con tomate, albahaca y mozzarella.", "$2300", "vegetariano"]
     ];
 
     function renderMenu(rows) {

@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
+<head>
+  <meta charset="UTF-8">
+  <title>Demo - MenuLab</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" 
       integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" 
       crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <meta charset="UTF-8">
   <style>
     :root {
       --nombre-restaurante: "Café Central";
@@ -45,7 +46,6 @@
       @bottom-center { content: none; }
       @bottom-right { content: none; }
     }
-    
     body {
       font-family: Arial, sans-serif;
       margin: 0 auto;
@@ -214,15 +214,22 @@
     }
 
     .footer {
-      column-span: all;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      width: 100%;
+      background: var(--color-bg);
       text-align: center;
       font-size: var(--size-info-resto);
       color: #444;
       border-top: 1px solid #ddd;
       padding: 8px 0;
-      background: var(--color-bg);
-      position: relative;
-      z-index: 10;
+      z-index: 1000;
+      column-span: all;            
+      -webkit-column-span: all;
+      box-shadow: 0 -2px 5px rgba(0,0,0,0.05);
+      backdrop-filter: blur(6px);
     }
 
     .footer span {
@@ -763,7 +770,6 @@
           <label data-value="cormorant-garamond" style="font-family: 'Cormorant Garamond', serif;">Gourmet Serif</label>
         </div>
       </div>
-
       <div class="dropdown">
         <button class="dropbtn">🔤 Tamaños</button>
         <div class="dropdown-content" id="sizeMenu" style="min-width:220px;">
@@ -845,10 +851,8 @@
           <small style="display:block;color:#555;font-size:0.75rem;margin-top:4px;">
             (Marcá varios campos y elegí variar el tamaño a la vez)
           </small>
-
         </div>
       </div>
-
       <div class="dropdown">
         <button class="dropbtn">🎨 Colores</button>
         <div class="dropdown-content" id="colorMenu">
@@ -928,9 +932,7 @@
         <h3 id="subtitulo-resto"></h3>
       </div>
     </div>
-
     <div id="menuTable"></div>
-
     <div class="footer">
       <span class="style-direccion"><i class="fa-solid fa-map-marker-alt"></i> <span id="direccion-resto"></span></span> &nbsp; | &nbsp;
       <span class="style-horarios"><i class="fa-solid fa-clock"></i> <span id="horario-resto"></span></span> &nbsp; | &nbsp;
@@ -1130,7 +1132,8 @@ function renderMenuForPrint(rows) {
           'color-precio': '#3b2407',
           'color-info-resto': '#3b2407',
           'color-firulete': '#b77b46',
-          'bg-opacity': '0.1'
+          'bg-opacity': '0.1',
+          'menu-columns': '1'
         },
         firulete: '⚜ ⚜ ⚜'
       },
@@ -1148,7 +1151,8 @@ function renderMenuForPrint(rows) {
           'color-precio': '#3b5a2b',
           'color-info-resto': '#3b5a2b',
           'color-firulete': '#628d4a',
-          'bg-opacity': '0.1'
+          'bg-opacity': '0.1',
+          'menu-columns': '2'
         },
         firulete: '🍃 ✿ 🍃'
       },
@@ -1166,7 +1170,8 @@ function renderMenuForPrint(rows) {
           'color-precio': '#c0392b',
           'color-info-resto': '#333',
           'color-firulete': '#666',
-          'bg-opacity': '0.1'
+          'bg-opacity': '0.1',
+          'menu-columns': '3'
         },
         firulete: '⋄ ⋄ ⋄'
       },
@@ -1184,7 +1189,8 @@ function renderMenuForPrint(rows) {
           'color-precio': '#7c611e',
           'color-info-resto': '#333',
           'color-firulete': '#b39243',
-          'bg-opacity': '0.1'
+          'bg-opacity': '0.1',
+          'menu-columns': '1'
         },
         firulete: '✤ ✤ ✤'
       },
@@ -1202,7 +1208,8 @@ function renderMenuForPrint(rows) {
           'color-precio': '#601010',
           'color-info-resto': '#333',
           'color-firulete': '#8c3a3a',
-          'bg-opacity': '0.1'
+          'bg-opacity': '0.1',
+          'menu-columns': '2'
         },
         firulete: '❧ ❧ ❧'
       },
@@ -1220,7 +1227,8 @@ function renderMenuForPrint(rows) {
           'color-precio': '#004b8d',
           'color-info-resto': '#004b8d',
           'color-firulete': '#2978b5',
-          'bg-opacity': '0.1'
+          'bg-opacity': '0.1',
+          'menu-columns': '3'
         },
         firulete: '✦ ✦ ✦'
       },
@@ -1238,7 +1246,8 @@ function renderMenuForPrint(rows) {
           'color-precio': '#703d1b',
           'color-info-resto': '#3a2b20',
           'color-firulete': '#a5572c',
-          'bg-opacity': '0.1'
+          'bg-opacity': '0.1',
+          'menu-columns': '1'
         },
         firulete: '✤ ✤ ✤'
       },
@@ -1256,7 +1265,8 @@ function renderMenuForPrint(rows) {
           'color-precio': '#023E8A',
           'color-info-resto': '#222',
           'color-firulete': '#0096C7',
-          'bg-opacity': '0.1'
+          'bg-opacity': '0.1',
+          'menu-columns': '2'
         },
         firulete: '⚡ ⚡ ⚡'
       },
@@ -1274,7 +1284,8 @@ function renderMenuForPrint(rows) {
           'color-precio': '#D62828',
           'color-info-resto': '#333',
           'color-firulete': '#F8961E',
-          'bg-opacity': '0.1'
+          'bg-opacity': '0.1',
+          'menu-columns': '3'
         },
         firulete: '✨ 💫 ✨'
       },
@@ -1292,7 +1303,8 @@ function renderMenuForPrint(rows) {
           'color-precio': '#000',
           'color-info-resto': '#333',
           'color-firulete': '#777',
-          'bg-opacity': '0.1'
+          'bg-opacity': '0.1',
+          'menu-columns': '1'
         },
         firulete: '⋄ ⋄ ⋄'
       }
@@ -1522,6 +1534,20 @@ function renderMenuForPrint(rows) {
         localStorage.setItem(key, color);
         const input = document.getElementById(key);
         if (input) input.value = color;
+      }
+
+      // === APLICA COLUMNAS SI EL PRESET LAS DEFINE ===
+      if (preset.colors && preset.colors["menu-columns"]) {
+        const cols = preset.colors["menu-columns"];
+        document.documentElement.style.setProperty("--menu-columns", cols);
+        document.body.style.columnCount = cols;
+        localStorage.setItem("menu-columns", cols);
+
+        // 🔹 opcional: sincronizar visualmente el selector de columnas
+        const options = document.querySelectorAll("#columnsMenu label[data-value]");
+        options.forEach(opt => {
+          opt.classList.toggle("active", String(opt.dataset.value) === String(cols));
+        });
       }
 
       // 🔹 Firulete y opacidad
@@ -1756,7 +1782,6 @@ function renderMenuForPrint(rows) {
       baseMaster = parseFloat(masterSizeRange.value) || 1;
     }
   });
-
   function getRangeFor(numInput) {
     const id = numInput.id.replace("-number", "-range");
     return document.getElementById(id);

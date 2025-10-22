@@ -3,48 +3,197 @@
 <head>
   <meta charset="UTF-8">
   <title>Editor de Menú | MenuLab</title>
-
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+      integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" 
     crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link href="https://fonts.googleapis.com/css?family=Oswald:400,700|Roboto+Slab:400,700|Pacifico|Lato:400,700|Merriweather:400,700|Montserrat:400,700|Indie+Flower|Playfair+Display:400,700|Source+Code+Pro:400,700&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700&family=Syne:wght@400;700&family=Sora:wght@400;700&family=Staatliches&family=Caveat&family=Yeseva+One&family=Righteous&family=Cormorant+Garamond:wght@400;700&display=swap" rel="stylesheet">
-
   <style>
+    :root {
+      --nombre-restaurante: "Café Central";
+      --subtitulo-restaurante: "Todo rico, todo el día";
+      --direccion-restaurante: "Av. Corrientes 123";
+      --horario-restaurante: "Martes a Domingos de 8 a 20hs";
+      --telefono-restaurante: "+54 11 1234-5678";
+      --color-nombre-resto: #000;
+      --color-nombre-slogan: #000;
+      --color-categoria: #000;
+      --color-subcategoria: #000;
+      --color-plato: #000;
+      --color-descripcion: #555;
+      --color-precio: #000;
+      --color-info-resto: #000;
+      --color-bg: #fff;
+      --bg-opacity: 0.2;
+
+      --logo-size: 100px;
+      --size-nombre-resto: 2rem;
+      --size-nombre-slogan: 1rem;
+      --size-categoria: 1.5rem;
+      --size-subcategoria: 1rem;
+      --size-plato: 0.95rem;
+      --size-descripcion: 0.8rem;
+      --size-precio: 0.9rem;
+      --size-info-resto: 0.8rem;
+
+      --tracking: 0px;
+      
+      --menu-columns: 2;
+    }
+    @page {
+      @top-left { content: none; }
+      @top-center { content: none; }
+      @top-right { content: none; }
+      @bottom-left { content: none; }
+      @bottom-center { content: none; }
+      @bottom-right { content: none; }
+    }
     body {
-      margin: 0;
       font-family: Arial, sans-serif;
-      background: #f8f9fa;
+      margin: 0 auto;
+      padding-top: 70px; 
+      column-count: var(--menu-columns);           
+      column-gap: 20px;
+      position: relative;
+      background: var(--color-bg);
+
+      -webkit-column-rule: 1px solid rgba(0,0,0,0.06);
+      -moz-column-rule: 1px solid rgba(0,0,0,0.06);
+      column-rule: 1px solid rgba(0,0,0,0.06);
+      column-rule-gap: 20px;
+      letter-spacing: var(--tracking);
+    }
+
+        #menuTable,
+    .resto-header, .footer {
+      font-size: var(--size-plato);
+    }
+
+    @media screen and (max-width: 991px) {
+      body {
+        margin-left: 10px;
+        margin-right: 10px;
+        column-count: var(--menu-columns);
+        column-gap: 15px;
+      }
+    }
+
+    @media screen and (min-width: 992px) {
+      body {
+        margin-left: 300px;
+        margin-right: 300px;
+        column-count: var(--menu-columns);
+      }
+    }
+
+    h2 { 
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px; /* espacio entre firuletes y texto */
+      font-size: var(--size-categoria);
+      color: var(--color-categoria);
+      font-weight: bold;
+      text-align: center;
+      margin: 1.2rem 0 0.8rem;
+    }
+    h2::before,
+    h2::after {
+      content: var(--firulete, "✦ ✦ ✦");
+      color: var(--color-categoria, #b28051);
+      font-size: 1rem;
+      opacity: 0.4;
+      white-space: nowrap;
+      flex-shrink: 0; /* evita que se encojan */
+    }
+
+    h2::before {
+      left: calc(50% - 10rem); /* distancia desde el centro hacia la izquierda */
+    }
+
+    h2::after {
+      right: calc(50% - 10rem); /* distancia desde el centro hacia la derecha */
+    }
+
+    h3 {
+      font-size: var(--size-subcategoria);
+      font-style: italic;
+      text-align: left;
+      break-after: avoid;
+      page-break-after: avoid;
+      color: var(--color-subcategoria);
+      border-bottom: 1px solid #eee;
+    }
+
+    h4 {
+      font-size: var(--size-plato);
+      margin: 0.2rem 0; 
+    }
+
+    .menu-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 0.4rem 0;
+      break-inside: avoid-column;
+      page-break-inside: avoid;
+    }
+
+    /* === ICONOS DIETARIOS === */
+    .icon-diet {
+      width: 18px;
+      height: 18px;
+      object-fit: contain;
+      vertical-align: middle;
+      margin-right: -7px;
+      filter: drop-shadow(0 0 1px rgba(0,0,0,0.2));
+    }
+
+    .diet-icons.inline {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-right: 6px;
+      margin-top: 0;
+    }
+
+    .diet-icons.inline span {
+      line-height: 1;
+      transform: translateY(2px);
+    }
+
+    .menu-item.destacado {
+      background: rgba(0, 0, 0, 0.05);
+      border-left: 4px solid rgba(0, 0, 0, 0.3);
+      border-radius: 6px;
+      padding: 0.4rem 0.6rem;
+    }
+
+    .menu-plate {
+      flex: 1;
+      color: var(--color-plato);
       display: flex;
       flex-direction: column;
-      height: 100vh;
-      overflow: hidden;
     }
 
-    #topMenu {
-      position: sticky;
-      top: 0;
-      left: 0;
-      right: 0;
-      background: #fff;
-      padding: 10px 20px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      z-index: 1000;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 10px;
+    .menu-plate h4 {
+      margin: 0;
+      font-size: var(--size-plato);
+      font-weight: bold;
+      color: var(--color-plato);
     }
 
-    iframe {
-      flex: 1;
-      width: 100%;
-      border: none;
+    .menu-description {
+      margin: 0.15rem 0 0;
+      font-size: var(--size-descripcion);
+      color: var(--color-descripcion);
     }
 
-    .dropdown {
-      position: relative;
-      display: inline-block;
+    .menu-price {
+      font-weight: bold;
+      font-size: var(--size-precio);
+      color: var(--color-precio);
+      margin-left: 12px;
+      white-space: nowrap;
+      align-self: flex-start;
     }
 
     .dropbtn,
@@ -123,6 +272,20 @@
       outline: none;
       box-shadow: 0 0 0 2px rgba(69, 123, 157, 0.5);
     }
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .dropbtn {
+      background-color: #67b0dd;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }    
 
     @media (max-width: 768px) {
       #topMenu {
@@ -199,12 +362,43 @@
 
     #masterColor:hover {
       transform: scale(1.05);
-    }
+    }  
+  #sizeMenu label{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:6px;
+  }
+
+  #sizeMenu .size-group{
+    width:14px;
+    height:14px;
+    accent-color:#457B9D;
+  }
+
+  #sizeMenu:not(.active) .size-group{
+    display:none;
+  }
+
+  #sizeMenu.active .size-group{
+    display:inline-block;
+    cursor:pointer;
+  }
+
+  #sizeMenu.active label:hover{
+    background:#eef6fa;
+    border-radius:4px;
+  }
+  .tamaños {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+  }
   </style>
 </head>
 <body>
   <div id="topMenu">
-    <!-- === ESTILOS === -->
     <div class="dropdown">
       <button class="dropbtn">🌈 Estilos</button>
       <div class="dropdown-content" id="presetSelectorMenu" style="min-width:220px;">
@@ -220,111 +414,130 @@
         <label data-value="10">🤍 Blanco Neutro</label>
       </div>
     </div>
-
-    <!-- === FUENTE === -->
     <div class="dropdown">
       <button class="dropbtn">🖋️ Fuente</button>
-      <div class="dropdown-content" id="fontSelectorMenu" style="min-width:260px; max-height:420px; overflow-y:auto;">
-        <label data-value="arial" style="font-family: Arial;">Arial</label>
-        <label data-value="oswald" style="font-family: 'Oswald';">Condensed Grotesk</label>
-        <label data-value="roboto-slab" style="font-family: 'Roboto Slab';">Serif Moderna</label>
-        <label data-value="pacifico" style="font-family: 'Pacifico';">Manuscrita</label>
-        <label data-value="lato" style="font-family: 'Lato';">Sans Elegante</label>
-        <label data-value="merriweather" style="font-family: 'Merriweather';">Serif Clásica</label>
-        <label data-value="montserrat" style="font-family: 'Montserrat';">Sans Moderna</label>
-        <label data-value="indie-flower" style="font-family: 'Indie Flower';">Manuscrita Casual</label>
-        <label data-value="playfair" style="font-family: 'Playfair Display';">Serif Fashion</label>
-        <label data-value="source-code" style="font-family: 'Source Code Pro';">Monoespaciada</label>
-        <label data-value="unbounded" style="font-family: 'Unbounded';">Futurista Geométrica</label>
-        <label data-value="syne" style="font-family: 'Syne';">Experimental Bold</label>
-        <label data-value="sora" style="font-family: 'Sora';">Tech Elegante</label>
-        <label data-value="staatliches" style="font-family: 'Staatliches';">Bauhaus</label>
-        <label data-value="caveat" style="font-family: 'Caveat';">Manuscrita Clara</label>
-        <label data-value="yeseva-one" style="font-family: 'Yeseva One';">Serif Chic</label>
-        <label data-value="righteous" style="font-family: 'Righteous';">Redondeada Moderna</label>
-        <label data-value="cormorant-garamond" style="font-family: 'Cormorant Garamond';">Gourmet Serif</label>
+      <div class="dropdown-content" id="fontSelectorMenu" style="min-width:260px;overflow-y: visible;max-height: none;">
+        <label data-value="arial" style="font-family: Arial, sans-serif;">Arial</label>
+        <label data-value="oswald" style="font-family: 'Oswald', Arial, sans-serif;">Condensed Grotesk</label>
+        <label data-value="roboto-slab" style="font-family: 'Roboto Slab', serif;">Serif Moderna</label>
+        <label data-value="pacifico" style="font-family: 'Pacifico', cursive;">Manuscrita Cursiva</label>
+        <label data-value="lato" style="font-family: 'Lato', Arial, sans-serif;">Sans Elegante</label>
+        <label data-value="merriweather" style="font-family: 'Merriweather', serif;">Serif Clásica</label>
+        <label data-value="montserrat" style="font-family: 'Montserrat', Arial, sans-serif;">Sans Moderna</label>
+        <label data-value="indie-flower" style="font-family: 'Indie Flower', cursive;">Manuscrita Casual</label>
+        <label data-value="playfair" style="font-family: 'Playfair Display', serif;">Serif Fashion</label>
+        <label data-value="source-code" style="font-family: 'Source Code Pro', monospace;">Monoespaciada</label>
+        <label data-value="unbounded" style="font-family: 'Unbounded', sans-serif;">Futurista Geométrica</label>
+        <label data-value="syne" style="font-family: 'Syne', sans-serif;">Experimental Bold</label>
+        <label data-value="sora" style="font-family: 'Sora', sans-serif;">Tech Elegante</label>
+        <label data-value="staatliches" style="font-family: 'Staatliches', sans-serif;">Bauhaus Brutalista</label>
+        <label data-value="caveat" style="font-family: 'Caveat', cursive;">Manuscrita Clara</label>
+        <label data-value="yeseva-one" style="font-family: 'Yeseva One', serif;">Serif Chic</label>
+        <label data-value="righteous" style="font-family: 'Righteous', cursive;">Redondeada Moderna</label>
+        <label data-value="cormorant-garamond" style="font-family: 'Cormorant Garamond', serif;">Gourmet Serif</label>
       </div>
     </div>
-
-    <!-- === TAMAÑOS === -->
     <div class="dropdown">
       <button class="dropbtn">🔤 Tamaños</button>
       <div class="dropdown-content" id="sizeMenu" style="min-width:220px;">
-        <label style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
-          <span>Portada</span>
-          <input type="number" id="cover-font-size-number" step="0.01" style="width:64px;">
+        
+        <label class="tamaños">
+          <span>Logo</span>
+          <input type="checkbox" class="size-group">
+          <input type="number" id="logo-size-number" step="1" style="width:64px;">
         </label>
-        <input type="range" id="cover-font-size-range" min="1.5" max="2.4" step="0.01">
+        <input type="range" id="logo-size-range" min="50" max="220" step="1">
 
-        <label style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+        <label class="tamaños">
           <span>Nombre</span>
+          <input type="checkbox" class="size-group">
           <input type="number" id="size-nombre-resto-number" step="0.01" style="width:64px;">
         </label>
         <input type="range" id="size-nombre-resto-range" min="1" max="4" step="0.01">
 
-        <label style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+        <label class="tamaños">
           <span>Slogan</span>
+          <input type="checkbox" class="size-group">
           <input type="number" id="size-nombre-slogan-number" step="0.01" style="width:64px;">
         </label>
         <input type="range" id="size-nombre-slogan-range" min="0.6" max="2" step="0.01">
 
-        <label style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+        <label class="tamaños">
           <span>Categoría</span>
+          <input type="checkbox" class="size-group">
           <input type="number" id="size-categoria-number" step="0.01" style="width:64px;">
         </label>
         <input type="range" id="size-categoria-range" min="0.8" max="4" step="0.01">
 
-        <label style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+        <label class="tamaños">
           <span>Subcat.</span>
+          <input type="checkbox" class="size-group">
           <input type="number" id="size-subcategoria-number" step="0.01" style="width:64px;">
         </label>
         <input type="range" id="size-subcategoria-range" min="0.6" max="2" step="0.01">
 
-        <label style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+        <label class="tamaños">
           <span>Plato</span>
+          <input type="checkbox" class="size-group">
           <input type="number" id="size-plato-number" step="0.01" style="width:64px;">
         </label>
         <input type="range" id="size-plato-range" min="0.5" max="2" step="0.01">
 
-        <label style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+        <label class="tamaños">
           <span>Descripción</span>
+          <input type="checkbox" class="size-group">
           <input type="number" id="size-descripcion-number" step="0.01" style="width:64px;">
         </label>
         <input type="range" id="size-descripcion-range" min="0.4" max="1.5" step="0.01">
 
-        <label style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+        <label class="tamaños">
           <span>Precio</span>
+          <input type="checkbox" class="size-group">
           <input type="number" id="size-precio-number" step="0.01" style="width:64px;">
         </label>
         <input type="range" id="size-precio-range" min="0.5" max="2" step="0.01">
 
-        <label style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
-          <span>Info (footer)</span>
+        <label class="tamaños">
+          <span>Info</span>
+          <input type="checkbox" class="size-group">
           <input type="number" id="size-info-resto-number" step="0.01" style="width:64px;">
         </label>
         <input type="range" id="size-info-resto-range" min="0.4" max="1.5" step="0.01">
+
+        <hr style="margin:8px 0;">
+        <label style="display:flex;align-items:center;gap:6px;font-size:0.85rem;">
+          <input type="checkbox" id="sameSizeMode">
+          Aplicar mismo tamaño a los seleccionados
+        </label>
+
+        <div id="masterSizeContainer" style="display:none;align-items:center;gap:6px;margin-top:6px;">
+          <label style="font-size:0.85rem;">Tamaño principal</label>
+          <input type="range" id="masterSizeRange" min="0.5" max="4" step="0.01" value="1" style="flex:1;">
+        </div>
+
+        <small style="display:block;color:#555;font-size:0.75rem;margin-top:4px;">
+          (Marcá varios campos y elegí variar el tamaño a la vez)
+        </small>
       </div>
     </div>
-
-    <!-- === COLORES === -->
     <div class="dropdown">
       <button class="dropbtn">🎨 Colores</button>
       <div class="dropdown-content" id="colorMenu">
-        <label>Nombre <input type="checkbox" class="color-group"> <input type="color" data-var="--color-nombre-resto"></label>
-        <label>Slogan <input type="checkbox" class="color-group"> <input type="color" data-var="--color-nombre-slogan"></label>
-        <label>Categoria <input type="checkbox" class="color-group"> <input type="color" data-var="--color-categoria"></label>
-        <label>Subcategoria <input type="checkbox" class="color-group"> <input type="color" data-var="--color-subcategoria"></label>
-        <label>Plato <input type="checkbox" class="color-group"> <input type="color" data-var="--color-plato"></label>
-        <label>Descripción <input type="checkbox" class="color-group"> <input type="color" data-var="--color-descripcion"></label>
-        <label>Precio <input type="checkbox" class="color-group"> <input type="color" data-var="--color-precio"></label>
-        <label>Info <input type="checkbox" class="color-group"> <input type="color" data-var="--color-info-resto"></label>
-        <label>Fondo <input type="checkbox" class="color-group"> <input type="color" data-var="--color-bg"></label>
+        <label>Nombre <input type="checkbox" class="color-group"> <input type="color" id="color-nombre-resto"></label>
+        <label>Slogan <input type="checkbox" class="color-group"> <input type="color" id="color-nombre-slogan"></label>
+        <label>Categoria <input type="checkbox" class="color-group"> <input type="color" id="color-categoria"></label>
+        <label>Subcategoria <input type="checkbox" class="color-group"> <input type="color" id="color-subcategoria"></label>
+        <label>Plato <input type="checkbox" class="color-group"> <input type="color" id="color-plato"></label>
+        <label>Descripción <input type="checkbox" class="color-group"> <input type="color" id="color-descripcion"></label>
+        <label>Precio <input type="checkbox" class="color-group"> <input type="color" id="color-precio"></label>
+        <label>Info <input type="checkbox" class="color-group"> <input type="color" id="color-info-resto"></label>
 
         <hr style="margin:8px 0;">
         <label style="display:flex;align-items:center;gap:6px;font-size:0.85rem;">
           <input type="checkbox" id="sameColorMode">
           Aplicar mismo color a los seleccionados
         </label>
+        <!-- Cuadradito principal de color -->
         <div id="masterColorContainer" style="display:none;align-items:center;gap:6px;margin-top:6px;">
           <label style="font-size:0.85rem;">Color principal</label>
           <input type="color" id="masterColor" value="#000000" style="width:40px;height:40px;cursor:pointer;border:none;border-radius:4px;">
@@ -334,14 +547,21 @@
         </small>
       </div>
     </div>
-
-    <!-- === FIRULETE === -->
+    <div class="dropdown">
+      <button class="dropbtn">⬛ Columnas</button>
+      <div class="dropdown-content" id="columnsMenu" style="min-width:160px;">
+        <label data-value="1" class="columns-option" style="display:block;padding:8px 6px;cursor:pointer;">1 columna</label>
+        <label data-value="2" class="columns-option" style="display:block;padding:8px 6px;cursor:pointer;">2 columnas</label>
+        <label data-value="3" class="columns-option" style="display:block;padding:8px 6px;cursor:pointer;">3 columnas</label>
+      </div>
+    </div>
     <div class="dropdown">
       <button class="dropbtn">✨ Firulete</button>
       <div class="dropdown-content" id="firuleteSelector">
         <label data-value="">Ninguno</label>
         <label data-value="✦ ✦ ✦">Brillos ✦ ✦ ✦</label>
         <label data-value="⚜ ⚜ ⚜">Clásico ⚜ ⚜ ⚜</label>
+        <label data-value="⚡ ⚡ ⚡">Rayo ⚡ ⚡ ⚡</label>
         <label data-value="❧ ❧ ❧">Floral ❧ ❧ ❧</label>
         <label data-value="☕ ♡ ☕">Café ☕ ♡ ☕</label>
         <label data-value="🍃 ✿ 🍃">Natural 🍃 ✿ 🍃</label>
@@ -350,18 +570,31 @@
         <label data-value="✨ 💫 ✨">Mágico ✨ 💫 ✨</label>
       </div>
     </div>
+    <div class="dropdown">
+      <button class="dropbtn">🖼️ Fondo</button>
+      <div class="dropdown-content" style="min-width:200px;">
+        <label class="tamaños">
+          <span>Opacidad fondo</span>
+          <input type="number" id="bg-opacity-number" step="0.01" style="width:64px;">
+        </label>
+        <input type="range" id="bg-opacity" min="0" max="0.5" step="0.01" value="0.2" style="width:100%;">
 
-    <!-- === OPACIDAD === -->
-    <div>
-      <label for="bg-opacity" style="align-items: center;">Logo</label>
-      <input type="range" id="bg-opacity" min="0" max="0.5" step="0.01" value="0.2" style="width:80px;">
+        <label class="tamaños">
+          <span>Tamaño fondo</span>
+          <input type="number" id="bg-size-number" step="1" style="width:64px;">
+        </label>
+        <input type="range" id="bg-size" min="50" max="200" step="1" value="100" style="width:100%;">
+        <small style="display:block;color:#555;font-size:0.75rem;margin-top:4px;">
+          (100% = tamaño original del fondo)
+        </small>
+      </div>
     </div>
-
-    <button id="printBtn" onclick="document.getElementById('menuFrame').contentWindow.print()">🖨️ Vista Previa</button>
+    <button id="printBtn" onclick="window.print()">🖨️ Vista Previa</button>
+    </div>
   </div>
 
   <!-- === IFRAME === -->
-  <iframe id="menuFrame" src="emprendedor.html"></iframe>
+  <iframe id="menuFrame" src="emprendedor_post.html"></iframe>
 
   <script>
     const frame = document.getElementById('menuFrame');
@@ -385,112 +618,967 @@
       });
     });
 
-    // === OPACIDAD ===
-    const bgOpacity = document.getElementById('bg-opacity');
-    bgOpacity.addEventListener('input', () => {
-      sendUpdate('opacity', bgOpacity.value);
+    document.querySelectorAll('#topMenu input[type="color"]').forEach(input => {
+      const saved = localStorage.getItem(input.id);
+      if (saved) {
+        input.value = saved;
+        document.documentElement.style.setProperty(`--${input.id}`, saved);
+      }
     });
 
-    // === PRESETS ===
-    document.querySelectorAll('#presetSelectorMenu label').forEach(label => {
-      label.addEventListener('click', () => {
-        sendUpdate('preset', label.dataset.value);
+    // Tipo de firulete
+    const firuleteSelector = document.getElementById("firuleteSelector");
+    if (firuleteSelector && firuleteSelector.tagName === 'SELECT') {
+      firuleteSelector.addEventListener("change", function () {
+        const val = this.value;
+        document.documentElement.style.setProperty("--firulete", `"${val}"`);
+        localStorage.setItem("firulete", val);
+      });
+    }
+
+    // Recuperar tipo guardado
+    const savedFirulete = localStorage.getItem("firulete");
+    if (savedFirulete) {
+      firuleteSelector.value = savedFirulete;
+      document.documentElement.style.setProperty("--firulete", `"${savedFirulete}"`);
+    }
+
+    // === COLOR MAESTRO ===
+    const masterColorContainer = document.getElementById("masterColorContainer");
+    const masterColorInput = document.getElementById("masterColor");
+
+    // Aplicar color maestro a todos los seleccionados
+    masterColorInput.addEventListener("input", () => {
+
+      const newColor = masterColorInput.value;
+      const selectedCheckboxes = Array.from(document.querySelectorAll("#colorMenu .color-group")).filter(cb => cb.checked);
+
+      selectedCheckboxes.forEach(cb => {
+        const input = cb.nextElementSibling;
+        if (!input) return;
+        input.value = newColor;
+        const varName = input.id;
+        document.documentElement.style.setProperty(`--${varName}`, newColor);
+        localStorage.setItem(varName, newColor);
       });
     });
 
-    // === TAMAÑOS ===
+    const presets = {
+      1: { // ☕ Vintage - elegante y cálido
+        bodyFont: 'cormorant-garamond',
+        headingFont: "'Playfair Display', serif",
+        sizes: { logo: 120, nombre: 2.5, slogan: 1.15, categoria: 3.4, subcategoria: 1.3, plato: 1.05, descripcion: 0.9, precio: 1.0, info: 0.9 },
+        colors: {
+          'color-nombre-resto': '#3b2407',
+          'color-nombre-slogan': '#795028',
+          'color-categoria': '#3b2407',
+          'color-subcategoria': '#6e4b2d',
+          'color-plato': '#1f1a16',
+          'color-descripcion': '#5a4739',
+          'color-precio': '#3b2407',
+          'color-info-resto': '#3b2407',
+          'color-firulete': '#b77b46',
+          'bg-opacity': '0.1',
+          'menu-columns': '1'
+        },
+        firulete: '⚜ ⚜ ⚜'
+      },
+      2: { // 🌿 Natural Pastel - limpio y fresco
+        bodyFont: 'lato',
+        headingFont: "'Unbounded', sans-serif",
+        sizes: { logo: 110, nombre: 2.1, slogan: 1.0, categoria: 2.8, subcategoria: 1.2, plato: 1.05, descripcion: 0.9, precio: 1.0, info: 0.9 },
+        colors: {
+          'color-nombre-resto': '#3b5a2b',
+          'color-nombre-slogan': '#5b8c4f',
+          'color-categoria': '#355c2e',
+          'color-subcategoria': '#5c8050',
+          'color-plato': '#222',
+          'color-descripcion': '#4e6344',
+          'color-precio': '#3b5a2b',
+          'color-info-resto': '#3b5a2b',
+          'color-firulete': '#628d4a',
+          'bg-opacity': '0.1',
+          'menu-columns': '2'
+        },
+        firulete: '🍃 ✿ 🍃'
+      },
+      3: { // ⚫ Minimalista Gris - moderno y legible
+        bodyFont: 'montserrat',
+        headingFont: "'Oswald', sans-serif",
+        sizes: { logo: 90, nombre: 1.9, slogan: 1.0, categoria: 3.0, subcategoria: 1.2, plato: 1.0, descripcion: 0.85, precio: 1.0, info: 0.85 },
+        colors: {
+          'color-nombre-resto': '#222',
+          'color-nombre-slogan': '#444',
+          'color-categoria': '#000',
+          'color-subcategoria': '#333',
+          'color-plato': '#111',
+          'color-descripcion': '#555',
+          'color-precio': '#c0392b',
+          'color-info-resto': '#333',
+          'color-firulete': '#666',
+          'bg-opacity': '0.1',
+          'menu-columns': '3'
+        },
+        firulete: '⋄ ⋄ ⋄'
+      },
+      4: { // 💎 Dorado Moderno - elegante sin perder contraste
+        bodyFont: 'playfair',
+        headingFont: "'Cormorant Garamond', serif",
+        sizes: { logo: 130, nombre: 2.6, slogan: 1.15, categoria: 3.8, subcategoria: 1.3, plato: 1.05, descripcion: 0.9, precio: 1.05, info: 0.9 },
+        colors: {
+          'color-nombre-resto': '#8a6d2f',
+          'color-nombre-slogan': '#b39243',
+          'color-categoria': '#7c611e',
+          'color-subcategoria': '#b39243',
+          'color-plato': '#111',
+          'color-descripcion': '#444',
+          'color-precio': '#7c611e',
+          'color-info-resto': '#333',
+          'color-firulete': '#b39243',
+          'bg-opacity': '0.1',
+          'menu-columns': '1'
+        },
+        firulete: '✤ ✤ ✤'
+      },
+      5: { // 📜 Italiano Clásico - cálido y sobrio
+        bodyFont: 'merriweather',
+        headingFont: "'Playfair Display', serif",
+        sizes: { logo: 120, nombre: 2.4, slogan: 1.05, categoria: 3.2, subcategoria: 1.25, plato: 1.05, descripcion: 0.9, precio: 1.0, info: 0.9 },
+        colors: {
+          'color-nombre-resto': '#7a1b1b',
+          'color-nombre-slogan': '#a73535',
+          'color-categoria': '#601010',
+          'color-subcategoria': '#8c3a3a',
+          'color-plato': '#222',
+          'color-descripcion': '#555',
+          'color-precio': '#601010',
+          'color-info-resto': '#333',
+          'color-firulete': '#8c3a3a',
+          'bg-opacity': '0.1'
+        },
+        firulete: '❧ ❧ ❧'
+      },
+      6: { // 🩵 Celeste Moderno - suave pero definido
+        bodyFont: 'sora',
+        headingFont: "'Syne', sans-serif",
+        sizes: { logo: 100, nombre: 2.2, slogan: 1.0, categoria: 2.9, subcategoria: 1.25, plato: 1.05, descripcion: 0.9, precio: 1.0, info: 0.9 },
+        colors: {
+          'color-nombre-resto': '#003f73',
+          'color-nombre-slogan': '#2978b5',
+          'color-categoria': '#004b8d',
+          'color-subcategoria': '#2271a1',
+          'color-plato': '#111',
+          'color-descripcion': '#555',
+          'color-precio': '#004b8d',
+          'color-info-resto': '#004b8d',
+          'color-firulete': '#2978b5',
+          'bg-opacity': '0.1'
+        },
+        firulete: '✦ ✦ ✦'
+      },
+      7: { // 🍂 Otoñal Suave - gourmet y elegante
+        bodyFont: 'lato',
+        headingFont: "'Yeseva One', serif",
+        sizes: { logo: 125, nombre: 2.5, slogan: 1.05, categoria: 3.4, subcategoria: 1.3, plato: 1.05, descripcion: 0.9, precio: 1.05, info: 0.9 },
+        colors: {
+          'color-nombre-resto': '#8a4b23',
+          'color-nombre-slogan': '#c36b3e',
+          'color-categoria': '#703d1b',
+          'color-subcategoria': '#a5572c',
+          'color-plato': '#222',
+          'color-descripcion': '#5a4434',
+          'color-precio': '#703d1b',
+          'color-info-resto': '#3a2b20',
+          'color-firulete': '#a5572c',
+          'bg-opacity': '0.1'
+        },
+        firulete: '✤ ✤ ✤'
+      },
+      8: { // ⚡ Tech Futurista - limpio y tecnológico
+        bodyFont: 'unbounded',
+        headingFont: "'Source Code Pro', monospace",
+        sizes: { logo: 95, nombre: 2.3, slogan: 1.0, categoria: 3.6, subcategoria: 1.3, plato: 1.05, descripcion: 0.9, precio: 1.0, info: 0.9 },
+        colors: {
+          'color-nombre-resto': '#0077B6',
+          'color-nombre-slogan': '#0096C7',
+          'color-categoria': '#023E8A',
+          'color-subcategoria': '#0077B6',
+          'color-plato': '#111',
+          'color-descripcion': '#555',
+          'color-precio': '#023E8A',
+          'color-info-resto': '#222',
+          'color-firulete': '#0096C7',
+          'bg-opacity': '0.1'
+        },
+        firulete: '⚡ ⚡ ⚡'
+      },
+      9: { // 🎨 Pop Alegre - colorido pero legible
+        bodyFont: 'righteous',
+        headingFont: "'Montserrat', sans-serif",
+        sizes: { logo: 100, nombre: 2.4, slogan: 1.0, categoria: 3.5, subcategoria: 1.25, plato: 1.05, descripcion: 0.9, precio: 1.05, info: 0.9 },
+        colors: {
+          'color-nombre-resto': '#D62828',
+          'color-nombre-slogan': '#F77F00',
+          'color-categoria': '#F94144',
+          'color-subcategoria': '#F8961E',
+          'color-plato': '#222',
+          'color-descripcion': '#555',
+          'color-precio': '#D62828',
+          'color-info-resto': '#333',
+          'color-firulete': '#F8961E',
+          'bg-opacity': '0.1'
+        },
+        firulete: '✨ 💫 ✨'
+      },
+      10: { // 🤍 Blanco Neutro - sobrio y balanceado
+        bodyFont: 'lato',
+        headingFont: "'Montserrat', sans-serif",
+        sizes: { logo: 105, nombre: 2.1, slogan: 1.0, categoria: 3.0, subcategoria: 1.2, plato: 1.05, descripcion: 0.9, precio: 1.0, info: 0.9 },
+        colors: {
+          'color-nombre-resto': '#111',
+          'color-nombre-slogan': '#444',
+          'color-categoria': '#111',
+          'color-subcategoria': '#555',
+          'color-plato': '#111',
+          'color-descripcion': '#555',
+          'color-precio': '#000',
+          'color-info-resto': '#333',
+          'color-firulete': '#777',
+          'bg-opacity': '0.1'
+        },
+        firulete: '⋄ ⋄ ⋄'
+      }
+    };
+
     const sizeKeys = [
-      'cover-font-size',
-      'size-nombre-resto',
-      'size-nombre-slogan',
-      'size-categoria',
-      'size-subcategoria',
-      'size-plato',
-      'size-descripcion',
-      'size-precio',
-      'size-info-resto'
+      {key: 'logo-size', min: 50, max: 220, step: 1, unit: 'px'},
+      {key: 'size-nombre-resto', min:1, max:4, step:0.01},
+      {key: 'size-nombre-slogan', min:0.6, max:2, step:0.01},
+      {key: 'size-categoria', min:0.8, max:3, step:0.01},
+      {key: 'size-subcategoria', min:0.6, max:2, step:0.01},
+      {key: 'size-plato', min:0.5, max:2, step:0.01},
+      {key: 'size-descripcion', min:0.4, max:1.5, step:0.01},
+      {key: 'size-precio', min:0.5, max:2, step:0.01},
+      {key: 'size-info-resto', min:0.4, max:1.5, step:0.01},
     ];
 
-    sizeKeys.forEach(key => {
+    sizeKeys.forEach(cfg => {
+      const key = cfg.key;
       const range = document.getElementById(`${key}-range`);
-      const number = document.getElementById(`${key}-number`);
+      const num = document.getElementById(`${key}-number`);
+      if (!range || !num) return;
 
-      if (range) {
-        range.addEventListener('input', () => {
-          const value = range.value;
-          if (number) number.value = value;
-          sendUpdate('size', { key, value });
-        });
+      const unit = cfg.unit || 'rem'; // respeta unit si está definida
+
+      // cargar valor guardado o tomar el CSS variable actual
+      const saved = localStorage.getItem(key);
+      if (saved) {
+        // saved ya está sin unidad
+        range.value = saved;
+        num.value = saved;
+        document.documentElement.style.setProperty(`--${key}`, saved + (unit === 'rem' ? 'rem' : unit));
+      } else {
+        // obtener valor desde :root (si existe) y quitar unidad adecuada
+        const computed = getComputedStyle(document.documentElement).getPropertyValue(`--${key}`).trim();
+        if (computed) {
+          const numeric = parseFloat(computed.replace('rem','').replace('px','')) || parseFloat(computed);
+          if (!isNaN(numeric)) {
+            range.value = numeric;
+            num.value = numeric;
+            document.documentElement.style.setProperty(`--${key}`, numeric + (unit === 'rem' ? 'rem' : unit));
+          }
+        }
       }
 
-      if (number) {
-        number.addEventListener('input', () => {
-          const value = number.value;
-          if (range) range.value = value;
-          sendUpdate('size', { key, value });
-        });
-      }
-    });
+      // sincronizar range -> number -> css -> storage
+      const apply = v => {
+        // normalizar número
+        const raw = (typeof v === 'string') ? v : String(v);
+        const valNum = unit === 'px' ? Math.round(parseFloat(raw) || cfg.min) : parseFloat(raw) || cfg.min;
+        const out = unit === 'px' ? String(Math.round(valNum)) : String(Number(valNum).toFixed(2));
+        num.value = out;
+        range.value = out;
+        document.documentElement.style.setProperty(`--${key}`, out + (unit === 'rem' ? 'rem' : unit));
+        localStorage.setItem(key, out);
+      };
 
-    // === FIRULETE ===
-    document.querySelectorAll('#firuleteSelector label').forEach(label => {
-      label.addEventListener('click', () => {
-        sendUpdate('firulete', label.dataset.value);
+      range.addEventListener('input', e => apply(e.target.value));
+      num.addEventListener('input', e => {
+        let v = parseFloat(e.target.value);
+        if (isNaN(v)) v = cfg.min;
+        if (v < cfg.min) v = cfg.min;
+        if (v > cfg.max) v = cfg.max;
+        // aplicar con precision según unidad
+        apply(unit === 'px' ? Math.round(v) : v.toFixed(2));
       });
     });
 
-    // === MODO COLOR COMPARTIDO ===
+  (function(){
+    // Colores: corrección de almacenamiento y guardado seguro
     const sameColorToggle = document.getElementById("sameColorMode");
-    const masterColor = document.getElementById("masterColor");
+    const colorMenu = document.getElementById("colorMenu");
     const colorGroups = document.querySelectorAll(".color-group");
-    const colorPickers = document.querySelectorAll("#colorMenu input[type='color']");
+    const colorPickers = document.querySelectorAll('#colorMenu input[type="color"]');
 
-    sameColorToggle.addEventListener("change", () => {
-      const active = sameColorToggle.checked;
-      document.getElementById("masterColorContainer").style.display = active ? "flex" : "none";
-      colorGroups.forEach(cb => (cb.checked = false));
-    });
+    if (sameColorToggle) {
+      sameColorToggle.addEventListener("change", () => {
+        const active = sameColorToggle.checked;
+        if (active) colorMenu.classList.add("active"); else colorMenu.classList.remove("active");
+        colorGroups.forEach(cb => (cb.checked = false));
+        // mostrar/ocultar master
+        const masterColorContainer = document.getElementById("masterColorContainer");
+        if (masterColorContainer) masterColorContainer.style.display = active ? "flex" : "none";
+      });
+    }
 
-    masterColor.addEventListener("input", () => {
-      if (!sameColorToggle.checked) return;
-      const selected = Array.from(colorGroups).filter(cb => cb.checked);
-      selected.forEach(cb => {
-        const input = cb.nextElementSibling;
-        if (input && input.type === "color") {
-          input.value = masterColor.value;
-          sendUpdate('color', { variable: input.dataset.var, value: masterColor.value });
+    colorPickers.forEach(picker => {
+      // aplicar color guardado si existe
+      const saved = localStorage.getItem(picker.id);
+      if (saved) {
+        picker.value = saved;
+        document.documentElement.style.setProperty(`--${picker.id}`, saved);
+      }
+
+      picker.addEventListener("input", () => {
+        const selectedCheckboxes = Array.from(colorGroups).filter(cb => cb.checked);
+        const newColor = picker.value;
+        const varName = picker.id;
+
+        // Aplica color normalmente y guarda con clave=variable, valor=color
+        document.documentElement.style.setProperty(`--${varName}`, newColor);
+        localStorage.setItem(varName, newColor);
+
+        // Si está activo el modo y hay varios seleccionados → aplica a todos
+        if (sameColorToggle && sameColorToggle.checked && selectedCheckboxes.length > 1) {
+          selectedCheckboxes.forEach(cb => {
+            const input = cb.nextElementSibling;
+            if (!input) return;
+            input.value = newColor;
+            const name = input.id;
+            document.documentElement.style.setProperty(`--${name}`, newColor);
+            localStorage.setItem(name, newColor);
+          });
         }
       });
     });
 
-    // === PRESETS AVANZADOS (visuales y fuentes) ===
-    const presets = {
-      1: { name: "Vintage", font: "cormorant-garamond", colors: { bg: "#fff7ec" } },
-      2: { name: "Natural Pastel", font: "lato", colors: { bg: "#f5f9f5" } },
-      3: { name: "Minimalista Oscuro", font: "montserrat", colors: { bg: "#121212" } },
-      4: { name: "Luxury Dorado", font: "playfair", colors: { bg: "#fdfaf3" } },
-      5: { name: "Clásico Italiano", font: "merriweather", colors: { bg: "#fff9f9" } },
-      6: { name: "Celeste Moderno", font: "sora", colors: { bg: "#EAF6FF" } },
-      7: { name: "Otoñal Suave", font: "yeseva-one", colors: { bg: "#fff8f2" } },
-      8: { name: "Tech Futurista", font: "unbounded", colors: { bg: "#0A0A0A" } },
-      9: { name: "Pop Alegre", font: "righteous", colors: { bg: "#FFF8F0" } },
-      10: { name: "Blanco Neutro", font: "lato", colors: { bg: "#ffffff" } },
-    };
+    // Master color input
+    const masterColorInput = document.getElementById("masterColor");
+    if (masterColorInput) {
+      masterColorInput.addEventListener("input", () => {
+        if (!sameColorToggle || !sameColorToggle.checked) return;
+        const newColor = masterColorInput.value;
+        const selectedCheckboxes = Array.from(document.querySelectorAll("#colorMenu .color-group")).filter(cb => cb.checked);
+        selectedCheckboxes.forEach(cb => {
+          const input = cb.nextElementSibling;
+          if (!input) return;
+          input.value = newColor;
+          const varName = input.id;
+          document.documentElement.style.setProperty(`--${varName}`, newColor);
+                   localStorage.setItem(varName, newColor);
+        });
+      });
+    }
 
-    document.querySelectorAll('#presetSelectorMenu label').forEach(label => {
-      label.addEventListener('click', () => {
-        const val = label.dataset.value;
-        if (!val || !presets[val]) return;
-        sendUpdate('preset', val);
+    document.querySelectorAll("#firuleteSelector label").forEach(label => {
+      label.addEventListener("click", () => {
+        const val = label.dataset.value || "";
+        document.documentElement.style.setProperty("--firulete", `"${val}"`);
+        localStorage.setItem("firulete", val);
+
+        // 🔽 Cierra el menú después del click
+        const dropdown = label.closest(".dropdown");
+        if (dropdown) {
+          const content = dropdown.querySelector(".dropdown-content");
+          if (content) content.style.display = "none";
+          setTimeout(() => (content.style.display = ""), 200); // restaura comportamiento hover
+        }
       });
     });
 
-    // === PERSISTENCIA BÁSICA (opcional) ===
-    window.addEventListener('message', event => {
-      if (event.data && event.data.type === 'ready') {
-        console.log('Emprendedor listo para recibir actualizaciones.');
+  document.querySelectorAll("#presetSelectorMenu label").forEach(label => {
+    label.addEventListener("click", () => {
+      const val = label.dataset.value;
+      if (!val || !presets[val]) return;
+      const preset = presets[val];
+
+      // 🔹 Aplica fuente base
+      const families = {
+        arial: "Arial, sans-serif",
+        oswald: "'Oswald', Arial, sans-serif",
+        "roboto-slab": "'Roboto Slab', serif",
+        pacifico: "'Pacifico', cursive",
+        lato: "'Lato', Arial, sans-serif",
+        merriweather: "'Merriweather', serif",
+        montserrat: "'Montserrat', Arial, sans-serif",
+        "indie-flower": "'Indie Flower', cursive",
+        playfair: "'Playfair Display', serif",
+        "source-code": "'Source Code Pro', monospace",
+        unbounded: "'Unbounded', sans-serif",
+        syne: "'Syne', sans-serif",
+        sora: "'Sora', sans-serif",
+        staatliches: "'Staatliches', sans-serif",
+        caveat: "'Caveat', cursive",
+        "yeseva-one": "'Yeseva One', serif",
+        righteous: "'Righteous', cursive",
+        "cormorant-garamond": "'Cormorant Garamond', serif"
+      };
+
+      document.body.style.fontFamily =
+        families[preset.bodyFont] || "Arial, sans-serif";
+
+      // 🔹 Aplica fuentes a headings
+      document
+        .querySelectorAll("h1, h2, h3, h4")
+        .forEach(el => (el.style.fontFamily = preset.headingFont));
+
+      // 🔹 Tamaños (corrige logo y unidades)
+      const s = preset.sizes || {};
+      const keyMap = {
+        logo: '--logo-size',
+        nombre: '--size-nombre-resto',
+        slogan: '--size-nombre-slogan',
+        categoria: '--size-categoria',
+        subcategoria: '--size-subcategoria',
+        plato: '--size-plato',
+        descripcion: '--size-descripcion',
+        precio: '--size-precio',
+        info: '--size-info-resto'
+      };
+
+      for (const [k, v] of Object.entries(s)) {
+        const cssVar = keyMap[k];
+        if (!cssVar) continue;
+
+        // Aplica unidades correctas
+        const isLogo = k === 'logo';
+        const unit = isLogo ? 'px' : 'rem';
+        document.documentElement.style.setProperty(cssVar, v + unit);
+
+        // Persistencia coherente con el resto del código
+        const storageKey = cssVar.replace(/^--/, ''); // ej: 'size-nombre-resto'
+        localStorage.setItem(storageKey, String(v));
+
+        // Sincroniza controles si existen
+        const rangeId = isLogo ? 'logo-size-range' : storageKey + '-range';
+        const numId   = isLogo ? 'logo-size-number' : storageKey + '-number';
+        const rangeEl = document.getElementById(rangeId);
+        const numEl   = document.getElementById(numId);
+        if (rangeEl) rangeEl.value = v;
+        if (numEl)   numEl.value   = v;
+      }
+
+      // 🔹 Colores
+      for (const [key, color] of Object.entries(preset.colors || {})) {
+        document.documentElement.style.setProperty(`--${key}`, color);
+        localStorage.setItem(key, color);
+        const input = document.getElementById(key);
+        if (input) input.value = color;
+      }
+
+      // 🔹 Firulete y opacidad
+      if (preset.firulete) {
+        document.documentElement.style.setProperty(
+          "--firulete",
+          `"${preset.firulete}"`
+        );
+        localStorage.setItem("firulete", preset.firulete);
+      }
+
+      // 🔹 Cierra menú tras clic
+      const dropdown = label.closest(".dropdown");
+      const content = dropdown?.querySelector(".dropdown-content");
+      if (content) {
+        content.style.display = "none";
+        setTimeout(() => (content.style.display = ""), 200);
       }
     });
+  });
+
+  // Handler del menú de fuentes por label
+  document.querySelectorAll("#fontSelectorMenu label").forEach(label => {
+    label.addEventListener("click", () => {
+      const val = label.dataset.value;
+      const families = {
+        arial: "Arial, sans-serif",
+        oswald: "'Oswald', Arial, sans-serif",
+        "roboto-slab": "'Roboto Slab', serif",
+        pacifico: "'Pacifico', cursive",
+        lato: "'Lato', Arial, sans-serif",
+        merriweather: "'Merriweather', serif",
+        montserrat: "'Montserrat', Arial, sans-serif",
+        "indie-flower": "'Indie Flower', cursive",
+        playfair: "'Playfair Display', serif",
+        "source-code": "'Source Code Pro', monospace",
+        unbounded: "'Unbounded', sans-serif",
+        syne: "'Syne', sans-serif",
+        sora: "'Sora', sans-serif",
+        staatliches: "'Staatliches', sans-serif",
+        caveat: "'Caveat', cursive",
+        "yeseva-one": "'Yeseva One', serif",
+        righteous: "'Righteous', cursive",
+        "cormorant-garamond": "'Cormorant Garamond', serif"
+      };
+      document.body.style.fontFamily = families[val] || "Arial, sans-serif";
+      localStorage.setItem("font-family", val);
+
+      const dropdown = label.closest(".dropdown");
+      const content = dropdown?.querySelector(".dropdown-content");
+      if (content) {
+        content.style.display = "none";
+        setTimeout(() => (content.style.display = ""), 200);
+      }
+    });
+  });
+
+  })();
+
+  (function(){
+    const menu = document.getElementById('columnsMenu');
+    if (!menu) return;
+    const options = Array.from(menu.querySelectorAll('label[data-value]'));
+
+    const apply = (v) => {
+      const n = Math.min(3, Math.max(1, parseInt(v) || 2));
+      document.documentElement.style.setProperty('--menu-columns', n);
+      document.body.style.columnCount = n;
+      localStorage.setItem('menu-columns', String(n));
+      options.forEach(opt => opt.classList.toggle('active', String(opt.dataset.value) === String(n)));
+    };
+
+    // inicializar desde localStorage o desde la variable CSS
+    const saved = localStorage.getItem('menu-columns') || getComputedStyle(document.documentElement).getPropertyValue('--menu-columns').trim();
+    apply(saved);
+
+    options.forEach(opt => {
+      opt.addEventListener('click', () => {
+        apply(opt.dataset.value);
+        // cerrar dropdown brevemente (mantener comportamiento hover)
+        const dropdown = opt.closest('.dropdown');
+        const content = dropdown?.querySelector('.dropdown-content');
+        if (content) {
+          content.style.display = 'none';
+          setTimeout(() => (content.style.display = ''), 180);
+        }
+      });
+    });
+
+    // observar cambios por JS/presets para sincronizar clases activas
+    const observer = new MutationObserver(() => {
+      const v = getComputedStyle(document.documentElement).getPropertyValue('--menu-columns').trim();
+      options.forEach(opt => opt.classList.toggle('active', String(opt.dataset.value) === String(v)));
+    });
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['style'] });
+  })();
+
+  // ===== BG OPACITY + LOGO URL controls =====
+  (function(){
+    const bgRange = document.getElementById('bg-opacity');
+      const bgNum = document.getElementById('bg-opacity-number');
+      const logoUrlInput = document.getElementById('logo-url-input');
+      const applyLogoBtn = document.getElementById('applyLogoUrl');
+      
+      // init from storage
+      const savedBg = localStorage.getItem('bg-opacity') || bgRange.value || '0.2';
+      if (bgRange) { bgRange.value = savedBg; document.documentElement.style.setProperty('--bg-opacity', savedBg); }
+      if (bgNum) { bgNum.value = savedBg; }
+
+      bgRange?.addEventListener('input', (e) => {
+        const v = e.target.value;
+        document.documentElement.style.setProperty('--bg-opacity', v);
+        if (bgNum) bgNum.value = v;
+        localStorage.setItem('bg-opacity', v);
+      });
+      bgNum?.addEventListener('input', (e) => {
+        let v = parseFloat(e.target.value);
+        if (isNaN(v)) v = 0;
+        if (v < 0) v = 0; if (v > 0.5) v = 0.5;
+        document.documentElement.style.setProperty('--bg-opacity', v);
+        if (bgRange) bgRange.value = v;
+        localStorage.setItem('bg-opacity', String(v));
+      });
+        
+      // logo url init / apply
+      const savedLogo = localStorage.getItem('logo-url');
+      if (savedLogo) {
+        const imgs = document.querySelectorAll('.resto-header img, .cover-page img, #logo-caratula');
+        imgs.forEach(i => i.src = savedLogo);
+        if (logoUrlInput) logoUrlInput.value = savedLogo;
+      }
+      applyLogoBtn?.addEventListener('click', () => {
+        const url = (logoUrlInput.value || '').trim();
+        if (!url) return;
+        const imgs = document.querySelectorAll('.resto-header img, .cover-page img, #logo-caratula');
+        imgs.forEach(i => i.src = url);
+        localStorage.setItem('logo-url', url);
+      });
+
+    const sizeRange = document.getElementById('bg-size');
+    const sizeNum = document.getElementById('bg-size-number');
+    const savedSize = localStorage.getItem('bg-size-scale') || '100';
+    sizeRange.value = savedSize;
+    sizeNum.value = savedSize;
+
+    document.documentElement.style.setProperty('--bg-size-scale', savedSize + '%');
+      const applySize = v => {
+        const n = Math.min(200, Math.max(50, parseInt(v) || 100));
+        sizeRange.value = n;
+        sizeNum.value = n;
+        document.documentElement.style.setProperty('--bg-size-scale', n + '%');
+        localStorage.setItem('bg-size-scale', String(n));
+      };
+      sizeRange.addEventListener('input', e => applySize(e.target.value));
+      sizeNum.addEventListener('input', e => applySize(e.target.value));
+
+    })();
+  
+    // ===== Tracking (letter-spacing) control =====
+    (function(){
+      // insert UI: (controls already placed in Tamaños dropdown? if not, you can add them there)
+      // Here we expect inputs with ids: tracking-range and tracking-number. If not present, create simple controls programmatically.
+      let trackingRange = document.getElementById('tracking-range');
+      let trackingNum = document.getElementById('tracking-number');
+      // if controls are not in DOM, create hidden ones (graceful)
+      if (!trackingRange || !trackingNum) {
+        // create elements inside sizeMenu if exists
+        const sizeMenu = document.getElementById('sizeMenu');
+        if (sizeMenu) {
+          const label = document.createElement('label');
+          label.style = 'display:flex;justify-content:space-between;align-items:center;gap:8px;';
+          label.innerHTML = `<span>Interespaciado</span><input type="number" id="tracking-number" step="0.1" style="width:64px;">`;
+          sizeMenu.appendChild(label);
+          const range = document.createElement('input');
+          range.type = 'range';
+          range.id = 'tracking-range';
+          range.min = -1; range.max = 4; range.step = 0.1; range.style.width = '100%';
+          sizeMenu.appendChild(range);
+          trackingRange = document.getElementById('tracking-range');
+          trackingNum = document.getElementById('tracking-number');
+        } else {
+          return; // nothing to do
+        }
+      }
+
+      // init
+      const savedTracking = localStorage.getItem('tracking') || '0';
+      trackingRange.value = savedTracking;
+      trackingNum.value = savedTracking;
+      document.documentElement.style.setProperty('--tracking', savedTracking + 'px');
+
+      function applyTracking(v){
+        const n = Number(v) || 0;
+        trackingRange.value = n;
+        trackingNum.value = n;
+        document.documentElement.style.setProperty('--tracking', n + 'px');
+        localStorage.setItem('tracking', String(n));
+      }
+
+      trackingRange.addEventListener('input', (e) => applyTracking(e.target.value));
+      trackingNum.addEventListener('input', (e) => {
+        let v = parseFloat(e.target.value);
+        if (isNaN(v)) v = 0;
+        applyTracking(v);
+      });
+    })();
+    
+  (function(){
+  const sameSizeToggle = document.getElementById("sameSizeMode");
+  const sizeMenu = document.getElementById("sizeMenu");
+  const sizeGroups = document.querySelectorAll("#sizeMenu .size-group");
+  const masterSizeContainer = document.getElementById("masterSizeContainer");
+  const masterSizeRange = document.getElementById("masterSizeRange");
+
+  // almacenará los valores originales al activar el modo
+  let baseValues = {};
+  let baseMaster = 1;
+
+  sameSizeToggle?.addEventListener("change", () => {
+    const active = sameSizeToggle.checked;
+    sizeMenu.classList.toggle("active", active);
+    sizeGroups.forEach(cb => (cb.checked = false));
+    masterSizeContainer.style.display = active ? "flex" : "none";
+
+    // cuando se activa, registramos los valores actuales
+    if (active) {
+      baseValues = {};
+      document.querySelectorAll('#sizeMenu input[type="number"]').forEach(num => {
+        const id = num.id;
+        baseValues[id] = parseFloat(num.value) || 1;
+      });
+      baseMaster = parseFloat(masterSizeRange.value) || 1;
+    }
+  });  
+  function getRangeFor(numInput) {
+    const id = numInput.id.replace("-number", "-range");
+    return document.getElementById(id);
+  }
+
+  masterSizeRange?.addEventListener("input", e => {
+    const newMaster = parseFloat(e.target.value);
+    const selected = Array.from(sizeGroups).filter(cb => cb.checked);
+    if (!selected.length || !sameSizeToggle.checked) return;
+
+    // calcular factor proporcional
+    const factor = newMaster / baseMaster;
+
+    selected.forEach(cb => {
+      const numInput = cb.parentElement.querySelector('input[type="number"]');
+      if (!numInput) return;
+      const rangeInput = getRangeFor(numInput);
+      const id = numInput.id;
+      const cssVar = id.replace('-number', '');
+      const isLogo = cssVar === 'logo-size';
+      const unit = isLogo ? 'px' : 'rem';
+
+      const original = baseValues[id] || parseFloat(numInput.value) || 1;
+      const newVal = (original * factor).toFixed(isLogo ? 0 : 2);
+
+      numInput.value = newVal;
+      if (rangeInput) rangeInput.value = newVal;
+      document.documentElement.style.setProperty(`--${cssVar}`, newVal + unit);
+      localStorage.setItem(cssVar, newVal);
+      });
+    });
+  })();
+
+// === EXPORTAR / IMPORTAR CONFIGURACIÓN COMPLETA (con código único) ===
+(function () {
+  const presetMenu = document.getElementById("presetSelectorMenu");
+  if (!presetMenu) return;
+
+  // === Crear UI dentro de "🌈 Estilos" ===
+  const divider = document.createElement("hr");
+  divider.style.margin = "10px 0";
+  const label = document.createElement("label");
+  label.style.display = "block";
+  label.style.fontSize = "0.85rem";
+  label.style.color = "#333";
+  label.style.marginBottom = "4px";
+  label.textContent = "💾 Cargar código:";
+
+  const textarea = document.createElement("textarea");
+  textarea.id = "configJSON";
+  textarea.placeholder = "Pegá aquí el código o JSON de tu diseño…";
+  textarea.style.cssText = `
+    width:100%;
+    height:70px;
+    font-size:0.75rem;
+    font-family:monospace;
+    resize:none;
+    border:1px solid #ddd;
+    border-radius:6px;
+    padding:6px;
+    box-sizing:border-box;
+  `;
+
+  const btnContainer = document.createElement("div");
+  btnContainer.style.textAlign = "center";
+  btnContainer.style.marginTop = "6px";
+  
+  const loadBtn = document.createElement("button");
+  loadBtn.textContent = "📥 Aplicar Código";
+  loadBtn.className = "dropbtn";
+  loadBtn.style.fontSize = "0.8rem";
+  loadBtn.style.padding = "6px 12px";
+  loadBtn.style.backgroundColor = "#4CAF50";
+
+  const saveBtn = document.createElement("button");
+  saveBtn.textContent = "💾 Guardar Configuración";
+  saveBtn.className = "dropbtn";
+  saveBtn.style.fontSize = "0.8rem";
+  saveBtn.style.padding = "6px 12px";
+  saveBtn.style.marginRight = "6px";
+  
+  btnContainer.appendChild(loadBtn);
+  
+  const dividerLine = document.createElement("hr");
+  dividerLine.style.cssText = "width:100%;margin:8px auto;border:0;border-top:1px solid #aaa;";
+  btnContainer.appendChild(dividerLine);
+
+
+  btnContainer.appendChild(saveBtn);
+
+  presetMenu.appendChild(divider);
+  presetMenu.appendChild(label);
+  presetMenu.appendChild(textarea);
+  presetMenu.appendChild(btnContainer);
+
+  // === VARIABLES INCLUIDAS EN EL JSON ===
+  const VARS = [
+    "--nombre-restaurante",
+    "--subtitulo-restaurante",
+    "--direccion-restaurante",
+    "--horario-restaurante",
+    "--telefono-restaurante",
+    "--color-nombre-resto",
+    "--color-nombre-slogan",
+    "--color-categoria",
+    "--color-subcategoria",
+    "--color-plato",
+    "--color-descripcion",
+    "--color-precio",
+    "--color-info-resto",
+    "--color-bg",
+    "--bg-opacity",
+    "--logo-size",
+    "--size-nombre-resto",
+    "--size-nombre-slogan",
+    "--size-categoria",
+    "--size-subcategoria",
+    "--size-plato",
+    "--size-descripcion",
+    "--size-precio",
+    "--size-info-resto",
+    "--tracking",
+    "--menu-columns"
+  ];
+
+  function generarConfiguracion() {
+    const root = getComputedStyle(document.documentElement);
+    const config = {};
+
+    // Recolecta TODAS las variables
+    VARS.forEach(v => {
+      config[v.replace("--", "")] = root.getPropertyValue(v).trim();
+    });
+
+    // Fuente principal
+    config["bodyFont"] = document.body.style.fontFamily || getComputedStyle(document.body).fontFamily;
+
+    // ✅ Agregar cantidad de columnas
+    const col = getComputedStyle(document.documentElement).getPropertyValue("--menu-columns").trim() || "2";
+    config["menu-columns"] = col;
+
+    const jsonMin = JSON.stringify(config);
+    const encoded = btoa(unescape(encodeURIComponent(jsonMin)))
+      .replace(/\+/g, "-")
+      .replace(/\//g, "_")
+      .replace(/=+$/, "");
+
+    const jsonPretty = JSON.stringify(config, null, 2);
+    return { json: jsonPretty, uniqueCode: encoded, config };
+  }
+
+  function aplicarConfiguracion(config) {
+    for (const [key, valRaw] of Object.entries(config)) {
+      let val = valRaw;
+
+      if (typeof val === "string" && /^".*"$/.test(val.trim())) {
+        val = val.trim().replace(/^"+|"+$/g, "");
+      }
+
+      const needsRem = key.startsWith("size-") && !key.includes("logo");
+      const needsPx = key === "logo-size";
+
+      if (key === "bodyFont") {
+        document.body.style.fontFamily = val;
+        continue;
+      }
+
+      if (needsRem && !val.endsWith("rem")) val = parseFloat(val) + "rem";
+      if (needsPx && !val.endsWith("px")) val = parseFloat(val) + "px";
+
+      document.documentElement.style.setProperty(`--${key}`, val);
+      localStorage.setItem(key, val);
+    }
+
+    const get = k => (config[k] || "").replace(/^"+|"+$/g, "");
+    document.getElementById("nombre-resto").textContent = get("nombre-restaurante");
+    document.getElementById("subtitulo-resto").textContent = get("subtitulo-restaurante");
+    document.getElementById("direccion-resto").textContent = get("direccion-restaurante");
+    document.getElementById("horario-resto").textContent = get("horario-restaurante");
+    document.getElementById("telefono-resto").textContent = get("telefono-restaurante");
+  }
+
+  function mostrarPopup(titulo, texto) {
+    const overlay = document.createElement("div");
+    overlay.style = `
+      position:fixed;inset:0;
+      background:rgba(0,0,0,0.5);
+      display:flex;align-items:center;justify-content:center;
+      z-index:9999;
+    `;
+    const modal = document.createElement("div");
+    modal.style = `
+      background:#fff;
+      border-radius:10px;
+      padding:20px;
+      max-width:600px;
+      width:90%;
+      box-shadow:0 6px 20px rgba(0,0,0,0.3);
+      font-family:monospace;
+      text-align:center;
+      overflow:auto;
+      max-height:85vh;
+    `;
+    modal.innerHTML = `
+      <h3 style="font-family:sans-serif;margin-top:0;">${titulo}</h3>
+      <pre style="text-align:left;background:#f9f9f9;border:1px solid #ddd;border-radius:6px;padding:10px;white-space:pre-wrap;word-break:break-word;font-size:0.75rem;">${texto}</pre>
+      <button id="copyCode" style="margin-top:8px;padding:6px 12px;border:none;border-radius:6px;background:#1D3557;color:white;cursor:pointer;">Copiar Código</button>
+      <button id="closeModal" style="margin-top:10px;padding:8px 16px;border:none;border-radius:6px;background:#457B9D;color:white;cursor:pointer;">Cerrar</button>
+    `;
+    overlay.appendChild(modal);
+    document.body.appendChild(overlay);
+
+    modal.querySelector("#copyCode").addEventListener("click", () => {
+      navigator.clipboard.writeText(texto);
+      modal.querySelector("#copyCode").textContent = "✅ Copiado!";
+      setTimeout(() => (modal.querySelector("#copyCode").textContent = "Copiar Código"), 2000);
+    });
+    modal.querySelector("#closeModal").addEventListener("click", () => overlay.remove());
+  }
+
+  // === EVENTOS ===
+  saveBtn.addEventListener("click", () => {
+    const { json, uniqueCode } = generarConfiguracion();
+    mostrarPopup("Código de Configuración", uniqueCode);
+  });
+
+  loadBtn.addEventListener("click", () => {
+    try {
+      const valRaw = textarea.value.trim();
+      if (!valRaw) return alert("Pegá primero el código o JSON.");
+
+      let config;
+
+      // ¿Parece JSON?
+      const looksLikeJSON = valRaw.startsWith("{") && valRaw.endsWith("}");
+      if (looksLikeJSON) {
+        config = JSON.parse(valRaw);
+      } else {
+        // Trata como código único (Base64 URL-safe)
+        const decoded = decodeUniqueCode(valRaw);
+        config = JSON.parse(decoded);
+      }
+
+      aplicarConfiguracion(config);
+      mostrarPopup("Configuración Aplicada", "El menú fue actualizado correctamente ✅");
+    } catch (e) {
+      console.error(e);
+      alert("El código no se pudo decodificar correctamente. Verificá que esté completo.");
+    }
+  });
+
+  // --- helper robusto ---
+  function decodeUniqueCode(input) {
+    // Limpia espacios, saltos, texto extra (ej: “Código único: …”)
+    let clean = (input.match(/[A-Za-z0-9\-_]+/g) || []).join('');
+
+    // Vuelve desde URL-safe a Base64 estándar
+    clean = clean.replace(/-/g, '+').replace(/_/g, '/');
+
+    // Rellena padding (=) si falta
+    const pad = clean.length % 4;
+    if (pad) clean += '='.repeat(4 - pad);
+
+    // Decodifica en UTF-8
+    const binary = atob(clean);
+    const bytes = new Uint8Array(binary.length);
+    for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+    return new TextDecoder().decode(bytes);
+  }
+  })();
+
   </script>
 </body>
 </html>
