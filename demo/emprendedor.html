@@ -161,9 +161,10 @@
     }
 
     .menu-item.destacado {
-      background: color-mix(in srgb, var(--color-bg) 95%, black);
+      background: rgba(0, 0, 0, 0.05);
+      border-left: 4px solid rgba(0, 0, 0, 0.3);
       border-radius: 6px;
-      padding: 0.3rem 0.4rem;
+      padding: 0.4rem 0.6rem;
     }
 
     .menu-plate {
@@ -252,7 +253,7 @@
       color: #804000;
     }
 
-    .resto-header h1 { font-size: var(--size-nombre-resto); }
+    .resto-header h1 { margin: -5px; font-size: var(--size-nombre-resto); }
 
     .resto-header h3 {
       margin: 0 0 0;
@@ -583,23 +584,34 @@
   .page-break {
     page-break-after: always;
   }
-    
+  
+  html, body {
+    background: var(--color-bg);
+  }  
+
   @media print {
     @page {
       size: A4;
       margin: 10mm 5mm 10mm 10mm;
     }
-
+    
     /* === CONFIGURACIÓN GENERAL === */
     body {
-      margin: 0 !important;
       background: var(--color-bg) !important;
       column-count: var(--menu-columns) !important;
       column-gap: 15px !important;
       width: 210mm !important;
       max-width: 210mm !important;
-      padding-bottom: 25mm !important; /* espacio reservado para footer */
+      margin: 0 !important;
+      padding: 0 !important;
     }
+
+      html, body {
+        background: var(--color-bg) !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        z-index: -500;
+      }
 
     #topMenu, #printBtn, #fontSelector, select#fontSelector {
       display: none !important;
@@ -848,7 +860,6 @@
           <label>Descripción <input type="checkbox" class="color-group"> <input type="color" id="color-descripcion"></label>
           <label>Precio <input type="checkbox" class="color-group"> <input type="color" id="color-precio"></label>
           <label>Info <input type="checkbox" class="color-group"> <input type="color" id="color-info-resto"></label>
-          <label>Fondo <input type="checkbox" class="color-group"> <input type="color" id="color-bg"></label>
 
           <hr style="margin:8px 0;">
           <label style="display:flex;align-items:center;gap:6px;font-size:0.85rem;">
@@ -879,6 +890,7 @@
           <label data-value="">Ninguno</label>
           <label data-value="✦ ✦ ✦">Brillos ✦ ✦ ✦</label>
           <label data-value="⚜ ⚜ ⚜">Clásico ⚜ ⚜ ⚜</label>
+          <label data-value="⚡ ⚡ ⚡">Rayo ⚡ ⚡ ⚡</label>
           <label data-value="❧ ❧ ❧">Floral ❧ ❧ ❧</label>
           <label data-value="☕ ♡ ☕">Café ☕ ♡ ☕</label>
           <label data-value="🍃 ✿ 🍃">Natural 🍃 ✿ 🍃</label>
@@ -1103,197 +1115,186 @@ function renderMenuForPrint(rows) {
       });
     });
 
-    // Presets (mantener comportamiento existente)
     const presets = {
-      1: { // ☕ Vintage - elegante, títulos grandes
+      1: { // ☕ Vintage - elegante y cálido
         bodyFont: 'cormorant-garamond',
         headingFont: "'Playfair Display', serif",
-        sizes: { nombre: 2.2, slogan: 1.05, categoria: 2.6, subcategoria: 1.05, plato: 1.0, descripcion: 0.9, precio: 0.98, info: 0.85 },
+        sizes: { logo: 120, nombre: 2.5, slogan: 1.15, categoria: 3.4, subcategoria: 1.3, plato: 1.05, descripcion: 0.9, precio: 1.0, info: 0.9 },
         colors: {
-          'color-nombre-resto': '#4b2e05',
-          'color-nombre-slogan': '#8b5e34',
-          'color-categoria': '#4b2e05',
-          'color-subcategoria': '#6e4429',
-          'color-plato': '#2b1a10',
-          'color-descripcion': '#7a6241',
-          'color-precio': '#4b2e05',
-          'color-info-resto': '#4b2e05',
-          'color-bg': '#fff7ec',
-          'color-firulete': '#b28554'
+          'color-nombre-resto': '#3b2407',
+          'color-nombre-slogan': '#795028',
+          'color-categoria': '#3b2407',
+          'color-subcategoria': '#6e4b2d',
+          'color-plato': '#1f1a16',
+          'color-descripcion': '#5a4739',
+          'color-precio': '#3b2407',
+          'color-info-resto': '#3b2407',
+          'color-firulete': '#b77b46',
+          'bg-opacity': '0.1'
         },
-        firulete: '⚜ ⚜ ⚜',
-        bgOpacity: '0.20'
+        firulete: '⚜ ⚜ ⚜'
       },
-      2: { // 🌿 Natural Pastel - legible, cuerpos cómodos
+      2: { // 🌿 Natural Pastel - limpio y fresco
         bodyFont: 'lato',
         headingFont: "'Unbounded', sans-serif",
-        sizes: { nombre: 1.9, slogan: 1.0, categoria: 1.45, subcategoria: 1.0, plato: 0.98, descripcion: 0.86, precio: 0.95, info: 0.82 },
+        sizes: { logo: 110, nombre: 2.1, slogan: 1.0, categoria: 2.8, subcategoria: 1.2, plato: 1.05, descripcion: 0.9, precio: 1.0, info: 0.9 },
         colors: {
-          'color-nombre-resto': '#466c3f',
-          'color-nombre-slogan': '#6d9964',
-          'color-categoria': '#466c3f',
-          'color-subcategoria': '#688c55',
-          'color-plato': '#3a5037',
-          'color-descripcion': '#6f8d6a',
-          'color-precio': '#55784b',
-          'color-info-resto': '#466c3f',
-          'color-bg': '#f5f9f5',
-          'color-firulete': '#55784b'
+          'color-nombre-resto': '#3b5a2b',
+          'color-nombre-slogan': '#5b8c4f',
+          'color-categoria': '#355c2e',
+          'color-subcategoria': '#5c8050',
+          'color-plato': '#222',
+          'color-descripcion': '#4e6344',
+          'color-precio': '#3b5a2b',
+          'color-info-resto': '#3b5a2b',
+          'color-firulete': '#628d4a',
+          'bg-opacity': '0.1'
         },
-        firulete: '🍃 ✿ 🍃',
-        bgOpacity: '0.15'
+        firulete: '🍃 ✿ 🍃'
       },
-      3: { // 🖤 Minimalista Oscuro - compacto, moderno
+      3: { // ⚫ Minimalista Gris - moderno y legible
         bodyFont: 'montserrat',
         headingFont: "'Oswald', sans-serif",
-        sizes: { nombre: 1.6, slogan: 0.95, categoria: 2.35, subcategoria: 0.95, plato: 0.95, descripcion: 0.82, precio: 0.92, info: 0.8 },
-        colors: {
-          'color-nombre-resto': '#ffffff',
-          'color-nombre-slogan': '#cccccc',
-          'color-categoria': '#ffffff',
-          'color-subcategoria': '#cccccc',
-          'color-plato': '#ffffff',
-          'color-descripcion': '#aaaaaa',
-          'color-precio': '#ff6464',
-          'color-info-resto': '#dddddd',
-          'color-bg': '#121212',
-          'color-firulete': '#888888'
-        },
-        firulete: '⋄ ⋄ ⋄',
-        bgOpacity: '0.28'
-      },
-      4: { // 💎 Luxury Dorado - serif destacado
-        bodyFont: 'playfair',
-        headingFont: "'Cormorant Garamond', serif",
-        sizes: { nombre: 2.4, slogan: 1.1, categoria: 3.7, subcategoria: 1.1, plato: 1.02, descripcion: 0.95, precio: 1.02, info: 0.88 },
-        colors: {
-          'color-nombre-resto': '#c9a44c',
-          'color-nombre-slogan': '#b8974a',
-          'color-categoria': '#b8974a',
-          'color-subcategoria': '#d4b76d',
-          'color-plato': '#222',
-          'color-descripcion': '#666',
-          'color-precio': '#b8974a',
-          'color-info-resto': '#444',
-          'color-bg': '#fdfaf3',
-          'color-firulete': '#b8974a'
-        },
-        firulete: '✤ ✤ ✤',
-        bgOpacity: '0.18'
-      },
-      5: { // 📜 Clásico Italiano - tradicional
-        bodyFont: 'merriweather',
-        headingFont: "'Playfair Display', serif",
-        sizes: { nombre: 2.0, slogan: 1.02, categoria: 2.55, subcategoria: 1.02, plato: 1.0, descripcion: 0.9, precio: 0.98, info: 0.85 },
-        colors: {
-          'color-nombre-resto': '#8c1d1d',
-          'color-nombre-slogan': '#bf4040',
-          'color-categoria': '#8c1d1d',
-          'color-subcategoria': '#bf4040',
-          'color-plato': '#2e2e2e',
-          'color-descripcion': '#5a5a5a',
-          'color-precio': '#8c1d1d',
-          'color-info-resto': '#5a5a5a',
-          'color-bg': '#fff9f9',
-          'color-firulete': '#a64242'
-        },
-        firulete: '❧ ❧ ❧',
-        bgOpacity: '0.20'
-      },
-      6: { // 🩵 Celeste Moderno - aire tecnológico suave
-        bodyFont: 'sora',
-        headingFont: "'Syne', sans-serif",
-        sizes: { nombre: 1.8, slogan: 1.0, categoria: 1.5, subcategoria: 1.0, plato: 0.98, descripcion: 0.86, precio: 0.96, info: 0.82 },
-        colors: {
-          'color-nombre-resto': '#004E89',
-          'color-nombre-slogan': '#2F80ED',
-          'color-categoria': '#004E89',
-          'color-subcategoria': '#0077B6',
-          'color-plato': '#333',
-          'color-descripcion': '#555',
-          'color-precio': '#0077B6',
-          'color-info-resto': '#004E89',
-          'color-bg': '#EAF6FF',
-          'color-firulete': '#0077B6'
-        },
-        firulete: '✦ ✦ ✦',
-        bgOpacity: '0.12'
-      },
-      7: { // 🍂 Otoñal Suave - display para nombre
-        bodyFont: 'lato',
-        headingFont: "'Yeseva One', serif",
-        sizes: { nombre: 2.3, slogan: 1.03, categoria: 1.6, subcategoria: 1.05, plato: 1.0, descripcion: 0.9, precio: 1.0, info: 0.86 },
-        colors: {
-          'color-nombre-resto': '#b05b2b',
-          'color-nombre-slogan': '#d4844c',
-          'color-categoria': '#b05b2b',
-          'color-subcategoria': '#d4844c',
-          'color-plato': '#3c2b1f',
-          'color-descripcion': '#6b4b36',
-          'color-precio': '#b05b2b',
-          'color-info-resto': '#5a4333',
-          'color-bg': '#fff8f2',
-          'color-firulete': '#b05b2b'
-        },
-        firulete: '✤ ✤ ✤',
-        bgOpacity: '0.18'
-      },
-      8: { // ⚡ Tech Futurista - tipografía geométrica / monoespacio
-        bodyFont: 'unbounded',
-        headingFont: "'Source Code Pro', monospace",
-        sizes: { nombre: 1.7, slogan: 0.95, categoria: 3.45, subcategoria: 0.95, plato: 0.95, descripcion: 0.82, precio: 0.96, info: 0.8 },
-        colors: {
-          'color-nombre-resto': '#00C6CF',
-          'color-nombre-slogan': '#00F0FF',
-          'color-categoria': '#00C6CF',
-          'color-subcategoria': '#00E5FF',
-          'color-plato': '#E0E0E0',
-          'color-descripcion': '#B0B0B0',
-          'color-precio': '#00E5FF',
-          'color-info-resto': '#FFFFFF',
-          'color-bg': '#0A0A0A',
-          'color-firulete': '#00E5FF'
-        },
-        firulete: '⚡ ⚡ ⚡',
-        bgOpacity: '0.22'
-      },
-      9: { // 🎨 Pop Alegre - juguetón y legible
-        bodyFont: 'righteous',
-        headingFont: "'Montserrat', sans-serif",
-        sizes: { nombre: 2.0, slogan: 1.0, categoria: 3, subcategoria: 1.0, plato: 1.0, descripcion: 0.88, precio: 1.0, info: 0.84 },
-        colors: {
-          'color-nombre-resto': '#F94144',
-          'color-nombre-slogan': '#F8961E',
-          'color-categoria': '#F3722C',
-          'color-subcategoria': '#F9C74F',
-          'color-plato': '#277DA1',
-          'color-descripcion': '#577590',
-          'color-precio': '#F94144',
-          'color-info-resto': '#F9844A',
-          'color-bg': '#FFF8F0',
-          'color-firulete': '#F3722C'
-        },
-        firulete: '✨ 💫 ✨',
-        bgOpacity: '0.14'
-      },
-      10: { // 🤍 Blanco Neutro - sobrio y compacto
-        bodyFont: 'lato',
-        headingFont: "'Montserrat', sans-serif",
-        sizes: { nombre: 1.8, slogan: 0.95, categoria: 2, subcategoria: 0.95, plato: 0.95, descripcion: 0.82, precio: 0.95, info: 0.8 },
+        sizes: { logo: 90, nombre: 1.9, slogan: 1.0, categoria: 3.0, subcategoria: 1.2, plato: 1.0, descripcion: 0.85, precio: 1.0, info: 0.85 },
         colors: {
           'color-nombre-resto': '#222',
-          'color-nombre-slogan': '#555',
-          'color-categoria': '#333',
-          'color-subcategoria': '#555',
+          'color-nombre-slogan': '#444',
+          'color-categoria': '#000',
+          'color-subcategoria': '#333',
+          'color-plato': '#111',
+          'color-descripcion': '#555',
+          'color-precio': '#c0392b',
+          'color-info-resto': '#333',
+          'color-firulete': '#666',
+          'bg-opacity': '0.1'
+        },
+        firulete: '⋄ ⋄ ⋄'
+      },
+      4: { // 💎 Dorado Moderno - elegante sin perder contraste
+        bodyFont: 'playfair',
+        headingFont: "'Cormorant Garamond', serif",
+        sizes: { logo: 130, nombre: 2.6, slogan: 1.15, categoria: 3.8, subcategoria: 1.3, plato: 1.05, descripcion: 0.9, precio: 1.05, info: 0.9 },
+        colors: {
+          'color-nombre-resto': '#8a6d2f',
+          'color-nombre-slogan': '#b39243',
+          'color-categoria': '#7c611e',
+          'color-subcategoria': '#b39243',
+          'color-plato': '#111',
+          'color-descripcion': '#444',
+          'color-precio': '#7c611e',
+          'color-info-resto': '#333',
+          'color-firulete': '#b39243',
+          'bg-opacity': '0.1'
+        },
+        firulete: '✤ ✤ ✤'
+      },
+      5: { // 📜 Italiano Clásico - cálido y sobrio
+        bodyFont: 'merriweather',
+        headingFont: "'Playfair Display', serif",
+        sizes: { logo: 120, nombre: 2.4, slogan: 1.05, categoria: 3.2, subcategoria: 1.25, plato: 1.05, descripcion: 0.9, precio: 1.0, info: 0.9 },
+        colors: {
+          'color-nombre-resto': '#7a1b1b',
+          'color-nombre-slogan': '#a73535',
+          'color-categoria': '#601010',
+          'color-subcategoria': '#8c3a3a',
           'color-plato': '#222',
-          'color-descripcion': '#777',
+          'color-descripcion': '#555',
+          'color-precio': '#601010',
+          'color-info-resto': '#333',
+          'color-firulete': '#8c3a3a',
+          'bg-opacity': '0.1'
+        },
+        firulete: '❧ ❧ ❧'
+      },
+      6: { // 🩵 Celeste Moderno - suave pero definido
+        bodyFont: 'sora',
+        headingFont: "'Syne', sans-serif",
+        sizes: { logo: 100, nombre: 2.2, slogan: 1.0, categoria: 2.9, subcategoria: 1.25, plato: 1.05, descripcion: 0.9, precio: 1.0, info: 0.9 },
+        colors: {
+          'color-nombre-resto': '#003f73',
+          'color-nombre-slogan': '#2978b5',
+          'color-categoria': '#004b8d',
+          'color-subcategoria': '#2271a1',
+          'color-plato': '#111',
+          'color-descripcion': '#555',
+          'color-precio': '#004b8d',
+          'color-info-resto': '#004b8d',
+          'color-firulete': '#2978b5',
+          'bg-opacity': '0.1'
+        },
+        firulete: '✦ ✦ ✦'
+      },
+      7: { // 🍂 Otoñal Suave - gourmet y elegante
+        bodyFont: 'lato',
+        headingFont: "'Yeseva One', serif",
+        sizes: { logo: 125, nombre: 2.5, slogan: 1.05, categoria: 3.4, subcategoria: 1.3, plato: 1.05, descripcion: 0.9, precio: 1.05, info: 0.9 },
+        colors: {
+          'color-nombre-resto': '#8a4b23',
+          'color-nombre-slogan': '#c36b3e',
+          'color-categoria': '#703d1b',
+          'color-subcategoria': '#a5572c',
+          'color-plato': '#222',
+          'color-descripcion': '#5a4434',
+          'color-precio': '#703d1b',
+          'color-info-resto': '#3a2b20',
+          'color-firulete': '#a5572c',
+          'bg-opacity': '0.1'
+        },
+        firulete: '✤ ✤ ✤'
+      },
+      8: { // ⚡ Tech Futurista - limpio y tecnológico
+        bodyFont: 'unbounded',
+        headingFont: "'Source Code Pro', monospace",
+        sizes: { logo: 95, nombre: 2.3, slogan: 1.0, categoria: 3.6, subcategoria: 1.3, plato: 1.05, descripcion: 0.9, precio: 1.0, info: 0.9 },
+        colors: {
+          'color-nombre-resto': '#0077B6',
+          'color-nombre-slogan': '#0096C7',
+          'color-categoria': '#023E8A',
+          'color-subcategoria': '#0077B6',
+          'color-plato': '#111',
+          'color-descripcion': '#555',
+          'color-precio': '#023E8A',
+          'color-info-resto': '#222',
+          'color-firulete': '#0096C7',
+          'bg-opacity': '0.1'
+        },
+        firulete: '⚡ ⚡ ⚡'
+      },
+      9: { // 🎨 Pop Alegre - colorido pero legible
+        bodyFont: 'righteous',
+        headingFont: "'Montserrat', sans-serif",
+        sizes: { logo: 100, nombre: 2.4, slogan: 1.0, categoria: 3.5, subcategoria: 1.25, plato: 1.05, descripcion: 0.9, precio: 1.05, info: 0.9 },
+        colors: {
+          'color-nombre-resto': '#D62828',
+          'color-nombre-slogan': '#F77F00',
+          'color-categoria': '#F94144',
+          'color-subcategoria': '#F8961E',
+          'color-plato': '#222',
+          'color-descripcion': '#555',
+          'color-precio': '#D62828',
+          'color-info-resto': '#333',
+          'color-firulete': '#F8961E',
+          'bg-opacity': '0.1'
+        },
+        firulete: '✨ 💫 ✨'
+      },
+      10: { // 🤍 Blanco Neutro - sobrio y balanceado
+        bodyFont: 'lato',
+        headingFont: "'Montserrat', sans-serif",
+        sizes: { logo: 105, nombre: 2.1, slogan: 1.0, categoria: 3.0, subcategoria: 1.2, plato: 1.05, descripcion: 0.9, precio: 1.0, info: 0.9 },
+        colors: {
+          'color-nombre-resto': '#111',
+          'color-nombre-slogan': '#444',
+          'color-categoria': '#111',
+          'color-subcategoria': '#555',
+          'color-plato': '#111',
+          'color-descripcion': '#555',
           'color-precio': '#000',
           'color-info-resto': '#333',
-          'color-bg': '#ffffff',
-          'color-firulete': '#aaa'
+          'color-firulete': '#777',
+          'bg-opacity': '0.1'
         },
-        firulete: '⋄ ⋄ ⋄',
-        bgOpacity: '0.10'
+        firulete: '⋄ ⋄ ⋄'
       }
     };
 
@@ -1479,11 +1480,40 @@ function renderMenuForPrint(rows) {
         .querySelectorAll("h1, h2, h3, h4")
         .forEach(el => (el.style.fontFamily = preset.headingFont));
 
-      // 🔹 Tamaños
+      // 🔹 Tamaños (corrige logo y unidades)
       const s = preset.sizes || {};
+      const keyMap = {
+        logo: '--logo-size',
+        nombre: '--size-nombre-resto',
+        slogan: '--size-nombre-slogan',
+        categoria: '--size-categoria',
+        subcategoria: '--size-subcategoria',
+        plato: '--size-plato',
+        descripcion: '--size-descripcion',
+        precio: '--size-precio',
+        info: '--size-info-resto'
+      };
+
       for (const [k, v] of Object.entries(s)) {
-        document.documentElement.style.setProperty(`--size-${k}`, v + "rem");
-        localStorage.setItem(`size-${k}`, v);
+        const cssVar = keyMap[k];
+        if (!cssVar) continue;
+
+        // Aplica unidades correctas
+        const isLogo = k === 'logo';
+        const unit = isLogo ? 'px' : 'rem';
+        document.documentElement.style.setProperty(cssVar, v + unit);
+
+        // Persistencia coherente con el resto del código
+        const storageKey = cssVar.replace(/^--/, ''); // ej: 'size-nombre-resto'
+        localStorage.setItem(storageKey, String(v));
+
+        // Sincroniza controles si existen
+        const rangeId = isLogo ? 'logo-size-range' : storageKey + '-range';
+        const numId   = isLogo ? 'logo-size-number' : storageKey + '-number';
+        const rangeEl = document.getElementById(rangeId);
+        const numEl   = document.getElementById(numId);
+        if (rangeEl) rangeEl.value = v;
+        if (numEl)   numEl.value   = v;
       }
 
       // 🔹 Colores
@@ -1759,6 +1789,245 @@ function renderMenuForPrint(rows) {
       });
     });
   })();
+
+// === EXPORTAR / IMPORTAR CONFIGURACIÓN COMPLETA (con código único) ===
+(function () {
+  const presetMenu = document.getElementById("presetSelectorMenu");
+  if (!presetMenu) return;
+
+  // === Crear UI dentro de "🌈 Estilos" ===
+  const divider = document.createElement("hr");
+  divider.style.margin = "10px 0";
+  const label = document.createElement("label");
+  label.style.display = "block";
+  label.style.fontSize = "0.85rem";
+  label.style.color = "#333";
+  label.style.marginBottom = "4px";
+  label.textContent = "💾 Cargar código:";
+
+  const textarea = document.createElement("textarea");
+  textarea.id = "configJSON";
+  textarea.placeholder = "Pegá aquí el código o JSON de tu diseño…";
+  textarea.style.cssText = `
+    width:100%;
+    height:70px;
+    font-size:0.75rem;
+    font-family:monospace;
+    resize:none;
+    border:1px solid #ddd;
+    border-radius:6px;
+    padding:6px;
+    box-sizing:border-box;
+  `;
+
+  const btnContainer = document.createElement("div");
+  btnContainer.style.textAlign = "center";
+  btnContainer.style.marginTop = "6px";
+  
+  const loadBtn = document.createElement("button");
+  loadBtn.textContent = "📥 Aplicar Código";
+  loadBtn.className = "dropbtn";
+  loadBtn.style.fontSize = "0.8rem";
+  loadBtn.style.padding = "6px 12px";
+  loadBtn.style.backgroundColor = "#4CAF50";
+
+  const saveBtn = document.createElement("button");
+  saveBtn.textContent = "💾 Guardar Configuración";
+  saveBtn.className = "dropbtn";
+  saveBtn.style.fontSize = "0.8rem";
+  saveBtn.style.padding = "6px 12px";
+  saveBtn.style.marginRight = "6px";
+  
+  btnContainer.appendChild(loadBtn);
+  
+  const dividerLine = document.createElement("hr");
+  dividerLine.style.cssText = "width:100%;margin:8px auto;border:0;border-top:1px solid #aaa;";
+  btnContainer.appendChild(dividerLine);
+
+
+  btnContainer.appendChild(saveBtn);
+
+  presetMenu.appendChild(divider);
+  presetMenu.appendChild(label);
+  presetMenu.appendChild(textarea);
+  presetMenu.appendChild(btnContainer);
+
+  // === VARIABLES INCLUIDAS EN EL JSON ===
+  const VARS = [
+    "--nombre-restaurante",
+    "--subtitulo-restaurante",
+    "--direccion-restaurante",
+    "--horario-restaurante",
+    "--telefono-restaurante",
+    "--color-nombre-resto",
+    "--color-nombre-slogan",
+    "--color-categoria",
+    "--color-subcategoria",
+    "--color-plato",
+    "--color-descripcion",
+    "--color-precio",
+    "--color-info-resto",
+    "--color-bg",
+    "--bg-opacity",
+    "--logo-size",
+    "--size-nombre-resto",
+    "--size-nombre-slogan",
+    "--size-categoria",
+    "--size-subcategoria",
+    "--size-plato",
+    "--size-descripcion",
+    "--size-precio",
+    "--size-info-resto",
+    "--tracking",
+    "--menu-columns"
+  ];
+
+  function generarConfiguracion() {
+    const root = getComputedStyle(document.documentElement);
+    const config = {};
+
+    // Recolecta TODAS las variables
+    VARS.forEach(v => {
+      config[v.replace("--", "")] = root.getPropertyValue(v).trim();
+    });
+
+    // Fuente principal
+    config["bodyFont"] = document.body.style.fontFamily || getComputedStyle(document.body).fontFamily;
+
+    // ✅ Agregar cantidad de columnas
+    const col = getComputedStyle(document.documentElement).getPropertyValue("--menu-columns").trim() || "2";
+    config["menu-columns"] = col;
+
+    const jsonMin = JSON.stringify(config);
+    const encoded = btoa(unescape(encodeURIComponent(jsonMin)))
+      .replace(/\+/g, "-")
+      .replace(/\//g, "_")
+      .replace(/=+$/, "");
+
+    const jsonPretty = JSON.stringify(config, null, 2);
+    return { json: jsonPretty, uniqueCode: encoded, config };
+  }
+
+  function aplicarConfiguracion(config) {
+    for (const [key, valRaw] of Object.entries(config)) {
+      let val = valRaw;
+
+      if (typeof val === "string" && /^".*"$/.test(val.trim())) {
+        val = val.trim().replace(/^"+|"+$/g, "");
+      }
+
+      const needsRem = key.startsWith("size-") && !key.includes("logo");
+      const needsPx = key === "logo-size";
+
+      if (key === "bodyFont") {
+        document.body.style.fontFamily = val;
+        continue;
+      }
+
+      if (needsRem && !val.endsWith("rem")) val = parseFloat(val) + "rem";
+      if (needsPx && !val.endsWith("px")) val = parseFloat(val) + "px";
+
+      document.documentElement.style.setProperty(`--${key}`, val);
+      localStorage.setItem(key, val);
+    }
+
+    const get = k => (config[k] || "").replace(/^"+|"+$/g, "");
+    document.getElementById("nombre-resto").textContent = get("nombre-restaurante");
+    document.getElementById("subtitulo-resto").textContent = get("subtitulo-restaurante");
+    document.getElementById("direccion-resto").textContent = get("direccion-restaurante");
+    document.getElementById("horario-resto").textContent = get("horario-restaurante");
+    document.getElementById("telefono-resto").textContent = get("telefono-restaurante");
+  }
+
+  function mostrarPopup(titulo, texto) {
+    const overlay = document.createElement("div");
+    overlay.style = `
+      position:fixed;inset:0;
+      background:rgba(0,0,0,0.5);
+      display:flex;align-items:center;justify-content:center;
+      z-index:9999;
+    `;
+    const modal = document.createElement("div");
+    modal.style = `
+      background:#fff;
+      border-radius:10px;
+      padding:20px;
+      max-width:600px;
+      width:90%;
+      box-shadow:0 6px 20px rgba(0,0,0,0.3);
+      font-family:monospace;
+      text-align:center;
+      overflow:auto;
+      max-height:85vh;
+    `;
+    modal.innerHTML = `
+      <h3 style="font-family:sans-serif;margin-top:0;">${titulo}</h3>
+      <pre style="text-align:left;background:#f9f9f9;border:1px solid #ddd;border-radius:6px;padding:10px;white-space:pre-wrap;word-break:break-word;font-size:0.75rem;">${texto}</pre>
+      <button id="copyCode" style="margin-top:8px;padding:6px 12px;border:none;border-radius:6px;background:#1D3557;color:white;cursor:pointer;">Copiar Código</button>
+      <button id="closeModal" style="margin-top:10px;padding:8px 16px;border:none;border-radius:6px;background:#457B9D;color:white;cursor:pointer;">Cerrar</button>
+    `;
+    overlay.appendChild(modal);
+    document.body.appendChild(overlay);
+
+    modal.querySelector("#copyCode").addEventListener("click", () => {
+      navigator.clipboard.writeText(texto);
+      modal.querySelector("#copyCode").textContent = "✅ Copiado!";
+      setTimeout(() => (modal.querySelector("#copyCode").textContent = "Copiar Código"), 2000);
+    });
+    modal.querySelector("#closeModal").addEventListener("click", () => overlay.remove());
+  }
+
+  // === EVENTOS ===
+  saveBtn.addEventListener("click", () => {
+    const { json, uniqueCode } = generarConfiguracion();
+    mostrarPopup("Código de Configuración", uniqueCode);
+  });
+
+  loadBtn.addEventListener("click", () => {
+    try {
+      const valRaw = textarea.value.trim();
+      if (!valRaw) return alert("Pegá primero el código o JSON.");
+
+      let config;
+
+      // ¿Parece JSON?
+      const looksLikeJSON = valRaw.startsWith("{") && valRaw.endsWith("}");
+      if (looksLikeJSON) {
+        config = JSON.parse(valRaw);
+      } else {
+        // Trata como código único (Base64 URL-safe)
+        const decoded = decodeUniqueCode(valRaw);
+        config = JSON.parse(decoded);
+      }
+
+      aplicarConfiguracion(config);
+      mostrarPopup("Configuración Aplicada", "El menú fue actualizado correctamente ✅");
+    } catch (e) {
+      console.error(e);
+      alert("El código no se pudo decodificar correctamente. Verificá que esté completo.");
+    }
+  });
+
+  // --- helper robusto ---
+  function decodeUniqueCode(input) {
+    // Limpia espacios, saltos, texto extra (ej: “Código único: …”)
+    let clean = (input.match(/[A-Za-z0-9\-_]+/g) || []).join('');
+
+    // Vuelve desde URL-safe a Base64 estándar
+    clean = clean.replace(/-/g, '+').replace(/_/g, '/');
+
+    // Rellena padding (=) si falta
+    const pad = clean.length % 4;
+    if (pad) clean += '='.repeat(4 - pad);
+
+    // Decodifica en UTF-8
+    const binary = atob(clean);
+    const bytes = new Uint8Array(binary.length);
+    for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+    return new TextDecoder().decode(bytes);
+  }
+  })();
+
   </script>
 </body>
 </html>
