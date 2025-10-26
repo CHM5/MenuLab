@@ -49,6 +49,9 @@
   body {
     font-family: 'Lato', sans-serif;
     margin: 0 auto;
+    padding: 20px;
+    column-count: var(--menu-columns);
+    column-gap: 20px;
     background: var(--color-bg);
     letter-spacing: var(--tracking);
     color: var(--color-plato);
@@ -182,11 +185,10 @@
   }
 
   .menu-item.destacado {
-    background: #f7f7f7 !important;       /* gris muy claro */
-    border-left: 4px solid #9e9e9e !important; /* gris medio */
+    background: rgba(255, 215, 0, 0.12);
+    border-left: 4px solid #c6a400;
     border-radius: 6px;
     padding: 0.4rem 0.6rem;
-    opacity: 0.7;
   }
 
   /* === FOOTER === */
@@ -219,39 +221,11 @@
       size: A4;
       margin: 10mm 8mm 10mm 8mm;
     }
-    * {
-      -webkit-print-color-adjust: exact !important;
-      print-color-adjust: exact !important;
-      color-adjust: exact !important;
-    }
 
-    .menu-item.destacado {
-      background: #f7f7f7 !important;       /* gris muy claro */
-      border-left: 4px solid #9e9e9e !important; /* gris medio */
-      border-radius: 6px !important;
-      padding: 0.4rem 0.6rem !important;
-      opacity: 0.7;
-    }
-    #menu-inner {
+    body {
+      background: var(--color-bg) !important;
       column-count: var(--menu-columns);
       column-gap: 15px;
-    }
-
-    /* === FORMATO LATERAL === */
-    #menu-inner.lateral {
-      display: flex;
-      justify-content: space-between;
-      gap: 2rem;
-    }
-
-    #menu-inner.lateral > div {
-      flex: 1;
-      min-width: 48%;
-    }
-
-    #menu-inner.lateral .resto-header {
-      align-items: flex-start;
-      text-align: left;
     }
 
     .print-background {
@@ -276,69 +250,24 @@
     }
   }
 
-  #menu-frame {
-    position: relative;
-    box-sizing: border-box;
-    padding: 20px;
-    border-radius: 12px;
-    transition: all 0.25s ease;
-    background: var(--color-bg);
-    z-index: 1;
-  }
-
-  /* ornamentos: base genérica */
-  #menu-frame::before,
-  #menu-frame::after {
-    content: "";
-    position: absolute;
-    width: 120px;
-    height: 120px;
-    background-size: contain;
-    background-repeat: no-repeat;
-    opacity: 0.4;
-    pointer-events: none;
-    z-index: -1;
-  }
-
-  /* Esquinas inferiores adicionales */
-  #menu-frame::before {
-    top: -10px;
-    left: -10px;
-  }
-  #menu-frame::after {
-    bottom: -10px;
-    right: -10px;
-    transform: rotate(180deg);
-  }
-
-  #menu-inner {
-    padding: 20px;
-    column-count: var(--menu-columns);
-    column-gap: 20px;
-    background: transparent;
-    border-radius: inherit;
-  }
   
 </style>
 
 </head>
 <body>
-  <div id="menu-frame">
-    <div id="menu-inner">
-      <!-- 🌄 Fondo -->
-      <div class="print-background"></div>
+  <!-- 🌄 Fondo -->
+  <div class="print-background"></div>
 
-      <!-- 🏪 Encabezado -->
-      <div class="resto-header">
-        <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1758652390/The_Pent_2_a8vhtp.jpg" alt="Logo" id="logo-resto" style="width:100px;height:100px;border-radius:50%;object-fit:cover;">
-        <h1 id="nombre-resto">Café Central</h1>
-        <h3 id="subtitulo-resto" class="resto-slogan">Todo rico, todo el día</h3>
-      </div>
-
-      <!-- 📜 Contenido del menú -->
-      <div id="menuTable"></div>
-    </div>
+  <!-- 🏪 Encabezado -->
+  <div class="resto-header">
+    <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1758652390/The_Pent_2_a8vhtp.jpg" alt="Logo" id="logo-resto" style="width:100px;height:100px;border-radius:50%;object-fit:cover;">
+    <h1 id="nombre-resto">Café Central</h1>
+    <h3 id="subtitulo-resto" class="resto-slogan">Todo rico, todo el día</h3>
   </div>
+
+  <!-- 📜 Contenido del menú -->
+<div id="menuTable"></div>
+
 <script>
 /* === Datos base de ejemplo === */
 const allRows = [
@@ -542,32 +471,6 @@ window.addEventListener("message", event => {
       break;
     }
 
-    /* === ESTILO DEL MARCO === */
-    case "frame-style": {
-      const frame = document.getElementById("menu-frame");
-
-      if (data === "none") {
-        frame.style.border = "none";
-      } else {
-        frame.style.borderImage = "none";
-        frame.style.borderStyle = data; // solid, dashed, etc.
-        frame.style.borderWidth = "2px";
-        frame.style.borderColor = "#000";
-      }
-      break;
-    }
-
-
-    /* === COLOR DEL MARCO === */
-    case "frame-color":
-      document.getElementById("menu-frame").style.borderColor = data;
-      break;
-
-    /* === GROSOR DEL MARCO === */
-    case "frame-width":
-      document.getElementById("menu-frame").style.borderWidth = data + "px";
-      break;
-
     /* === FIRULETE === */
     case "firulete":
       document.documentElement.style.setProperty("--firulete", `"${data}"`);
@@ -576,85 +479,12 @@ window.addEventListener("message", event => {
     /* === COLUMNAS === */
     case "columns":
       document.documentElement.style.setProperty("--menu-columns", data);
-      document.getElementById("menu-inner").style.columnCount = data;
+      document.body.style.columnCount = data;
       break;
-
-/* === FORMATO === */
-case "formato": {
-  const layout = data;
-  const header = document.querySelector(".resto-header");
-  const menuInner = document.getElementById("menu-inner");
-  const menuTable = document.getElementById("menuTable");
-
-  // reset básico
-  header.style.flexDirection = "column";
-  header.style.alignItems = "center";
-  header.style.textAlign = "center";
-  header.style.width = "100%";
-  menuInner.style.columnCount = "var(--menu-columns)";
-  menuTable.style.display = "block";
-
-  if (layout === "centrado") {
-    // 📜 formato clásico
-    header.style.flexDirection = "column";
-    header.style.alignItems = "center";
-    header.style.textAlign = "center";
-    header.style.marginBottom = "1.5rem";
-  }
-
-  if (layout === "izquierda") {
-    // 🏛️ encabezado y 1ra categoría en la primera columna
-    menuInner.style.columnCount = "2";
-    menuInner.style.display = "flex";
-    menuInner.style.flexWrap = "wrap";
-    menuInner.style.gap = "2rem";
-
-    // bloque contenedor lateral
-    const leftCol = document.createElement("div");
-    const rightCol = document.createElement("div");
-    leftCol.style.flex = "1";
-    rightCol.style.flex = "1";
-    leftCol.style.minWidth = "48%";
-    rightCol.style.minWidth = "48%";
-
-    // mover encabezado + la primera categoría al bloque izquierdo
-    const firstCat = menuTable.querySelector("div:first-child");
-    if (firstCat) {
-      leftCol.appendChild(header);
-      leftCol.appendChild(firstCat);
-    }
-
-    // mover el resto de categorías al bloque derecho
-    const others = [...menuTable.querySelectorAll("div")].slice(1);
-    others.forEach(cat => rightCol.appendChild(cat));
-
-    // vaciar y rearmar
-    menuTable.innerHTML = "";
-    menuTable.appendChild(leftCol);
-    menuTable.appendChild(rightCol);
-  }
-
-  if (layout === "columnas") {
-    // 🗂️ versión tipo revista (todas las columnas con margen equilibrado)
-    header.style.flexDirection = "row";
-    header.style.alignItems = "center";
-    header.style.justifyContent = "center";
-    header.style.textAlign = "center";
-    menuInner.style.columnCount = "var(--menu-columns)";
-    menuInner.style.padding = "20px 40px";
-  }
-
-  break;
-}
 
     /* === OPACIDAD FONDO === */
     case "opacity":
       document.documentElement.style.setProperty("--bg-opacity", data);
-      break;
-
-    /* === TAMAÑO FONDO === */
-    case "bg-size":
-      document.documentElement.style.setProperty("--bg-size-scale", data + "%");
       break;
 
     /* === PRESETS === */
@@ -681,16 +511,6 @@ case "formato": {
     }
   }
 });
-
-/* === Vista previa / Imprimir === */
-const printBtn = document.getElementById("printBtn");
-if (printBtn) {
-  printBtn.addEventListener("click", () => {
-    if (preview && preview.contentWindow) {
-      preview.contentWindow.print();
-    }
-  });
-}
 
 </script>
 </body>

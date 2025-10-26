@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Editor de Menú - MenuLab</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/png" href="https://res.cloudinary.com/drxznqm61/image/upload/v1758652390/The_Pent_2_a8vhtp.jpg" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+      integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" 
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link href="https://fonts.googleapis.com/css2?family=Almendra+Display&family=Amatic+SC:wght@400;700&family=Anton&family=Caveat:wght@400;700&family=Codystar:wght@300;400&family=Cormorant+Garamond:wght@400;700&family=Coral+Pixels&family=Ewert&family=Indie+Flower&family=Merriweather:wght@400;700&family=Milonga&family=Monoton&family=Montserrat:wght@400;700&family=Oswald:wght@400;700&family=Pacifico&family=Playfair+Display:wght@400;700&family=Quicksand:wght@400;700&family=Ranchers:wght@400;700&family=Rubik+Wet+Paint&family=Sora:wght@400;700&family=Source+Code+Pro:wght@400;700&family=Tangerine:wght@400;700&family=Vast+Shadow&display=swap" rel="stylesheet">
+
+  <!-- CSS se agregará en el paso 2 -->
+  <style>
+  :root {
+    --primary: #457B9D;
+    --primary-dark: #1D3557;
+    --bg-light: #f9f9f9;
+    --border: #ddd;
+    --radius: 6px;
+    --shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Lato', sans-serif;
+    background: var(--bg-light);
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }
+
+  /* === CONTENEDOR GENERAL === */
+  .editor-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  /* === BARRA SUPERIOR === */
+  #topMenu {
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: #fff;
+    padding: 10px 20px;
+    box-shadow: var(--shadow);
+    z-index: 100;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+  }
+
+  /* === BOTONES === */
+  .dropbtn,
+  #printBtn {
+    background-color: var(--primary);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background 0.3s ease, transform 0.1s ease;
+  }
+
+  .dropbtn:hover,
+  #printBtn:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-1px);
+  }
+
+  /* === DROPDOWN === */
+  .dropdown {
+    position: relative;
+    display: inline-block;
+  }
+
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    min-width: 180px;
+    box-shadow: var(--shadow);
+    z-index: 200;
+    border-radius: var(--radius);
+    padding: 10px;
+    border: 1px solid var(--border);
+    max-height: 400px;
+    overflow-y: auto;
+  }
+
+  .dropdown:hover .dropdown-content {
+    display: block;
+  }
+
+  /* === LABELS DE LOS MENÚS === */
+  .dropdown-content label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 8px;
+    font-size: 0.9rem;
+    border-radius: 4px;
+    cursor: pointer;
+    color: #333;
+  }
+
+  .dropdown-content label:hover {
+    background: #eef6fa;
+  }
+
+  /* === INPUTS === */
+  input[type="color"] {
+    width: 38px;
+    height: 38px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  input[type="color"]::-webkit-color-swatch {
+    border: none;
+    border-radius: 4px;
+  }
+
+  input[type="range"] {
+    width: 100%;
+    accent-color: var(--primary);
+    cursor: pointer;
+  }
+
+  input[type="number"] {
+    width: 64px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 2px 4px;
+    font-size: 0.85rem;
+    text-align: center;
+  }
+
+  /* === SECCIONES DE TAMAÑO Y COLOR === */
+  .tamaños {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 6px;
+  }
+
+  hr {
+    margin: 8px 0;
+    border: 0;
+    border-top: 1px solid var(--border);
+  }
+
+  /* === PREVIEW AREA === */
+  .preview-area {
+    flex: 1;
+    overflow: hidden;
+    background: #eee;
+    border-top: 1px solid var(--border);
+  }
+
+  iframe#preview {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: #fff;
+  }
+
+  /* === RESPONSIVE === */
+  @media (max-width: 768px) {
+    #topMenu {
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      padding: 8px;
+      gap: 6px;
+    }
+
+    .dropbtn,
+    #printBtn {
+      flex: 1 1 45%;
+      width: 100%;
+      font-size: 0.85rem;
+      padding: 8px;
+    }
+
+    .dropdown-content {
+      position: fixed;
+      top: 60px;
+      left: 10px;
+      right: 10px;
+      max-height: 70vh;
+      overflow-y: auto;
+      border: 1px solid var(--border);
+    }
+  }
+
+  /* === SCROLL PERSONALIZADO === */
+  .dropdown-content::-webkit-scrollbar {
+    width: 6px;
+  }
+  .dropdown-content::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 4px;
+  }
+
+  /* === CHECKBOX MODO MULTIPLE === */
+  .color-group,
+  .size-group {
+    width: 14px;
+    height: 14px;
+    accent-color: var(--primary);
+    cursor: pointer;
+  }
+
+  .dropdown-content.active label:hover {
+    background: #eef6fa;
+  }
+
+  /* === TEXTAREA CONFIG EXPORT === */
+  textarea#configJSON {
+    width: 100%;
+    height: 70px;
+    resize: none;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-family: monospace;
+    font-size: 0.8rem;
+    padding: 6px;
+  }
+
+  /* Pestañas del selector de fuentes */
+  .font-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-bottom: 6px;
+  }
+
+  .tab-btn {
+    flex: 1 1 auto;
+    background: #eee;
+    border: none;
+    border-radius: 4px;
+    padding: 4px 6px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .tab-btn:hover {
+    background: #ddd;
+  }
+
+  .tab-btn.active {
+    background: var(--primary);
+    color: #fff;
+    font-weight: bold;
+  }
+
+  /* Contenido de cada grupo de fuentes */
+  .font-tab-content {
+    display: none;
+  }
+
+  .font-tab-content.active {
+    display: block;
+  }
+
+  /* Estilos generales de labels */
+  #fontSelectorMenu label {
+    justify-content: center;  
+    align-items: center;     
+    display: flex;
+    padding: 6px 8px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+
+  #fontSelectorMenu label:hover, #firuleteSelector label:hover {
+    background-color: #eef6fa;
+  }
+
+  #fontSelectorMenu label.selected, #firuleteSelector label.selected {
+    background-color: var(--primary);
+    color: white;
+    border-radius: 4px;
+    font-weight: bold;
+  }
+
+  #firuleteSelector label {
+    display: flex;
+    justify-content: center;
+    align-items: center;  
+    text-align: center;
+    gap: 6px;
+    font-size: 1rem;
+  }
+
+  .item-header {
+  background: #f5f5f5;
+  padding: 8px 10px;
+  margin: 0;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+.item-header:hover { background: #eef6fa; }
+
+.item-panel {
+  display: none;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  margin: 6px 0 12px 0;
+  background: #fff;
+  box-shadow: var(--shadow);
+}
+
+.item-config.active .item-panel {
+  display: block;
+}
+
+.item-panel h5 {
+  margin: 6px 0;
+  font-size: 0.9rem;
+  color: #333;
+}
+
+.item-panel label {
+  display: inline-block;
+  padding: 4px 6px;
+  cursor: pointer;
+}
+
+.item-panel label:hover {
+  background: #eef6fa;
+}
+
+.item-panel .tab-btn {
+  font-size: 0.7rem;
+  padding: 3px 6px;
+}
+
+.item-panel input[type="color"] {
+  margin-top: 4px;
+  width: 42px;
+  height: 32px;
+}
+
+  </style>
+</head>
+<body>
+  <div class="editor-container">
+    <!-- Panel superior de controles -->
+<div id="topMenu">
+  <!-- 🌈 ESTILOS -->
+  <div class="dropdown">
+    <button class="dropbtn">🌈 Estilos</button>
+    <div class="dropdown-content" id="presetSelectorMenu">
+      <label data-value="1">☕ Vintage</label>
+      <label data-value="2">🌿 Natural Pastel</label>
+      <label data-value="3">🖤 Minimalista Oscuro</label>
+      <label data-value="4">💎 Luxury Dorado</label>
+      <label data-value="5">📜 Clásico Italiano</label>
+      <label data-value="6">🩵 Celeste Moderno</label>
+      <label data-value="7">🍂 Otoñal Suave</label>
+      <label data-value="8">⚡ Tech Futurista</label>
+      <label data-value="9">🎨 Pop Alegre</label>
+      <label data-value="10">🤍 Blanco Neutro</label>
+
+      <hr>
+      <label style="display:block;color:#444;font-size:0.8rem;margin-top:6px;">💾 Exportar / Importar Configuración</label>
+      <textarea id="configJSON" placeholder="Pegá o generá un código de configuración…"></textarea>
+      <div style="display:flex;justify-content:center;gap:8px;margin-top:6px;">
+        <button class="dropbtn" id="saveConfigBtn" style="background:#4CAF50;">💾 Guardar</button>
+        <button class="dropbtn" id="loadConfigBtn" style="background:#0096C7;">📥 Cargar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 🎛️ ITEMS -->
+  <div class="dropdown">
+    <button class="dropbtn">🎛️ Items</button>
+    <div class="dropdown-content" id="itemsMenu" style="min-width:400px;max-height:80vh;overflow-y:auto;">
+      
+      <div class="item-config" data-item="nombre-resto">
+        <h4 class="item-header">🏪 Nombre</h4>
+        <div class="item-panel">
+          <h5>🖋️ Fuente</h5>
+          <select class="font-select">
+            <option value="playfair">Playfair Display</option>
+            <option value="montserrat">Montserrat</option>
+            <option value="cormorant-garamond">Cormorant Garamond</option>
+            <option value="merriweather">Merriweather</option>
+            <option value="amatic-sc">Amatic SC</option>
+            <option value="tangerine">Tangerine</option>
+          </select>
+
+          <h5>🔤 Tamaño</h5>
+          <input type="range" min="1" max="4" step="0.01" class="size-range">
+
+          <h5>🎨 Color</h5>
+          <input type="color" class="color-input" value="#000000">
+        </div>
+      </div>
+
+      <div class="item-config" data-item="nombre-slogan">
+        <h4 class="item-header">🖋️ Slogan</h4>
+        <div class="item-panel">
+          <h5>🖋️ Fuente</h5>
+          <select class="font-select">
+            <option value="playfair">Playfair Display</option>
+            <option value="pacifico">Pacifico</option>
+            <option value="quicksand">Quicksand</option>
+          </select>
+
+          <h5>🔤 Tamaño</h5>
+          <input type="range" min="0.6" max="2" step="0.01" class="size-range">
+
+          <h5>🎨 Color</h5>
+          <input type="color" class="color-input" value="#555555">
+        </div>
+      </div>
+
+      <div class="item-config" data-item="categoria">
+      <h4 class="item-header">📂 Categoría</h4>
+      <div class="item-panel">
+        <h5>🖋️ Fuente</h5>
+        <select class="font-select">
+          <option value="playfair">Playfair Display</option>
+          <option value="montserrat">Montserrat</option>
+          <option value="oswald">Oswald</option>
+          <option value="anton">Anton</option>
+          <option value="merriweather">Merriweather</option>
+        </select>
+
+        <h5>🔤 Tamaño</h5>
+        <input type="range" min="1" max="4" step="0.01" class="size-range">
+
+        <h5>🎨 Color</h5>
+        <input type="color" class="color-input" value="#000000">
+      </div>
+      </div>
+
+      <div class="item-config" data-item="subcategoria">
+        <h4 class="item-header">📁 Subcategoría</h4>
+        <div class="item-panel">
+          <h5>🖋️ Fuente</h5>
+          <select class="font-select">
+            <option value="playfair">Playfair Display</option>
+            <option value="montserrat">Montserrat</option>
+            <option value="oswald">Oswald</option>
+            <option value="cormorant-garamond">Cormorant Garamond</option>
+          </select>
+
+          <h5>🔤 Tamaño</h5>
+          <input type="range" min="0.6" max="2" step="0.01" class="size-range">
+
+          <h5>🎨 Color</h5>
+          <input type="color" class="color-input" value="#000000">
+        </div>
+      </div>
+
+      <div class="item-config" data-item="plato">
+        <h4 class="item-header">🍽️ Plato</h4>
+        <div class="item-panel">
+          <h5>🖋️ Fuente</h5>
+          <select class="font-select">
+            <option value="playfair">Playfair Display</option>
+            <option value="montserrat">Montserrat</option>
+            <option value="merriweather">Merriweather</option>
+            <option value="oswald">Oswald</option>
+            <option value="anton">Anton</option>
+          </select>
+
+          <h5>🔤 Tamaño</h5>
+          <input type="range" min="0.5" max="2" step="0.01" class="size-range">
+
+          <h5>🎨 Color</h5>
+          <input type="color" class="color-input" value="#000000">
+        </div>
+      </div>
+
+      <div class="item-config" data-item="descripcion">
+        <h4 class="item-header">📝 Descripción</h4>
+        <div class="item-panel">
+          <h5>🖋️ Fuente</h5>
+          <select class="font-select">
+            <option value="quicksand">Quicksand</option>
+            <option value="sora">Sora</option>
+            <option value="lato">Lato</option>
+            <option value="cormorant-garamond">Cormorant Garamond</option>
+            <option value="merriweather">Merriweather</option>
+          </select>
+
+          <h5>🔤 Tamaño</h5>
+          <input type="range" min="0.4" max="1.5" step="0.01" class="size-range">
+
+          <h5>🎨 Color</h5>
+          <input type="color" class="color-input" value="#555555">
+        </div>
+      </div>
+
+      <div class="item-config" data-item="precio">
+        <h4 class="item-header">💲 Precio</h4>
+        <div class="item-panel">
+          <h5>🖋️ Fuente</h5>
+          <select class="font-select">
+            <option value="montserrat">Montserrat</option>
+            <option value="oswald">Oswald</option>
+            <option value="anton">Anton</option>
+            <option value="playfair">Playfair Display</option>
+          </select>
+
+          <h5>🔤 Tamaño</h5>
+          <input type="range" min="0.5" max="2" step="0.01" class="size-range">
+
+          <h5>🎨 Color</h5>
+          <input type="color" class="color-input" value="#000000">
+        </div>
+      </div>
+
+      <div class="item-config" data-item="info-resto">
+        <h4 class="item-header">ℹ️ Info</h4>
+        <div class="item-panel">
+          <h5>🖋️ Fuente</h5>
+          <select class="font-select">
+            <option value="quicksand">Quicksand</option>
+            <option value="sora">Sora</option>
+            <option value="merriweather">Merriweather</option>
+            <option value="montserrat">Montserrat</option>
+          </select>
+
+          <h5>🔤 Tamaño</h5>
+          <input type="range" min="0.4" max="1.5" step="0.01" class="size-range">
+
+          <h5>🎨 Color</h5>
+          <input type="color" class="color-input" value="#000000">
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ⬛ COLUMNAS -->
+  <div class="dropdown">
+    <button class="dropbtn">⬛ Columnas</button>
+    <div class="dropdown-content" id="columnsMenu" style="min-width:150px;">
+      <label data-value="1">1 Columna</label>
+      <label data-value="2">2 Columnas</label>
+      <label data-value="3">3 Columnas</label>
+    </div>
+  </div>
+
+  <!-- ✨ FIRULETES -->
+  <div class="dropdown">
+    <button class="dropbtn">✨ Firulete</button>
+    <div class="dropdown-content" id="firuleteSelector" style="min-width:320px;max-height:70vh;overflow-y:auto;">
+
+      <!-- Pestañas de categoría -->
+      <div class="font-tabs">
+        <button class="tab-btn active" data-tab="basicos">✨ Básicos</button>
+        <button class="tab-btn" data-tab="romanticos">❤️ Románticos</button>
+        <button class="tab-btn" data-tab="naturales">🌿 Naturales</button>
+        <button class="tab-btn" data-tab="modernos">⚙️ Modernos</button>
+        <button class="tab-btn" data-tab="elegante">🍷 Elegantes</button>
+        <button class="tab-btn" data-tab="rustico">🔥 Rústicos</button>
+        <button class="tab-btn" data-tab="creativos">🌈 Creativos</button>
+      </div>
+
+      <!-- Contenedores de firuletes -->
+      <div class="font-tab-content active" id="tab-basicos">
+        <label data-value="">Ninguno</label>
+        <label data-value="✦ ✦ ✦">Brillos ✦ ✦ ✦</label>
+        <label data-value="✤ ✤ ✤">Sello ✤ ✤ ✤</label>
+        <label data-value="⋄ ⋄ ⋄">Rombo ⋄ ⋄ ⋄</label>
+        <label data-value="⚜ ⚜ ⚜">Flor de Lis ⚜ ⚜ ⚜</label>
+      </div>
+
+      <div class="font-tab-content" id="tab-romanticos">
+        <label data-value="❤️ ♡ ❤️">Romántico ❤️ ♡ ❤️</label>
+        <label data-value="💞 💕 💞">Amor 💞 💕 💞</label>
+        <label data-value="💖 ✨ 💖">Brillante 💖 ✨ 💖</label>
+        <label data-value="☕ 💝 ☕">Café Dulce ☕ 💝 ☕</label>
+      </div>
+
+      <div class="font-tab-content" id="tab-naturales">
+        <label data-value="🍃 ✿ 🍃">Natural 🍃 ✿ 🍃</label>
+        <label data-value="🍃 🌸 🍃">Primavera 🍃 🌸 🍃</label>
+        <label data-value="🌿 🌺 🌿">Botánico 🌿 🌺 🌿</label>
+        <label data-value="🌻 🌼 🌻">Floral 🌻 🌼 🌻</label>
+        <label data-value="🍂 🍁 🍂">Otoñal 🍂 🍁 🍂</label>
+      </div>
+
+      <div class="font-tab-content" id="tab-modernos">
+        <label data-value="⚡ ⚡ ⚡">Rayo ⚡ ⚡ ⚡</label>
+        <label data-value="⚡ 🔷 ⚡">Eléctrico ⚡ 🔷 ⚡</label>
+        <label data-value="💠 🔹 💠">Digital 💠 🔹 💠</label>
+        <label data-value="🌀 ✦ 🌀">Futurista 🌀 ✦ 🌀</label>
+        <label data-value="🔺 🔸 🔺">Minimal 🔺 🔸 🔺</label>
+      </div>
+
+      <div class="font-tab-content" id="tab-elegante">
+        <label data-value="⚜ 💎 ⚜">Luxury ⚜ 💎 ⚜</label>
+        <label data-value="❦ ❧ ❦">Clásico ❦ ❧ ❦</label>
+        <label data-value="♕ ♔ ♕">Realeza ♕ ♔ ♕</label>
+        <label data-value="🍷 ✨ 🍷">Gourmet 🍷 ✨ 🍷</label>
+      </div>
+
+      <div class="font-tab-content" id="tab-rustico">
+        <label data-value="🔥 🍖 🔥">Asador 🔥 🍖 🔥</label>
+        <label data-value="🥩 🍷 🥩">Grill 🥩 🍷 🥩</label>
+        <label data-value="🍺 🍖 🍺">Cervecero 🍺 🍖 🍺</label>
+        <label data-value="🍷 🕯️ 🍷">Bodega 🍷 🕯️ 🍷</label>
+      </div>
+
+      <div class="font-tab-content" id="tab-creativos">
+        <label data-value="🌈 💫 🌈">Arcoíris 🌈 💫 🌈</label>
+        <label data-value="🎨 🖌️ 🎨">Artístico 🎨 🖌️ 🎨</label>
+        <label data-value="⭐ 🌙 ⭐">Nocturno ⭐ 🌙 ⭐</label>
+        <label data-value="🎵 💫 🎵">Musical 🎵 💫 🎵</label>
+      </div>
+    </div>
+  </div>
+
+  <!-- 🖼️ FONDO -->
+  <div class="dropdown">
+    <button class="dropbtn">🖼️ Fondo</button>
+    <div class="dropdown-content" style="min-width:220px;">
+      <label class="tamaños"><span>Opacidad fondo</span><input type="number" id="bg-opacity-number" step="0.01"></label>
+      <input type="range" id="bg-opacity" min="0" max="0.5" step="0.01" value="0.2">
+
+      <label class="tamaños"><span>Tamaño fondo</span><input type="number" id="bg-size-number" step="1"></label>
+      <input type="range" id="bg-size" min="50" max="200" step="1" value="100">
+    </div>
+  </div>
+
+  <!-- 🖨️ VISTA PREVIA -->
+  <button id="printBtn">🖨️ Vista Previa</button>
+</div>
+
+
+    <!-- Vista previa en vivo -->
+    <div class="preview-area">
+      <iframe id="preview" src="emprendedor_post.html"></iframe>
+    </div>
+  </div>
+
+  <!-- JS de conexión básica -->
+<script>
+const preview = document.getElementById("preview");
+
+/* --- función segura para enviar mensajes --- */
+function sendToPreview(type, data) {
+  if (!preview?.contentWindow) return;
+  preview.contentWindow.postMessage({ type, data }, "*");
+}
+
+/* === EVENTOS PRINCIPALES === */
+preview.addEventListener("load", () => {
+  console.log("✅ Vista previa cargada");
+  sendToPreview("init", "Editor conectado");
+});
+
+/* === FUENTES === */
+document.querySelectorAll("#fontSelectorMenu label").forEach(label => {
+  label.addEventListener("click", () => {
+    const val = label.dataset.value;
+
+    // Guardar selección
+    localStorage.setItem("font-family", val);
+
+    // Enviar al iframe
+    if (preview?.contentWindow) {
+      preview.contentWindow.postMessage({ type: "font", data: val }, "*");
+    }
+
+    // Quitar selección previa
+    document.querySelectorAll("#fontSelectorMenu label").forEach(l => l.classList.remove("selected"));
+
+    // Marcar la nueva fuente como seleccionada
+    label.classList.add("selected");
+  });
+});
+
+// Restaurar selección guardada al cargar
+window.addEventListener("DOMContentLoaded", () => {
+  const savedFont = localStorage.getItem("font-family");
+  if (savedFont) {
+    const activeLabel = document.querySelector(`#fontSelectorMenu label[data-value="${savedFont}"]`);
+    if (activeLabel) activeLabel.classList.add("selected");
+  }
+});
+
+
+
+/* === FIRULETE === */
+document.querySelectorAll("#firuleteSelector label").forEach(label => {
+  label.addEventListener("click", () => {
+    const val = label.dataset.value || "";
+    localStorage.setItem("firulete", val);
+    sendToPreview("firulete", val);
+  });
+});
+
+/* === COLUMNAS === */
+document.querySelectorAll("#columnsMenu label").forEach(label => {
+  label.addEventListener("click", () => {
+    const val = parseInt(label.dataset.value) || 2;
+    localStorage.setItem("menu-columns", val);
+    sendToPreview("columns", val);
+  });
+});
+
+/* === COLORES === */
+document.querySelectorAll('#colorMenu input[type="color"]').forEach(input => {
+  input.addEventListener('input', () => {
+    const varName = input.id;
+    const value = input.value;
+    localStorage.setItem(varName, value);
+    sendToPreview("color", { variable: `--${varName}`, value });
+  });
+});
+
+/* === TAMAÑOS === */
+const sizeKeys = [
+  "logo-size",
+  "size-nombre-resto",
+  "size-nombre-slogan",
+  "size-categoria",
+  "size-subcategoria",
+  "size-plato",
+  "size-descripcion",
+  "size-precio",
+  "size-info-resto"
+];
+
+sizeKeys.forEach(key => {
+  const range = document.getElementById(`${key}-range`);
+  const number = document.getElementById(`${key}-number`);
+
+  function applyValue(val) {
+    localStorage.setItem(key, val);
+    sendToPreview("size", { key, value: val });
+  }
+
+  if (range && number) {
+    const saved = localStorage.getItem(key);
+    if (saved) {
+      range.value = saved;
+      number.value = saved;
+      applyValue(saved);
+    }
+
+    range.addEventListener("input", e => {
+      number.value = e.target.value;
+      applyValue(e.target.value);
+    });
+    number.addEventListener("input", e => {
+      range.value = e.target.value;
+      applyValue(e.target.value);
+    });
+  }
+});
+
+/* === FONDO (opacidad y tamaño) === */
+function updateBackgroundOpacity(v) {
+  localStorage.setItem("bg-opacity", v);
+  sendToPreview("opacity", v);
+}
+function updateBackgroundSize(v) {
+  localStorage.setItem("bg-size", v);
+  sendToPreview("bgsize", v);
+}
+
+const bgRange = document.getElementById("bg-opacity");
+const bgNum = document.getElementById("bg-opacity-number");
+if (bgRange && bgNum) {
+  const saved = localStorage.getItem("bg-opacity") || "0.2";
+  bgRange.value = saved;
+  bgNum.value = saved;
+  updateBackgroundOpacity(saved);
+
+  bgRange.addEventListener("input", e => {
+    bgNum.value = e.target.value;
+    updateBackgroundOpacity(e.target.value);
+  });
+  bgNum.addEventListener("input", e => {
+    bgRange.value = e.target.value;
+    updateBackgroundOpacity(e.target.value);
+  });
+}
+
+const sizeRange = document.getElementById("bg-size");
+const sizeNum = document.getElementById("bg-size-number");
+if (sizeRange && sizeNum) {
+  const saved = localStorage.getItem("bg-size") || "100";
+  sizeRange.value = saved;
+  sizeNum.value = saved;
+  updateBackgroundSize(saved);
+
+  sizeRange.addEventListener("input", e => {
+    sizeNum.value = e.target.value;
+    updateBackgroundSize(e.target.value);
+  });
+  sizeNum.addEventListener("input", e => {
+    sizeRange.value = e.target.value;
+    updateBackgroundSize(e.target.value);
+  });
+}
+
+/* === PRESETS === */
+document.querySelectorAll("#presetSelectorMenu label[data-value]").forEach(label => {
+  label.addEventListener("click", () => {
+    const preset = parseInt(label.dataset.value);
+    sendToPreview("preset", preset);
+  });
+});
+
+/* === EXPORTAR / IMPORTAR CONFIG === */
+const textarea = document.getElementById("configJSON");
+const saveBtn = document.getElementById("saveConfigBtn");
+const loadBtn = document.getElementById("loadConfigBtn");
+
+saveBtn.addEventListener("click", () => sendToPreview("export", "now"));
+loadBtn.addEventListener("click", () => {
+  const val = textarea.value.trim();
+  if (!val) return alert("Pegá un código antes de cargarlo.");
+  sendToPreview("import", val);
+});
+
+/* === VISTA PREVIA === */
+document.getElementById("printBtn").addEventListener("click", () => {
+  preview.contentWindow.print();
+});
+
+/* === RECEPCIÓN DE MENSAJES DESDE EL IFRAME === */
+window.addEventListener("message", event => {
+  const { type, data } = event.data || {};
+  if (type === "ready") {
+    console.log("📡 Emprendedor listo para recibir comandos");
+    // Reenviar configuración guardada
+    const config = { };
+    [...sizeKeys, "bg-opacity", "bg-size"].forEach(k => {
+      if (localStorage.getItem(k)) config[k] = localStorage.getItem(k);
+    });
+    sendToPreview("init-config", config);
+  }
+
+  if (type === "exported-code") {
+    textarea.value = data;
+    alert("✅ Código de configuración copiado al editor.");
+  }
+});
+
+// === Sistema de pestañas para categorías de fuentes ===
+document.querySelectorAll(".tab-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    // Desactivar todas
+    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+    document.querySelectorAll(".font-tab-content").forEach(tab => tab.classList.remove("active"));
+
+    // Activar la seleccionada
+    btn.classList.add("active");
+    const tabId = btn.dataset.tab;
+    document.getElementById(`tab-${tabId}`).classList.add("active");
+  });
+});
+
+// === Sistema de pestañas para categorías de firuletes ===
+document.querySelectorAll('#firuleteSelector .tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    // desactivar todos
+    document.querySelectorAll('#firuleteSelector .tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('#firuleteSelector .font-tab-content').forEach(tab => tab.classList.remove('active'));
+
+    // activar el seleccionado
+    btn.classList.add('active');
+    document.getElementById(`tab-${btn.dataset.tab}`).classList.add('active');
+  });
+});
+
+/* === FIRULETES === */
+document.querySelectorAll("#firuleteSelector label").forEach(label => {
+  label.addEventListener("click", () => {
+    const val = label.dataset.value || "";
+
+    // Guardar selección
+    localStorage.setItem("firulete", val);
+
+    // Enviar al iframe
+    if (preview?.contentWindow) {
+      preview.contentWindow.postMessage({ type: "firulete", data: val }, "*");
+    }
+
+    // Quitar selección previa
+    document.querySelectorAll("#firuleteSelector label").forEach(l => l.classList.remove("selected"));
+
+    // Marcar la nueva como seleccionada
+    label.classList.add("selected");
+  });
+});
+
+// Restaurar selección guardada al cargar
+window.addEventListener("DOMContentLoaded", () => {
+  const savedFirulete = localStorage.getItem("firulete");
+  if (savedFirulete) {
+    const activeLabel = document.querySelector(`#firuleteSelector label[data-value="${savedFirulete}"]`);
+    if (activeLabel) activeLabel.classList.add("selected");
+  }
+});
+
+/* === ITEMS (fuente, tamaño, color por tipo) === */
+const fontOptions = [
+  "Tangerine", "Cormorant Garamond", "Playfair Display", "Merriweather", "Quicksand",
+  "Almendra Display", "Milonga", "Vast Shadow", "Anton", "Rubik Wet Paint",
+  "Caveat", "Indie Flower", "Amatic SC", "Sora", "Pacifico",
+  "Montserrat", "Codystar", "Source Code Pro", "Monoton", "Oswald",
+  "Coral Pixels", "Ranchers", "Major Mono Display", "Chokokutai", "Ewert"
+];
+
+// Llenar los selects de fuentes
+document.querySelectorAll("#itemsMenu .font-select").forEach(sel => {
+  fontOptions.forEach(f => {
+    const opt = document.createElement("option");
+    opt.value = f.toLowerCase().replace(/\s+/g, "-");
+    opt.textContent = f;
+    opt.style.fontFamily = `'${f}', sans-serif`;
+    sel.appendChild(opt);
+  });
+});
+
+// Escuchar cambios en cada ítem
+document.querySelectorAll("#itemsMenu .item-config").forEach(block => {
+  const section = block.dataset.item;
+  const fontSel = block.querySelector(".font-select");
+  const sizeInput = block.querySelector(".size-range");
+  const colorInput = block.querySelector(".color-input");
+
+  // Restaurar valores guardados
+  const savedFont = localStorage.getItem(`font-${section}`);
+  const savedSize = localStorage.getItem(`size-${section}`);
+  const savedColor = localStorage.getItem(`color-${section}`);
+  if (savedFont) fontSel.value = savedFont;
+  if (savedSize) sizeInput.value = savedSize;
+  if (savedColor) colorInput.value = savedColor;
+
+  // Fuente
+  fontSel.addEventListener("change", () => {
+    const val = fontSel.value;
+    localStorage.setItem(`font-${section}`, val);
+    sendToPreview("font-section", { section, font: val });
+  });
+
+  // Tamaño
+  sizeInput.addEventListener("input", () => {
+    const val = sizeInput.value;
+    localStorage.setItem(`size-${section}`, val);
+    sendToPreview("size-section", { section, value: val });
+  });
+
+  // Color
+  colorInput.addEventListener("input", () => {
+    const val = colorInput.value;
+    localStorage.setItem(`color-${section}`, val);
+    sendToPreview("color-section", { section, value: val });
+  });
+});
+
+  // Expandir/colapsar los items
+  document.querySelectorAll(".item-header").forEach(header => {
+    header.addEventListener("click", () => {
+      const item = header.parentElement;
+      item.classList.toggle("active");
+    });
+  });
+
+  // Escuchar cambios en los controles de cada item
+  document.querySelectorAll("#itemsMenu .item-config").forEach(block => {
+    const section = block.dataset.item;
+    const fontSel = block.querySelector(".font-select");
+    const sizeInput = block.querySelector(".size-range");
+    const colorInput = block.querySelector(".color-input");
+
+    // Fuente
+    fontSel.addEventListener("change", () => {
+      const val = fontSel.value;
+      localStorage.setItem(`font-${section}`, val);
+      sendToPreview("font-section", { section, font: val });
+    });
+
+    // Tamaño
+    sizeInput.addEventListener("input", () => {
+      const val = sizeInput.value;
+      localStorage.setItem(`size-${section}`, val);
+      sendToPreview("size-section", { section, value: val });
+    });
+
+    // Color
+    colorInput.addEventListener("input", () => {
+      const val = colorInput.value;
+      localStorage.setItem(`color-${section}`, val);
+      sendToPreview("color-section", { section, value: val });
+    });
+  });
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1244 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Editor de Menú - MenuLab</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/png" href="https://res.cloudinary.com/drxznqm61/image/upload/v1758652390/The_Pent_2_a8vhtp.jpg" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+      integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" 
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Montserrat&family=Merriweather&family=Oswald&family=Pacifico&family=Quicksand&family=Cormorant+Garamond&family=Amatic+SC&family=Tangerine&family=Great+Vibes&family=Dancing+Script&family=Lobster&family=Cinzel&family=Raleway&family=Poppins&family=Nunito&family=Lato&family=Open+Sans&family=Roboto+Slab&family=Indie+Flower&family=Satisfy&family=Caveat&family=Abril+Fatface&family=Mali&family=Uncial+Antiqua&display=swap" rel="stylesheet">
+
+  <style>
+  :root {
+    --primary: #457B9D;
+    --primary-dark: #1D3557;
+    --bg-light: #f9f9f9;
+    --border: #ddd;
+    --radius: 6px;
+    --shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    font-family: 'Lato', sans-serif;
+    background: var(--bg-light);
+    height: 100vh;
+    display: flex;
+    overflow: hidden;
+  }
+
+  /* === PANEL IZQUIERDO === */
+  #sideMenu {
+    width: 320px;
+    background: #fff;
+    border-right: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    position: relative;
+    z-index: 10;
+    transition: transform 0.3s ease;
+  }
+
+  #sideMenu h3 {
+    text-align: center;
+    background: var(--primary);
+    color: #fff;
+    padding: 14px;
+    margin: 0;
+    font-size: 1.05rem;
+  }
+
+  #sideMenu section {
+    padding: 14px 16px;
+    border-bottom: 1px solid #eee;
+  }
+
+  #sideMenu label, #sideMenu h4, #sideMenu h5 {
+    display: block;
+    margin-top: 6px;
+    margin-bottom: 4px;
+    font-size: 0.9rem;
+    color: #333;
+  }
+
+  #sideMenu button,
+  #sideMenu select,
+  #sideMenu input[type="color"],
+  #sideMenu input[type="range"] {
+    width: 100%;
+    margin-bottom: 8px;
+  }
+
+  #sideMenu button {
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  #sideMenu button:hover {
+    background: var(--primary-dark);
+  }
+
+  .item-config {
+    margin-bottom: 10px;
+  }
+
+/* === Flechita animada para cada item interno === */
+/* === Flechita animada en los Items === */
+.item-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #f8f8f8;
+  padding: 8px 10px;
+  margin: 4px 0;
+  border-radius: 6px;
+  border: 1px solid #e0e0e0;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.25s ease, transform 0.25s ease;
+  position: relative;
+  margin-left: 20px;
+}
+
+.item-header:hover {
+  background: #eef6fa;
+  color: #1D3557;
+}
+
+/* Flechita */
+.item-header::after {
+  content: "▶";
+  font-size: 0.85rem;
+  color: #1D3557;
+  position: absolute;
+  right: 10px;
+  transition: transform 0.3s ease;
+}
+
+.item-config.active .item-header::after {
+  transform: rotate(90deg);
+}
+
+/* Panel interno */
+.item-panel {
+  display: none;
+  padding: 8px;
+  border: 1px solid #ddd;
+  margin-top: 4px;
+  border-radius: 6px;
+  background: #fff;
+  animation: fadeIn 0.25s ease;
+  margin-left: 40px;
+}
+
+.item-config.active .item-panel {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-3px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+
+/* === AJUSTES VISUALES DE VISTA PREVIA === */
+#previewArea {
+  flex: 1;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background: #f4f6f8;
+  padding: 12px;
+}
+
+#previewFrame {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+
+  /* === BOTÓN MOBILE === */
+  #toggleMenu {
+    display: none;
+    position: fixed;
+    top: 12px;
+    left: 12px;
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 46px;
+    height: 46px;
+    font-size: 1.2rem;
+    z-index: 20;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  }
+
+  @media (max-width: 768px) {
+    #sideMenu {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100%;
+      transform: translateX(-100%);
+      background: rgba(255, 255, 255, 0.5); /* 🔹 Blanco con transparencia */
+      backdrop-filter: blur(1px); /* 🔹 Difumina el fondo (efecto vidrio) */
+    }
+    #sideMenu.open {
+      transform: translateX(0);
+    }
+    #toggleMenu {
+      display: block;
+    }
+  }
+
+/* === ESTILOS EXPANDIBLES === */
+#estilos .style-group {
+  margin-bottom: 10px;
+  margin-left: 20px;
+  border: 1px solid #eee;
+  border-radius: 6px;
+  background: #fafafa;
+  overflow: hidden;
+}
+
+#estilos .style-header {
+  margin: 0;
+  padding: 8px 10px;
+  background: #f3f3f3;
+  color: #1D3557;
+  font-size: 0.95rem;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#estilos .style-header:hover {
+  background: #e9f2f9;
+}
+
+/* 🔹 Flechita animada */
+#estilos .style-header::after {
+  content: "▶";
+  font-size: 0.85rem;
+  transition: transform 0.3s ease;
+}
+
+#estilos .style-group.active .style-header::after {
+  transform: rotate(90deg);
+}
+
+/* Panel desplegable */
+#estilos .style-panel {
+  display: none;
+  padding: 8px 10px;
+  background: #fff;
+  border-top: 1px solid #eee;
+}
+
+#estilos .style-group.active .style-panel {
+  display: block;
+}
+
+#estilos button {
+  display: inline-block;
+  margin: 4px;
+  font-size: 0.9rem;
+  background: #f5f5f5;
+  color: #333;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 6px 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+#estilos button:hover {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary-dark);
+}
+
+/* === DROPDOWN FIRULETES === */
+.dropdown {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.dropbtn {
+  background: var(--primary);
+  color: #fff;
+  padding: 10px 14px;
+  font-size: 1rem;
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  transition: background 0.2s ease;
+}
+
+.dropbtn:hover {
+  background: var(--primary-dark);
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #fff;
+  min-width: 280px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  padding: 10px;
+  z-index: 99;
+  top: 110%;
+  left: 0;
+  animation: fadeIn 0.25s ease forwards;
+}
+
+.dropdown.show .dropdown-content {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* === FIRULETES (ESTILO COMO PRESETS) === */
+.font-tabs {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 10px;
+}
+
+
+
+.tab-btn {
+  flex: 1 1 auto;
+  padding: 6px 8px;
+  border: none;
+  border-radius: 6px;
+  background: #f3f3f3;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.85rem;
+}
+
+.tab-btn:hover {
+  background: #e9f2f9;
+}
+
+.tab-btn.active {
+  background: var(--primary);
+  color: #fff;
+}
+
+.font-tab-content {
+  display: none;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: all 0.3s ease;
+  margin-left: 0;
+  border-left: 2px solid #d3e4f2;
+  background: #fafafa;
+  border-radius: 6px;
+  padding: 0 8px;
+}
+.font-tab-content.active {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+  margin-top: 4px;
+  padding: 6px 8px;
+}
+.font-tabs .tab-btn::after {
+  content: "▶";
+  transition: transform 0.3s ease;
+}
+.font-tabs .tab-btn.active::after {
+  transform: rotate(90deg);
+}
+
+/* === Encabezado colapsable principal === */
+/* === Botón principal Menues Pre Configurados === */
+.toggle-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background: linear-gradient(90deg, #e9f2f9, #d9e8f4);
+  color: #1D3557;
+  padding: 10px 14px;
+  margin: 0;
+  border: 1px solid #c9d8e3;
+  border-radius: 6px;
+  cursor: pointer;
+  user-select: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  transition: background 0.25s ease, transform 0.25s ease;
+  position: relative;
+}
+
+.toggle-header:hover {
+  background: linear-gradient(90deg, #d9e8f4, #cbe0ee);
+  transform: scale(1.01);
+}
+
+/* 🔹 Flecha del Menú Principal */
+.toggle-header::after {
+  content: "▶";
+  font-size: 0.9rem;
+  color: #1D3557;
+  transition: transform 0.3s ease;
+  position: absolute;
+  right: 12px; /* la mueve bien al borde */
+}
+
+.toggle-header.active::after {
+  transform: rotate(90deg);
+}
+
+/* 🔹 Contenedor desplegable */
+.estilos-content {
+  display: none;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+.estilos-content.active {
+  display: block;
+  animation: fadeIn 0.25s ease;
+}
+
+
+/* === Subgrupos (Cocina Tradicional, etc.) === */
+#estilos .style-header {
+  background: #f8f8f8;
+  color: #333;
+  border-radius: 6px;
+  padding: 8px 10px;
+  font-size: 0.9rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #eee;
+}
+
+#estilos .style-header::after {
+  content: "▶";
+  font-size: 0.8rem;
+  color: #555;
+  transition: transform 0.3s ease;
+}
+
+#estilos .style-group.active .style-header::after {
+  transform: rotate(90deg);
+}
+
+#estilos .style-header:hover {
+  background: #eef6fa;
+  color: #1D3557;
+  border-color: #d3e4f2;
+}
+
+/* Botones internos */
+#estilos .style-panel button {
+  background: #f5f5f5;
+  border-radius: 5px;
+  padding: 6px 10px;
+  border: 1px solid #ddd;
+  color: #333;
+  font-size: 0.85rem;
+  margin: 3px;
+  transition: all 0.2s ease;
+}
+
+#estilos .style-panel button:hover {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary-dark);
+}
+
+/* === Botón principal Items === */
+#toggleItems {
+  background: linear-gradient(90deg, #f6f7f9, #eaeef2);
+  border: 1px solid #d4d7dc;
+}
+
+#toggleItems:hover {
+  background: linear-gradient(90deg, #eaeef2, #dde1e6);
+}
+
+/* === DROPDOWN DE FUENTES === */
+/* === DROPDOWN DE FUENTES === */
+.dropdown-font {
+  position: relative;
+  width: 100%;
+}
+
+.fontbtn {
+  background: var(--primary);
+  color: #fff;
+  padding: 10px 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  transition: background 0.25s ease;
+}
+.fontbtn:hover {
+  background: var(--primary-dark);
+}
+
+/* --- Contenedor principal del menú --- */
+.dropdown-content-font {
+  display: none;
+  position: absolute;
+  top: 110%;
+  left: 0;
+  width: 100%;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+  padding: 10px;
+  z-index: 100;
+}
+.dropdown-font.show .dropdown-content-font {
+  display: block;
+}
+
+/* === BOTONES DE CATEGORÍA === */
+.font-tabs {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.font-tabs .tab-btn {
+  background: var(--primary);
+  color: #fff;
+  font-weight: 600;
+  padding: 8px 10px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.25s ease;
+  position: relative;
+}
+.font-tabs .tab-btn:hover {
+  background: var(--primary-dark);
+}
+
+/* Flecha */
+.font-tabs .tab-btn::after {
+  content: "▶";
+  font-size: 0.85rem;
+  transition: transform 0.3s ease;
+}
+.font-tabs .tab-btn.active::after {
+  transform: rotate(90deg);
+}
+
+/* === SUBLISTA DE FUENTES (justo debajo de cada tab-btn) === */
+.font-tab-content {
+  display: none;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: all 0.3s ease;
+  margin-left: 4px;
+  border-left: 2px solid #d3e4f2;
+  background: #fafafa;
+  border-radius: 6px;
+  padding: 0 8px;
+}
+
+/* 🔹 El bloque activo aparece inmediatamente debajo de su botón */
+.font-tab-content.active {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+  margin-top: 4px;
+  padding: 6px 8px;
+}
+
+/* === CADA FUENTE === */
+.font-tab-content label {
+  display: block;
+  padding: 6px 4px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+}
+
+.font-tab-content label:hover {
+  background: #eef6fa;
+  transform: translateX(4px);
+  color: var(--primary-dark);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-3px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+  </style>
+</head>
+
+<body>
+  <button id="toggleMenu"><i class="fas fa-gear"></i></button>
+
+  <aside id="sideMenu">
+    <h3>🎨 Editor MenuLab</h3>
+
+    <section id="estilos">
+      <h4 id="toggleEstilos" class="toggle-header">
+        💡 Menues Pre Configurados
+      </h4>
+
+      <div id="estilosContenido" class="estilos-content">
+        <div class="style-group">
+          <h5 class="style-header">🥩 Cocina Tradicional</h5>
+          <div class="style-panel">
+            <button data-preset="1">🔥 Parrilla</button>
+            <button data-preset="2">🍷 Bodegón</button>
+            <button data-preset="3">🍽️ Restaurante</button>
+            <button data-preset="4">🥘 Comedor</button>
+            <button data-preset="5">🍳 Rotisería</button>
+          </div>
+        </div>
+
+        <div class="style-group">
+          <h5 class="style-header">☕ Cafés y Dulzuras</h5>
+          <div class="style-panel">
+            <button data-preset="6">💎 Cafetería</button>
+            <button data-preset="7">🥐 Panadería</button>
+            <button data-preset="8">🧁 Pastelería</button>
+            <button data-preset="9">🍫 Chocolatería</button>
+            <button data-preset="10">🍵 Casa de té</button>
+          </div>
+        </div>
+
+        <div class="style-group">
+          <h5 class="style-header">🍺 Bares y Nocturnos</h5>
+          <div class="style-panel">
+            <button data-preset="11">📜 Bar</button>
+            <button data-preset="12">🍸 Coctelería</button>
+            <button data-preset="13">🎵 Bar & Música</button>
+            <button data-preset="14">🍹 After Office</button>
+            <button data-preset="15">🌙 Pub Nocturno</button>
+          </div>
+        </div>
+
+        <div class="style-group">
+          <h5 class="style-header">🍔 Fast Food / Take Away</h5>
+          <div class="style-panel">
+            <button data-preset="16">🍕 Pizzería</button>
+            <button data-preset="17">🍔 Hamburguesería</button>
+            <button data-preset="18">🌮 Taquería</button>
+            <button data-preset="19">🥙 Shawarma</button>
+            <button data-preset="20">🍣 Sushi Bar</button>
+          </div>
+        </div>
+
+        <div class="style-group">
+          <h5 class="style-header">🥗 Saludables y Naturales</h5>
+          <div class="style-panel">
+            <button data-preset="21">🥑 Vegano</button>
+            <button data-preset="22">🍏 Healthy Food</button>
+            <button data-preset="23">🍞 Sin TACC</button>
+            <button data-preset="24">🧘‍♂️ Orgánico</button>
+            <button data-preset="25">🌿 Natural Market</button>
+          </div>
+        </div>
+
+        <div class="style-group">
+          <h5 class="style-header">🌍 Cocina Internacional</h5>
+          <div class="style-panel">
+            <button data-preset="26">🍝 Trattoria Italiana</button>
+            <button data-preset="27">🥟 Asiático</button>
+            <button data-preset="28">🌮 Mexicano</button>
+            <button data-preset="29">🥘 Español</button>
+            <button data-preset="30">🥖 Francés</button>
+          </div>
+        </div>
+
+        <div class="style-group">
+          <h5 class="style-header">🍦 Postres y Especiales</h5>
+          <div class="style-panel">
+            <button data-preset="31">🍰 Repostería</button>
+            <button data-preset="32">🍦 Heladería</button>
+            <button data-preset="33">🥧 Tartas</button>
+            <button data-preset="34">🧇 Waffles & Pancakes</button>
+            <button data-preset="35">🎂 Cakeshop</button>
+          </div>
+        </div>
+
+        <div class="style-group">
+          <h5 class="style-header">🚚 Conceptos Modernos</h5>
+          <div class="style-panel">
+            <button data-preset="36">🚚 Food Truck</button>
+            <button data-preset="37">🌆 Rooftop</button>
+            <button data-preset="38">🏖️ Beach Bar</button>
+            <button data-preset="39">💡 Idea Nueva</button>
+            <button data-preset="40">⚙️ Cocina de Autor</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 🎛️ Items -->
+    <section id="items">
+      <h4 id="toggleItems" class="toggle-header">🎛️ Items</h4>
+      <div id="itemsContenido" class="estilos-content">
+        <div id="itemsList"></div>
+      </div>
+    </section>
+
+    <!-- ⬛ Columnas -->
+    <section id="columnas">
+      <h4 id="toggleColumnas" class="toggle-header">⬛ Columnas</h4>
+      <div id="columnasContenido" class="estilos-content">
+        <button data-value="1">1 Columna</button>
+        <button data-value="2">2 Columnas</button>
+        <button data-value="3">3 Columnas</button>
+      </div>
+    </section>
+
+    <!-- 🖼️ Marcos -->
+    <section id="marcos">
+      <h4 id="toggleMarcos" class="toggle-header">🖼️ Marcos</h4>
+      <div id="marcosContenido" class="estilos-content">
+        <label>Estilo de marco</label>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;">
+          <button data-frame="none">Sin marco</button>
+          <button data-frame="solid">Línea fina</button>
+          <button data-frame="double">Doble línea</button>
+          <button data-frame="dashed">Línea punteada</button>
+          <button data-frame="groove">Relieve</button>
+          <button data-frame="ridge">Biselado</button>
+          <button data-frame="ornamental">Ornamental ✦</button>
+        </div>
+
+        <label style="margin-top:10px;">Color del marco</label>
+        <input type="color" id="frame-color" value="#000000">
+
+        <label style="margin-top:10px;">Grosor</label>
+        <input type="range" id="frame-width" min="1" max="15" step="1" value="2">
+      </div>
+    </section>
+
+    <!-- ✨ FIRULETES -->
+    <section id="firulete">
+      <h4 id="toggleFirulete" class="toggle-header">✨ Firulete</h4>
+      <div id="firuleteContenido" class="estilos-content">
+        <div class="font-tabs">
+          <button class="tab-btn active" data-tab="basicos">✨ Básicos</button>
+          <button class="tab-btn" data-tab="romanticos">❤️ Románticos</button>
+          <button class="tab-btn" data-tab="naturales">🌿 Naturales</button>
+          <button class="tab-btn" data-tab="modernos">⚙️ Modernos</button>
+          <button class="tab-btn" data-tab="elegante">🍷 Elegantes</button>
+          <button class="tab-btn" data-tab="rustico">🔥 Rústicos</button>
+          <button class="tab-btn" data-tab="creativos">🌈 Creativos</button>
+        </div>
+
+        <!-- Contenido -->
+        <div class="font-tab-content active" id="tab-basicos">
+          <button data-value="">Ninguno</button>
+          <button data-value="✦ ✦ ✦">Brillos ✦ ✦ ✦</button>
+          <button data-value="✤ ✤ ✤">Sello ✤ ✤ ✤</button>
+          <button data-value="⋄ ⋄ ⋄">Rombo ⋄ ⋄ ⋄</button>
+          <button data-value="⚜ ⚜ ⚜">Flor de Lis ⚜ ⚜ ⚜</button>
+        </div>
+
+        <div class="font-tab-content" id="tab-romanticos">
+          <button data-value="❤️ ♡ ❤️">Romántico</button>
+          <button data-value="💞 💕 💞">Amor</button>
+          <button data-value="💖 ✨ 💖">Brillante</button>
+          <button data-value="☕ 💝 ☕">Café Dulce</button>
+        </div>
+
+        <div class="font-tab-content" id="tab-naturales">
+          <button data-value="🍃 ✿ 🍃">Natural</button>
+          <button data-value="🍃 🌸 🍃">Primavera</button>
+          <button data-value="🌿 🌺 🌿">Botánico</button>
+          <button data-value="🌻 🌼 🌻">Floral</button>
+          <button data-value="🍂 🍁 🍂">Otoñal</button>
+        </div>
+
+        <div class="font-tab-content" id="tab-modernos">
+          <button data-value="⚡ ⚡ ⚡">Rayo</button>
+          <button data-value="⚡ 🔷 ⚡">Eléctrico</button>
+          <button data-value="💠 🔹 💠">Digital</button>
+          <button data-value="🌀 ✦ 🌀">Futurista</button>
+          <button data-value="🔺 🔸 🔺">Minimal</button>
+        </div>
+
+        <div class="font-tab-content" id="tab-elegante">
+          <button data-value="⚜ 💎 ⚜">Luxury</button>
+          <button data-value="❦ ❧ ❦">Clásico</button>
+          <button data-value="♕ ♔ ♕">Realeza</button>
+          <button data-value="🍷 ✨ 🍷">Gourmet</button>
+        </div>
+
+        <div class="font-tab-content" id="tab-rustico">
+          <button data-value="🔥 🍖 🔥">Asador</button>
+          <button data-value="🥩 🍷 🥩">Grill</button>
+          <button data-value="🍺 🍖 🍺">Cervecero</button>
+          <button data-value="🍷 🕯️ 🍷">Bodega</button>
+        </div>
+
+        <div class="font-tab-content" id="tab-creativos">
+          <button data-value="🌈 💫 🌈">Arcoíris</button>
+          <button data-value="🎨 🖌️ 🎨">Artístico</button>
+          <button data-value="⭐ 🌙 ⭐">Nocturno</button>
+          <button data-value="🎵 💫 🎵">Musical</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 🖼️ Fondo -->
+    <section id="fondo">
+      <h4 id="toggleFondo" class="toggle-header">🖼️ Fondo</h4>
+      <div id="fondoContenido" class="estilos-content">
+        <label for="bg-opacity">Opacidad fondo</label>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <input type="number" id="bg-opacity-number" min="0" max="0.5" step="0.01" value="0.2" style="width:60px;">
+          <input type="range" id="bg-opacity" min="0" max="0.5" step="0.01" value="0.2" style="flex:1;">
+        </div>
+
+        <label for="bg-size" style="margin-top:10px;">Tamaño fondo (%)</label>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <input type="number" id="bg-size-number" min="50" max="200" step="1" value="100" style="width:60px;">
+          <input type="range" id="bg-size" min="50" max="200" step="1" value="100" style="flex:1;">
+        </div>
+        <small style="color:#555;">(100% = tamaño original del fondo)</small>
+      </div>
+    </section>
+
+    <!-- 🖨️ Vista previa -->
+    <section id="previewControls">
+      <button id="printBtn">🖨️ Vista Previa</button>
+    </section>
+  </aside>
+
+  <main id="previewArea">
+    <iframe id="previewFrame" src="emprendedor_post.html"></iframe>
+  </main>
+
+  <script>
+  const preview = document.getElementById("previewFrame");
+  const menuBtn = document.getElementById("toggleMenu");
+  const sideMenu = document.getElementById("sideMenu");
+  const itemsList = document.getElementById("itemsList");
+  let previewReady = false;
+
+  /* === Envío de mensajes seguro === */
+  function sendToPreview(type, data) {
+    if (!previewReady || !preview?.contentWindow) return;
+    preview.contentWindow.postMessage({ type, data }, "*");
+  }
+
+  /* === Cuando el iframe está listo === */
+  preview.addEventListener("load", () => {
+    preview.contentWindow.postMessage({ type: "init", data: "editor-connected" }, "*");
+  });
+
+  /* === Escuchar confirmación desde el menú === */
+  window.addEventListener("message", (e) => {
+    if (e.data?.type === "ready") {
+      previewReady = true;
+      console.log("✅ Menú conectado, listo para recibir cambios");
+    }
+  });
+
+  /* === ITEMS === */
+  const items = [
+    { id: "nombre-resto", icon: "🏪", label: "Nombre Gastronómico" },
+    { id: "nombre-slogan", icon: "🖋️", label: "Eslogan" },
+    { id: "categoria", icon: "📂", label: "Categoría" },
+    { id: "subcategoria", icon: "📁", label: "Subcategoría" },
+    { id: "plato", icon: "🍽️", label: "Nombre del Plato" },
+    { id: "descripcion", icon: "📝", label: "Descripción" },
+    { id: "precio", icon: "💲", label: "Precio" },
+    { id: "info-resto", icon: "ℹ️", label: "Info Gastronómica" }
+  ];
+
+  const fontOptions = `
+    <option value="playfair">Playfair Display</option>
+    <option value="montserrat">Montserrat</option>
+    <option value="merriweather">Merriweather</option>
+    <option value="oswald">Oswald</option>
+    <option value="pacifico">Pacifico</option>
+    <option value="quicksand">Quicksand</option>
+    <option value="cormorant-garamond">Cormorant Garamond</option>
+    <option value="amatic-sc">Amatic SC</option>
+    <option value="tangerine">Tangerine</option>
+    <option value="great-vibes">Great Vibes</option>
+    <option value="dancing-script">Dancing Script</option>
+    <option value="lobster">Lobster</option>
+    <option value="cinzel">Cinzel</option>
+    <option value="raleway">Raleway</option>
+    <option value="poppins">Poppins</option>
+    <option value="nunito">Nunito</option>
+    <option value="lato">Lato</option>
+    <option value="open-sans">Open Sans</option>
+    <option value="roboto-slab">Roboto Slab</option>
+    <option value="indie-flower">Indie Flower</option>
+    <option value="satisfy">Satisfy</option>
+    <option value="caveat">Caveat</option>
+    <option value="abril-fatface">Abril Fatface</option>
+    <option value="mali">Mali</option>
+    <option value="uncial-antiqua">Uncial Antiqua</option>
+  `;
+
+  /* === Generar los paneles con dropdown de fuentes === */
+  items.forEach(item => {
+    const div = document.createElement("div");
+    div.classList.add("item-config");
+    div.dataset.item = item.id;
+
+    div.innerHTML = `
+      <h5 class="item-header">${item.icon} ${item.label}</h5>
+      <div class="item-panel">
+        <label>🖋️ Fuente</label>
+        <div class="dropdown-font">
+          <button class="fontbtn">🖋️ Elegir Fuente</button>
+          <div class="dropdown-content-font">
+            <div class="font-tabs">
+              <button class="tab-btn" data-tab="rusticos">🔥 Rústicos</button>
+              <button class="tab-btn" data-tab="modernas">🌈 Modernas</button>
+              <button class="tab-btn" data-tab="experimentales">⚡ Experimentales</button>
+              <button class="tab-btn active" data-tab="elegantes">💎 Elegantes</button>
+              <button class="tab-btn" data-tab="distendidos">🌿 Distendidos</button>
+            </div>
+
+            <!-- Elegantes -->
+            <div class="font-tab-content active" id="tab-elegantes">
+              <label data-value="tangerine" style="font-family: 'Tangerine', cursive;">Itálica</label>
+              <label data-value="cormorant-garamond" style="font-family: 'Cormorant Garamond', serif;">Gourmet</label>
+              <label data-value="playfair" style="font-family: 'Playfair Display', serif;">Italiana</label>
+              <label data-value="merriweather" style="font-family: 'Merriweather', serif;">Formal</label>
+              <label data-value="quicksand" style="font-family: 'Quicksand', sans-serif;">Redondeada</label>
+            </div>
+
+            <!-- Rústicos -->
+            <div class="font-tab-content" id="tab-rusticos">
+              <label data-value="almendra" style="font-family: 'Almendra Display', serif;">Bodegón</label>
+              <label data-value="milonga" style="font-family: 'Milonga', serif;">Milonga</label>
+              <label data-value="vast" style="font-family: 'Vast Shadow', serif;">Parrilla</label>
+              <label data-value="anton" style="font-family: 'Anton', sans-serif;">Grill</label>
+              <label data-value="rubik" style="font-family: 'Rubik Wet Paint', system-ui;">Sangría</label>
+            </div>
+
+            <!-- Distendidos -->
+            <div class="font-tab-content" id="tab-distendidos">
+              <label data-value="caveat" style="font-family: 'Caveat', cursive;">Manuscrita Clara</label>
+              <label data-value="indie-flower" style="font-family: 'Indie Flower', cursive;">Café de Barrio</label>
+              <label data-value="amatic-sc" style="font-family: 'Amatic SC', cursive;">Estrecha</label>
+              <label data-value="sora" style="font-family: 'Sora', sans-serif;">Chil</label>
+              <label data-value="pacifico" style="font-family: 'Pacifico', cursive;">Artesanal</label>
+            </div>
+
+            <!-- Modernas -->
+            <div class="font-tab-content" id="tab-modernas">
+              <label data-value="montserrat" style="font-family: 'Montserrat', sans-serif;">Clean</label>
+              <label data-value="codystar" style="font-family: 'Codystar', sans-serif;">Estrellada</label>
+              <label data-value="source-code" style="font-family: 'Source Code Pro', monospace;">Monoespaciada</label>
+              <label data-value="monoton" style="font-family: 'Monoton', sans-serif;">Disco</label>
+              <label data-value="oswald" style="font-family: 'Oswald', sans-serif;">Condensada</label>
+            </div>
+
+            <!-- Experimentales -->
+            <div class="font-tab-content" id="tab-experimentales">
+              <label data-value="coral" style="font-family: 'Coral Pixels', serif;">Pixeleada</label>
+              <label data-value="ranchers" style="font-family: 'Ranchers', sans-serif;">Animada</label>
+              <label data-value="major" style="font-family: 'Major Mono Display', monospace;">Mayúscula</label>
+              <label data-value="chokokutai" style="font-family: 'Chokokutai', system-ui;">Oriental</label>
+              <label data-value="ewert" style="font-family: 'Ewert', serif;">Decorativa</label>
+            </div>
+          </div>
+        </div>
+
+        <label style="margin-top:10px;">🔤 Tamaño</label>
+        <input type="range" min="0.5" max="4" step="0.01" class="size-range" value="1">
+
+        <label style="margin-top:10px;">🎨 Color</label>
+        <input type="color" class="color-input" value="#000000">
+      </div>`;
+    itemsList.appendChild(div);
+  });
+
+
+  /* === Expansión/colapso === */
+  document.addEventListener("click", e => {
+    if (e.target.classList.contains("item-header")) {
+      e.target.parentElement.classList.toggle("active");
+    }
+  });
+
+  /* === Activar listeners === */
+  function attachListeners() {
+    document.querySelectorAll(".item-config").forEach(block => {
+      const section = block.dataset.item;
+      const sizeInput = block.querySelector(".size-range");
+      const colorInput = block.querySelector(".color-input");
+
+      // Tamaño
+      if (sizeInput) {
+        sizeInput.addEventListener("input", () => {
+          sendToPreview("size-section", { section, value: sizeInput.value });
+        });
+      }
+
+      // Color
+      if (colorInput) {
+        colorInput.addEventListener("input", () => {
+          sendToPreview("color-section", { section, value: colorInput.value });
+        });
+      }
+    });
+  }
+  attachListeners();
+
+  /* === Estilos desplegables (presets, firuletes, etc.) === */
+  document.querySelectorAll(".style-header").forEach(header => {
+    header.addEventListener("click", () => {
+      header.parentElement.classList.toggle("active");
+    });
+  });
+
+  /* === Presets === */
+  document.querySelectorAll("#estilos button[data-preset]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      sendToPreview("preset", parseInt(btn.dataset.preset));
+    });
+  });
+  
+  /* === Firulete === */
+  const toggleFirulete = document.getElementById("toggleFirulete");
+  const firuleteContenido = document.getElementById("firuleteContenido");
+  toggleFirulete.addEventListener("click", () => {
+    toggleFirulete.classList.toggle("active");
+    firuleteContenido.classList.toggle("active");
+  });
+  document.querySelectorAll("#firuleteContenido button[data-value]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const value = btn.dataset.value;
+      sendToPreview("firulete", value);
+    });
+  });
+  
+  /* === Columnas === */
+  const toggleColumnas = document.getElementById("toggleColumnas");
+  const columnasContenido = document.getElementById("columnasContenido");
+  toggleColumnas.addEventListener("click", () => {
+    toggleColumnas.classList.toggle("active");
+    columnasContenido.classList.toggle("active");
+  });
+  document.querySelectorAll("#columnasContenido button[data-value]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const value = parseInt(btn.dataset.value);
+      sendToPreview("columns", value);
+    });
+  });
+
+  /* === Fondo === */
+  const toggleFondo = document.getElementById("toggleFondo");
+  const fondoContenido = document.getElementById("fondoContenido");
+  toggleFondo.addEventListener("click", () => {
+    toggleFondo.classList.toggle("active");
+    fondoContenido.classList.toggle("active");
+  });
+  (function(){
+    const bgRange = document.getElementById('bg-opacity');
+    const bgNum = document.getElementById('bg-opacity-number');
+    const sizeRange = document.getElementById('bg-size');
+    const sizeNum = document.getElementById('bg-size-number');
+
+    // Valores iniciales
+    const savedBg = localStorage.getItem('bg-opacity') || bgRange.value || '0.2';
+    const savedSize = localStorage.getItem('bg-size') || sizeRange.value || '100';
+    bgRange.value = bgNum.value = savedBg;
+    sizeRange.value = sizeNum.value = savedSize;
+    document.documentElement.style.setProperty('--bg-opacity', savedBg);
+    document.documentElement.style.setProperty('--bg-size-scale', savedSize + '%');
+    sendToPreview("opacity", savedBg);
+    sendToPreview("bg-size", savedSize);
+
+    // === Opacidad sincronizada ===
+    bgRange.addEventListener('input', e => {
+      const v = e.target.value;
+      bgNum.value = v;
+      localStorage.setItem('bg-opacity', v);
+      sendToPreview('opacity', v);
+    });
+    bgNum.addEventListener('input', e => {
+      let v = parseFloat(e.target.value);
+      if (isNaN(v)) v = 0;
+      v = Math.min(0.5, Math.max(0, v));
+      bgRange.value = v;
+      localStorage.setItem('bg-opacity', v);
+      sendToPreview('opacity', v);
+    });
+
+    // === Tamaño sincronizado ===
+    sizeRange.addEventListener('input', e => {
+      const v = e.target.value;
+      sizeNum.value = v;
+      localStorage.setItem('bg-size', v);
+      sendToPreview('bg-size', v);
+    });
+    sizeNum.addEventListener('input', e => {
+      let v = parseInt(e.target.value) || 100;
+      v = Math.min(200, Math.max(50, v));
+      sizeRange.value = v;
+      localStorage.setItem('bg-size', v);
+      sendToPreview('bg-size', v);
+    });
+  })();
+
+  /* === Vista previa === */
+  const togglePreview = document.getElementById("togglePreview");
+  const previewContenido = document.getElementById("previewContenido");
+  togglePreview.addEventListener("click", () => {
+    togglePreview.classList.toggle("active");
+    previewContenido.classList.toggle("active");
+  });
+
+  /* === Menú mobile === */
+  menuBtn.addEventListener("click", () => {
+    sideMenu.classList.toggle("open");
+  });
+
+  // === FIRULETE DROPDOWN (solo si existe en el DOM) ===
+  const dropdown = document.querySelector(".dropdown");
+  if (dropdown) {
+    const dropbtn = dropdown.querySelector(".dropbtn");
+    if (dropbtn) {
+      dropbtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        dropdown.classList.toggle("show");
+      });
+      // Cerrar si se hace clic fuera
+      window.addEventListener("click", (e) => {
+        if (!dropdown.contains(e.target)) {
+          dropdown.classList.remove("show");
+        }
+      });
+    }
+  }
+
+  // === Desplegar Menues Pre Configurados ===
+const toggleEstilos = document.getElementById("toggleEstilos");
+const estilosContenido = document.getElementById("estilosContenido");
+
+toggleEstilos.addEventListener("click", () => {
+  toggleEstilos.classList.toggle("active");
+  estilosContenido.classList.toggle("active");
+});
+
+// === Desplegar Items ===
+const toggleItems = document.getElementById("toggleItems");
+const itemsContenido = document.getElementById("itemsContenido");
+
+toggleItems.addEventListener("click", () => {
+  toggleItems.classList.toggle("active");
+  itemsContenido.classList.toggle("active");
+});
+
+// === Dropdown de fuentes ===
+document.querySelectorAll(".dropdown-font").forEach(drop => {
+  const btn = drop.querySelector(".fontbtn");
+  const content = drop.querySelector(".dropdown-content-font");
+
+  // Abrir / cerrar menú principal
+  btn.addEventListener("click", e => {
+    e.stopPropagation();
+    document.querySelectorAll(".dropdown-font.show").forEach(o => {
+      if (o !== drop) o.classList.remove("show");
+    });
+    drop.classList.toggle("show");
+  });
+
+  // Cerrar al hacer clic fuera
+  window.addEventListener("click", e => {
+    if (!drop.contains(e.target)) drop.classList.remove("show");
+  });
+
+  // === Acordeón de categorías ===
+  const tabs = content.querySelectorAll(".tab-btn");
+
+  tabs.forEach(tab => {
+    tab.addEventListener("click", e => {
+      e.stopPropagation();
+      const isActive = tab.classList.contains("active");
+      const targetId = tab.dataset.tab ? `tab-${tab.dataset.tab}` : null;
+      const panel = targetId ? content.querySelector(`#${targetId}`) : null;
+
+      // Cierra todo primero
+      tabs.forEach(t => t.classList.remove("active"));
+      content.querySelectorAll(".font-tab-content").forEach(p => {
+        p.classList.remove("active");
+      });
+
+      // Abre el correspondiente
+      if (!isActive && panel) {
+        tab.classList.add("active");
+        panel.classList.add("active");
+      }
+    });
+  });
+
+  // === Selección de fuente ===
+  content.querySelectorAll("label").forEach(label => {
+    label.addEventListener("click", e => {
+      e.stopPropagation();
+      const fontValue = label.dataset.value;
+      btn.textContent = `🖋️ ${label.textContent}`;
+      sendToPreview("font-section", {
+        section: drop.closest(".item-config").dataset.item,
+        font: fontValue
+      });
+      drop.classList.remove("show");
+    });
+  });
+});
+
+  </script>
+
+</body>
+</html>
