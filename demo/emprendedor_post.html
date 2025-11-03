@@ -7,7 +7,16 @@
   <link rel="icon" type="image/png" href="https://res.cloudinary.com/drxznqm61/image/upload/v1758652390/The_Pent_2_a8vhtp.jpg" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link href="https://fonts.googleapis.com/css2?family=Almendra+Display&family=Amatic+SC:wght@400;700&family=Anton&family=Caveat:wght@400;700&family=Codystar:wght@300;400&family=Cormorant+Garamond:wght@400;700&family=Coral+Pixels&family=Ewert&family=Indie+Flower&family=Merriweather:wght@400;700&family=Milonga&family=Monoton&family=Montserrat:wght@400;700&family=Oswald:wght@400;700&family=Pacifico&family=Playfair+Display:wght@400;700&family=Quicksand:wght@400;700&family=Ranchers:wght@400;700&family=Rubik+Wet+Paint&family=Sora:wght@400;700&family=Source+Code+Pro:wght@400;700&family=Tangerine:wght@400;700&family=Vast+Shadow&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Grupo 1 -->
+  <link href="https://fonts.googleapis.com/css2?family=Almendra+Display&family=Amatic+SC:wght@400;700&family=Anton&family=Caveat:wght@400;700&family=Codystar:wght@300;400&family=Cormorant+Garamond:wght@400;700&family=Coral+Pixels&display=swap" rel="stylesheet">
+
+  <!-- Grupo 2 -->
+  <link href="https://fonts.googleapis.com/css2?family=Ewert&family=Indie+Flower&family=Merriweather:wght@400;700&family=Milonga&family=Monoton&family=Montserrat:wght@400;700&family=Oswald:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- Grupo 3 -->
+  <link href="https://fonts.googleapis.com/css2?family=Major+Mono+Display&family=Chokokutai&family=Pacifico&family=Playfair+Display:wght@400;700&family=Quicksand:wght@400;700&family=Ranchers:wght@400;700&family=Rubik+Wet+Paint&family=Sora:wght@400;700&family=Source+Code+Pro:wght@400;700&family=Tangerine:wght@400;700&family=Vast+Shadow&display=swap" rel="stylesheet">
 
 <style>
   :root {
@@ -33,6 +42,7 @@
     --bg-opacity: 0.15;
     --bg-size-scale: 100%;
     --menu-columns: 2;
+    --firulete-opacity: 0.4;
 
     --logo-size: 100px;
     --size-nombre-resto: 2rem;
@@ -70,39 +80,49 @@
     pointer-events: none;
   }
 
-  /* === ENCABEZADO === */
-  .resto-header {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
-    text-align: center;
-    column-span: all;
-  }
+/* Bloque general del encabezado */
+.resto-top {
+  display: flex;
+  align-items: center;       /* centra verticalmente logo y texto */
+  justify-content: center;   /* centra todo el conjunto horizontalmente */
+  gap: 1.5rem;
+  text-align: left;
+  column-span: all;
+  margin-bottom: 1.5rem;
+}
 
-  .resto-header img {
-    width: var(--logo-size);
-    height: var(--logo-size);
-    border-radius: 50%;
-    object-fit: cover;
-  }
+/* Logo */
+.resto-header img {
+  width: var(--logo-size, 110px);
+  height: var(--logo-size, 110px);
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
 
-  .resto-header h1 {
-    font-family: var(--font-nombre-resto);
-    font-size: var(--size-nombre-resto);
-    margin: 0;
-    color: var(--color-nombre-resto);
-  }
+/* Texto */
+.resto-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;   /* alinea verticalmente el texto al centro del logo */
+  text-align: left;
+}
 
-  .resto-slogan {
-    font-family: var(--font-nombre-slogan);
-    font-size: var(--size-nombre-slogan);
-    font-style: italic;
-    font-weight: 400;
-    margin: 0.2rem 0 0;
-    color: var(--color-nombre-slogan);
-  }
+.resto-info h1 {
+  font-family: var(--font-nombre-resto);
+  font-size: var(--size-nombre-resto);
+  margin: 0;
+  color: var(--color-nombre-resto);
+  font-weight: 700;
+}
+
+.resto-info .resto-slogan {
+  font-family: var(--font-nombre-slogan);
+  font-size: var(--size-nombre-slogan);
+  font-style: italic;
+  margin: 0.3rem 0 0;
+  color: var(--color-nombre-slogan);
+}
 
   #menuTable h3 {
     font-family: var(--font-subcategoria);
@@ -130,11 +150,14 @@
     column-span: all;
   }
 
-  h2::before, h2::after {
+  h2::before,
+  h2::after {
     content: var(--firulete, "✦ ✦ ✦");
+    /* 👇 el firulete escala automáticamente con la categoría */
+    font-size: calc(var(--size-categoria) * 0.6);
     color: var(--color-categoria);
-    opacity: 0.4;
-    font-size: 1rem;
+    opacity: var(--firulete-opacity, 0.4);
+    transition: font-size 0.25s ease, opacity 0.25s ease;
   }
 
   .menu-item {
@@ -199,18 +222,23 @@
     margin-top: 2rem;
     padding: 10px 0;
     column-span: all;
+    position: fixed;
   }
 
+  @media screen {
+    .footer {
+      position: relative;
+      bottom: 0;
+      width: 100%;
+    }
+  }
   /* === RESPONSIVE === */
   @media (max-width: 768px) {
     body {
       column-count: 1 !important;
       padding: 10px;
     }
-    .resto-header {
-      flex-direction: column;
-      gap: 0.5rem;
-    }
+
   }
 
   /* === MODO IMPRESIÓN === */
@@ -231,27 +259,6 @@
       border-radius: 6px !important;
       padding: 0.4rem 0.6rem !important;
       opacity: 0.7;
-    }
-    #menu-inner {
-      column-count: var(--menu-columns);
-      column-gap: 15px;
-    }
-
-    /* === FORMATO LATERAL === */
-    #menu-inner.lateral {
-      display: flex;
-      justify-content: space-between;
-      gap: 2rem;
-    }
-
-    #menu-inner.lateral > div {
-      flex: 1;
-      min-width: 48%;
-    }
-
-    #menu-inner.lateral .resto-header {
-      align-items: flex-start;
-      text-align: left;
     }
 
     .print-background {
@@ -279,11 +286,18 @@
   #menu-frame {
     position: relative;
     box-sizing: border-box;
-    padding: 20px;
     border-radius: 12px;
     transition: all 0.25s ease;
     background: var(--color-bg);
     z-index: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; 
+    padding-bottom: 8mm !important;
+  }
+
+  #menu-inner {
+    flex: 1; /* ✅ el contenido ocupa el espacio disponible arriba del footer */
   }
 
   /* ornamentos: base genérica */
@@ -311,13 +325,35 @@
     transform: rotate(180deg);
   }
 
-  #menu-inner {
-    padding: 20px;
-    column-count: var(--menu-columns);
-    column-gap: 20px;
-    background: transparent;
-    border-radius: inherit;
-  }
+body.formato-ancho #menu-columns-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 100%;
+}
+
+/* === FORMATO POR COLUMNAS === */
+body.formato-columnas-reales #menu-columns-wrapper {
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+/* columnas internas creadas por JS */
+body.formato-columnas-reales #menu-columns-wrapper .columna {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* Bloques */
+.categoria-bloque {
+  break-inside: avoid;
+  page-break-inside: avoid;
+  width: 100%;
+}
+
   
 </style>
 
@@ -329,18 +365,31 @@
       <div class="print-background"></div>
 
       <!-- 🏪 Encabezado -->
-      <div class="resto-header">
-        <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1758652390/The_Pent_2_a8vhtp.jpg" alt="Logo" id="logo-resto" style="width:100px;height:100px;border-radius:50%;object-fit:cover;">
-        <h1 id="nombre-resto">Café Central</h1>
-        <h3 id="subtitulo-resto" class="resto-slogan">Todo rico, todo el día</h3>
+      <div class="resto-top">
+        <div class="resto-header">
+          <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1758652390/The_Pent_2_a8vhtp.jpg" 
+              alt="Logo" id="logo-resto">
+        </div>
+        <div class="resto-info">
+          <h1 id="nombre-resto">Café Central</h1>
+          <h3 id="subtitulo-resto" class="resto-slogan">Todo rico, todo el día</h3>
+        </div>
       </div>
 
       <!-- 📜 Contenido del menú -->
-      <div id="menuTable"></div>
+      <div id="menu-columns-wrapper">
+        <div id="menuTable"></div>
+      </div>
+    </div>
+    <div class="footer">
+      📍 Av. Corrientes 123 &nbsp;|&nbsp; 📞 +54 11 1234-5678 &nbsp;|&nbsp; 🕓 Martes a Domingos de 8 a 20hs
     </div>
   </div>
+  
 <script>
 /* === Datos base de ejemplo === */
+window.parent.postMessage({ type: "ready" }, "*");
+
 const allRows = [
     ["Cafetería", "Clásicos", "Café en Jarrito", "Café espresso", "$1200"],
     ["Cafetería", "Clásicos", "Café con Leche", "Café espresso con leche caliente.", "$1300"],
@@ -402,8 +451,8 @@ const allRows = [
 function renderMenu(rows) {
   const container = document.getElementById("menuTable");
   container.innerHTML = "";
-  const grouped = {};
 
+  const grouped = {};
   rows.forEach(([cat, subcat, nombre, desc, precio, ...extras]) => {
     if (!cat) return;
     if (!grouped[cat]) grouped[cat] = {};
@@ -412,8 +461,11 @@ function renderMenu(rows) {
     grouped[cat][sub].push({ nombre, desc, precio, extras });
   });
 
-  Object.entries(grouped).forEach(([cat, subs]) => {
+  // convertir categorías a bloques
+  const cats = Object.entries(grouped);
+  cats.forEach(([cat, subs]) => {
     const catDiv = document.createElement("div");
+    catDiv.classList.add("categoria-bloque");
     const catTitle = document.createElement("h2");
     catTitle.textContent = cat;
     catDiv.appendChild(catTitle);
@@ -442,254 +494,209 @@ function renderMenu(rows) {
   });
 }
 
+
 renderMenu(allRows);
+
+// === SISTEMA DE COLUMNAS DINÁMICO ===
+let bloquesOriginales = [];
+
+function capturarBloquesOriginales() {
+  const wrapper = document.getElementById('menu-columns-wrapper');
+  if (!wrapper) return;
+  bloquesOriginales = Array.from(wrapper.querySelectorAll('.categoria-bloque'));
+}
+
+function limpiarWrapper() {
+  const wrapper = document.getElementById('menu-columns-wrapper');
+  if (wrapper) wrapper.innerHTML = '';
+}
+
+function distribuirColumnas() {
+  const wrapper = document.getElementById('menu-columns-wrapper');
+  if (!wrapper || bloquesOriginales.length === 0) return;
+
+  limpiarWrapper();
+
+  const cols = parseInt(getComputedStyle(document.documentElement)
+                 .getPropertyValue('--menu-columns')) || 2;
+
+  // Crear contenedores de columnas
+  const columnas = [];
+  for (let i = 0; i < cols; i++) {
+    const col = document.createElement('div');
+    col.className = 'columna';
+    columnas.push(col);
+    wrapper.appendChild(col);
+  }
+
+  // Repartir las categorías equilibradamente
+  let index = 0;
+  bloquesOriginales.forEach(b => {
+    columnas[index % cols].appendChild(b);
+    index++;
+  });
+}
+
+function restaurarAnchoCompleto() {
+  const wrapper = document.getElementById('menu-columns-wrapper');
+  if (!wrapper || bloquesOriginales.length === 0) return;
+
+  limpiarWrapper();
+  bloquesOriginales.forEach(b => wrapper.appendChild(b));
+}
+
+// === Escucha los mensajes del editor ===
+window.addEventListener('message', event => {
+  const { type, data } = event.data || {};
+  const root = document.documentElement;
+
+  switch (type) {
+    case 'formato':
+      document.body.classList.remove('formato-ancho', 'formato-columnas-reales');
+
+      if (data === 'ancho') {
+        document.body.classList.add('formato-ancho');
+        // retraso leve para evitar bloqueo de botones
+        setTimeout(() => restaurarAnchoCompleto(), 50);
+      }
+
+      if (data === 'columnas-reales') {
+        document.body.classList.add('formato-columnas-reales');
+        setTimeout(() => distribuirColumnas(), 50);
+      }
+      break;
+
+    case 'columns':
+      root.style.setProperty('--menu-columns', data);
+      if (document.body.classList.contains('formato-columnas-reales')) {
+        setTimeout(() => distribuirColumnas(), 50);
+      }
+      break;
+  }
+});
+
+// Captura inicial
+window.addEventListener('DOMContentLoaded', () => {
+  capturarBloquesOriginales();
+});
+
+
+// Llamar automáticamente al cambiar formato
+window.addEventListener('message', event => {
+  const { type, data } = event.data || {};
+  if (type === 'formato' && data === 'columnas-reales') {
+    distribuirColumnas();
+  }
+  if (type === 'columns') {
+    document.documentElement.style.setProperty('--menu-columns', data);
+    if (document.body.classList.contains('formato-columnas-reales')) distribuirColumnas();
+  }
+});
 
 /* === Listener global para comunicación con editor === */
 window.addEventListener("message", event => {
   const { type, data } = event.data || {};
   if (!type) return;
 
+  const root = document.documentElement;
+
   switch (type) {
-
-    /* === Mensaje inicial === */
-    case "init":
-      window.parent.postMessage({ type: "ready" }, "*");
-      break;
-
-    /* === CAMBIO DE FUENTES === */
-    case "font-section": {
-      const { section, font } = data;
-      const families = {
-        "tangerine": "'Tangerine', cursive",
-        "cormorant-garamond": "'Cormorant Garamond', serif",
-        "playfair": "'Playfair Display', serif",
-        "merriweather": "'Merriweather', serif",
-        "quicksand": "'Quicksand', sans-serif",
-        "almendra": "'Almendra Display', serif",
-        "milonga": "'Milonga', serif",
-        "vast": "'Vast Shadow', serif",
-        "anton": "'Anton', sans-serif",
-        "rubik": "'Rubik Wet Paint', system-ui",
-        "caveat": "'Caveat', cursive",
-        "indie-flower": "'Indie Flower', cursive",
-        "amatic-sc": "'Amatic SC', cursive",
-        "sora": "'Sora', sans-serif",
-        "pacifico": "'Pacifico', cursive",
-        "montserrat": "'Montserrat', sans-serif",
-        "codystar": "'Codystar', sans-serif",
-        "source-code": "'Source Code Pro', monospace",
-        "monoton": "'Monoton', sans-serif",
-        "oswald": "'Oswald', sans-serif",
-        "coral": "'Coral Pixels', serif",
-        "ranchers": "'Ranchers', sans-serif",
-        "ewert": "'Ewert', serif"
-      };
-      const family = families[font] || "Lato, sans-serif";
-
-      const map = {
-        "nombre-resto": "#nombre-resto",
-        "nombre-slogan": "#subtitulo-resto",
-        "categoria": "h2",
-        "subcategoria": "#menuTable h3",
-        "plato": ".menu-plate h4",
-        "descripcion": ".menu-description",
-        "precio": ".menu-price",
-        "info-resto": ".footer"
-      };
-
-      const selector = map[section];
-      if (!selector) return;
-      document.querySelectorAll(selector).forEach(el => el.style.fontFamily = family);
-      break;
-    }
-
-    /* === CAMBIO DE TAMAÑO === */
-    case "size-section": {
-      const { section, value } = data;
-      const rem = `${value}rem`;
-      const map = {
-        "nombre-resto": "#nombre-resto",
-        "nombre-slogan": "#subtitulo-resto",
-        "categoria": "h2",
-        "subcategoria": "#menuTable h3",
-        "plato": ".menu-plate h4",
-        "descripcion": ".menu-description",
-        "precio": ".menu-price",
-        "info-resto": ".footer"
-      };
-      const selector = map[section];
-      if (!selector) return;
-      document.querySelectorAll(selector).forEach(el => el.style.fontSize = rem);
-      break;
-    }
-
-    /* === CAMBIO DE COLOR === */
     case "color-section": {
       const { section, value } = data;
-      const map = {
-        "nombre-resto": "#nombre-resto",
-        "nombre-slogan": "#subtitulo-resto",
-        "categoria": "h2",
-        "subcategoria": "#menuTable h3",
-        "plato": ".menu-plate h4",
-        "descripcion": ".menu-description",
-        "precio": ".menu-price",
-        "info-resto": ".footer"
-      };
-      const selector = map[section];
-      if (!selector) return;
-      document.querySelectorAll(selector).forEach(el => el.style.color = value);
+      root.style.setProperty(`--color-${section}`, value);
+      document.querySelectorAll(getSelector(section))
+        .forEach(el => (el.style.color = value));
       break;
     }
-
-    /* === ESTILO DEL MARCO === */
-    case "frame-style": {
-      const frame = document.getElementById("menu-frame");
-
-      if (data === "none") {
-        frame.style.border = "none";
-      } else {
-        frame.style.borderImage = "none";
-        frame.style.borderStyle = data; // solid, dashed, etc.
-        frame.style.borderWidth = "2px";
-        frame.style.borderColor = "#000";
-      }
+    case "font-section": {
+      const { section, font } = data;
+      root.style.setProperty(`--font-${section}`, `'${font}', sans-serif`);
+      document.querySelectorAll(getSelector(section))
+        .forEach(el => (el.style.fontFamily = `'${font}', sans-serif`));
       break;
     }
-
-
-    /* === COLOR DEL MARCO === */
-    case "frame-color":
-      document.getElementById("menu-frame").style.borderColor = data;
+    case "size-section": {
+      const { section, value } = data;
+      root.style.setProperty(`--size-${section}`, `${value}rem`);
       break;
-
-    /* === GROSOR DEL MARCO === */
-    case "frame-width":
-      document.getElementById("menu-frame").style.borderWidth = data + "px";
-      break;
-
-    /* === FIRULETE === */
+    }
     case "firulete":
-      document.documentElement.style.setProperty("--firulete", `"${data}"`);
+      root.style.setProperty("--firulete", `"${data}"`);
       break;
-
-    /* === COLUMNAS === */
-    case "columns":
-      document.documentElement.style.setProperty("--menu-columns", data);
-      document.getElementById("menu-inner").style.columnCount = data;
-      break;
-
-/* === FORMATO === */
-case "formato": {
-  const layout = data;
-  const header = document.querySelector(".resto-header");
-  const menuInner = document.getElementById("menu-inner");
-  const menuTable = document.getElementById("menuTable");
-
-  // reset básico
-  header.style.flexDirection = "column";
-  header.style.alignItems = "center";
-  header.style.textAlign = "center";
-  header.style.width = "100%";
-  menuInner.style.columnCount = "var(--menu-columns)";
-  menuTable.style.display = "block";
-
-  if (layout === "centrado") {
-    // 📜 formato clásico
-    header.style.flexDirection = "column";
-    header.style.alignItems = "center";
-    header.style.textAlign = "center";
-    header.style.marginBottom = "1.5rem";
-  }
-
-  if (layout === "izquierda") {
-    // 🏛️ encabezado y 1ra categoría en la primera columna
-    menuInner.style.columnCount = "2";
-    menuInner.style.display = "flex";
-    menuInner.style.flexWrap = "wrap";
-    menuInner.style.gap = "2rem";
-
-    // bloque contenedor lateral
-    const leftCol = document.createElement("div");
-    const rightCol = document.createElement("div");
-    leftCol.style.flex = "1";
-    rightCol.style.flex = "1";
-    leftCol.style.minWidth = "48%";
-    rightCol.style.minWidth = "48%";
-
-    // mover encabezado + la primera categoría al bloque izquierdo
-    const firstCat = menuTable.querySelector("div:first-child");
-    if (firstCat) {
-      leftCol.appendChild(header);
-      leftCol.appendChild(firstCat);
-    }
-
-    // mover el resto de categorías al bloque derecho
-    const others = [...menuTable.querySelectorAll("div")].slice(1);
-    others.forEach(cat => rightCol.appendChild(cat));
-
-    // vaciar y rearmar
-    menuTable.innerHTML = "";
-    menuTable.appendChild(leftCol);
-    menuTable.appendChild(rightCol);
-  }
-
-  if (layout === "columnas") {
-    // 🗂️ versión tipo revista (todas las columnas con margen equilibrado)
-    header.style.flexDirection = "row";
-    header.style.alignItems = "center";
-    header.style.justifyContent = "center";
-    header.style.textAlign = "center";
-    menuInner.style.columnCount = "var(--menu-columns)";
-    menuInner.style.padding = "20px 40px";
-  }
-
-  break;
-}
-
-    /* === OPACIDAD FONDO === */
     case "opacity":
-      document.documentElement.style.setProperty("--bg-opacity", data);
+      root.style.setProperty("--bg-opacity", data);
+      document.querySelector(".print-background")?.style.setProperty("opacity", data);
       break;
-
-    /* === TAMAÑO FONDO === */
-    case "bg-size":
-      document.documentElement.style.setProperty("--bg-size-scale", data + "%");
-      break;
-
-    /* === PRESETS === */
-    case "preset": {
-      const preset = parseInt(data);
-      const presets = {
-        1: { bg: "#fff8f0", colorCategoria: "#4a2c00", fontCategoria: "'Playfair Display', serif", firulete: "🍷 ✨ 🍷" },
-        2: { bg: "#faf5ef", colorCategoria: "#3b2f2f", fontCategoria: "'Cormorant Garamond', serif", firulete: "⚜ ⚜ ⚜" },
-        6: { bg: "#ffffff", colorCategoria: "#5b4b3a", fontCategoria: "'Pacifico', cursive", firulete: "☕ ✨ ☕" },
-        11:{ bg: "#f8f8f8", colorCategoria: "#1a1a1a", fontCategoria: "'Oswald', sans-serif", firulete: "🍺 🍷 🍺" },
-        21:{ bg: "#f5fff5", colorCategoria: "#2e7d32", fontCategoria: "'Quicksand', sans-serif", firulete: "🌿 ✿ 🌿" },
-        26:{ bg: "#fff9f5", colorCategoria: "#a55200", fontCategoria: "'Merriweather', serif", firulete: "🍝 🍷 🍝" },
-      };
-      const p = presets[preset];
-      if (!p) return;
-      document.body.style.background = p.bg;
-      document.documentElement.style.setProperty("--color-categoria", p.colorCategoria);
-      document.querySelectorAll("h2").forEach(el => {
-        el.style.color = p.colorCategoria;
-        el.style.fontFamily = p.fontCategoria;
-      });
-      document.documentElement.style.setProperty("--firulete", `"${p.firulete}"`);
+    case "columns": {
+      // data viene como número (1,2,3)
+      root.style.setProperty('--menu-columns', data);
+      // aplicar inline al wrapper para forzar inmediatamente el cambio (compatibilidad)
+      const wrapper = document.getElementById('menu-columns-wrapper');
+      if (wrapper) {
+        wrapper.style.columnCount = String(data);
+        wrapper.style.columnGap = '2rem';
+      }
+      console.log(`⬛ Columnas aplicadas: ${data}`);
       break;
     }
+    case "formato": {
+      document.body.classList.remove("formato-ancho", "formato-columnas-reales");
+      if (data === "ancho") document.body.classList.add("formato-ancho");
+      if (data === "columnas-reales") document.body.classList.add("formato-columnas-reales");
+      break;
+    }
+    case "frame-style":
+      document.body.style.borderStyle = data;
+      break;
+    case "frame-color":
+      document.body.style.borderColor = data;
+      break;
+    case "frame-width":
+      document.body.style.borderWidth = data + "px";
+      break;
   }
 });
 
-/* === Vista previa / Imprimir === */
-const printBtn = document.getElementById("printBtn");
-if (printBtn) {
-  printBtn.addEventListener("click", () => {
-    if (preview && preview.contentWindow) {
-      preview.contentWindow.print();
-    }
-  });
+
+
+/* 🔍 Traductor de secciones */
+function getSelector(section) {
+  switch (section) {
+    case "nombre":
+    case "nombre-resto":
+      return "#nombre-resto, .resto-info h1";
+    case "slogan":
+    case "nombre-slogan":
+      return "#subtitulo-resto, .resto-slogan, .resto-info h3";
+    case "categoria":
+      return "h2";
+    case "subcategoria":
+      return "h3";
+    case "plato":
+      return ".menu-plate h4";
+    case "descripcion":
+      return ".menu-description";
+    case "precio":
+      return ".menu-price";
+    case "info-resto":
+      return ".footer";
+    default:
+      return "body";
+  }
+}
+
+function doGet(e) {
+  const nombre = e.parameter.nombre || "default";
+  const ss = SpreadsheetApp.openById("TU_SHEET_ID");
+  const sheet = ss.getSheetByName("Formatos");
+  const data = sheet.getDataRange().getValues();
+
+  const row = data.find(r => r[0] === nombre);
+  if (!row) return ContentService.createTextOutput("{}");
+
+  const formato = JSON.parse(row[1]);
+  return ContentService.createTextOutput(JSON.stringify(formato))
+    .setMimeType(ContentService.MimeType.JSON);
 }
 
 </script>

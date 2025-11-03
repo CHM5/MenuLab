@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Menú - MenuLab</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="https://res.cloudinary.com/drxznqm61/image/upload/v1758652390/The_Pent_2_a8vhtp.jpg" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link href="https://fonts.googleapis.com/css2?family=Almendra+Display&family=Amatic+SC:wght@400;700&family=Anton&family=Caveat:wght@400;700&family=Codystar:wght@300;400&family=Cormorant+Garamond:wght@400;700&family=Coral+Pixels&family=Ewert&family=Indie+Flower&family=Merriweather:wght@400;700&family=Milonga&family=Monoton&family=Montserrat:wght@400;700&family=Oswald:wght@400;700&family=Pacifico&family=Playfair+Display:wght@400;700&family=Quicksand:wght@400;700&family=Ranchers:wght@400;700&family=Rubik+Wet+Paint&family=Sora:wght@400;700&family=Source+Code+Pro:wght@400;700&family=Tangerine:wght@400;700&family=Vast+Shadow&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --color-nombre-resto: #000;
+    --color-nombre-slogan: #000;
+    --color-categoria: #000;
+    --color-subcategoria: #000;
+    --color-plato: #000;
+    --color-descripcion: #555;
+    --color-precio: #000;
+    --color-info-resto: #000;
+    --color-bg: #fff;
+
+    --font-nombre-resto: 'Lato', sans-serif;
+    --font-nombre-slogan: 'Lato', sans-serif;
+    --font-categoria: 'Lato', sans-serif;
+    --font-subcategoria: 'Lato', sans-serif;
+    --font-plato: 'Lato', sans-serif;
+    --font-descripcion: 'Lato', sans-serif;
+    --font-precio: 'Lato', sans-serif;
+    --font-info-resto: 'Lato', sans-serif;
+
+    --bg-opacity: 0.15;
+    --bg-size-scale: 100%;
+    --menu-columns: 2;
+    --firulete-opacity: 0.4;
+
+    --logo-size: 100px;
+    --size-nombre-resto: 2rem;
+    --size-nombre-slogan: 1rem;
+    --size-categoria: 1.5rem;
+    --size-subcategoria: 1rem;
+    --size-plato: 0.95rem;
+    --size-descripcion: 0.85rem;
+    --size-precio: 0.9rem;
+    --size-info-resto: 0.8rem;
+    --tracking: 0px;
+  }
+
+  body {
+    font-family: 'Lato', sans-serif;
+    margin: 0 auto;
+    background: var(--color-bg);
+    letter-spacing: var(--tracking);
+    color: var(--color-plato);
+    transition: all 0.25s ease;
+  }
+
+  /* === FONDO === */
+  .full-page-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url("https://res.cloudinary.com/drxznqm61/image/upload/v1761513496/EL_PIRATA_wuz8nj.jpg")
+                center center no-repeat;
+    background-size: cover;       /* se adapta exactamente al tamaño de la hoja */
+    opacity: 0.5;                 /* opacidad fija */
+    z-index: -2;                  /* más atrás que .print-background */
+    pointer-events: none;
+  }
+
+  .print-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url("https://res.cloudinary.com/drxznqm61/image/upload/v1761513395/b60e7540-e90c-4fde-8276-2803c5e2cd61_ej3gqy-removebg-preview_jmedyl.png")
+                no-repeat center center;
+    background-size: var(--bg-size-scale);
+    opacity: var(--bg-opacity);
+    z-index: -1;
+    pointer-events: none;
+  }
+
+/* Bloque general del encabezado */
+.resto-top {
+  display: flex;
+  align-items: center;       /* centra verticalmente logo y texto */
+  justify-content: center;   /* centra todo el conjunto horizontalmente */
+  gap: 1.5rem;
+  text-align: left;
+  column-span: all;
+  margin-bottom: 1.5rem;
+}
+
+/* Logo */
+.resto-header img {
+  width: var(--logo-size, 110px);
+  height: var(--logo-size, 110px);
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+/* Texto */
+.resto-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;   /* alinea verticalmente el texto al centro del logo */
+  text-align: left;
+}
+
+.resto-info h1 {
+  font-family: var(--font-nombre-resto);
+  font-size: var(--size-nombre-resto);
+  margin: 0;
+  color: var(--color-nombre-resto);
+  font-weight: 700;
+}
+
+.resto-info .resto-slogan {
+  font-family: var(--font-nombre-slogan);
+  font-size: var(--size-nombre-slogan);
+  font-style: italic;
+  margin: 0.3rem 0 0;
+  color: var(--color-nombre-slogan);
+}
+
+  #menuTable h3 {
+    font-family: var(--font-subcategoria);
+    font-size: var(--size-subcategoria);
+    color: var(--color-subcategoria);
+    font-style: italic;
+    margin: 0.4rem 0;
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+    page-break-after: avoid;
+    break-after: avoid;
+  }
+
+  /* === CATEGORÍAS Y PLATOS === */
+  h2 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-family: var(--font-categoria);
+    font-size: var(--size-categoria);
+    color: var(--color-categoria);
+    font-weight: bold;
+    text-align: center;
+    margin: 1.2rem 0 0.8rem;
+    column-span: all;
+  }
+
+  h2::before, h2::after {
+    content: var(--firulete, "✦ ✦ ✦");
+    font-size: var(--firulete-size, 1rem);
+    color: var(--color-categoria);
+    opacity: var(--firulete-opacity, 0.4);  
+  }
+
+  .menu-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 0.35rem 0;
+    break-inside: avoid-column;
+    page-break-inside: avoid;
+    transition: background 0.2s ease;
+  }
+
+  .menu-item:hover {
+    background: rgba(0,0,0,0.03);
+  }
+
+  .menu-plate {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .menu-plate h4 {
+    font-family: var(--font-plato);
+    font-size: var(--size-plato);
+    color: var(--color-plato);
+    margin: 0;
+    font-weight: 700;
+  }
+
+  .menu-description {
+    font-family: var(--font-descripcion);
+    font-size: var(--size-descripcion);
+    color: var(--color-descripcion);
+    margin: 0.2rem 0 0;
+  }
+
+  .menu-price {
+    font-family: var(--font-precio);
+    font-size: var(--size-precio);
+    color: var(--color-precio);
+    font-weight: bold;
+    margin-left: 12px;
+    white-space: nowrap;
+  }
+
+  .menu-item.destacado {
+    background: #f7f7f7 !important;       /* gris muy claro */
+    border-left: 4px solid #9e9e9e !important; /* gris medio */
+    border-radius: 6px;
+    padding: 0.4rem 0.6rem;
+    opacity: 0.7;
+  }
+
+  /* === FOOTER === */
+  .footer {
+    font-family: var(--font-info-resto);
+    font-size: var(--size-info-resto);
+    color: var(--color-info-resto);
+    text-align: center;
+    border-top: 1px solid #ddd;
+    margin-top: 2rem;
+    padding: 10px 0;
+    column-span: all;
+    position: fixed;
+  }
+
+  @media screen {
+    .footer {
+      position: relative;
+      bottom: 0;
+      width: 100%;
+    }
+  }
+  /* === RESPONSIVE === */
+  @media (max-width: 768px) {
+    body {
+      column-count: 1 !important;
+      padding: 10px;
+    }
+
+  }
+
+  /* === MODO IMPRESIÓN === */
+  @media print {
+    @page {
+      size: A4;
+      margin: 10mm 8mm 10mm 8mm;
+    }
+    * {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+      color-adjust: exact !important;
+    }
+
+    .menu-item.destacado {
+      background: #f7f7f7 !important;       /* gris muy claro */
+      border-left: 4px solid #9e9e9e !important; /* gris medio */
+      border-radius: 6px !important;
+      padding: 0.4rem 0.6rem !important;
+      opacity: 0.7;
+    }
+    #menu-inner {
+      column-count: var(--menu-columns);
+      column-gap: 15px;
+    }
+
+    /* === FORMATO LATERAL === */
+    #menu-inner.lateral {
+      display: flex;
+      justify-content: space-between;
+      gap: 2rem;
+    }
+
+    #menu-inner.lateral > div {
+      flex: 1;
+      min-width: 48%;
+    }
+
+    #menu-inner.lateral .resto-header {
+      align-items: flex-start;
+      text-align: left;
+    }
+
+    .print-background {
+      opacity: var(--bg-opacity) !important;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .footer {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      padding: 6px 0;
+      text-align: center;
+    }
+
+    .menu-item, .resto-header {
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url("https://res.cloudinary.com/drxznqm61/image/upload/v1761513496/EL_PIRATA_wuz8nj.jpg")
+                  center center no-repeat;
+      background-size: cover;
+      opacity: 0.5;  /* opacidad fija */
+      z-index: -2;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+  }
+
+  #menu-frame {
+    position: relative;
+    box-sizing: border-box;
+    padding: 20px;
+    border-radius: 12px;
+    transition: all 0.25s ease;
+    background: var(--color-bg);
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; 
+  }
+
+  #menu-inner {
+    flex: 1; /* ✅ el contenido ocupa el espacio disponible arriba del footer */
+  }
+
+  /* ornamentos: base genérica */
+  #menu-frame::before,
+  #menu-frame::after {
+    content: "";
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    opacity: 0.4;
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  /* Esquinas inferiores adicionales */
+  #menu-frame::before {
+    top: -10px;
+    left: -10px;
+  }
+  #menu-frame::after {
+    bottom: -10px;
+    right: -10px;
+    transform: rotate(180deg);
+  }
+
+  #menu-inner {
+    padding: 20px;
+    column-count: var(--menu-columns);
+    column-gap: 20px;
+    background: transparent;
+    border-radius: inherit;
+  }
+  
+</style>
+
+</head>
+<body>
+  <div id="menu-frame">
+    <div class="full-page-bg"></div>
+    <div id="menu-inner">
+      <!-- 🌄 Fondo -->
+      <div class="print-background"></div>
+
+      <!-- 🏪 Encabezado -->
+      <div class="resto-top">
+        <div class="resto-header">
+          <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1761513969/image-removebg-preview_7_ce7wsu.png" 
+              alt="Logo" id="logo-resto">
+        </div>
+        <div class="resto-info">
+          <h1 id="nombre-resto">~~~ Parrilla ~~~</h1>
+          <h3 id="subtitulo-resto" class="resto-slogan">El Pirata</h3>
+        </div>
+      </div>
+
+      <!-- 📜 Contenido del menú -->
+      <div id="menuTable"></div>
+    </div>
+    <div class="footer">
+      📍 RUTA 40 KM 1901 - EL HOYO &nbsp;|&nbsp; 📞 294 470-0607 &nbsp;|&nbsp; 📞 4471239 
+    </div>
+  </div>
+<script>
+/* === Datos base de ejemplo === */
+const allRows = [
+    ["Entradas", "Empanadas", "Carne", "", "$1800"],
+    ["Entradas", "Empanadas", "Pollo", "", "$1800"],
+    ["Entradas", "Empanadas", "Jamón y Muzza", "", "$1800"],
+    ["Entradas", "Entre dos", "Papas Cheddar", "Con cheddar fundido", "$2500"],
+    ["Entradas", "Entre dos", "Bastones de Muzzarella", "Rebozados fritos", "$2800"],
+
+    ["Sandwiches", "Con papas", "Lomito", "Lechuga tomate jamón queso y huevo", "$4800"],
+    ["Sandwiches", "Con papas", "Bondiola", "Lechuga tomate jamón queso y huevo", "$4500"],
+    ["Sandwiches", "Con papas", "Milanesa", "Lechuga tomate jamón queso y huevo", "$4500"],
+
+    ["Hamburguesas", "Con papas", "Simple", "Jamón y queso", "$3800"],
+    ["Hamburguesas", "Con papas", "Completa", "Lechuga tomate jamón queso huevo cebolla", "$4200"],
+    ["Hamburguesas", "Con papas", "Black Burger", "Lechuga tomate cheddar panceta cebolla", "$4800"],
+    ["Hamburguesas", "Con papas", "Vegetariana", "Lechuga tomate queso huevo cebolla", "$4000"],
+
+    ["Milanesas al Plato", "Con guarnición", "A Caballo", "Con 2 huevos fritos", "$4800"],
+    ["Milanesas al Plato", "Con guarnición", "Napolitana", "Salsa queso jamón", "$5200"],
+    ["Milanesas al Plato", "Con guarnición", "Fugazzetta", "Con cebolla y muzzarella", "$5000"],
+    ["Milanesas al Plato", "Con guarnición", "Sola", "Con guarnición", "$4200"],
+
+    ["Extras", "", "Cheddar", "Extra", "$400"],
+    ["Extras", "", "Huevo frito", "Extra", "$400"],
+    ["Extras", "", "Panceta", "Extra", "$500"],
+
+    ["Guarniciones", "", "Papas fritas", "", "$2000"],
+    ["Guarniciones", "", "Ensalada Mixta", "Lechuga tomate cebolla", "$2000"],
+    ["Guarniciones", "", "Ensalada Completa", "Lechuga tomate cebolla zanahoria y huevo", "$2200"],
+    ["Guarniciones", "", "Ensalada Rusa", "", "$2200"],
+    ["Guarniciones", "", "Puré", "", "$2000"],
+
+    ["Parrilla", "", "Bife Ancho", "", "$6500"],
+    ["Parrilla", "", "Vacio", "Con guarnición", "$6000"],
+    ["Parrilla", "", "Tira de Asado", "Con chinchulines", "$6200"],
+    ["Parrilla", "", "Chorizo de Vaca", "", "$2000"],
+    ["Parrilla", "", "Chorizo de Cerdo", "", "$2000"],
+    ["Parrilla", "", "Morcilla", "", "$1800"],
+    ["Parrilla", "", "Pollo por Pieza", "", "$2200"],
+    ["Parrilla", "", "Pollo Entero Solo", "", "$6000"],
+    ["Parrilla", "", "Pollo Entero con guarnición", "", ""],
+    ["Parrilla", "", "Sandwich de Bife Ancho", "Lechuga tomate queso y huevo", "$5000"],
+    ["Parrilla", "", "Matambre a la pizza", "", ""],
+    ["Parrilla", "", "Chinchulines", "", ""],
+    ["Parrilla", "", "Molleja", "", ""],
+
+    ["Parrilladas", "", "Para 2", "500 g bife ancho, cuarto de pollo, una morcilla, una molleja, un chorizo de cerdo, un chorizo de vaca más guarnición", "$12000"],
+    ["Parrilladas", "", "Para 4", "Lo anterior más vacío, una molleja y chinchulines", "$22000"],
+    ["Parrilladas", "", "Para 6", "Lo anterior más vacío, tira de asado, dos chorizos, dos chorizos cerdo, una molleja y chinchulines", "$30000"],
+
+    ["Bebidas", "500 ml", "Agua", "", ""],
+    ["Bebidas", "500 ml", "Agua con gas", "", ""],
+    ["Bebidas", "500 ml", "Pepsi", "", "$1500"],
+    ["Bebidas", "500 ml", "7up", "", "$1200"],
+    ["Bebidas", "500 ml", "Mirinda", "", "$1500"],
+    ["Bebidas", "500 ml", "Pomelo Paso de los Toros", "", ""],
+    ["Bebidas", "500 ml", "Tónica Paso de los Toros", "", ""],
+    ["Bebidas", "500 ml", "H2O", "", ""],
+
+    ["Bebidas", "1.5L", "Agua", "", ""],
+    ["Bebidas", "1.5L", "Agua con gas", "", ""],
+    ["Bebidas", "1.5L", "Pepsi", "", ""],
+    ["Bebidas", "1.5L", "7up", "", ""],
+    ["Bebidas", "1.5L", "Mirinda", "", ""],
+    ["Bebidas", "1.5L", "Pomelo Paso de los Toros", "", ""],
+    ["Bebidas", "1.5L", "Tónica Paso de los Toros", "", ""],
+    ["Bebidas", "1.5L", "H2O", "", ""],
+
+    ["Bebidas", "Aguas saborizadas", "Naranja", "", "$2200"],
+    ["Bebidas", "Aguas saborizadas", "Pomelo", "", "$2200"],
+    ["Bebidas", "Aguas saborizadas", "Manzana", "", "$2500"],
+    ["Bebidas", "Aguas saborizadas", "Pera", "", ""],
+
+    ["Licuados", "Aguas saborizadas", "Sabores", "Frutos Rojos Frutilla Arándanos Frambuesa con leche o con agua", "$2800"],
+
+    ["Cervezas", "473 cc", "Latas", "Stella Artois Stella Noire Heineken", "$2200"],
+    ["Cervezas", "730 cc", "Botellas", "Patagonia Vera IPA 24.7 Amber Lager Corona", "$3500"],
+
+    ["Vinos", "750 cc", "Vinos varios", "Alma Mora Finca Las Moras Valentín Navarro Correas Malbec y Cabernet Elementos Cordero con Piel de Lobo Trumpeter", "$7500"]
+  ];
+
+
+/* === Render dinámico del menú === */
+function renderMenu(rows) {
+  const container = document.getElementById("menuTable");
+  container.innerHTML = "";
+  const grouped = {};
+
+  rows.forEach(([cat, subcat, nombre, desc, precio, ...extras]) => {
+    if (!cat) return;
+    if (!grouped[cat]) grouped[cat] = {};
+    const sub = subcat || "-";
+    if (!grouped[cat][sub]) grouped[cat][sub] = [];
+    grouped[cat][sub].push({ nombre, desc, precio, extras });
+  });
+
+  Object.entries(grouped).forEach(([cat, subs]) => {
+    const catDiv = document.createElement("div");
+    const catTitle = document.createElement("h2");
+    catTitle.textContent = cat;
+    catDiv.appendChild(catTitle);
+
+    Object.entries(subs).forEach(([sub, items]) => {
+      if (sub && sub !== "-") {
+        const subTitle = document.createElement("h3");
+        subTitle.textContent = sub;
+        catDiv.appendChild(subTitle);
+      }
+      items.forEach(item => {
+        const div = document.createElement("div");
+        div.className = "menu-item";
+        if (item.extras.includes("destacado")) div.classList.add("destacado");
+        div.innerHTML = `
+          <div class="menu-plate">
+            <h4>${item.nombre}</h4>
+            <p class="menu-description">${item.desc || ""}</p>
+          </div>
+          <span class="menu-price">${item.precio}</span>
+        `;
+        catDiv.appendChild(div);
+      });
+    });
+    container.appendChild(catDiv);
+  });
+}
+
+renderMenu(allRows);
+
+/* === Listener global para comunicación con editor === */
+window.addEventListener("message", event => {
+  const { type, data } = event.data || {};
+  if (!type) return;
+
+  switch (type) {
+
+    /* === Mensaje inicial === */
+    case "init":
+      window.parent.postMessage({ type: "ready" }, "*");
+      break;
+
+    /* === CAMBIO DE FUENTES === */
+    case "font-section": {
+      const { section, font } = data;
+      const families = {
+        "tangerine": "'Tangerine', cursive",
+        "cormorant-garamond": "'Cormorant Garamond', serif",
+        "playfair": "'Playfair Display', serif",
+        "merriweather": "'Merriweather', serif",
+        "quicksand": "'Quicksand', sans-serif",
+        "almendra": "'Almendra Display', serif",
+        "milonga": "'Milonga', serif",
+        "vast": "'Vast Shadow', serif",
+        "anton": "'Anton', sans-serif",
+        "rubik": "'Rubik Wet Paint', system-ui",
+        "caveat": "'Caveat', cursive",
+        "indie-flower": "'Indie Flower', cursive",
+        "amatic-sc": "'Amatic SC', cursive",
+        "sora": "'Sora', sans-serif",
+        "pacifico": "'Pacifico', cursive",
+        "montserrat": "'Montserrat', sans-serif",
+        "codystar": "'Codystar', sans-serif",
+        "source-code": "'Source Code Pro', monospace",
+        "monoton": "'Monoton', sans-serif",
+        "oswald": "'Oswald', sans-serif",
+        "coral": "'Coral Pixels', serif",
+        "ranchers": "'Ranchers', sans-serif",
+        "ewert": "'Ewert', serif"
+      };
+      const family = families[font] || "Lato, sans-serif";
+
+      const map = {
+        "nombre-resto": "#nombre-resto",
+        "nombre-slogan": "#subtitulo-resto",
+        "categoria": "h2",
+        "subcategoria": "#menuTable h3",
+        "plato": ".menu-plate h4",
+        "descripcion": ".menu-description",
+        "precio": ".menu-price",
+        "info-resto": ".footer"
+      };
+
+      const selector = map[section];
+      if (!selector) return;
+      document.querySelectorAll(selector).forEach(el => el.style.fontFamily = family);
+      break;
+    }
+
+    /* === CAMBIO DE TAMAÑO === */
+    case "size-section": {
+      const { section, value } = data;
+      const rem = `${value}rem`;
+      const map = {
+        "nombre-resto": "#nombre-resto",
+        "nombre-slogan": "#subtitulo-resto",
+        "categoria": "h2",
+        "subcategoria": "#menuTable h3",
+        "plato": ".menu-plate h4",
+        "descripcion": ".menu-description",
+        "precio": ".menu-price",
+        "info-resto": ".footer"
+      };
+      const selector = map[section];
+      if (!selector) return;
+
+      document.querySelectorAll(selector).forEach(el => el.style.fontSize = rem);
+      if (section === "categoria") {
+        const firuSize = parseFloat(value) * 0.7; 
+        document.documentElement.style.setProperty("--firulete-size", `${firuSize}rem`);
+      }
+      break;
+    }
+
+    /* === CAMBIO DE COLOR === */
+    case "color-section": {
+      const { section, value } = data;
+      const map = {
+        "nombre-resto": "#nombre-resto",
+        "nombre-slogan": "#subtitulo-resto",
+        "categoria": "h2",
+        "subcategoria": "#menuTable h3",
+        "plato": ".menu-plate h4",
+        "descripcion": ".menu-description",
+        "precio": ".menu-price",
+        "info-resto": ".footer"
+      };
+      const selector = map[section];
+      if (!selector) return;
+      document.querySelectorAll(selector).forEach(el => el.style.color = value);
+      break;
+    }
+
+    /* === ESTILO DEL MARCO === */
+    case "frame-style": {
+      const frame = document.getElementById("menu-frame");
+
+      if (data === "none") {
+        frame.style.border = "none";
+      } else {
+        frame.style.borderImage = "none";
+        frame.style.borderStyle = data; // solid, dashed, etc.
+        frame.style.borderWidth = "2px";
+        frame.style.borderColor = "#000";
+      }
+      break;
+    }
+
+
+    /* === COLOR DEL MARCO === */
+    case "frame-color":
+      document.getElementById("menu-frame").style.borderColor = data;
+      break;
+
+    /* === GROSOR DEL MARCO === */
+    case "frame-width":
+      document.getElementById("menu-frame").style.borderWidth = data + "px";
+      break;
+
+    /* === FIRULETE === */
+    case "firulete":
+      document.documentElement.style.setProperty("--firulete", `"${data}"`);
+      break;
+
+    case "firulete-opacity":
+      document.documentElement.style.setProperty("--firulete-opacity", data);
+      break;
+
+    /* === COLUMNAS === */
+    case "columns":
+      document.documentElement.style.setProperty("--menu-columns", data);
+      document.getElementById("menu-inner").style.columnCount = data;
+      break;
+
+/* === FORMATO === */
+case "formato": {
+  const layout = data;
+  const header = document.querySelector(".resto-header");
+  const menuInner = document.getElementById("menu-inner");
+  const menuTable = document.getElementById("menuTable");
+
+  // reset básico
+  header.style.flexDirection = "column";
+  header.style.alignItems = "center";
+  header.style.textAlign = "center";
+  header.style.width = "100%";
+  menuInner.style.columnCount = "var(--menu-columns)";
+  menuTable.style.display = "block";
+
+  if (layout === "centrado") {
+    // 📜 formato clásico
+    header.style.flexDirection = "column";
+    header.style.alignItems = "center";
+    header.style.textAlign = "center";
+    header.style.marginBottom = "1.5rem";
+  }
+
+  if (layout === "izquierda") {
+    // 🏛️ encabezado y 1ra categoría en la primera columna
+    menuInner.style.columnCount = "2";
+    menuInner.style.display = "flex";
+    menuInner.style.flexWrap = "wrap";
+    menuInner.style.gap = "2rem";
+
+    // bloque contenedor lateral
+    const leftCol = document.createElement("div");
+    const rightCol = document.createElement("div");
+    leftCol.style.flex = "1";
+    rightCol.style.flex = "1";
+    leftCol.style.minWidth = "48%";
+    rightCol.style.minWidth = "48%";
+
+    // mover encabezado + la primera categoría al bloque izquierdo
+    const firstCat = menuTable.querySelector("div:first-child");
+    if (firstCat) {
+      leftCol.appendChild(header);
+      leftCol.appendChild(firstCat);
+    }
+
+    // mover el resto de categorías al bloque derecho
+    const others = [...menuTable.querySelectorAll("div")].slice(1);
+    others.forEach(cat => rightCol.appendChild(cat));
+
+    // vaciar y rearmar
+    menuTable.innerHTML = "";
+    menuTable.appendChild(leftCol);
+    menuTable.appendChild(rightCol);
+  }
+
+  if (layout === "columnas") {
+    // 🗂️ versión tipo revista (todas las columnas con margen equilibrado)
+    header.style.flexDirection = "row";
+    header.style.alignItems = "center";
+    header.style.justifyContent = "center";
+    header.style.textAlign = "center";
+    menuInner.style.columnCount = "var(--menu-columns)";
+    menuInner.style.padding = "20px 40px";
+  }
+
+  break;
+}
+
+    /* === OPACIDAD FONDO === */
+    case "opacity":
+      document.documentElement.style.setProperty("--bg-opacity", data);
+      break;
+
+    /* === TAMAÑO FONDO === */
+    case "bg-size":
+      document.documentElement.style.setProperty("--bg-size-scale", data + "%");
+      break;
+
+    /* === PRESETS === */
+    case "preset": {
+      const preset = parseInt(data);
+      const presets = {
+        1: { bg: "#fff8f0", colorCategoria: "#4a2c00", fontCategoria: "'Playfair Display', serif", firulete: "🍷 ✨ 🍷" },
+        2: { bg: "#faf5ef", colorCategoria: "#3b2f2f", fontCategoria: "'Cormorant Garamond', serif", firulete: "⚜ ⚜ ⚜" },
+        6: { bg: "#ffffff", colorCategoria: "#5b4b3a", fontCategoria: "'Pacifico', cursive", firulete: "☕ ✨ ☕" },
+        11:{ bg: "#f8f8f8", colorCategoria: "#1a1a1a", fontCategoria: "'Oswald', sans-serif", firulete: "🍺 🍷 🍺" },
+        21:{ bg: "#f5fff5", colorCategoria: "#2e7d32", fontCategoria: "'Quicksand', sans-serif", firulete: "🌿 ✿ 🌿" },
+        26:{ bg: "#fff9f5", colorCategoria: "#a55200", fontCategoria: "'Merriweather', serif", firulete: "🍝 🍷 🍝" },
+      };
+      const p = presets[preset];
+      if (!p) return;
+      document.body.style.background = p.bg;
+      document.documentElement.style.setProperty("--color-categoria", p.colorCategoria);
+      document.querySelectorAll("h2").forEach(el => {
+        el.style.color = p.colorCategoria;
+        el.style.fontFamily = p.fontCategoria;
+      });
+      document.documentElement.style.setProperty("--firulete", `"${p.firulete}"`);
+      break;
+    }
+  }
+});
+
+/* === Vista previa / Imprimir === */
+const printBtn = document.getElementById("printBtn");
+if (printBtn) {
+  printBtn.addEventListener("click", () => {
+    if (preview && preview.contentWindow) {
+      preview.contentWindow.print();
+    }
+  });
+}
+
+</script>
+</body>
+</html>
