@@ -388,8 +388,10 @@ body.formato-columnas-reales #menu-columns-wrapper .columna {
   (function() {
 
 /* === Datos base de ejemplo === */
-window.parent.postMessage({ type: "ready" }, "*");
-
+window.addEventListener("DOMContentLoaded", () => {
+  console.log("👋 Menu listo, notificando al editor...");
+  window.parent.postMessage({ type: "ready" }, "*");
+});
 // === NUEVO BLOQUE DINÁMICO ===
 
 // 1️⃣ Detectar tenant desde la URL
@@ -596,104 +598,115 @@ function restaurarAnchoCompleto() {
   bloquesOriginales.forEach(b => wrapper.appendChild(b));
 }
 
-/* === ESCUCHAR MENSAJES DEL EDITOR === */
 window.addEventListener("message", (e) => {
   const { type, data } = e.data || {};
   if (!type) return;
-
-  console.log("🎯 Mensaje recibido desde editor:", type, data);
+  console.log("🎯 [recv] =>", type, data);
 
   switch (type) {
-    // 🔤 FUENTES
     case "font-section":
       if (data.section && data.font) {
         document.documentElement.style.setProperty(`--font-${data.section}`, data.font);
-        console.log(`🖋️ Fuente aplicada a ${data.section}:`, data.font);
+        // aplica directo también a los nodos
+        document.querySelectorAll(getSelector(data.section))
+          .forEach(el => { el.style.fontFamily = `'${data.font}', sans-serif`; });
       }
       break;
 
-    // 📏 TAMAÑO
     case "size-section":
       if (data.section && data.value) {
-        document.documentElement.style.setProperty(`--size-${data.section}`, `${data.value}rem`);
-        console.log(`📐 Tamaño de ${data.section}:`, data.value);
+        const rem = `${data.value}rem`;
+        document.documentElement.style.setProperty(`--size-${data.section}`, rem);
+        document.querySelectorAll(getSelector(data.section))
+          .forEach(el => { el.style.fontSize = rem; });
       }
       break;
 
-    // 🎨 COLOR
     case "color-section":
       if (data.section && data.value) {
         document.documentElement.style.setProperty(`--color-${data.section}`, data.value);
-        console.log(`🎨 Color aplicado a ${data.section}:`, data.value);
+        document.querySelectorAll(getSelector(data.section))
+          .forEach(el => { el.style.color = data.value; });
       }
       break;
 
-    // 🧱 COLUMNAS
     case "columns":
       document.body.style.columnCount = data;
       document.documentElement.style.setProperty("--menu-columns", data);
-      console.log(`⬛ Columnas ajustadas a ${data}`);
       break;
 
-    // 🧩 FORMATO
     case "formato":
       document.body.classList.toggle("multi-columnas", data === "columnas-reales");
-      console.log(`🧩 Formato: ${data}`);
       break;
 
-    // ✨ FIRULETE
     case "firulete":
-      document.documentElement.style.setProperty("--firulete", `"${data}"`);
-      console.log("✨ Firulete:", data);
+      document.documentElement.style.setProperty("--firulete", `"${data || ""}"`);
       break;
 
     case "firulete-opacity":
       document.documentElement.style.setProperty("--firulete-opacity", data);
-      console.log("🌫️ Opacidad Firulete:", data);
       break;
 
-    // 🖼️ FONDO
     case "opacity":
       document.documentElement.style.setProperty("--bg-opacity", data);
-      console.log("🖼️ Opacidad fondo:", data);
       break;
 
     case "bg-size":
       document.documentElement.style.setProperty("--bg-size-scale", `${data}%`);
-      console.log("🖼️ Tamaño fondo:", data);
       break;
 
-    // 🖼️ MARCOS
     case "frame-style":
       document.documentElement.style.setProperty("--frame-style", data);
       break;
-
     case "frame-color":
       document.documentElement.style.setProperty("--frame-color", data);
       break;
-
     case "frame-width":
       document.documentElement.style.setProperty("--frame-width", `${data}px`);
       break;
 
-    // 💾 GUARDAR ESTILOS
     case "get-current-styles":
-      const computed = getComputedStyle(document.documentElement);
+      const cs = getComputedStyle(document.documentElement);
       const styles = {
-        fonts: {},
-        colors: {},
-        sizes: {},
-        firulete: computed.getPropertyValue("--firulete"),
-        bgOpacity: computed.getPropertyValue("--bg-opacity"),
-        bgSize: computed.getPropertyValue("--bg-size-scale"),
+        fonts: {
+          "nombre-resto": cs.getPropertyValue("--font-nombre-resto").trim(),
+          "nombre-slogan": cs.getPropertyValue("--font-nombre-slogan").trim(),
+          "categoria": cs.getPropertyValue("--font-categoria").trim(),
+          "subcategoria": cs.getPropertyValue("--font-subcategoria").trim(),
+          "plato": cs.getPropertyValue("--font-plato").trim(),
+          "descripcion": cs.getPropertyValue("--font-descripcion").trim(),
+          "precio": cs.getPropertyValue("--font-precio").trim(),
+          "info-resto": cs.getPropertyValue("--font-info-resto").trim(),
+        },
+        colors: {
+          "nombre-resto": cs.getPropertyValue("--color-nombre-resto").trim(),
+          "nombre-slogan": cs.getPropertyValue("--color-nombre-slogan").trim(),
+          "categoria": cs.getPropertyValue("--color-categoria").trim(),
+          "subcategoria": cs.getPropertyValue("--color-subcategoria").trim(),
+          "precio": cs.getPropertyValue("--color-precio").trim(),
+          "info-resto": cs.getPropertyValue("--color-info-resto").trim(),
+        },
+        sizes: {
+          "categoria": cs.getPropertyValue("--size-categoria").trim(),
+          "subcategoria": cs.getPropertyValue("--size-subcategoria").trim(),
+          "plato": cs.getPropertyValue("--size-plato").trim(),
+          "descripcion": cs.getPropertyValue("--size-descripcion").trim(),
+          "precio": cs.getPropertyValue("--size-precio").trim(),
+          "info": cs.getPropertyValue("--size-info").trim(),
+        },
+        firulete: cs.getPropertyValue("--firulete").trim(),
+        bgOpacity: cs.getPropertyValue("--bg-opacity").trim(),
+        bgSize: cs.getPropertyValue("--bg-size-scale").trim(),
+        frame: {
+          style: cs.getPropertyValue("--frame-style").trim(),
+          color: cs.getPropertyValue("--frame-color").trim(),
+          width: cs.getPropertyValue("--frame-width").trim(),
+        }
       };
       window.parent.postMessage({ type: "current-styles-response", data: styles }, "*");
-      console.log("💾 Enviados estilos actuales al editor:", styles);
       break;
   }
 });
-
-
 
 /* 🔍 Traductor de secciones */
 function getSelector(section) {

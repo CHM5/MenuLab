@@ -799,9 +799,25 @@ const sideMenu = document.getElementById("sideMenu");
 const itemsList = document.getElementById("itemsList");
 let previewReady = false;
 
-/* === FUNCIÓN: enviar mensajes seguros al iframe === */
+/* === FUNCIÓN: enviar mensajes seguros al iframe (con cola) === */
+const msgQueue = [];
+
+function flushQueue(){
+  while (previewReady && msgQueue.length){
+    const {type, data} = msgQueue.shift();
+    console.log("📤 [send] (flush) =>", type, data);
+    preview.contentWindow.postMessage({ type, data }, "*");
+  }
+}
+
 function sendToPreview(type, data) {
-  if (!previewReady || !preview?.contentWindow) return;
+  if (!preview?.contentWindow) return;
+  if (!previewReady) {
+    console.warn("⏳ [queue] preview no listo. Encolando:", type, data);
+    msgQueue.push({type, data});
+    return;
+  }
+  console.log("📤 [send] =>", type, data);
   preview.contentWindow.postMessage({ type, data }, "*");
 }
 
@@ -1224,6 +1240,31 @@ saveBtn.addEventListener("click", async () => {
     }
   }, { once: true });
 });
+
+/* === Presets (aplicar) === */
+document.querySelectorAll('#estilosContenido button[data-preset]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const id = parseInt(btn.dataset.preset, 10);
+    if (!isNaN(id)) {
+      console.log("🎨 Aplicando preset", id);
+      // applyPreset vive en presets.js y usa sendToPreview internamente
+      applyPreset(id);
+    }
+  });
+});
+
+/* === DESPLEGABLES PRINCIPALES (Diseños, Items, Columnas, etc.) === */
+(function() {
+  const headers = document.querySelectorAll(".toggle-header");
+  headers.forEach(header => {
+    header.addEventListener("click", e => {
+      e.stopPropagation();
+      header.classList.toggle("active");
+      const content = header.nextElementSibling;
+      if (content) content.classList.toggle("active");
+    });
+  });
+})();
 
 </script>
 <script src="presets.js"></script>
