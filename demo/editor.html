@@ -779,15 +779,19 @@
       <button id="printBtn">🖨️ Vista Previa</button>
     </section>
     <section id="saveControls">
-      <button id="saveBtn">💾 Guardar Formato</button>
+      <button id="saveBtn">💾 Guardar</button>
     </section>
   </aside>
 
   <main id="previewArea">
-    <iframe id="previewFrame" src="emprendedor_post.html"></iframe>
+    <iframe
+      id="previewFrame"
+      style="width:100%; height:100%; border:none;"
+    ></iframe>
   </main>
 
 <script>
+
 /* === VARIABLES GLOBALES === */
 const preview = document.getElementById("previewFrame");
 const menuBtn = document.getElementById("toggleMenu");
@@ -1009,18 +1013,33 @@ document.querySelectorAll(".item-header").forEach(header => {
   });
 });
 
-/* === SISTEMA GLOBAL DE PANELES === */
-document.addEventListener("DOMContentLoaded", () => {
-  document.querySelectorAll(".toggle-header").forEach(header => {
-    header.addEventListener("click", e => {
-      e.stopPropagation();
-      header.classList.toggle("active");
-      const base = header.id.replace(/^toggle/, "").toLowerCase(); 
-      const content = document.getElementById(base + "Contenido");
-      if (content) content.classList.toggle("active");
-    });
+// ...existing code...
+/* === CARGAR MENÚ EN IFRAME (usar URL directa para mantener origen) === */
+(function loadPreview() {
+  // intenta localizar el iframe (adapta id si tu iframe tiene otro)
+  const preview = document.querySelector('iframe#preview, iframe#previewFrame, iframe#previewArea, iframe');
+  if (!preview) { console.error('iframe preview no encontrado'); return; }
+
+  const params = new URLSearchParams(window.location.search);
+  const tenant = params.get('tenant') || 'cafe_central';
+
+  // URL directa (cache-buster)
+  const url = `./emprendedor_post.html?tenant=${encodeURIComponent(tenant)}&_=${Date.now()}`;
+
+  // cargar como documento normal (preserva mismo origen y permite fetch dentro)
+  preview.src = url;
+
+  // opcional: escuchar load para enviar init al iframe
+  preview.addEventListener('load', () => {
+    try { preview.contentWindow.postMessage({ type: 'init', data: 'editor-connected' }, '*'); } catch(e) { /* noop */ }
+    console.log('✅ Preview cargado:', url);
   });
-});
+
+  // si querés refrescar manualmente desde el editor:
+  window.reloadPreview = () => {
+    preview.src = `./emprendedor_post.html?tenant=${encodeURIComponent(tenant)}&_=${Date.now()}`;
+  };
+})();
 
 /* === FIRULETE === */
 (function() {

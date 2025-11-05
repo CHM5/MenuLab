@@ -354,7 +354,6 @@ body.formato-columnas-reales #menu-columns-wrapper .columna {
   width: 100%;
 }
 
-  
 </style>
 
 </head>
@@ -371,8 +370,8 @@ body.formato-columnas-reales #menu-columns-wrapper .columna {
               alt="Logo" id="logo-resto">
         </div>
         <div class="resto-info">
-          <h1 id="nombre-resto">Café Central</h1>
-          <h3 id="subtitulo-resto" class="resto-slogan">Todo rico, todo el día</h3>
+          <h1 id="nombre-resto"></h1>
+          <h3 id="subtitulo-resto" class="resto-slogan"></h3>
         </div>
       </div>
 
@@ -381,91 +380,73 @@ body.formato-columnas-reales #menu-columns-wrapper .columna {
         <div id="menuTable"></div>
       </div>
     </div>
-    <div class="footer">
-      📍 Av. Corrientes 123 &nbsp;|&nbsp; 📞 +54 11 1234-5678 &nbsp;|&nbsp; 🕓 Martes a Domingos de 8 a 20hs
-    </div>
+    <div class="footer"></div>
   </div>
   
 <script>
+
+  (function() {
+
 /* === Datos base de ejemplo === */
 window.parent.postMessage({ type: "ready" }, "*");
 
-const allRows = [
-    ["Cafetería", "Clásicos", "Café en Jarrito", "Café espresso", "$1200"],
-    ["Cafetería", "Clásicos", "Café con Leche", "Café espresso con leche caliente.", "$1300"],
-    ["Cafetería", "Clásicos", "Café Doble", "Café filtrado suave, taza grande.", "$1100", "destacado"],
-    ["Cafetería", "Especiales", "Flat White", "Espresso doble con leche microespumada.", "$1500"],
-    ["Cafetería", "Especiales", "Latte Vainilla", "Café con leche y sirope de vainilla.", "$1600"],
-    ["Cafetería", "Especiales", "Cappuccino", "Espresso, leche y espuma, decorado con cacao.", "$1400"],
-    ["Cafetería", "Fríos", "Cold Brew", "Café infusionado en frío por 12 horas.", "$1700"],
-    ["Cafetería", "Fríos", "Iced Latte", "Café espresso, leche y hielo.", "$1600", "celiaco"],
-    
-    ["Pastelería", "Tortas", "Cheesecake", "Porción de cheesecake casero.", "$2200"],
-    ["Pastelería", "Tortas", "Brownie", "Brownie de chocolate con nuez y bocha de helado de limón.", "$1800"],
-    ["Pastelería", "Tortas", "Carrot Cake", "Bizcocho húmedo de zanahoria y especias.", "$2100"],
-    ["Pastelería", "Tortas", "Lemon Pie", "Tarta de limón con merengue italiano.", "$2000", "destacado"],
-    
-    ["Pastelería", "Cookies", "Cookie Chips", "Galleta artesanal con chips de chocolate.", "$900"],
-    ["Pastelería", "Cookies", "Cookie Red Velvet", "Galleta roja con chocolate blanco.", "$950"],
-    
-    ["Sandwiches", "", "Tostado de Jamón y Queso", "Pan casero, jamón cocido y queso.", "$2000"],
-    ["Sandwiches", "", "Bagel Capresse", "Bagel artesanal, tomate, mozzarella y albahaca.", "$2300", "vegetariano"],
-    ["Sandwiches", "", "Croissant Veggie", "Croissant con vegetales grillados y queso.", "$2200", "vegano"],
-    
-    ["Desayunos", "", "Combo Central", "Café + jugo + tostadas + mermelada y manteca.", "$2500"],
-    ["Bebidas", "Jugos Naturales", "Jugo de Naranja Natural", "Jugo exprimido al momento.", "$800"],
-    ["Bebidas", "Jugos Naturales", "Jugo de Manzana y Zanahoria", "Fresco y revitalizante.", "$900"],
-    
-    ["Saludables", "Yogur", "Yogur Natural", "Limonada casera con menta y albahaca.", "$850"],
-    ["Saludables", "Yogur", "Yogur con Granola y Frutas", "Yogur natural con granola y frutas de estación", "$2000", "celiaco"],
-    
-    ["Desayunos", "", "Granola Bowl", "Yogur natural, granola casera y frutas frescas.", "$1800"],
-    ["Desayunos", "", "Tostadas Avocado", "Pan integral, palta, tomate y semillas.", "$2100", "vegano"],
-    
-    ["Cafetería", "Especiales", "Mocha Latte", "Café espresso con leche vaporizada y chocolate.", "$1700"],
-    ["Cafetería", "Especiales", "Caramel Macchiato", "Espresso con leche, espuma y toque de caramelo.", "$1750"],
-    
-    ["Cafetería", "Fríos", "Espresso Tonic", "Espresso servido sobre tónica y hielo.", "$1600"],
-    ["Cafetería", "Fríos", "Affogato", "Helado de vainilla bañado con espresso caliente.", "$1900", "celiaco"],
-    ["Cafetería", "Fríos", "Iced Matcha Latte", "Té matcha japonés con leche vegetal y hielo.", "$1800", "vegano"],
-    
-    ["Cafetería", "Fríos", "Frappuccino Oreo", "Frappé de café con galletas Oreo y crema.", "$2000"],
-    ["Cafetería", "Fríos", "Limonada Menta & Jengibre", "Refrescante, casera y natural.", "$1500"],
-    ["Cafetería", "Fríos", "Smoothie Frutos Rojos", "Batido con yogur natural y frutas del bosque.", "$1900", "celiaco"],
-    
-    ["Pastelería", "", "Muffin de Banana Vegano", "Sin lácteos, sin huevo, con nueces y banana.", "$1300", "vegano"],
-    ["Pastelería", "Repostería", "Cinnamon Roll", "Roll de canela con glaseado de vainilla.", "$1600"],
-    ["Pastelería", "Repostería", "Mini Tarta de Manzana", "Tarta individual con manzana caramelizada.", "$1700"],
-    
-    ["Sandwiches", "", "Focaccia de Pollo", "Pan focaccia, pollo grillado, rúcula y pesto.", "$2400", "destacado"],
-    ["Desayunos", "", "Huevos Benedicto", "Pan de campo, jamón cocido, huevo poché y salsa holandesa.", "$2600"],
-    ["Desayunos", "", "Brunch Central", "Huevos, tostadas, café, jugo y mini torta.", "$3200", "celiaco", "destacado"],
-    
-    ["Pastelería", "Sin Gluten", "Brownie sin TACC", "Brownie húmedo con almendras sin gluten.", "$1400", "celiaco", "destacado"],
-    ["Sandwiches", "", "Tostado Vegano", "Pan integral, hummus, palta y tomate seco.", "$2100", "vegano"],
-    ["Sandwiches", "", "Croissant Capresse", "Croissant con tomate, albahaca y mozzarella.", "$2300", "vegetariano"]
-  ];
+// === NUEVO BLOQUE DINÁMICO ===
+
+// 1️⃣ Detectar tenant desde la URL
+const params = new URLSearchParams(window.location.search);
+const tenant = params.get("tenant") || "cafe_central"; // por defecto Café Central
+
+// 2️⃣ Llamar a la API de Apps Script
+const API_URL = "https://script.google.com/macros/s/AKfycby-O0nmvEiaqkrkglO1Ja0Hd8f7iVHpZU_wNl3xUpLHZ8xJmeJOg8XtjRaUcyLqznRl/exec";
+
+async function loadMenu() {
+  try {
+    showLoading();
+    document.getElementById("menuTable").innerHTML =
+      "<p style='text-align:center;color:#777;font-style:italic;'>Cargando menú...</p>";
+
+    const res = await fetch(`${API_URL}?tenant=${tenant}`);
+    const data = await res.json();
+
+    if (data.info) {
+      renderInfo(data.info);
+    }
+
+    if (data.menu && Array.isArray(data.menu)) {
+      console.log(`✅ Cargado menú de ${tenant} (${data.count} ítems)`);
+      renderMenu(data.menu);
+    } else {
+      document.getElementById("menuTable").innerHTML =
+        "<p style='text-align:center;color:#999'>Menú no disponible.</p>";
+    }
+  } catch (err) {
+    console.error("⚠️ Error al conectar con la API:", err);
+    document.getElementById("menuTable").innerHTML =
+      "<p style='text-align:center;color:#999'>Error al conectar con el servidor.</p>";
+  }
+}
 
 
-/* === Render dinámico del menú === */
 function renderMenu(rows) {
   const container = document.getElementById("menuTable");
+  if (!container) return;
   container.innerHTML = "";
 
+  // Agrupar por categoría y subcategoría
   const grouped = {};
-  rows.forEach(([cat, subcat, nombre, desc, precio, ...extras]) => {
-    if (!cat) return;
+  rows.forEach(item => {
+    const cat = item.categoria || "Sin categoría";
+    const sub = item.subcategoria || "-";
     if (!grouped[cat]) grouped[cat] = {};
-    const sub = subcat || "-";
     if (!grouped[cat][sub]) grouped[cat][sub] = [];
-    grouped[cat][sub].push({ nombre, desc, precio, extras });
+    grouped[cat][sub].push(item);
   });
 
-  // convertir categorías a bloques
-  const cats = Object.entries(grouped);
-  cats.forEach(([cat, subs]) => {
+  // Renderizado visual
+  Object.entries(grouped).forEach(([cat, subs]) => {
     const catDiv = document.createElement("div");
     catDiv.classList.add("categoria-bloque");
+
     const catTitle = document.createElement("h2");
     catTitle.textContent = cat;
     catDiv.appendChild(catTitle);
@@ -476,26 +457,96 @@ function renderMenu(rows) {
         subTitle.textContent = sub;
         catDiv.appendChild(subTitle);
       }
-      items.forEach(item => {
+
+      items.forEach(it => {
         const div = document.createElement("div");
         div.className = "menu-item";
-        if (item.extras.includes("destacado")) div.classList.add("destacado");
+        if (it.tags && it.tags.toString().toLowerCase().includes("destacado")) {
+          div.classList.add("destacado");
+        }
+
         div.innerHTML = `
           <div class="menu-plate">
-            <h4>${item.nombre}</h4>
-            <p class="menu-description">${item.desc || ""}</p>
+            <h4>${it.plato || it.nombre || ""}</h4>
+            <p class="menu-description">${it.descripcion || it.desc || ""}</p>
           </div>
-          <span class="menu-price">${item.precio}</span>
+          <span class="menu-price">${it.precio || ""}</span>
         `;
         catDiv.appendChild(div);
       });
+
     });
+
     container.appendChild(catDiv);
   });
+
+  // Guardar los bloques para redistribución
+  capturarBloquesOriginales();
+
+  // Si el body tiene formato columnas, redistribuir
+  if (document.body.classList.contains('formato-columnas-reales')) {
+    setTimeout(() => distribuirColumnas(), 20);
+  }
+
+  console.log("✅ Render finalizado con", rows.length, "ítems.");
 }
 
 
-renderMenu(allRows);
+// === Indicador de carga ===
+function showLoading(msg = "Cargando menú...") {
+  const container = document.getElementById("menuTable");
+  if (!container) return;
+  container.innerHTML = `
+    <div id="loadingMenu" style="
+      text-align:center;
+      color:#666;
+      font-family:'Montserrat', sans-serif;
+      padding: 40px 10px;
+      font-size:1.1rem;
+      letter-spacing:0.5px;
+    ">
+      <i class="fa-solid fa-spinner fa-spin" style="margin-right:6px;color:#1D3557;"></i>${msg}
+    </div>
+  `;
+}
+
+// 3️⃣ Ejecutar al cargar
+loadMenu();
+
+function renderInfo(info = {}) {
+  const get = (k) => info[k] || "";
+
+  // Logo
+  const logo = document.getElementById("logo-resto");
+  if (logo && get("logo")) logo.src = get("logo");
+
+  // Nombre y slogan
+  const nombreEl = document.getElementById("nombre-resto");
+  if (nombreEl) nombreEl.textContent = get("nombre");
+
+  const sloganEl = document.getElementById("subtitulo-resto");
+  if (sloganEl) sloganEl.textContent = get("slogan");
+
+  // Footer con info de contacto
+  const footer = document.querySelector(".footer");
+  if (footer) {
+    footer.innerHTML = `
+      ${get("direccion") ? `📍 ${get("direccion")} &nbsp;|&nbsp;` : ""}
+      ${get("telefono") ? `📞 ${get("telefono")} &nbsp;|&nbsp;` : ""}
+      ${get("horarios") ? `🕓 ${get("horarios")}` : ""}
+    `.trim();
+  }
+
+  // Fondo opcional
+  const fondo = get("fondo");
+  if (fondo) {
+    const bg = document.querySelector(".print-background");
+    if (bg) bg.style.backgroundImage = `url('${fondo}')`;
+  }
+
+  console.log("🧭 Info del restaurante aplicada:", info);
+
+}
 
 // === SISTEMA DE COLUMNAS DINÁMICO ===
 let bloquesOriginales = [];
@@ -545,114 +596,99 @@ function restaurarAnchoCompleto() {
   bloquesOriginales.forEach(b => wrapper.appendChild(b));
 }
 
-// === Escucha los mensajes del editor ===
-window.addEventListener('message', event => {
-  const { type, data } = event.data || {};
-  const root = document.documentElement;
-
-  switch (type) {
-    case 'formato':
-      document.body.classList.remove('formato-ancho', 'formato-columnas-reales');
-
-      if (data === 'ancho') {
-        document.body.classList.add('formato-ancho');
-        // retraso leve para evitar bloqueo de botones
-        setTimeout(() => restaurarAnchoCompleto(), 50);
-      }
-
-      if (data === 'columnas-reales') {
-        document.body.classList.add('formato-columnas-reales');
-        setTimeout(() => distribuirColumnas(), 50);
-      }
-      break;
-
-    case 'columns':
-      root.style.setProperty('--menu-columns', data);
-      if (document.body.classList.contains('formato-columnas-reales')) {
-        setTimeout(() => distribuirColumnas(), 50);
-      }
-      break;
-  }
-});
-
-// Captura inicial
-window.addEventListener('DOMContentLoaded', () => {
-  capturarBloquesOriginales();
-});
-
-
-// Llamar automáticamente al cambiar formato
-window.addEventListener('message', event => {
-  const { type, data } = event.data || {};
-  if (type === 'formato' && data === 'columnas-reales') {
-    distribuirColumnas();
-  }
-  if (type === 'columns') {
-    document.documentElement.style.setProperty('--menu-columns', data);
-    if (document.body.classList.contains('formato-columnas-reales')) distribuirColumnas();
-  }
-});
-
-/* === Listener global para comunicación con editor === */
-window.addEventListener("message", event => {
-  const { type, data } = event.data || {};
+/* === ESCUCHAR MENSAJES DEL EDITOR === */
+window.addEventListener("message", (e) => {
+  const { type, data } = e.data || {};
   if (!type) return;
 
-  const root = document.documentElement;
+  console.log("🎯 Mensaje recibido desde editor:", type, data);
 
   switch (type) {
-    case "color-section": {
-      const { section, value } = data;
-      root.style.setProperty(`--color-${section}`, value);
-      document.querySelectorAll(getSelector(section))
-        .forEach(el => (el.style.color = value));
-      break;
-    }
-    case "font-section": {
-      const { section, font } = data;
-      root.style.setProperty(`--font-${section}`, `'${font}', sans-serif`);
-      document.querySelectorAll(getSelector(section))
-        .forEach(el => (el.style.fontFamily = `'${font}', sans-serif`));
-      break;
-    }
-    case "size-section": {
-      const { section, value } = data;
-      root.style.setProperty(`--size-${section}`, `${value}rem`);
-      break;
-    }
-    case "firulete":
-      root.style.setProperty("--firulete", `"${data}"`);
-      break;
-    case "opacity":
-      root.style.setProperty("--bg-opacity", data);
-      document.querySelector(".print-background")?.style.setProperty("opacity", data);
-      break;
-    case "columns": {
-      // data viene como número (1,2,3)
-      root.style.setProperty('--menu-columns', data);
-      // aplicar inline al wrapper para forzar inmediatamente el cambio (compatibilidad)
-      const wrapper = document.getElementById('menu-columns-wrapper');
-      if (wrapper) {
-        wrapper.style.columnCount = String(data);
-        wrapper.style.columnGap = '2rem';
+    // 🔤 FUENTES
+    case "font-section":
+      if (data.section && data.font) {
+        document.documentElement.style.setProperty(`--font-${data.section}`, data.font);
+        console.log(`🖋️ Fuente aplicada a ${data.section}:`, data.font);
       }
-      console.log(`⬛ Columnas aplicadas: ${data}`);
       break;
-    }
-    case "formato": {
-      document.body.classList.remove("formato-ancho", "formato-columnas-reales");
-      if (data === "ancho") document.body.classList.add("formato-ancho");
-      if (data === "columnas-reales") document.body.classList.add("formato-columnas-reales");
+
+    // 📏 TAMAÑO
+    case "size-section":
+      if (data.section && data.value) {
+        document.documentElement.style.setProperty(`--size-${data.section}`, `${data.value}rem`);
+        console.log(`📐 Tamaño de ${data.section}:`, data.value);
+      }
       break;
-    }
+
+    // 🎨 COLOR
+    case "color-section":
+      if (data.section && data.value) {
+        document.documentElement.style.setProperty(`--color-${data.section}`, data.value);
+        console.log(`🎨 Color aplicado a ${data.section}:`, data.value);
+      }
+      break;
+
+    // 🧱 COLUMNAS
+    case "columns":
+      document.body.style.columnCount = data;
+      document.documentElement.style.setProperty("--menu-columns", data);
+      console.log(`⬛ Columnas ajustadas a ${data}`);
+      break;
+
+    // 🧩 FORMATO
+    case "formato":
+      document.body.classList.toggle("multi-columnas", data === "columnas-reales");
+      console.log(`🧩 Formato: ${data}`);
+      break;
+
+    // ✨ FIRULETE
+    case "firulete":
+      document.documentElement.style.setProperty("--firulete", `"${data}"`);
+      console.log("✨ Firulete:", data);
+      break;
+
+    case "firulete-opacity":
+      document.documentElement.style.setProperty("--firulete-opacity", data);
+      console.log("🌫️ Opacidad Firulete:", data);
+      break;
+
+    // 🖼️ FONDO
+    case "opacity":
+      document.documentElement.style.setProperty("--bg-opacity", data);
+      console.log("🖼️ Opacidad fondo:", data);
+      break;
+
+    case "bg-size":
+      document.documentElement.style.setProperty("--bg-size-scale", `${data}%`);
+      console.log("🖼️ Tamaño fondo:", data);
+      break;
+
+    // 🖼️ MARCOS
     case "frame-style":
-      document.body.style.borderStyle = data;
+      document.documentElement.style.setProperty("--frame-style", data);
       break;
+
     case "frame-color":
-      document.body.style.borderColor = data;
+      document.documentElement.style.setProperty("--frame-color", data);
       break;
+
     case "frame-width":
-      document.body.style.borderWidth = data + "px";
+      document.documentElement.style.setProperty("--frame-width", `${data}px`);
+      break;
+
+    // 💾 GUARDAR ESTILOS
+    case "get-current-styles":
+      const computed = getComputedStyle(document.documentElement);
+      const styles = {
+        fonts: {},
+        colors: {},
+        sizes: {},
+        firulete: computed.getPropertyValue("--firulete"),
+        bgOpacity: computed.getPropertyValue("--bg-opacity"),
+        bgSize: computed.getPropertyValue("--bg-size-scale"),
+      };
+      window.parent.postMessage({ type: "current-styles-response", data: styles }, "*");
+      console.log("💾 Enviados estilos actuales al editor:", styles);
       break;
   }
 });
@@ -684,20 +720,7 @@ function getSelector(section) {
       return "body";
   }
 }
-
-function doGet(e) {
-  const nombre = e.parameter.nombre || "default";
-  const ss = SpreadsheetApp.openById("TU_SHEET_ID");
-  const sheet = ss.getSheetByName("Formatos");
-  const data = sheet.getDataRange().getValues();
-
-  const row = data.find(r => r[0] === nombre);
-  if (!row) return ContentService.createTextOutput("{}");
-
-  const formato = JSON.parse(row[1]);
-  return ContentService.createTextOutput(JSON.stringify(formato))
-    .setMimeType(ContentService.MimeType.JSON);
-}
+})(); 
 
 </script>
 </body>
