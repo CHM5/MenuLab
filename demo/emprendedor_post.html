@@ -362,6 +362,11 @@ body.cat-right  h2 { justify-content: flex-end;    text-align: right; }
 /* Layout helper para transiciones suaves del header */
 .resto-top { transition: justify-content .25s ease; }
 
+.sub-bloque {
+  break-inside: avoid;
+  page-break-inside: avoid;
+  margin-bottom: 1.2rem;
+}
 
 </style>
 
@@ -412,7 +417,6 @@ const API_URL = "https://script.google.com/macros/s/AKfycby-O0nmvEiaqkrkglO1Ja0H
 
 async function loadMenu() {
   try {
-    showLoading();
     document.getElementById("menuTable").innerHTML =
       "<p style='text-align:center;color:#777;font-style:italic;'>Cargando menú...</p>";
 
@@ -436,6 +440,7 @@ async function loadMenu() {
       "<p style='text-align:center;color:#999'>Error al conectar con el servidor.</p>";
   }
 }
+    showLoading();
 
 
 function renderMenu(rows) {
@@ -453,55 +458,52 @@ function renderMenu(rows) {
     grouped[cat][sub].push(item);
   });
 
-  // Renderizado visual
-  Object.entries(grouped).forEach(([cat, subs]) => {
-    const catDiv = document.createElement("div");
-    catDiv.classList.add("categoria-bloque");
+// Renderizado visual
+Object.entries(grouped).forEach(([cat, subs]) => {
+  const catDiv = document.createElement("div");
+  catDiv.classList.add("categoria-bloque");
+  catDiv.dataset.cat = cat;
 
-    const catTitle = document.createElement("h2");
-    catTitle.textContent = cat;
-    catDiv.appendChild(catTitle);
+  // título de categoría (lo usaremos como “header” cuando repartimos)
+  const catTitle = document.createElement("h2");
+  catTitle.textContent = cat;
+  catDiv.appendChild(catTitle);
 
-    Object.entries(subs).forEach(([sub, items]) => {
-      if (sub && sub !== "-") {
-        const subTitle = document.createElement("h3");
-        subTitle.textContent = sub;
-        catDiv.appendChild(subTitle);
+  Object.entries(subs).forEach(([sub, items]) => {
+    // 👉 cada subcategoría se envuelve en un sub-bloque
+    const subBlock = document.createElement("div");
+    subBlock.className = "sub-bloque";
+    subBlock.dataset.cat = cat;           // para saber a qué categoría pertenece
+    subBlock.dataset.sub = sub || "-";
+
+    if (sub && sub !== "-") {
+      const subTitle = document.createElement("h3");
+      subTitle.textContent = sub;
+      subBlock.appendChild(subTitle);
+    }
+
+    items.forEach(it => {
+      const div = document.createElement("div");
+      div.className = "menu-item";
+      if (it.tags && it.tags.toString().toLowerCase().includes("destacado")) {
+        div.classList.add("destacado");
       }
-
-      items.forEach(it => {
-        const div = document.createElement("div");
-        div.className = "menu-item";
-        if (it.tags && it.tags.toString().toLowerCase().includes("destacado")) {
-          div.classList.add("destacado");
-        }
-
-        div.innerHTML = `
-          <div class="menu-plate">
-            <h4>${it.plato || it.nombre || ""}</h4>
-            <p class="menu-description">${it.descripcion || it.desc || ""}</p>
-          </div>
-          <span class="menu-price">${it.precio || ""}</span>
-        `;
-        catDiv.appendChild(div);
-      });
-
+      div.innerHTML = `
+        <div class="menu-plate">
+          <h4>${it.plato || it.nombre || ""}</h4>
+          <p class="menu-description">${it.descripcion || it.desc || ""}</p>
+        </div>
+        <span class="menu-price">${it.precio || ""}</span>
+      `;
+      subBlock.appendChild(div);
     });
 
-    container.appendChild(catDiv);
+    catDiv.appendChild(subBlock);
   });
 
-  // Guardar los bloques para redistribución
-  capturarBloquesOriginales();
-
-  // Si el body tiene formato columnas, redistribuir
-  if (document.body.classList.contains('formato-columnas-reales')) {
-    setTimeout(() => distribuirColumnas(), 20);
-  }
-
-  console.log("✅ Render finalizado con", rows.length, "ítems.");
+  container.appendChild(catDiv);
+});
 }
-
 
 // === Indicador de carga ===
 function showLoading(msg = "Cargando menú...") {
@@ -559,30 +561,43 @@ function renderInfo(info = {}) {
 
 }
 
-// === SISTEMA DE COLUMNAS DINÁMICO ===
+// === SISTEMA DE COLUMNAS MEJORADO ===
 let bloquesOriginales = [];
 
+// Captura de bloques base (categorías)
 function capturarBloquesOriginales() {
   const wrapper = document.getElementById('menu-columns-wrapper');
   if (!wrapper) return;
-  bloquesOriginales = Array.from(wrapper.querySelectorAll('.categoria-bloque'));
+
+  const subs = Array.from(wrapper.querySelectorAll('.sub-bloque'));
+  if (subs.length) {
+    bloquesOriginales = subs;
+  } else {
+    bloquesOriginales = Array.from(wrapper.querySelectorAll('.categoria-bloque'));
+  }
 }
 
+// Limpia contenedor principal
 function limpiarWrapper() {
   const wrapper = document.getElementById('menu-columns-wrapper');
   if (wrapper) wrapper.innerHTML = '';
 }
 
+// Distribuye los bloques en N columnas reales
 function distribuirColumnas() {
   const wrapper = document.getElementById('menu-columns-wrapper');
-  if (!wrapper || bloquesOriginales.length === 0) return;
+  if (!wrapper || bloquesOriginales.length === 0) {
+    console.warn("⚠️ No hay bloques para distribuir");
+    return;
+  }
 
   limpiarWrapper();
 
-  const cols = parseInt(getComputedStyle(document.documentElement)
-                 .getPropertyValue('--menu-columns')) || 2;
+  const cols = parseInt(
+    getComputedStyle(document.documentElement).getPropertyValue('--menu-columns')
+  ) || 2;
 
-  // Crear contenedores de columnas
+  // crear columnas
   const columnas = [];
   for (let i = 0; i < cols; i++) {
     const col = document.createElement('div');
@@ -591,21 +606,38 @@ function distribuirColumnas() {
     wrapper.appendChild(col);
   }
 
-  // Repartir las categorías equilibradamente
-  let index = 0;
+  // trackeamos la última categoría colocada en cada columna
+  const lastCatInCol = new Array(cols).fill(null);
+  let i = 0;
+
   bloquesOriginales.forEach(b => {
-    columnas[index % cols].appendChild(b);
-    index++;
+    const colIdx = i % cols;
+    const col = columnas[colIdx];
+    const cat = b.dataset?.cat || null;
+
+    // si cambia la categoría en esta columna, agregamos su <h2> como header
+    if (cat && lastCatInCol[colIdx] !== cat) {
+      const h2 = document.createElement('h2');
+      h2.textContent = cat;
+      col.appendChild(h2);
+      lastCatInCol[colIdx] = cat;
+    }
+
+    col.appendChild(b);
+    i++;
   });
+
+  console.log(`🧱 Distribuidos ${bloquesOriginales.length} bloques en ${cols} columnas`);
 }
 
+// Restaura vista de ancho completo
 function restaurarAnchoCompleto() {
   const wrapper = document.getElementById('menu-columns-wrapper');
   if (!wrapper || bloquesOriginales.length === 0) return;
-
   limpiarWrapper();
   bloquesOriginales.forEach(b => wrapper.appendChild(b));
 }
+
 
 window.addEventListener("message", (e) => {
   const { type, data } = e.data || {};
@@ -732,31 +764,31 @@ case "categoria-pos":
   }
 });
 
-/* 🔍 Traductor de secciones */
-function getSelector(section) {
-  switch (section) {
-    case "nombre":
-    case "nombre-resto":
-      return "#nombre-resto, .resto-info h1";
-    case "slogan":
-    case "nombre-slogan":
-      return "#subtitulo-resto, .resto-slogan, .resto-info h3";
-    case "categoria":
-      return "h2";
-    case "subcategoria":
-      return "h3";
-    case "plato":
-      return ".menu-plate h4";
-    case "descripcion":
-      return ".menu-description";
-    case "precio":
-      return ".menu-price";
-    case "info-resto":
-      return ".footer";
-    default:
-      return "body";
+  /* 🔍 Traductor de secciones */
+  function getSelector(section) {
+    switch (section) {
+      case "nombre":
+      case "nombre-resto":
+        return "#nombre-resto, .resto-info h1";
+      case "slogan":
+      case "nombre-slogan":
+        return "#subtitulo-resto, .resto-slogan, .resto-info h3";
+      case "categoria":
+        return "h2";
+      case "subcategoria":
+        return "h3";
+      case "plato":
+        return ".menu-plate h4";
+      case "descripcion":
+        return ".menu-description";
+      case "precio":
+        return ".menu-price";
+      case "info-resto":
+        return ".footer";
+      default:
+        return "body";
+    }
   }
-}
 })(); 
 
 function aplicarFormatoLayout(layout) {
@@ -783,29 +815,34 @@ function aplicarFormatoLayout(layout) {
       document.body.classList.add("formato-columnas-reales");
       document.documentElement.style.setProperty("--menu-columns", 2);
       if (restoTop) restoTop.style.justifyContent = "center";
-      setTimeout(distribuirColumnas, 0);
+      capturarBloquesOriginales();
+      setTimeout(distribuirColumnas, 50);
       break;
 
     case "4": // 2 Col - Header 1° Col.
       document.body.classList.add("formato-columnas-reales");
       document.documentElement.style.setProperty("--menu-columns", 2);
       if (restoTop) restoTop.style.justifyContent = "flex-start";
-      setTimeout(distribuirColumnas, 0);
+      capturarBloquesOriginales();
+      setTimeout(distribuirColumnas, 50);
       break;
 
     case "5": // 3 Col - Header Centro
       document.body.classList.add("formato-columnas-reales");
       document.documentElement.style.setProperty("--menu-columns", 3);
       if (restoTop) restoTop.style.justifyContent = "center";
-      setTimeout(distribuirColumnas, 0);
+      capturarBloquesOriginales();
+      setTimeout(distribuirColumnas, 50);
       break;
 
     case "6": // 3 Col - Header 1° Col.
       document.body.classList.add("formato-columnas-reales");
       document.documentElement.style.setProperty("--menu-columns", 3);
       if (restoTop) restoTop.style.justifyContent = "flex-start";
-      setTimeout(distribuirColumnas, 0);
+      capturarBloquesOriginales();            // 👈 agregar
+      setTimeout(distribuirColumnas, 50);     // 👈 uniformar delay
       break;
+
   }
 }
 
