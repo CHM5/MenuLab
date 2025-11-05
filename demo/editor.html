@@ -485,6 +485,58 @@
   transform: rotate(90deg);
 }
 
+#formato {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+#formatoContenido {
+  margin-top: 8px;
+}
+#btnFormato {
+  width: 100%;
+  background: #007bff;
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  padding: 0.6rem;
+  cursor: pointer;
+}
+#gridFormatos {
+  margin-top: 0.8rem;
+  display: grid;
+  gap: 0.5rem;
+}
+#gridFormatos.oculto {
+  display: none;
+}
+.grid-opciones {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 0.5rem;
+}
+.grid-opciones button {
+  background: #0d6efd;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 0.6rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+.categorias-posicion {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: space-around;
+}
+.categorias-posicion label {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
 /* Contenedor del contenido desplegable */
 .estilos-content {
   display: none;
@@ -497,6 +549,61 @@
 .estilos-content.active {
   display: block;
   animation: fadeIn 0.25s ease;
+}
+
+/* === FORMATO === */
+.btn-panel {
+  width: 100%;
+  background: #2b7fbf;
+  color: white;
+  border: none;
+  padding: 0.6rem;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-panel:hover {
+  background: #1f679a;
+}
+
+.format-grid {
+  margin-top: 0.8rem;
+  background: #f8f9fa;
+  padding: 0.8rem;
+  border-radius: 8px;
+}
+.format-grid.oculto {
+  display: none;
+}
+.format-buttons {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 0.5rem;
+}
+.format-buttons button {
+  background: #2b7fbf;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 0.5rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.format-buttons button:hover {
+  background: #1f679a;
+}
+
+.categoria-options {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: space-around;
+}
+.categoria-options label {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-weight: 500;
 }
 
 #firuleteContenido .tab-btn {
@@ -631,7 +738,7 @@
       </div>
     </section>
 
-    <!-- ⬛ Columnas -->
+    <!-- ⬛ Columnas 
     <section id="columnas">
       <h4 id="toggleColumnas" class="toggle-header">⬛ Columnas</h4>
       <div id="columnasContenido" class="estilos-content">
@@ -640,13 +747,28 @@
         <button data-value="3">3 Columnas</button>
       </div>
     </section>
+    -->
 
     <!-- 🧩 Formato -->
     <section id="formato">
       <h4 id="toggleFormato" class="toggle-header">🧩 Formato</h4>
       <div id="formatoContenido" class="estilos-content">
-        <button data-format="ancho">📜 Ancho completo</button>
-        <button data-format="columnas-reales">🗂️ Por columnas</button>
+        <!-- Posición categorías -->
+        <div class="categoria-options">
+          <label><input type="radio" name="posCategoria" value="izq"> Izquierda</label>
+          <label><input type="radio" name="posCategoria" value="centro"> Centrada</label>
+          <label><input type="radio" name="posCategoria" value="der"> Derecha</label>
+        </div>
+        <!-- 6 opciones -->
+        <div class="format-buttons">
+          <button data-layout="1">1️⃣ 1 Col + Encabezado Izquierda.</button>
+          <button data-layout="2">2️⃣ 1 Col - Encabezado Centro</button>
+          <button data-layout="3">3️⃣ 2 Col - Encabezado Centro</button>
+          <button data-layout="4">4️⃣ 2 Col - Encabezado 1° Col.</button>
+          <button data-layout="5">5️⃣ 3 Col - Encabezado Cent.</button>
+          <button data-layout="6">6️⃣ 3 Col - Encabezado 1° Col.</button>
+        </div>
+
       </div>
     </section>
 
@@ -1265,6 +1387,32 @@ document.querySelectorAll('#estilosContenido button[data-preset]').forEach(btn =
     });
   });
 })();
+
+// === FORMATO (abre directamente desde el header) ===
+document.addEventListener("DOMContentLoaded", () => {
+  const formatoBotones = document.querySelectorAll(".format-buttons button");
+  const radios = document.querySelectorAll("input[name='posCategoria']");
+
+  // Cada layout aplica formato y lo envía al iframe
+  formatoBotones.forEach(btn => {
+    btn.addEventListener("click", e => {
+      const layout = e.target.dataset.layout;
+      console.log("📐 Aplicando formato:", layout);
+      sendToPreview("formato-layout", layout);
+    });
+  });
+
+  // Radios de posición de categorías
+  radios.forEach(radio => {
+    radio.addEventListener("change", e => {
+      const pos = e.target.value;
+      console.log("📑 Posición de categorías:", pos);
+      sendToPreview("categoria-pos", pos);
+    });
+  });
+});
+
+
 
 </script>
 <script src="presets.js"></script>

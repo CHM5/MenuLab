@@ -354,6 +354,15 @@ body.formato-columnas-reales #menu-columns-wrapper .columna {
   width: 100%;
 }
 
+/* === Alineación de títulos de categoría por clase === */
+body.cat-left   h2 { justify-content: flex-start;  text-align: left;  }
+body.cat-center h2 { justify-content: center;      text-align: center;}
+body.cat-right  h2 { justify-content: flex-end;    text-align: right; }
+
+/* Layout helper para transiciones suaves del header */
+.resto-top { transition: justify-content .25s ease; }
+
+
 </style>
 
 </head>
@@ -705,6 +714,21 @@ window.addEventListener("message", (e) => {
       };
       window.parent.postMessage({ type: "current-styles-response", data: styles }, "*");
       break;
+          /* === NUEVO: FORMATO / CATEGORÍAS === */
+case "formato-layout":
+  // data = "1".."6"
+  aplicarFormatoLayout(data);
+  break;
+
+case "categoria-pos":
+  // data = "izq" | "centro" | "der"
+  document.body.classList.remove("cat-left","cat-center","cat-right");
+  if (data === "izq")    document.body.classList.add("cat-left");
+  if (data === "centro") document.body.classList.add("cat-center");
+  if (data === "der")    document.body.classList.add("cat-right");
+  break;
+
+
   }
 });
 
@@ -734,6 +758,68 @@ function getSelector(section) {
   }
 }
 })(); 
+
+function aplicarFormatoLayout(layout) {
+  const restoTop = document.querySelector(".resto-top");
+
+  // reset
+  document.body.classList.remove("formato-ancho", "formato-columnas-reales");
+  if (restoTop) restoTop.style.justifyContent = "center";
+
+  switch (layout) {
+    case "1": // 1 Col - Header Izquierda
+      document.body.classList.add("formato-ancho");
+      if (restoTop) restoTop.style.justifyContent = "flex-start";
+      restaurarAnchoCompleto();
+      break;
+
+    case "2": // 1 Col - Header Centro
+      document.body.classList.add("formato-ancho");
+      if (restoTop) restoTop.style.justifyContent = "center";
+      restaurarAnchoCompleto();
+      break;
+
+    case "3": // 2 Col - Header Centro
+      document.body.classList.add("formato-columnas-reales");
+      document.documentElement.style.setProperty("--menu-columns", 2);
+      if (restoTop) restoTop.style.justifyContent = "center";
+      setTimeout(distribuirColumnas, 0);
+      break;
+
+    case "4": // 2 Col - Header 1° Col.
+      document.body.classList.add("formato-columnas-reales");
+      document.documentElement.style.setProperty("--menu-columns", 2);
+      if (restoTop) restoTop.style.justifyContent = "flex-start";
+      setTimeout(distribuirColumnas, 0);
+      break;
+
+    case "5": // 3 Col - Header Centro
+      document.body.classList.add("formato-columnas-reales");
+      document.documentElement.style.setProperty("--menu-columns", 3);
+      if (restoTop) restoTop.style.justifyContent = "center";
+      setTimeout(distribuirColumnas, 0);
+      break;
+
+    case "6": // 3 Col - Header 1° Col.
+      document.body.classList.add("formato-columnas-reales");
+      document.documentElement.style.setProperty("--menu-columns", 3);
+      if (restoTop) restoTop.style.justifyContent = "flex-start";
+      setTimeout(distribuirColumnas, 0);
+      break;
+  }
+}
+
+
+// === Función para alinear categorías ===
+function ajustarCategorias(pos) {
+  const cats = document.querySelectorAll("h2");
+  cats.forEach(c => {
+    if (pos === "izq") c.style.textAlign = "left";
+    else if (pos === "centro") c.style.textAlign = "center";
+    else if (pos === "der") c.style.textAlign = "right";
+  });
+}
+
 
 </script>
 </body>
