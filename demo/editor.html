@@ -836,6 +836,9 @@ const sideMenu = document.getElementById("sideMenu");
 const itemsList = document.getElementById("itemsList");
 let previewReady = false;
 
+const params = new URLSearchParams(window.location.search);
+const tenant = params.get('tenant') || 'cafe_central';
+
 /* === FUNCIÓN: enviar mensajes seguros al iframe (con cola) === */
 const msgQueue = [];
 
@@ -1204,8 +1207,6 @@ document.querySelectorAll(".item-header").forEach(header => {
   const preview = document.querySelector('iframe#preview, iframe#previewFrame, iframe#previewArea, iframe');
   if (!preview) { console.error('iframe preview no encontrado'); return; }
 
-  const params = new URLSearchParams(window.location.search);
-  const tenant = params.get('tenant') || 'cafe_central';
 
   // URL directa (cache-buster)
   const url = `./emprendedor_post.html?tenant=${encodeURIComponent(tenant)}&_=${Date.now()}`;
@@ -1376,26 +1377,42 @@ window.addEventListener("message", async (e) => {
       // dar un pequeño delay para evitar race conditions con iframes remotos
       setTimeout(() => flushQueue?.(), 10);
       break;
+  case "current-styles-response":
+    try {
+      const API_URL = "https://script.google.com/macros/s/AKfycbyGI6-9n_iclscSXGhoCcE1vwx5J2TV691Thtf7bp_bNI10ZvN8k9r_BjSAR0KdyyBv/exec";
+      const qs = new URLSearchParams({
+        action: "save_style",
+        tenant: tenant,
+        data: JSON.stringify(data),
+        _: Date.now().toString()
+      });
 
-    case "current-styles-response":
-      const payload = {
-        nombre: nombreFormato,
-        data: JSON.stringify(data)
-      };
+      console.log("💾 Guardando estilo en Apps Script:", { action: "save_style", tenant, data });
+
+      // ⚙️ GET simple (sin headers, sin preflight)
+      const response = await fetch(`${API_URL}?${qs.toString()}`, { method: "GET" });
+
+      // 📦 Puede venir como texto plano
+      const text = await response.text();
+      let result;
       try {
-        const response = await fetch("https://script.google.com/macros/s/AKfycby-O0nmvEiaqkrkglO1Ja0Hd8f7iVHpZU_wNl3xUpLHZ8xJmeJOg8XtjRaUcyLqznRl/exec", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload)
-        });
-        const result = await response.text();
-        alert("Formato guardado con éxito ✅");
-        console.log("Respuesta Apps Script:", result);
-      } catch (err) {
-        console.error("Error al guardar:", err);
-        alert("Error al guardar el formato ❌");
+        result = JSON.parse(text);
+      } catch {
+        result = { raw: text };
       }
-      break;
+
+      if (result && result.success) {
+        alert("✅ Formato guardado con éxito");
+        console.log("📦 Respuesta Apps Script:", result);
+      } else {
+        alert("⚠️ Error al guardar formato");
+        console.warn("❌ Respuesta Apps Script:", result);
+      }
+    } catch (err) {
+      console.error("Error al guardar:", err);
+      alert("❌ Error al conectar con Apps Script");
+    }
+    break;
   }
 });
 

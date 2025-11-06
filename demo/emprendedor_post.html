@@ -525,7 +525,39 @@ const params = new URLSearchParams(window.location.search);
 const tenant = params.get("tenant") || "cafe_central"; // por defecto Café Central
 
 // 2️⃣ Llamar a la API de Apps Script
-const API_URL = "https://script.google.com/macros/s/AKfycby-O0nmvEiaqkrkglO1Ja0Hd8f7iVHpZU_wNl3xUpLHZ8xJmeJOg8XtjRaUcyLqznRl/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbyGI6-9n_iclscSXGhoCcE1vwx5J2TV691Thtf7bp_bNI10ZvN8k9r_BjSAR0KdyyBv/exec";
+// === 🔹 CARGAR ESTILO GUARDADO DEL RESTAURANTE ===
+async function loadSavedStyle() {
+  try {
+    const url = `${API_URL}?action=get_style&tenant=${tenant}&_=${Date.now()}`;
+
+    // dev 
+    const isLocal = location.hostname.includes("127.0.0.1") || location.hostname.includes("localhost") || location.protocol === "file:";
+    const finalUrl = isLocal ? `https://corsproxy.io/?${encodeURIComponent(url)}` : url;
+    const res = await fetch(finalUrl);
+    // dev
+    
+    /*
+    // prod
+    const res = await fetch(url);
+    // prod 
+*/
+    const text = await res.text();
+    let estilo;
+    try {
+      estilo = JSON.parse(text);
+    } catch {
+      estilo = {};
+    }
+
+    aplicarEstilosGuardados(estilo);
+    console.log("🎨 Estilo aplicado desde hoja users:", estilo);
+  } catch (err) {
+    console.error("⚠️ No se pudo cargar estilo guardado:", err);
+  }
+}
+
+
 
 async function loadMenu() {
   try {
@@ -639,6 +671,7 @@ function showLoading(msg = "Cargando menú...") {
 
 // 3️⃣ Ejecutar al cargar
 loadMenu();
+loadSavedStyle();
 // 🧭 Forzar formato inicial: 1 Col - Encabezado Centro
 window.addEventListener("load", () => {
   if (typeof aplicarFormatoLayout === "function") {
@@ -1039,6 +1072,73 @@ function ajustarCategorias(pos) {
     else if (pos === "centro") c.style.textAlign = "center";
     else if (pos === "der") c.style.textAlign = "right";
   });
+}
+
+// === 🔹 APLICAR ESTILOS GUARDADOS (por sección) ===
+function aplicarEstilosGuardados(estilo = {}) {
+  if (!estilo) return;
+
+  // 🎨 1. Fuentes por sección
+  if (estilo.fonts) {
+    Object.entries(estilo.fonts).forEach(([key, val]) => {
+      if (!val) return;
+      document.documentElement.style.setProperty(`--font-${key}`, val);
+      document.querySelectorAll(getSelector(key)).forEach(el => {
+        el.style.fontFamily = `'${val}', sans-serif`;
+      });
+    });
+  }
+
+  // 🎨 2. Colores por sección
+  if (estilo.colors) {
+    Object.entries(estilo.colors).forEach(([key, val]) => {
+      if (!val) return;
+      document.documentElement.style.setProperty(`--color-${key}`, val);
+      document.querySelectorAll(getSelector(key)).forEach(el => {
+        el.style.color = val;
+      });
+    });
+  }
+
+  // 🔠 3. Tamaños por sección
+  if (estilo.sizes) {
+    Object.entries(estilo.sizes).forEach(([key, val]) => {
+      if (!val) return;
+      const rem = val.includes("rem") ? val : `${val}rem`;
+      document.documentElement.style.setProperty(`--size-${key}`, rem);
+      document.querySelectorAll(getSelector(key)).forEach(el => {
+        el.style.fontSize = rem;
+      });
+    });
+  }
+
+  // ✨ 4. Firulete
+  if (estilo.firulete)
+    document.documentElement.style.setProperty("--firulete", estilo.firulete);
+  if (estilo.firuleteOpacity)
+    document.documentElement.style.setProperty("--firulete-opacity", estilo.firuleteOpacity);
+
+  // 🖼️ 5. Fondo
+  if (estilo.bgOpacity)
+    document.documentElement.style.setProperty("--bg-opacity", estilo.bgOpacity);
+  if (estilo.bgSize)
+    document.documentElement.style.setProperty("--bg-size-scale", estilo.bgSize);
+
+  // 🧱 6. Marco
+  if (estilo.frame) {
+    if (estilo.frame.style) document.documentElement.style.setProperty("--frame-style", estilo.frame.style);
+    if (estilo.frame.color) document.documentElement.style.setProperty("--frame-color", estilo.frame.color);
+    if (estilo.frame.width) document.documentElement.style.setProperty("--frame-width", estilo.frame.width);
+  }
+
+  // 🧩 7. Columnas
+  if (estilo.columns) {
+    const cols = parseInt(estilo.columns);
+    if (cols === 1) restaurarAnchoCompleto();
+    else distribuirColumnas(cols, "full");
+  }
+
+  console.log("✅ Estilos guardados aplicados:", estilo);
 }
 
 })(); 
