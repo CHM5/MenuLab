@@ -241,48 +241,85 @@
 
   }
 
-  /* === MODO IMPRESIÓN === */
-  @media print {
-    @page {
-      size: A4;
-      margin: 10mm 8mm 10mm 8mm;
-    }
-    * {
-      -webkit-print-color-adjust: exact !important;
-      print-color-adjust: exact !important;
-    }
-
-    .menu-item.destacado {
-      background: #f7f7f7 !important;       /* gris muy claro */
-      border-left: 4px solid #9e9e9e !important; /* gris medio */
-      border-radius: 6px !important;
-      padding: 0.4rem 0.6rem !important;
-      opacity: 0.7;
-    }
-
-    .print-background {
-      opacity: var(--bg-opacity) !important;
-      -webkit-print-color-adjust: exact;
-      print-color-adjust: exact;
-    }
-
-    .footer {
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-      background: var(--color-bg);
-      border-top: 1px solid #ccc;
-      color: var(--color-info-resto);
-      padding: 6px 0;
-    }
-
-    .menu-item, .resto-header {
-      break-inside: avoid;
-      page-break-inside: avoid;
-    }
-
-
+/* === MODO IMPRESIÓN AJUSTADO === */
+@media print {
+  @page {
+    size: A4;
+    margin: 8mm 8mm 10mm 8mm;
   }
+
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  body {
+    background: var(--color-bg) !important;
+    -webkit-print-color-adjust: exact;
+    margin: 0 !important;
+  }
+
+  .print-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: var(--bg-opacity) !important;
+    background-size: var(--bg-size-scale);
+    z-index: -1;
+  }
+
+  /* Evita que el header quede solo en una hoja */
+  .resto-top {
+    break-inside: avoid !important;
+    page-break-after: avoid !important;
+    margin-bottom: 1rem !important;
+  }
+
+  /* Ajusta wrapper para que no fuerce salto de página */
+  #menu-columns-wrapper {
+    break-inside: auto;
+    page-break-inside: auto;
+    overflow: visible;
+  }
+
+  /* Corrige bloques internos para evitar cortes raros */
+  .categoria-bloque,
+  .sub-bloque,
+  .menu-item {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  /* Footer fijo al final */
+  .footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    background: var(--color-bg);
+    border-top: 1px solid #ccc;
+    color: var(--color-info-resto);
+    font-family: var(--font-info-resto);
+    font-size: var(--size-info-resto);
+    text-align: center;
+    padding: 6px 0;
+  }
+
+  /* Oculta scrolls visuales */
+  html, body {
+    overflow: visible !important;
+    height: auto !important;
+  }
+
+  /* Asegura que las columnas se impriman completas */
+  #menu-columns-wrapper .columna {
+    page-break-inside: avoid;
+  }
+}
+
 
   #menu-frame {
     position: relative;
@@ -354,23 +391,37 @@ body.cat-right  h2 { justify-content: flex-end;    text-align: right; }
   margin-bottom: 1.2rem;
 }
 
-/* === SISTEMA DE COLUMNAS POR CLASE === */
+/* === SISTEMA DE COLUMNAS CON DIVISORES === */
 #menu-columns-wrapper {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  gap: 2rem;
   width: 100%;
+  gap: 1rem; /* espacio entre columnas */
   transition: all 0.3s ease;
+  position: relative;
 }
 
-/* Columnas base */
+/* Columna base */
 #menu-columns-wrapper .columna {
   flex: 1 1 auto;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
+  padding: 0 1rem; /* pequeño margen interior */
+  position: relative;
+}
+
+/* Divisor entre columnas */
+#menu-columns-wrapper .columna:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 1px;
+  background-color: rgba(0, 0, 0, 0.1);
 }
 
 /* Layout: 1 columna */
@@ -380,6 +431,10 @@ body.cols-1 #menu-columns-wrapper {
 body.cols-1 #menu-columns-wrapper .columna {
   width: 100% !important;
   max-width: 100% !important;
+  padding: 0 !important;
+}
+body.cols-1 #menu-columns-wrapper .columna::after {
+  display: none !important;
 }
 
 /* Layout: 2 columnas */
@@ -406,6 +461,7 @@ body.header-en-primera .resto-top {
   margin-bottom: 1rem;
   column-span: all;
 }
+
 
 </style>
 
@@ -583,6 +639,12 @@ function showLoading(msg = "Cargando menú...") {
 
 // 3️⃣ Ejecutar al cargar
 loadMenu();
+// 🧭 Forzar formato inicial: 1 Col - Encabezado Centro
+window.addEventListener("load", () => {
+  if (typeof aplicarFormatoLayout === "function") {
+    aplicarFormatoLayout("1"); // 2 = 1 Columna - Encabezado Centro
+  }
+});
 
 function renderInfo(info = {}) {
   const get = (k) => info[k] || "";
@@ -944,32 +1006,26 @@ function aplicarFormatoLayout(layout) {
     requestAnimationFrame(() => requestAnimationFrame(() => distribuirColumnas(cols, headerMode)));
   }
 
-  switch (String(layout)) {
-    case "1": // 1 Col - Header Izquierda
-      document.body.classList.add("formato-ancho", "cols-1");
-      if (restoTop) restoTop.style.justifyContent = "flex-start";
-      restaurarAnchoCompleto();
-      break;
+  switch (String(layout)) {    
+    case "1": // 1 Col - Header Centro
+    document.body.classList.add("formato-ancho", "cols-1");
+    if (restoTop) restoTop.style.justifyContent = "center";
+    restaurarAnchoCompleto();
+    break;
 
-    case "2": // 1 Col - Header Centro
-      document.body.classList.add("formato-ancho", "cols-1");
-      if (restoTop) restoTop.style.justifyContent = "center";
-      restaurarAnchoCompleto();
-      break;
-
-    case "3": // 2 Cols - Header Centro (fuera de columnas)
+    case "2": // 2 Cols - Header Centro (fuera de columnas)
       go(2, 'full');
       break;
 
-    case "4": // 2 Cols - Header 1° Col
+    case "3": // 2 Cols - Header 1° Col
       go(2, 'first');
       break;
 
-    case "5": // 3 Cols - Header Centro
+    case "4": // 3 Cols - Header Centro
       go(3, 'full');
       break;
 
-    case "6": // 3 Cols - Header 1° Col
+    case "5": // 3 Cols - Header 1° Col
       go(3, 'first');
       break;
   }
