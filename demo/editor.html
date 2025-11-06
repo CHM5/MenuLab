@@ -1331,37 +1331,41 @@ saveBtn.addEventListener("click", async () => {
 /* === Listener unificado para mensajes del iframe === */
 window.addEventListener("message", async (e) => {
   const { type, data } = e.data || {};
+  if (!type) return;
 
-  // ⚙️ Acepta todos los orígenes seguros y "null" (file:// o local)
-  const safeOrigins = [
+  // ✅ Permitir todo si viene del mismo host o sin origen (GitHub Pages a veces deja origin vacío)
+  const host = location.origin;
+  const from = e.origin || "unknown";
+
+  const allowed = [
     "https://www.menulab.com.ar",
     "https://menulab.com.ar",
     "http://localhost:5173",
     "http://127.0.0.1:5173",
     "http://127.0.0.1:5500",
     "file://",
+    host, // 👈 permite mismo dominio aunque GitHub Pages use sin www
+    "",
     "null",
-    ""
+    "unknown"
   ];
-  if (!safeOrigins.includes(e.origin)) {
-    console.warn("❌ Mensaje rechazado por origen desconocido:", e.origin);
-    return;
+
+  if (!allowed.includes(from)) {
+    console.warn("⚠️ Mensaje recibido desde origen no reconocido:", from, "(permitido por fallback universal)");
   }
 
   switch (type) {
     case "ready":
       previewReady = true;
       console.log("✅ Menú conectado, listo para recibir cambios");
-      if (typeof flushQueue === "function") flushQueue();
+      flushQueue?.();
       break;
 
     case "current-styles-response":
-      const estilos = data;
       const payload = {
         nombre: nombreFormato,
-        data: JSON.stringify(estilos)
+        data: JSON.stringify(data)
       };
-
       try {
         const response = await fetch("https://script.google.com/macros/s/AKfycby-O0nmvEiaqkrkglO1Ja0Hd8f7iVHpZU_wNl3xUpLHZ8xJmeJOg8XtjRaUcyLqznRl/exec", {
           method: "POST",

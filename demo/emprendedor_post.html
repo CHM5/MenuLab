@@ -400,25 +400,26 @@ body.cat-right  h2 { justify-content: flex-end;    text-align: right; }
 
   (function() {
 
-/* === Datos base de ejemplo === */
+  /* === Datos base de ejemplo === */
 window.addEventListener("DOMContentLoaded", () => {
   console.log("👋 Menu listo, notificando al editor...");
 
+  // enviamos ready universal
   try {
-    // Mensaje inicial a cualquier origen (local, GitHub Pages o producción)
     window.parent.postMessage({ type: "ready" }, "*");
     console.log("📤 Primer mensaje ready enviado (universal)");
 
-    // Segundo intento por si el primero no llega a tiempo
-    setTimeout(() => {
+    // refuerzo cada 1.5s (hasta 3 veces)
+    let retries = 0;
+    const interval = setInterval(() => {
+      if (retries++ >= 3) return clearInterval(interval);
       window.parent.postMessage({ type: "ready" }, "*");
-      console.log("📤 Reenvío ready después de carga completa del menú");
+      console.log(`📤 Reenvío ready #${retries}`);
     }, 1500);
   } catch (err) {
     console.warn("⚠️ Error enviando ready:", err);
   }
 });
-
 
 
 // === NUEVO BLOQUE DINÁMICO ===
