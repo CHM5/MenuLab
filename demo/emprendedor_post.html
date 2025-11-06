@@ -662,6 +662,11 @@ window.addEventListener("message", (e) => {
   console.log("🎯 [recv] =>", type, data);
 
   switch (type) {
+    case "init":
+      // responder al editor para confirmar disponibilidad (handshake)
+      try { window.parent.postMessage({ type: "ready" }, "*"); } catch (err) { /* noop */ }
+      console.log("📤 Respondiendo ready al editor (init recibido)");
+      break;
     case "font-section":
       if (data.section && data.font) {
         document.documentElement.style.setProperty(`--font-${data.section}`, data.font);

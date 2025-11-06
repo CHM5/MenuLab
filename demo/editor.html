@@ -1143,7 +1143,6 @@ document.querySelectorAll(".item-header").forEach(header => {
   });
 });
 
-// ...existing code...
 /* === CARGAR MENÚ EN IFRAME (usar URL directa para mantener origen) === */
 (function loadPreview() {
   // intenta localizar el iframe (adapta id si tu iframe tiene otro)
@@ -1356,9 +1355,11 @@ window.addEventListener("message", async (e) => {
 
   switch (type) {
     case "ready":
+    case "init": // aceptar init como sinónimo de ready (handshake)
       previewReady = true;
-      console.log("✅ Menú conectado, listo para recibir cambios");
-      flushQueue?.();
+      console.log("✅ Menú conectado, listo para recibir cambios (ready/init)");
+      // dar un pequeño delay para evitar race conditions con iframes remotos
+      setTimeout(() => flushQueue?.(), 10);
       break;
 
     case "current-styles-response":
