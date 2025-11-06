@@ -280,6 +280,8 @@
       break-inside: avoid;
       page-break-inside: avoid;
     }
+
+
   }
 
   #menu-frame {
@@ -324,27 +326,15 @@
     transform: rotate(180deg);
   }
 
-body.formato-ancho #menu-columns-wrapper {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-  width: 100%;
-}
 
-/* === FORMATO POR COLUMNAS === */
-body.formato-columnas-reales #menu-columns-wrapper {
-  display: flex;
-  justify-content: space-between;
-  gap: 2rem;
-}
+  /* Evitar cortes feos */
+  .categoria-bloque,
+  .sub-bloque,
+  .menu-item {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
 
-/* columnas internas creadas por JS */
-body.formato-columnas-reales #menu-columns-wrapper .columna {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-}
 
 /* Bloques */
 .categoria-bloque {
@@ -358,13 +348,63 @@ body.cat-left   h2 { justify-content: flex-start;  text-align: left;  }
 body.cat-center h2 { justify-content: center;      text-align: center;}
 body.cat-right  h2 { justify-content: flex-end;    text-align: right; }
 
-/* Layout helper para transiciones suaves del header */
-.resto-top { transition: justify-content .25s ease; }
-
 .sub-bloque {
   break-inside: avoid;
   page-break-inside: avoid;
   margin-bottom: 1.2rem;
+}
+
+/* === SISTEMA DE COLUMNAS POR CLASE === */
+#menu-columns-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 2rem;
+  width: 100%;
+  transition: all 0.3s ease;
+}
+
+/* Columnas base */
+#menu-columns-wrapper .columna {
+  flex: 1 1 auto;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+/* Layout: 1 columna */
+body.cols-1 #menu-columns-wrapper {
+  display: block !important;
+}
+body.cols-1 #menu-columns-wrapper .columna {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+/* Layout: 2 columnas */
+body.cols-2 #menu-columns-wrapper {
+  display: flex !important;
+}
+body.cols-2 #menu-columns-wrapper .columna {
+  width: 48%;
+  max-width: 48%;
+}
+
+/* Layout: 3 columnas */
+body.cols-3 #menu-columns-wrapper {
+  display: flex !important;
+}
+body.cols-3 #menu-columns-wrapper .columna {
+  width: 31%;
+  max-width: 31%;
+}
+
+/* Header dentro de la primera columna */
+body.header-en-primera .resto-top {
+  justify-content: center;
+  margin-bottom: 1rem;
+  column-span: all;
 }
 
 </style>
@@ -446,6 +486,7 @@ async function loadMenu() {
     if (data.menu && Array.isArray(data.menu)) {
       console.log(`✅ Cargado menú de ${tenant} (${data.count} ítems)`);
       renderMenu(data.menu);
+      setTimeout(capturarBloquesOriginales, 200); // da tiempo al DOM a dibujarse
     } else {
       document.getElementById("menuTable").innerHTML =
         "<p style='text-align:center;color:#999'>Menú no disponible.</p>";
@@ -578,44 +619,86 @@ function renderInfo(info = {}) {
 
 }
 
-// === SISTEMA DE COLUMNAS MEJORADO ===
+// ====== STATE ======
 let bloquesOriginales = [];
+let _snapshotDOM = null;
+let _headerPlaceholder = null;
 
-// Captura de bloques base (categorías)
-function capturarBloquesOriginales() {
+// ====== HELPERS ======
+function _saveSnapshotIfNeeded() {
+  if (_snapshotDOM) return;
   const wrapper = document.getElementById('menu-columns-wrapper');
   if (!wrapper) return;
-
-  const subs = Array.from(wrapper.querySelectorAll('.sub-bloque'));
-  if (subs.length) {
-    bloquesOriginales = subs;
-  } else {
-    bloquesOriginales = Array.from(wrapper.querySelectorAll('.categoria-bloque'));
-  }
+  _snapshotDOM = document.createElement('div');
+  _snapshotDOM.id = '__snapshot';
+  // guardamos los nodos hijos originales (categorías renderizadas)
+  Array.from(wrapper.childNodes).forEach(n => _snapshotDOM.appendChild(n.cloneNode(true)));
 }
 
-// Limpia contenedor principal
+function _restoreFromSnapshot() {
+  if (!_snapshotDOM) return;
+  const wrapper = document.getElementById('menu-columns-wrapper');
+  if (!wrapper) return;
+  wrapper.innerHTML = '';
+  Array.from(_snapshotDOM.childNodes).forEach(n => wrapper.appendChild(n.cloneNode(true)));
+}
+
+// ====== CAPTURA ======
+function capturarBloquesOriginales() {
+  const wrapper = document.getElementById('menu-columns-wrapper');
+  const menuTable = document.getElementById('menuTable');
+  if (!wrapper || !menuTable) return;
+
+  // Reiniciar snapshot y bloques
+  bloquesOriginales = [];
+  _snapshotDOM = null;
+
+  // Crear snapshot original desde el contenido real (menuTable)
+  _snapshotDOM = document.createElement('div');
+  _snapshotDOM.id = '__snapshot';
+  Array.from(menuTable.childNodes).forEach(n =>
+    _snapshotDOM.appendChild(n.cloneNode(true))
+  );
+
+  // Capturar categorías completas
+  const cats = Array.from(menuTable.querySelectorAll('.categoria-bloque'));
+  bloquesOriginales = cats.map(el => el.cloneNode(true));
+
+  // Placeholder para el header
+  if (!_headerPlaceholder) {
+    _headerPlaceholder = document.createElement('div');
+    _headerPlaceholder.id = '__header_ph';
+    const restoTop = document.querySelector('.resto-top');
+    if (restoTop && restoTop.parentNode) {
+      restoTop.parentNode.insertBefore(_headerPlaceholder, restoTop);
+    }
+  }
+
+  console.log(`📦 Capturados ${bloquesOriginales.length} categorías (refrescado limpio)`);
+}
+
+
 function limpiarWrapper() {
   const wrapper = document.getElementById('menu-columns-wrapper');
-  if (wrapper) wrapper.innerHTML = '';
+  if (!wrapper) return;
+  wrapper.querySelectorAll('.columna').forEach(c => c.remove());
 }
 
-// Distribuye los bloques en N columnas reales
-function distribuirColumnas() {
+// ====== DISTRIBUCIÓN BALANCEADA ======
+function distribuirColumnas(cols = 2, headerMode = 'full') {
   const wrapper = document.getElementById('menu-columns-wrapper');
+  const restoTop = document.querySelector('.resto-top');
   if (!wrapper || bloquesOriginales.length === 0) {
     console.warn("⚠️ No hay bloques para distribuir");
     return;
   }
 
-  limpiarWrapper();
+  // Limpiar el contenido anterior (incluidas columnas previas)
+  wrapper.innerHTML = '';
 
-  const cols = parseInt(
-    getComputedStyle(document.documentElement).getPropertyValue('--menu-columns')
-  ) || 2;
-
-  // crear columnas
+  // Crear columnas
   const columnas = [];
+  const alturas = new Array(cols).fill(0);
   for (let i = 0; i < cols; i++) {
     const col = document.createElement('div');
     col.className = 'columna';
@@ -623,37 +706,58 @@ function distribuirColumnas() {
     wrapper.appendChild(col);
   }
 
-  // trackeamos la última categoría colocada en cada columna
-  const lastCatInCol = new Array(cols).fill(null);
-  let i = 0;
-
-  bloquesOriginales.forEach(b => {
-    const colIdx = i % cols;
-    const col = columnas[colIdx];
-    const cat = b.dataset?.cat || null;
-
-    // si cambia la categoría en esta columna, agregamos su <h2> como header
-    if (cat && lastCatInCol[colIdx] !== cat) {
-      const h2 = document.createElement('h2');
-      h2.textContent = cat;
-      col.appendChild(h2);
-      lastCatInCol[colIdx] = cat;
+  // Mover el header según el modo
+  if (restoTop) {
+    if (headerMode === 'first') {
+      document.body.classList.add('header-en-primera');
+      columnas[0].prepend(restoTop);
+    } else {
+      document.body.classList.remove('header-en-primera');
+      if (_headerPlaceholder && _headerPlaceholder.parentNode) {
+        _headerPlaceholder.parentNode.insertBefore(restoTop, _headerPlaceholder.nextSibling);
+      } else {
+        wrapper.parentNode.insertBefore(restoTop, wrapper);
+      }
     }
+  }
 
-    col.appendChild(b);
-    i++;
+  // Distribución balanceada por número de ítems
+  bloquesOriginales.forEach(b => {
+    const peso = b.querySelectorAll('.menu-item').length || 1;
+    const idxMin = alturas.indexOf(Math.min(...alturas));
+    columnas[idxMin].appendChild(b.cloneNode(true));
+    alturas[idxMin] += peso;
   });
 
-  console.log(`🧱 Distribuidos ${bloquesOriginales.length} bloques en ${cols} columnas`);
+  console.log(`🧱 Distribuidos ${bloquesOriginales.length} bloques en ${cols} columnas (mode=${headerMode})`);
 }
 
-// Restaura vista de ancho completo
+// ====== RESTAURAR 1 COLUMNA ======
 function restaurarAnchoCompleto() {
   const wrapper = document.getElementById('menu-columns-wrapper');
-  if (!wrapper || bloquesOriginales.length === 0) return;
-  limpiarWrapper();
-  bloquesOriginales.forEach(b => wrapper.appendChild(b));
+  const menuTable = document.getElementById('menuTable');
+  if (!wrapper || !_snapshotDOM || !menuTable) return;
+
+  // Reset visual
+  wrapper.style.display = 'block';
+  wrapper.style.gap = '0';
+  wrapper.style.justifyContent = 'flex-start';
+
+  // Limpiar y restaurar contenido original del menuTable
+  menuTable.innerHTML = '';
+  Array.from(_snapshotDOM.childNodes).forEach(n =>
+    menuTable.appendChild(n.cloneNode(true))
+  );
+
+  // Devolver header a su lugar
+  const restoTop = document.querySelector('.resto-top');
+  if (restoTop && _headerPlaceholder && _headerPlaceholder.parentNode) {
+    _headerPlaceholder.parentNode.insertBefore(restoTop, _headerPlaceholder.nextSibling);
+  }
+
+  console.log("🔙 Restaurado layout de 1 columna (visual correcto)");
 }
+
 
 
 window.addEventListener("message", (e) => {
@@ -769,22 +873,24 @@ window.addEventListener("message", (e) => {
       window.parent.postMessage({ type: "current-styles-response", data: styles }, "*");
       break;
           /* === NUEVO: FORMATO / CATEGORÍAS === */
-case "formato-layout":
-  // data = "1".."6"
-  aplicarFormatoLayout(data);
-  break;
+    case "formato-layout":
+      console.log("📐 Aplicando formato desde editor:", data);
+      if (typeof aplicarFormatoLayout === "function") {
+        aplicarFormatoLayout(data);
+      } else {
+        console.warn("⚠️ aplicarFormatoLayout no encontrado en menú");
+      }
+      break;
 
-case "categoria-pos":
-  // data = "izq" | "centro" | "der"
-  document.body.classList.remove("cat-left","cat-center","cat-right");
-  if (data === "izq")    document.body.classList.add("cat-left");
-  if (data === "centro") document.body.classList.add("cat-center");
-  if (data === "der")    document.body.classList.add("cat-right");
-  break;
-
-
-  }
-});
+    case "categoria-pos":
+      // data = "izq" | "centro" | "der"
+      document.body.classList.remove("cat-left","cat-center","cat-right");
+      if (data === "izq")    document.body.classList.add("cat-left");
+      if (data === "centro") document.body.classList.add("cat-center");
+      if (data === "der")    document.body.classList.add("cat-right");
+      break;
+    }
+  });
 
   /* 🔍 Traductor de secciones */
   function getSelector(section) {
@@ -811,63 +917,63 @@ case "categoria-pos":
         return "body";
     }
   }
-})(); 
+
 
 function aplicarFormatoLayout(layout) {
-  const restoTop = document.querySelector(".resto-top");
+  const restoTop = document.querySelector('.resto-top');
 
-  // reset
-  document.body.classList.remove("formato-ancho", "formato-columnas-reales");
-  if (restoTop) restoTop.style.justifyContent = "center";
+  // Reset clases base
+  document.body.classList.remove(
+    "formato-ancho",
+    "formato-columnas-reales",
+    "header-en-primera",
+    "cols-1", "cols-2", "cols-3"
+  );
 
-  switch (layout) {
+  // Asegurar flex del header
+  if (restoTop) {
+    restoTop.style.display = "flex";
+    restoTop.style.alignItems = "center";
+    restoTop.style.justifyContent = "center";
+  }
+
+  function go(cols, headerMode) {
+    document.body.classList.add(`cols-${cols}`, "formato-columnas-reales");
+    if (restoTop) restoTop.style.justifyContent = (headerMode === 'first' ? "flex-start" : "center");
+    capturarBloquesOriginales();
+    requestAnimationFrame(() => requestAnimationFrame(() => distribuirColumnas(cols, headerMode)));
+  }
+
+  switch (String(layout)) {
     case "1": // 1 Col - Header Izquierda
-      document.body.classList.add("formato-ancho");
+      document.body.classList.add("formato-ancho", "cols-1");
       if (restoTop) restoTop.style.justifyContent = "flex-start";
       restaurarAnchoCompleto();
       break;
 
     case "2": // 1 Col - Header Centro
-      document.body.classList.add("formato-ancho");
+      document.body.classList.add("formato-ancho", "cols-1");
       if (restoTop) restoTop.style.justifyContent = "center";
       restaurarAnchoCompleto();
       break;
 
-    case "3": // 2 Col - Header Centro
-      document.body.classList.add("formato-columnas-reales");
-      document.documentElement.style.setProperty("--menu-columns", 2);
-      if (restoTop) restoTop.style.justifyContent = "center";
-      capturarBloquesOriginales();
-      setTimeout(distribuirColumnas, 50);
+    case "3": // 2 Cols - Header Centro (fuera de columnas)
+      go(2, 'full');
       break;
 
-    case "4": // 2 Col - Header 1° Col.
-      document.body.classList.add("formato-columnas-reales");
-      document.documentElement.style.setProperty("--menu-columns", 2);
-      if (restoTop) restoTop.style.justifyContent = "flex-start";
-      capturarBloquesOriginales();
-      setTimeout(distribuirColumnas, 50);
+    case "4": // 2 Cols - Header 1° Col
+      go(2, 'first');
       break;
 
-    case "5": // 3 Col - Header Centro
-      document.body.classList.add("formato-columnas-reales");
-      document.documentElement.style.setProperty("--menu-columns", 3);
-      if (restoTop) restoTop.style.justifyContent = "center";
-      capturarBloquesOriginales();
-      setTimeout(distribuirColumnas, 50);
+    case "5": // 3 Cols - Header Centro
+      go(3, 'full');
       break;
 
-    case "6": // 3 Col - Header 1° Col.
-      document.body.classList.add("formato-columnas-reales");
-      document.documentElement.style.setProperty("--menu-columns", 3);
-      if (restoTop) restoTop.style.justifyContent = "flex-start";
-      capturarBloquesOriginales();            // 👈 agregar
-      setTimeout(distribuirColumnas, 50);     // 👈 uniformar delay
+    case "6": // 3 Cols - Header 1° Col
+      go(3, 'first');
       break;
-
   }
 }
-
 
 // === Función para alinear categorías ===
 function ajustarCategorias(pos) {
@@ -879,7 +985,7 @@ function ajustarCategorias(pos) {
   });
 }
 
-
+})(); 
 </script>
 </body>
 </html>

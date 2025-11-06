@@ -1,0 +1,20 @@
+<!-- Add this section inside your <section id="formato"> -->
+<section id="formato">
+  <button id="formatoBtn">Formato</button>
+  <div id="formatoOptions" style="display: none;">
+    <div class="grid-opciones">
+      <button data-format="1-column-right">1 Columna (Header a la derecha)</button>
+      <button data-format="1-column-centered">1 Columna (Header centrado)</button>
+      <button data-format="2-columns-centered">2 Columnas (Header centrado)</button>
+      <button data-format="2-columns-left">2 Columnas (Header a la izquierda)</button>
+      <button data-format="3-columns-centered">3 Columnas (Header centrado)</button>
+      <button data-format="3-columns-left">3 Columnas (Header a la izquierda)</button>
+    </div>
+    <div>
+      <h5>Categorías:</h5>
+      <label><input type="radio" name="categoryPosition" value="left"> Categorías a la izquierda</label>
+      <label><input type="radio" name="categoryPosition" value="center"> Categorías centradas</label>
+      <label><input type="radio" name="categoryPosition" value="right"> Categorías a la derecha</label>
+    </div>
+  </div>
+</section>
