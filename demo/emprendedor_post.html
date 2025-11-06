@@ -403,11 +403,13 @@ body.cat-right  h2 { justify-content: flex-end;    text-align: right; }
 /* === Datos base de ejemplo === */
 window.addEventListener("DOMContentLoaded", () => {
   console.log("👋 Menu listo, notificando al editor...");
-  try {
-    // Enviamos el mensaje "ready" al editor (una vez y luego reintento)
-    window.parent.postMessage({ type: "ready" }, "*");
-    console.log("📤 Primer mensaje ready enviado");
 
+  try {
+    // Mensaje inicial a cualquier origen (local, GitHub Pages o producción)
+    window.parent.postMessage({ type: "ready" }, "*");
+    console.log("📤 Primer mensaje ready enviado (universal)");
+
+    // Segundo intento por si el primero no llega a tiempo
     setTimeout(() => {
       window.parent.postMessage({ type: "ready" }, "*");
       console.log("📤 Reenvío ready después de carga completa del menú");
