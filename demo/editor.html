@@ -948,14 +948,6 @@ preview.addEventListener("load", () => {
   preview.contentWindow.postMessage({ type: "init", data: "editor-connected" }, "*");
 });
 
-/* === Escuchar confirmación del menú === */
-window.addEventListener("message", (e) => {
-  if (e.data?.type === "ready") {
-    previewReady = true;
-    console.log("✅ Menú conectado, listo para recibir cambios");
-  }
-});
-
 /* === ITEMS (dinámicos) === */
 const items = [
   { id: "nombre-resto", icon: "🏪", label: "Nombre Gastronómico" },
@@ -1321,6 +1313,7 @@ menuBtn.addEventListener("click", () => {
 
 /* === GUARDAR FORMATO EN GOOGLE SHEETS === */
 const saveBtn = document.getElementById("saveBtn");
+let nombreFormato = "";
 
 saveBtn.addEventListener("click", async () => {
   if (!previewReady) {
@@ -1328,26 +1321,48 @@ saveBtn.addEventListener("click", async () => {
     return;
   }
 
-  // Pedir nombre de guardado
-  const nombreFormato = prompt("Ingresá un nombre para este formato de menú:");
+  nombreFormato = prompt("Ingresá un nombre para este formato de menú:");
   if (!nombreFormato) return;
 
   // Pedimos al iframe su estado actual
   preview.contentWindow.postMessage({ type: "get-current-styles" }, "*");
+});
 
-  // Escuchamos la respuesta desde el iframe
-  window.addEventListener("message", async (e) => {
-    if (e.data?.type === "current-styles-response") {
-      const estilos = e.data.data;
+/* === Listener unificado para mensajes del iframe === */
+window.addEventListener("message", async (e) => {
+  const { type, data } = e.data || {};
 
-      // Enviar a Google Apps Script (publicado como WebApp)
+  // ⚙️ Acepta todos los orígenes seguros y "null" (file:// o local)
+  const safeOrigins = [
+    "https://www.menulab.com.ar",
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    "http://127.0.0.1:5500", 
+    "file://",
+    "null",
+    ""
+  ];
+  if (!safeOrigins.includes(e.origin)) {
+    console.warn("❌ Mensaje rechazado por origen desconocido:", e.origin);
+    return;
+  }
+
+  switch (type) {
+    case "ready":
+      previewReady = true;
+      console.log("✅ Menú conectado, listo para recibir cambios");
+      if (typeof flushQueue === "function") flushQueue();
+      break;
+
+    case "current-styles-response":
+      const estilos = data;
       const payload = {
         nombre: nombreFormato,
         data: JSON.stringify(estilos)
       };
 
       try {
-        const response = await fetch("https://script.google.com/macros/s/TU_DEPLOY_ID/exec", {
+        const response = await fetch("https://script.google.com/macros/s/AKfycby-O0nmvEiaqkrkglO1Ja0Hd8f7iVHpZU_wNl3xUpLHZ8xJmeJOg8XtjRaUcyLqznRl/exec", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload)
@@ -1359,9 +1374,10 @@ saveBtn.addEventListener("click", async () => {
         console.error("Error al guardar:", err);
         alert("Error al guardar el formato ❌");
       }
-    }
-  }, { once: true });
+      break;
+  }
 });
+
 
 /* === Presets (aplicar) === */
 document.querySelectorAll('#estilosContenido button[data-preset]').forEach(btn => {
@@ -1414,9 +1430,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-</script>
-<script src="presets.js"></script>
+  </script>
+  <script src="presets.js"></script>
 
 
-</body>
+  </body>
 </html>

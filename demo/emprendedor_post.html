@@ -250,7 +250,6 @@
     * {
       -webkit-print-color-adjust: exact !important;
       print-color-adjust: exact !important;
-      color-adjust: exact !important;
     }
 
     .menu-item.destacado {
@@ -404,8 +403,22 @@ body.cat-right  h2 { justify-content: flex-end;    text-align: right; }
 /* === Datos base de ejemplo === */
 window.addEventListener("DOMContentLoaded", () => {
   console.log("👋 Menu listo, notificando al editor...");
-  window.parent.postMessage({ type: "ready" }, "*");
+  try {
+    // Enviamos el mensaje "ready" al editor (una vez y luego reintento)
+    window.parent.postMessage({ type: "ready" }, "*");
+    console.log("📤 Primer mensaje ready enviado");
+
+    setTimeout(() => {
+      window.parent.postMessage({ type: "ready" }, "*");
+      console.log("📤 Reenvío ready después de carga completa del menú");
+    }, 1500);
+  } catch (err) {
+    console.warn("⚠️ Error enviando ready:", err);
+  }
 });
+
+
+
 // === NUEVO BLOQUE DINÁMICO ===
 
 // 1️⃣ Detectar tenant desde la URL
@@ -439,8 +452,9 @@ async function loadMenu() {
     document.getElementById("menuTable").innerHTML =
       "<p style='text-align:center;color:#999'>Error al conectar con el servidor.</p>";
   }
+
 }
-    showLoading();
+showLoading();
 
 
 function renderMenu(rows) {
