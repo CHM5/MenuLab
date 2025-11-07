@@ -623,11 +623,50 @@
 }
 #firuleteContenido .font-tab-content button:hover { filter:brightness(1.08); }
 
+#loading-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.95);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  font-family: "Sora", sans-serif;
+  font-size: 1.2rem;
+  z-index: 999999;
+  transition: opacity 0.4s ease, visibility 0.4s ease;
+}
 
+#loading-overlay .loading-logo {
+  width: 110px;
+  height: 110px;
+  margin-bottom: 12px;
+  opacity: 0.9;
+  animation: spin 2.5s linear infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 0.85; }
+  50% { transform: scale(1.05); opacity: 1; }
+}
+
+#loading-overlay.hide {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
   </style>
 </head>
 
-<body>
+<body style="overflow:hidden;">
+  <div id="loading-overlay">
+    <div class="loading-content">
+      <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1758652390/The_Pent_2_a8vhtp.jpg" alt="Logo" class="loading-logo">
+      <p>Cargando menú...</p>
+    </div>
+  </div>
+
   <button id="toggleMenu"><i class="fas fa-gear"></i></button>
 
   <aside id="sideMenu">
@@ -1466,7 +1505,14 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-
+  // Ocultar overlay cuando termina de cargar el menú
+  window.addEventListener("load", () => {
+    const overlay = document.getElementById("loading-overlay");
+    setTimeout(() => {
+      overlay.classList.add("hide");
+      document.body.style.overflow = "auto"; // ✅ vuelve a mostrar el resto
+    }, 700);
+  });
 
   </script>
   <script src="presets.js"></script>
