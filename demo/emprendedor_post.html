@@ -459,6 +459,41 @@ body.header-en-primera .resto-top {
   column-span: all;
 }
 
+/* === 🔄 Indicador de carga con porcentaje === */
+#loadingMenu {
+  text-align: center;
+  color: #333;
+  font-family: 'Montserrat', sans-serif;
+  padding: 60px 10px;
+  font-size: 1.1rem;
+  letter-spacing: 0.5px;
+}
+
+#progress-bar {
+  width: 80%;
+  height: 8px;
+  background: #e0e0e0;
+  border-radius: 6px;
+  overflow: hidden;
+  margin: 15px auto;
+  position: relative;
+}
+
+#progress-fill {
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg, #1d3557, #457b9d);
+  border-radius: 6px;
+  transition: width 0.25s ease;
+}
+
+#progress-text {
+  font-size: 0.9rem;
+  color: #555;
+  margin-top: 10px;
+  font-weight: 500;
+}
+
 
 </style>
 
@@ -487,19 +522,7 @@ body.header-en-primera .resto-top {
     </div>
     <div class="footer"></div>
   </div>
-  
-  <!-- Overlay con dino -->
-  <div id="loading-overlay" style="display:none;">
-    <div class="loading-content">
-      <img src="https://res.cloudinary.com/drxznqm61/image/upload/v1758652390/The_Pent_2_a8vhtp.jpg" class="loading-logo">
-      <p>Cargando menú...</p>
-      <div id="game-container">
-        <div id="dino"></div>
-        <div id="obstacle"></div>
-        <p id="game-msg"></p>
-      </div>
-    </div>
-  </div>
+
 <script>
 
   (function() {
@@ -566,24 +589,14 @@ async function loadSavedStyle() {
 }
 
 async function loadMenu() {
+  const stopProgress = showLoading(); // 🔹 Inicia loader con barra
+
   try {
-    // 🦖 Mostrar overlay con el minijuego
-    const overlay = document.getElementById("loading-overlay");
-    if (overlay) overlay.style.display === "flex";
-
-    // Mensaje mientras se obtiene el menú
-    document.getElementById("menuTable").innerHTML =
-      "<p style='text-align:center;color:#777;font-style:italic;'>Cargando menú...</p>";
-
     const res = await fetch(`${API_URL}?tenant=${tenant}`);
     const data = await res.json();
 
-    if (data.info) {
-      renderInfo(data.info);
-    }
-
-    if (data.menu && Array.isArray(data.menu)) {
-      console.log(`✅ Cargado menú de ${tenant} (${data.count} ítems)`);
+    if (data.info) renderInfo(data.info);
+    if (Array.isArray(data.menu)) {
       renderMenu(data.menu);
       setTimeout(capturarBloquesOriginales, 200);
     } else {
@@ -591,35 +604,15 @@ async function loadMenu() {
         "<p style='text-align:center;color:#999'>Menú no disponible.</p>";
     }
 
-    // ⏳ Esperar un instante y ocultar el overlay (juego incluido)
-    setTimeout(() => {
-      if (overlay) {
-        overlay.style.opacity = "0";
-        overlay.style.pointerEvents = "none";
-        setTimeout(() => overlay.remove(), 600); // lo saca del DOM
-      }
-    }, 1200);
-
   } catch (err) {
     console.error("⚠️ Error al conectar con la API:", err);
     document.getElementById("menuTable").innerHTML =
       "<p style='text-align:center;color:#999'>Error al conectar con el servidor.</p>";
-
-    // ❌ También ocultar overlay si hubo error
-    const overlay = document.getElementById("loading-overlay");
-    if (overlay) {
-      overlay.style.opacity = "0.6";
-    const msgP = overlay.querySelector("p");
-    if (msgP) {
-      msgP.textContent = "Error al cargar el menú 😞";
-    }
-      setTimeout(() => overlay.remove(), 2000);
-    }
+  } finally {
+    // 🔹 Finaliza y oculta el loader
+    if (typeof stopProgress === "function") stopProgress();
   }
 }
-
-showLoading();
-
 
 function renderMenu(rows) {
   const container = document.getElementById("menuTable");
@@ -684,22 +677,49 @@ Object.entries(grouped).forEach(([cat, subs]) => {
 }
 
 // === Indicador de carga ===
+// === Indicador de carga con progreso simulado ===
 function showLoading(msg = "Cargando menú...") {
   const container = document.getElementById("menuTable");
   if (!container) return;
+
+  // Inserta el contenido del loader
   container.innerHTML = `
-    <div id="loadingMenu" style="
-      text-align:center;
-      color:#666;
-      font-family:'Montserrat', sans-serif;
-      padding: 40px 10px;
-      font-size:1.1rem;
-      letter-spacing:0.5px;
-    ">
+    <div id="loadingMenu">
       <i class="fa-solid fa-spinner fa-spin" style="margin-right:6px;color:#1D3557;"></i>${msg}
+      <div id="progress-bar">
+        <div id="progress-fill"></div>
+      </div>
+      <div id="progress-text">0%</div>
     </div>
   `;
+
+  let progress = 0;
+  const fill = document.getElementById("progress-fill");
+  const text = document.getElementById("progress-text");
+
+  // Subida simulada hasta el 90%
+  const interval = setInterval(() => {
+    if (progress < 90) {
+      progress += Math.random() * 8; // avanza con variaciones
+      if (progress > 90) progress = 90;
+      fill.style.width = `${progress}%`;
+      text.textContent = `${Math.floor(progress)}%`;
+    }
+  }, 250);
+
+  // Devuelve una función para completar y cerrar la animación
+  return function completeProgress() {
+    clearInterval(interval);
+    fill.style.width = "100%";
+    text.textContent = "100%";
+    setTimeout(() => {
+      const loadingDiv = document.getElementById("loadingMenu");
+      if (loadingDiv) loadingDiv.style.opacity = "0";
+      setTimeout(() => loadingDiv?.remove(), 400);
+    }, 500);
+  };
 }
+
 
 // 3️⃣ Ejecutar al cargar
 loadMenu();
