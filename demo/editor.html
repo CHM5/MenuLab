@@ -488,7 +488,6 @@
 #formato {
   border-radius: 8px;
   padding: 1rem;
-  margin-bottom: 8px;
 }
 #formatoContenido {
   margin-top: 8px;
@@ -594,7 +593,6 @@
 }
 
 .categoria-options {
-  margin-top: 1rem;
   display: flex;
   justify-content: space-around;
 }
@@ -785,12 +783,6 @@
     <section id="formato">
       <h4 id="toggleFormato" class="toggle-header">🧩 Formato</h4>
       <div id="formatoContenido" class="estilos-content">
-        <!-- Posición categorías -->
-        <div class="categoria-options">
-          <label><input type="radio" name="posCategoria" value="izq"> Izquierda</label>
-          <label><input type="radio" name="posCategoria" value="centro"> Centrada</label>
-          <label><input type="radio" name="posCategoria" value="der"> Derecha</label>
-        </div>
         <!-- 6 opciones -->
         <div class="format-buttons">
           <button data-layout="1">1️⃣ Centrado</button>
@@ -819,9 +811,22 @@
 
         <label style="margin-top:10px;">Color del marco</label>
         <input type="color" id="frame-color" value="#000000">
-
         <label style="margin-top:10px;">Grosor</label>
         <input type="range" id="frame-width" min="1" max="15" step="1" value="2">
+        <hr style="margin:10px 0;border:none;border-top:1px solid #ddd;">
+        <label style="margin-top:10px;">📦 Marco por Categoría</label>
+        <div>
+          <button data-catframe="none">Sin marco</button>
+          <button data-catframe="solid">Líneal</button>
+          <button data-catframe="double">Doble</button>
+          <button data-catframe="dotted">Puntos</button>
+          <button data-catframe="dashed">Punteada</button>
+          <button data-catframe="groove">Relieve</button>
+        </div>
+        <label style="margin-top:10px;">Color del marco</label>
+        <input type="color" id="cat-frame-color" value="#000000">
+        <label style="margin-top:10px;">Grosor</label>
+        <input type="range" id="cat-frame-width" min="1" max="15" step="1" value="2">
       </div>
     </section>
 
@@ -851,6 +856,28 @@
     <section id="saveControls">
       <button id="saveBtn">💾 Guardar</button>
     </section>
+    <!-- 📥 Descargar -->
+    <section id="downloadControls">
+      <button id="downloadBtn">📥 Descargar</button>
+
+      <!-- Menú desplegable -->
+      <div id="downloadMenu" style="
+        display:none;
+        background:#f8f9fa;
+        border:1px solid #ccc;
+        border-radius:8px;
+        margin-top:0.5rem;
+        padding:0.6rem;
+        text-align:left;
+        box-shadow:0 3px 8px #0002;
+      ">
+        <p style="margin:0 0 0.4rem;font-weight:600;">Elegí formato:</p>
+        <button class="sizeOption" data-w="297" data-h="420">📄 A3</button>
+        <button class="sizeOption" data-w="210" data-h="297">📄 A4</button>
+        <button class="sizeOption" data-w="148" data-h="210">📄 A5</button>
+        <button id="customSize">⚙️ Personalizado</button>
+      </div>
+    </section>
   </aside>
 
   <main id="previewArea">
@@ -860,6 +887,8 @@
     ></iframe>
   </main>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
 
 /* === VARIABLES GLOBALES === */
@@ -949,6 +978,27 @@ items.forEach(item => {
     div.innerHTML = `
       <h5 class="item-header">${item.icon} ${item.label}</h5>
       <div class="item-panel">
+        <!-- Posición categorías -->
+        <div class="categoria-options">
+          <label><input type="radio" name="posCategoria" value="izq"> Izquierda</label>
+          <label><input type="radio" name="posCategoria" value="centro"> Centrada</label>
+          <label><input type="radio" name="posCategoria" value="der"> Derecha</label>
+        </div>
+        
+        <!-- 🖋️ FUENTE -->
+        <label style="margin-top:10px;">🖋️ Fuente</label>
+        <div class="dropdown-font">
+          <button class="fontbtn">🖋️ Elegir Fuente</button>
+          <div class="dropdown-content-font">${fontOptions}</div>
+        </div>
+
+        <!-- 🔠 TAMAÑO -->
+        <label style="margin-top:10px;">🔠 Tamaño</label>
+        <input type="range" min="0.5" max="4" step="0.01" class="size-range" value="1">
+
+        <!-- 🎨 COLOR -->
+        <label style="margin-top:10px;">🎨 Color</label>
+        <input type="color" class="color-input" value="#000000">
 
         <!-- 💠 FIRULETE -->
         <label style="margin-top:6px;">✨ Firulete</label>
@@ -1049,21 +1099,6 @@ items.forEach(item => {
 
         <label style="margin-top:8px;">🌫️ Opacidad Firulete</label>
         <input type="range" min="0" max="1" step="0.01" class="firulete-opacity-range" value="0.4">
-
-        <!-- 🖋️ FUENTE -->
-        <label style="margin-top:10px;">🖋️ Fuente</label>
-        <div class="dropdown-font">
-          <button class="fontbtn">🖋️ Elegir Fuente</button>
-          <div class="dropdown-content-font">${fontOptions}</div>
-        </div>
-
-        <!-- 🔠 TAMAÑO -->
-        <label style="margin-top:10px;">🔠 Tamaño</label>
-        <input type="range" min="0.5" max="4" step="0.01" class="size-range" value="1">
-
-        <!-- 🎨 COLOR -->
-        <label style="margin-top:10px;">🎨 Color</label>
-        <input type="color" class="color-input" value="#000000">
       </div>`;
   } 
   // 🔹 Todos los demás ítems se mantienen igual
@@ -1331,6 +1366,28 @@ document.querySelectorAll("#marcosContenido button[data-frame]").forEach(btn => 
     sendToPreview("frame-style", btn.dataset.frame);
   });
 });
+// === MARCOS POR CATEGORÍA ===
+document.querySelectorAll("#marcosContenido button[data-catframe]").forEach(btn => {
+  btn.addEventListener("click", () => {
+    sendToPreview("cat-frame-style", btn.dataset.catframe);
+  });
+});
+// === Color marco por categoría ===
+const catFrameColor = document.getElementById("cat-frame-color");
+if (catFrameColor) {
+  catFrameColor.addEventListener("input", e => {
+    sendToPreview("cat-frame-color", e.target.value);
+  });
+}
+
+// === Grosor marco por categoría ===
+const catFrameWidth = document.getElementById("cat-frame-width");
+if (catFrameWidth) {
+  catFrameWidth.addEventListener("input", e => {
+    sendToPreview("cat-frame-width", e.target.value);
+  });
+}
+
 const frameColor = document.getElementById("frame-color");
 if (frameColor) {
   frameColor.addEventListener("input", e => {
@@ -1507,6 +1564,147 @@ document.addEventListener("DOMContentLoaded", () => {
       document.body.style.overflow = "auto"; // ✅ vuelve a mostrar el resto
     }, 700);
   });
+
+/* === DESCARGAR PDF (menú visual) === */
+const downloadBtn = document.getElementById("downloadBtn");
+const menu = document.getElementById("downloadMenu");
+
+downloadBtn.addEventListener("click", () => {
+  menu.style.display = menu.style.display === "none" ? "block" : "none";
+});
+
+document.addEventListener("click", (e) => {
+  if (!menu.contains(e.target) && e.target !== downloadBtn) {
+    menu.style.display = "none";
+  }
+});
+
+document.querySelectorAll(".sizeOption").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const anchoMM = parseFloat(btn.dataset.w);
+    const altoMM = parseFloat(btn.dataset.h);
+    generarPDF(anchoMM, altoMM, btn.textContent.trim().replace("📄", "").trim());
+    menu.style.display = "none";
+  });
+});
+
+document.getElementById("customSize").addEventListener("click", () => {
+  const anchoMM = parseFloat(prompt("Ingresá el ancho (mm):", "210"));
+  const altoMM = parseFloat(prompt("Ingresá el alto (mm):", "297"));
+  if (isNaN(anchoMM) || isNaN(altoMM)) return alert("Valores inválidos.");
+  generarPDF(anchoMM, altoMM, "Personalizado");
+  menu.style.display = "none";
+});
+
+async function generarPDF(anchoMM, altoMM, formato) {
+  const { jsPDF } = window.jspdf;
+
+  const loadingMsg = document.createElement("div");
+  loadingMsg.textContent = "⏳ Generando PDF...";
+  loadingMsg.style = `
+    position:fixed;top:50%;left:50%;
+    transform:translate(-50%,-50%);
+    background:#000a;color:#fff;
+    padding:12px 20px;border-radius:8px;
+    font-family:sans-serif;z-index:9999;
+  `;
+  document.body.appendChild(loadingMsg);
+
+  // 📄 Documento dentro del iframe
+  const iframeDoc = preview.contentDocument;
+  const body = iframeDoc.body;
+
+  // 🦶 Capturar el footer real
+  const footerEl = iframeDoc.querySelector(".footer");
+  let footerImg = null;
+  if (footerEl) {
+    const footerCanvas = await html2canvas(footerEl, {
+      scale: 2,
+      useCORS: true,
+      backgroundColor: null
+    });
+    footerImg = footerCanvas.toDataURL("image/png");
+  }
+
+  // 🧾 Capturar solo el contenido del menú, ignorando el footer
+  const canvas = await html2canvas(body, {
+    scale: 2,
+    useCORS: true,
+    backgroundColor: "#ffffff",
+    ignoreElements: el => el.classList.contains("footer")
+  });
+
+  const pdf = new jsPDF({
+    orientation: altoMM > anchoMM ? "p" : "l",
+    unit: "mm",
+    format: [anchoMM, altoMM]
+  });
+
+  // 📏 Medidas
+  const pageWidth = pdf.internal.pageSize.getWidth();
+  const pageHeight = pdf.internal.pageSize.getHeight();
+  const marginBottom = 25; // espacio reservado para el footer (mm)
+
+  const imgWidth = (canvas.width * 25.4) / 96;
+  const imgHeight = (canvas.height * 25.4) / 96;
+
+  const ratio = pageWidth / imgWidth;
+  const scaledHeight = imgHeight * ratio;
+  const usableHeight = pageHeight - marginBottom;
+
+  // 📄 Crear páginas con el footer al final
+  let y = 0;
+  while (y < scaledHeight) {
+    const srcY = (y / ratio) * (96 / 25.4);
+    const pageCanvas = document.createElement("canvas");
+    pageCanvas.width = canvas.width;
+    pageCanvas.height = (usableHeight / ratio) * (96 / 25.4);
+    const ctx = pageCanvas.getContext("2d");
+
+    ctx.drawImage(
+      canvas,
+      0, srcY, canvas.width, pageCanvas.height,
+      0, 0, canvas.width, pageCanvas.height
+    );
+
+    const pageImg = pageCanvas.toDataURL("image/png");
+    if (y > 0) pdf.addPage();
+    pdf.addImage(pageImg, "PNG", 0, 0, pageWidth, usableHeight);
+
+    // Agregar footer en cada hoja
+  if (footerImg) {
+    // Crear imagen temporal para obtener su tamaño real
+    const tempImg = new Image();
+    tempImg.src = footerImg;
+    await new Promise(res => { tempImg.onload = res; });
+
+    // Calcular proporciones originales (px → mm)
+    const footerWmm = (tempImg.width * 25.4) / 96;
+    const footerHmm = (tempImg.height * 25.4) / 96;
+
+    // Escalar solo si es más ancho que la página
+    let drawW = footerWmm;
+    let drawH = footerHmm;
+    if (drawW > pageWidth) {
+      const ratio = pageWidth / drawW;
+      drawW = pageWidth;
+      drawH = footerHmm * ratio;
+    }
+
+    // Centrar horizontalmente
+    const x = (pageWidth - drawW) / 2;
+    const y = pageHeight - drawH - 5; // deja 5 mm de margen inferior
+
+    pdf.addImage(footerImg, "PNG", x, y, drawW, drawH);
+  }
+
+
+      y += usableHeight;
+    }
+
+  pdf.save(`menu_${formato}.pdf`);
+  loadingMsg.remove();
+}
 
   </script>
   <script src="presets.js"></script>

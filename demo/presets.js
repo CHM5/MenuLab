@@ -21,12 +21,15 @@ const presets = {
       "--color-nombre-slogan": "#3b2407",
       "--color-categoria": "#5c3a18",
       "--color-subcategoria": "#5c3a18",
+      "--color-plato": "#ddd",
+      "--color-descripcion": "#5a4739",
       "--color-precio": "#b77b46",
       "--color-info-resto": "#5c3a18",
       "--bg-opacity": "0.22"
     },
     columns: 2,
     frame: { style: "double", color: "#5a4739", width: 3 },
+    catFrame: { style: "groove", color: "#5a4739", width: 1 },
     firulete: "🔥 🍖 🔥"
   },
 
