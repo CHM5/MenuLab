@@ -1147,8 +1147,12 @@ function aplicarFormatoLayout(layout) {
       go(2, 'full');
       break;
 
-    case "3": // 2 Cols - Header 1° Col
+    case "3": // 2 Cols - Header 1° Col (doble lateral)
       go(2, 'first');
+      if (restoTop) {
+        restoTop.style.justifyContent = "center"; // centrado dentro de la primera col
+        restoTop.style.textAlign = "center";
+      }
       break;
 
     case "4": // 3 Cols - Header Centro
@@ -1157,7 +1161,11 @@ function aplicarFormatoLayout(layout) {
 
     case "5": // 3 Cols - Header 1° Col
       go(3, 'first');
-      break;
+      if (restoTop) {
+        restoTop.style.justifyContent = "center"; // centrado dentro de la primera col
+        restoTop.style.textAlign = "center";
+      }
+          break;
   }
 }
 
