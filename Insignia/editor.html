@@ -170,17 +170,19 @@
   display: flex;
   flex-direction: column;
   background: #f4f6f8;
-  padding: 12px;
+  padding: 20px;            /* margen visual */
+  box-sizing: border-box;
 }
 
 #previewFrame {
-  flex: 1;
+  flex: 1;                  /* se adapta automáticamente */
   width: 100%;
   height: 100%;
   border: 1px solid #ccc;
   border-radius: 10px;
   background: #fff;
   box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  display: block;
 }
 
 
@@ -830,23 +832,61 @@
       </div>
     </section>
 
-    <!-- 🖼️ Fondo -->
-    <section id="fondo">
-      <h4 id="toggleFondo" class="toggle-header">🖼️ Fondo</h4>
-      <div id="fondoContenido" class="estilos-content">
-        <label for="bg-opacity">Opacidad fondo</label>
-        <div style="display:flex;gap:8px;align-items:center;">
-          <input type="number" id="bg-opacity-number" min="0" max="0.5" step="0.01" value="0.2" style="width:60px;">
-          <input type="range" id="bg-opacity" min="0" max="0.5" step="0.01" value="0.2" style="flex:1;">
+    <!-- 🖼️ Imágenes -->
+    <section id="imagenes">
+    <h4 id="toggleImagenes" class="toggle-header">🖼️ Imágenes</h4>
+    <div id="imagenesContenido" class="estilos-content">
+
+        <!-- 🌄 Fondo -->
+        <h5 style="margin-top:0;">🌄 Fondo del menú</h5>
+        <label>URL de la imagen de fondo</label>
+        <input type="url" id="bg-url" placeholder="https://...">
+
+        <div style="display:flex;gap:8px;align-items:center;margin-top:8px;">
+        <label style="flex:1;">Opacidad</label>
+        <input type="range" id="bg-opacity" min="0" max="1" step="0.01" value="0.2" style="flex:3;">
+        <input type="number" id="bg-opacity-number" min="0" max="1" step="0.01" value="0.2" style="width:60px;">
         </div>
 
-        <label for="bg-size" style="margin-top:10px;">Tamaño fondo (%)</label>
-        <div style="display:flex;gap:8px;align-items:center;">
-          <input type="number" id="bg-size-number" min="50" max="200" step="1" value="100" style="width:60px;">
-          <input type="range" id="bg-size" min="50" max="200" step="1" value="100" style="flex:1;">
+        <div style="display:flex;gap:8px;align-items:center;margin-top:8px;">
+        <label style="flex:1;">Tamaño (%)</label>
+        <input type="range" id="bg-size" min="50" max="200" step="1" value="100" style="flex:3;">
+        <input type="number" id="bg-size-number" min="50" max="200" step="1" value="100" style="width:60px;">
         </div>
-        <small style="color:#555;">(100% = tamaño original del fondo)</small>
-      </div>
+
+        <button id="saveBgBtn" style="margin-top:10px;width:100%;background:#457B9D;color:#fff;border:none;padding:8px;border-radius:6px;cursor:pointer;">💾 Guardar Fondo</button>
+
+        <hr style="margin:16px 0;border:none;border-top:1px solid #ddd;">
+
+        <!-- 🏷️ Logo -->
+        <h5>🏷️ Logo del restaurante</h5>
+        <label>URL del logo</label>
+        <input type="url" id="logo-url" placeholder="https://...">
+
+        <div style="display:flex;align-items:center;margin-top:8px;">
+            <label style="flex:1;">Tamaño (%)</label>
+            <input type="range" id="logo-size" min="0" max="200" step="1" value="100" style="flex:3;">
+            <input type="number" id="logo-size-number" min="0" max="200" step="1" value="100" style="width:60px;">
+        </div>
+
+        <div style="display:flex;gap:8px;align-items:center;margin-top:8px;">
+            <label style="flex:1;">Opacidad</label>
+            <input type="range" id="logo-opacity" min="0" max="1" step="0.01" value="1" style="flex:3;">
+            <input type="number" id="logo-opacity-number" min="0" max="1" step="0.01" value="1" style="width:60px;">
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;margin-top:8px;">
+            <label style="flex:1;">Margen superior (px)</label>
+            <input type="range" id="logo-margin-top" min="0" max="200" step="1" value="0" style="flex:3;">
+            <input type="number" id="logo-margin-top-number" min="0" max="200" step="1" value="0" style="width:60px;">
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;margin-top:8px;">
+            <label style="flex:1;">Espacio Logo-Texto (px)</label>
+            <input type="range" id="logo-gap" min="-20" max="100" step="1" value="10" style="flex:3;">
+            <input type="number" id="logo-gap-number" min="-20" max="100" step="1" value="10" style="width:60px;">
+        </div>
+
+        <button id="saveLogoBtn" style="margin-top:10px;width:100%;background:#457B9D;color:#fff;border:none;padding:8px;border-radius:6px;cursor:pointer;">💾 Guardar Logo</button>
+    </div>
     </section>
 
     <!-- 🖨️ Vista previa -->
@@ -890,7 +930,22 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
-
+    /* === VERIFICAR SESIÓN === */
+/*
+(function(){
+  try {
+    const s = sessionStorage.getItem("ml_session");
+    if (!s) return location.href = "login.html";
+    const token = JSON.parse(s);
+    if (!token.id || Date.now() > token.expires) {
+      sessionStorage.removeItem("ml_session");
+      location.href = "login.html";
+    }
+  } catch {
+    location.href = "login.html";
+  }
+})();
+*/
 /* === VARIABLES GLOBALES === */
 const preview = document.getElementById("previewFrame");
 const menuBtn = document.getElementById("toggleMenu");
@@ -994,7 +1049,7 @@ items.forEach(item => {
 
         <!-- 🔠 TAMAÑO -->
         <label style="margin-top:10px;">🔠 Tamaño</label>
-        <input type="range" min="0.5" max="4" step="0.01" class="size-range" value="1">
+        <input type="range" min="0" max="4" step="0.01" class="size-range" value="1">
 
         <!-- 🎨 COLOR -->
         <label style="margin-top:10px;">🎨 Color</label>
@@ -1162,7 +1217,7 @@ items.forEach(item => {
 
 
       <label style="margin-top:10px;">🔤 Tamaño</label>
-      <input type="range" min="0.5" max="4" step="0.01" class="size-range" value="1">
+      <input type="range" min="0" max="4" step="0.01" class="size-range" value="1">
 
       <label style="margin-top:10px;">🎨 Color</label>
       <input type="color" class="color-input" value="#000000">
@@ -1277,7 +1332,7 @@ document.querySelectorAll(".item-header").forEach(header => {
 
 
   // URL directa (cache-buster)
-  const url = `./emprendedor_post.html?tenant=${encodeURIComponent(tenant)}&_=${Date.now()}`;
+  const url = `./menu.html?tenant=${encodeURIComponent(tenant)}&_=${Date.now()}`;
 
   // cargar como documento normal (preserva mismo origen y permite fetch dentro)
   preview.src = url;
@@ -1290,7 +1345,7 @@ document.querySelectorAll(".item-header").forEach(header => {
 
   // si querés refrescar manualmente desde el editor:
   window.reloadPreview = () => {
-    preview.src = `./emprendedor_post.html?tenant=${encodeURIComponent(tenant)}&_=${Date.now()}`;
+    preview.src = `./menu.html?tenant=${encodeURIComponent(tenant)}&_=${Date.now()}`;
   };
 })();
 
@@ -1317,48 +1372,80 @@ document.querySelectorAll("#formatoContenido button[data-format]").forEach(btn =
   });
 });
 
-/* === FONDO === */
+/* === IMÁGENES (Fondo y Logo) === */
 (function(){
-  const bgRange = document.getElementById('bg-opacity');
-  const bgNum = document.getElementById('bg-opacity-number');
-  const sizeRange = document.getElementById('bg-size');
-  const sizeNum = document.getElementById('bg-size-number');
+  const tenant = new URLSearchParams(window.location.search).get('tenant') || 'cafe_central';
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyswfpcLHgKj1zAvHgGCpYs6EWLqwfqjEM-mxFErwp_g8jTPr8qi-5tVGfNyXzqGgYG/exec";
 
-  const savedBg = localStorage.getItem('bg-opacity') || bgRange.value || '0.2';
-  const savedSize = localStorage.getItem('bg-size') || sizeRange.value || '100';
-  bgRange.value = bgNum.value = savedBg;
-  sizeRange.value = sizeNum.value = savedSize;
-  sendToPreview("opacity", savedBg);
-  sendToPreview("bg-size", savedSize);
+  // === Referencias a elementos ===
+  const bgUrl = document.getElementById("bg-url");
+  const bgOpacity = document.getElementById("bg-opacity");
+  const bgOpacityNum = document.getElementById("bg-opacity-number");
+  const bgSize = document.getElementById("bg-size");
+  const bgSizeNum = document.getElementById("bg-size-number");
+  const saveBgBtn = document.getElementById("saveBgBtn");
 
-  bgRange.addEventListener('input', e => {
-    const v = e.target.value;
-    bgNum.value = v;
-    localStorage.setItem('bg-opacity', v);
-    sendToPreview('opacity', v);
+  const logoUrl = document.getElementById("logo-url");
+  const logoSize = document.getElementById("logo-size");
+  const logoSizeNum = document.getElementById("logo-size-number");
+  const logoOpacity = document.getElementById("logo-opacity");
+  const logoOpacityNum = document.getElementById("logo-opacity-number");
+  const saveLogoBtn = document.getElementById("saveLogoBtn");
+  const logoMarginTop = document.getElementById("logo-margin-top");
+  const logoMarginTopNum = document.getElementById("logo-margin-top-number");
+
+  // === Sincronización sliders <-> números ===
+  function linkRange(num, range, key){
+    num.addEventListener("input", ()=>{
+      range.value = num.value;
+      sendToPreview(key, num.value);
+    });
+    range.addEventListener("input", ()=>{
+      num.value = range.value;
+      sendToPreview(key, range.value);
+    });
+  }
+
+  linkRange(bgOpacityNum, bgOpacity, "opacity");
+  linkRange(bgSizeNum, bgSize, "bg-size");
+  linkRange(logoOpacityNum, logoOpacity, "logo-opacity");
+  linkRange(logoSizeNum, logoSize, "logo-size");
+  linkRange(logoMarginTopNum, logoMarginTop, "logo-margin-top");
+  linkRange(document.getElementById("logo-gap-number"), document.getElementById("logo-gap"), "logo-gap");
+
+  // === Guardar fondo ===
+  saveBgBtn?.addEventListener("click", async ()=>{
+    const url = bgUrl.value.trim();
+    if (!url) return alert("Ingresá una URL para el fondo.");
+    sendToPreview("bg-url", url);
+
+    const params = new URLSearchParams({
+      action: "save_image",
+      tenant,
+      cell: "M3", // celda de fondo
+      value: url
+    });
+    await fetch(`${SCRIPT_URL}?${params}`);
+    alert("✅ Fondo guardado en la planilla.");
   });
-  bgNum.addEventListener('input', e => {
-    let v = parseFloat(e.target.value);
-    if (isNaN(v)) v = 0;
-    v = Math.min(0.5, Math.max(0, v));
-    bgRange.value = v;
-    localStorage.setItem('bg-opacity', v);
-    sendToPreview('opacity', v);
-  });
-  sizeRange.addEventListener('input', e => {
-    const v = e.target.value;
-    sizeNum.value = v;
-    localStorage.setItem('bg-size', v);
-    sendToPreview('bg-size', v);
-  });
-  sizeNum.addEventListener('input', e => {
-    let v = parseInt(e.target.value) || 100;
-    v = Math.min(200, Math.max(50, v));
-    sizeRange.value = v;
-    localStorage.setItem('bg-size', v);
-    sendToPreview('bg-size', v);
+
+  // === Guardar logo ===
+  saveLogoBtn?.addEventListener("click", async ()=>{
+    const url = logoUrl.value.trim();
+    if (!url) return alert("Ingresá una URL para el logo.");
+    sendToPreview("logo-url", url);
+
+    const params = new URLSearchParams({
+      action: "save_image",
+      tenant,
+      cell: "L3", // celda de logo
+      value: url
+    });
+    await fetch(`${SCRIPT_URL}?${params}`);
+    alert("✅ Logo guardado en la planilla.");
   });
 })();
+
 
 /* === MARCOS === */
 document.querySelectorAll("#marcosContenido button[data-frame]").forEach(btn => {
@@ -1458,6 +1545,15 @@ window.addEventListener("message", async (e) => {
   if (!allowed.includes(from)) {
     console.warn("⚠️ Mensaje recibido desde origen no reconocido:", from, "(permitido por fallback universal)");
   }
+    function sanitize(obj) {
+    try {
+        // 💡 Elimina funciones, DOM y referencias circulares
+        return JSON.parse(JSON.stringify(obj));
+    } catch (err) {
+        console.warn("⚠️ Error sanitizando data:", err);
+        return {};
+    }
+    }
 
   switch (type) {
     case "ready":
@@ -1467,42 +1563,54 @@ window.addEventListener("message", async (e) => {
       // dar un pequeño delay para evitar race conditions con iframes remotos
       setTimeout(() => flushQueue?.(), 10);
       break;
-  case "current-styles-response":
+case "current-styles-response":
+  try {
+    const API_URL = "https://script.google.com/macros/s/AKfycbyswfpcLHgKj1zAvHgGCpYs6EWLqwfqjEM-mxFErwp_g8jTPr8qi-5tVGfNyXzqGgYG/exec";
+
+    // Copia segura del objeto
+    const safeData = JSON.parse(JSON.stringify(data));
+
+    // 🧩 Agregar cantidad de columnas activas
+    const cols = getComputedStyle(document.documentElement)
+                  .getPropertyValue("--menu-columns")
+                  ?.trim() || "1";
+    safeData.columns = parseInt(cols, 10) || 1;
+
+    // ⚙️ Importante → serializar antes de meter en URLSearchParams
+    const dataStr = JSON.stringify(safeData);
+
+    const qs = new URLSearchParams({
+      action: "save_style",
+      tenant: tenant,
+      data: dataStr,
+      _: Date.now().toString()
+    });
+
+    console.log("💾 Guardando estilo limpio (con columnas):", safeData);
+
+    const response = await fetch(`${API_URL}?${qs.toString()}`, { method: "GET" });
+    const text = await response.text();
+
+    let result;
     try {
-      const API_URL = "https://script.google.com/macros/s/AKfycbyswfpcLHgKj1zAvHgGCpYs6EWLqwfqjEM-mxFErwp_g8jTPr8qi-5tVGfNyXzqGgYG/exec";
-      const qs = new URLSearchParams({
-        action: "save_style",
-        tenant: tenant,
-        data: JSON.stringify(data),
-        _: Date.now().toString()
-      });
-
-      console.log("💾 Guardando estilo en Apps Script:", { action: "save_style", tenant, data });
-
-      // ⚙️ GET simple (sin headers, sin preflight)
-      const response = await fetch(`${API_URL}?${qs.toString()}`, { method: "GET" });
-
-      // 📦 Puede venir como texto plano
-      const text = await response.text();
-      let result;
-      try {
-        result = JSON.parse(text);
-      } catch {
-        result = { raw: text };
-      }
-
-      if (result && result.success) {
-        alert("✅ Formato guardado con éxito");
-        console.log("📦 Respuesta Apps Script:", result);
-      } else {
-        alert("⚠️ Error al guardar formato");
-        console.warn("❌ Respuesta Apps Script:", result);
-      }
-    } catch (err) {
-      console.error("Error al guardar:", err);
-      alert("❌ Error al conectar con Apps Script");
+      result = JSON.parse(text);
+    } catch {
+      result = { raw: text };
     }
-    break;
+
+    if (result && result.success) {
+      alert("✅ Formato guardado con éxito");
+      console.log("📦 Respuesta Apps Script:", result);
+    } else {
+      alert("⚠️ Error al guardar formato");
+      console.warn("❌ Respuesta Apps Script:", result);
+    }
+  } catch (err) {
+    console.error("Error al guardar:", err);
+    alert("❌ Error al conectar con Apps Script");
+  }
+  break;
+
   }
 });
 
@@ -1565,6 +1673,14 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 700);
   });
 
+  document.querySelectorAll("#marcosContenido button[data-frame]").forEach(btn => {
+    btn.addEventListener("click", () => {
+        const frame = btn.dataset.frame;
+        localStorage.setItem("pdf-frame-style", frame); // 👈 guardamos para el PDF
+        sendToPreview("frame-style", frame);
+    });
+  });
+
 /* === DESCARGAR PDF (menú visual) === */
 const downloadBtn = document.getElementById("downloadBtn");
 const menu = document.getElementById("downloadMenu");
@@ -1610,12 +1726,15 @@ async function generarPDF(anchoMM, altoMM, formato) {
   `;
   document.body.appendChild(loadingMsg);
 
-  // 📄 Documento dentro del iframe
-  const iframeDoc = preview.contentDocument;
-  const body = iframeDoc.body;
+    // 📄 Documento dentro del iframe
+    const iframeDoc = preview.contentDocument;
+    const body = iframeDoc.body;
 
-  // 🦶 Capturar el footer real
-  const footerEl = iframeDoc.querySelector(".footer");
+    // 💡 Desactivar temporalmente el marco interno del menú (dentro del iframe)
+    iframeDoc.documentElement.classList.add("exporting-pdf");
+
+    // 🦶 Capturar el footer real
+    const footerEl = iframeDoc.querySelector(".footer");
   let footerImg = null;
   if (footerEl) {
     const footerCanvas = await html2canvas(footerEl, {
@@ -1625,6 +1744,7 @@ async function generarPDF(anchoMM, altoMM, formato) {
     });
     footerImg = footerCanvas.toDataURL("image/png");
   }
+    iframeDoc.body.classList.add("hide-frame");
 
   // 🧾 Capturar solo el contenido del menú, ignorando el footer
   const canvas = await html2canvas(body, {
@@ -1643,7 +1763,7 @@ async function generarPDF(anchoMM, altoMM, formato) {
   // 📏 Medidas
   const pageWidth = pdf.internal.pageSize.getWidth();
   const pageHeight = pdf.internal.pageSize.getHeight();
-  const marginBottom = 25; // espacio reservado para el footer (mm)
+  const marginBottom = 8; // espacio reservado para el footer (mm)
 
   const imgWidth = (canvas.width * 25.4) / 96;
   const imgHeight = (canvas.height * 25.4) / 96;
@@ -1652,58 +1772,90 @@ async function generarPDF(anchoMM, altoMM, formato) {
   const scaledHeight = imgHeight * ratio;
   const usableHeight = pageHeight - marginBottom;
 
-  // 📄 Crear páginas con el footer al final
-  let y = 0;
-  while (y < scaledHeight) {
-    const srcY = (y / ratio) * (96 / 25.4);
-    const pageCanvas = document.createElement("canvas");
-    pageCanvas.width = canvas.width;
-    pageCanvas.height = (usableHeight / ratio) * (96 / 25.4);
-    const ctx = pageCanvas.getContext("2d");
+// 📄 Crear páginas con el footer al final
+let y = 0;
+const frameStyle = localStorage.getItem("pdf-frame-style") || "solid";
 
-    ctx.drawImage(
-      canvas,
-      0, srcY, canvas.width, pageCanvas.height,
-      0, 0, canvas.width, pageCanvas.height
-    );
+while (y < scaledHeight) {
+  const srcY = (y / ratio) * (96 / 25.4);
+  const pageCanvas = document.createElement("canvas");
+  pageCanvas.width = canvas.width;
+  pageCanvas.height = (usableHeight / ratio) * (96 / 25.4);
+  const ctx = pageCanvas.getContext("2d");
 
-    const pageImg = pageCanvas.toDataURL("image/png");
-    if (y > 0) pdf.addPage();
-    pdf.addImage(pageImg, "PNG", 0, 0, pageWidth, usableHeight);
+  ctx.drawImage(
+    canvas,
+    0, srcY, canvas.width, pageCanvas.height,
+    0, 0, canvas.width, pageCanvas.height
+  );
 
-    // Agregar footer en cada hoja
+  const pageImg = pageCanvas.toDataURL("image/png");
+  if (y > 0) pdf.addPage();
+  const marginX = 5;  // margen izquierdo/derecho (mm)
+  const marginY = 5;  // margen superior (mm)
+  const usableW = pageWidth - marginX * 2;
+  const usableH = usableHeight - marginY * 2;
+
+  // 🧾 Insertar la imagen con márgenes
+  pdf.addImage(pageImg, "PNG", marginX, marginY, usableW, usableH);
+
+  // === 🖼️ Marco por hoja (dinámico según selección) ===
+  pdf.setDrawColor(0);
+  pdf.setLineWidth(0.6);
+
+  switch (frameStyle) {
+    case "dotted":
+      pdf.setLineDashPattern([1, 2], 0);
+      break;
+    case "dashed":
+      pdf.setLineDashPattern([4, 2], 0);
+      break;
+    case "double":
+      pdf.setLineDashPattern([], 0);
+      pdf.rect(4, 4, pageWidth - 8, pageHeight - 8);
+      pdf.rect(6, 6, pageWidth - 12, pageHeight - 12);
+      break;
+    case "groove":
+      pdf.setDrawColor(180, 0, 45);
+      pdf.setLineWidth(1.2);
+      pdf.setLineDashPattern([], 0);
+      pdf.rect(4, 4, pageWidth - 8, pageHeight - 8);
+      pdf.setDrawColor(90, 0, 25);
+      pdf.rect(5, 5, pageWidth - 10, pageHeight - 10);
+      break;
+    default:
+      pdf.setLineDashPattern([], 0);
+      pdf.rect(4, 4, pageWidth - 8, pageHeight - 8);
+  }
+
+  pdf.setLineDashPattern([], 0); // limpiar patrón
+
+  // === Footer en cada hoja ===
   if (footerImg) {
-    // Crear imagen temporal para obtener su tamaño real
     const tempImg = new Image();
     tempImg.src = footerImg;
     await new Promise(res => { tempImg.onload = res; });
 
-    // Calcular proporciones originales (px → mm)
     const footerWmm = (tempImg.width * 25.4) / 96;
     const footerHmm = (tempImg.height * 25.4) / 96;
+    let drawW = footerWmm, drawH = footerHmm;
 
-    // Escalar solo si es más ancho que la página
-    let drawW = footerWmm;
-    let drawH = footerHmm;
     if (drawW > pageWidth) {
       const ratio = pageWidth / drawW;
       drawW = pageWidth;
       drawH = footerHmm * ratio;
     }
 
-    // Centrar horizontalmente
     const x = (pageWidth - drawW) / 2;
-    const y = pageHeight - drawH - 5; // deja 5 mm de margen inferior
-
-    pdf.addImage(footerImg, "PNG", x, y, drawW, drawH);
+    const yFooter = pageHeight - drawH - 5;
+    pdf.addImage(footerImg, "PNG", x, yFooter, drawW, drawH);
   }
 
-
-      y += usableHeight;
-    }
-
-  pdf.save(`menu_${formato}.pdf`);
-  loadingMsg.remove();
+  y += usableHeight;
+}
+iframeDoc.documentElement.classList.remove("exporting-pdf");
+pdf.save(`menu_${formato}.pdf`);
+loadingMsg.remove();
 }
 
   </script>

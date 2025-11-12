@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Login - MenuLab Editor</title>
+  <style>
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: linear-gradient(160deg, #f4f6fb, #e7ecf7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .card {
+      background: #fff;
+      padding: 28px 24px;
+      border-radius: 12px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+      width: 340px;
+      text-align: center;
+    }
+    h2 {margin: 0 0 16px;font-size: 1.25rem;color: #222;}
+    label {display:block;text-align:left;margin:12px 0 4px;font-size:.9rem;color:#555;}
+    input {
+      width:100%;padding:10px;border:1px solid #d0d3da;border-radius:6px;font-size:1rem;
+    }
+    button {
+      margin-top:18px;width:100%;padding:11px;border:none;border-radius:6px;
+      background:#1d72ff;color:#fff;font-weight:600;font-size:1rem;cursor:pointer;transition:.2s;
+    }
+    button:hover {background:#115ee6;}
+    .error {color:#c0392b;margin-top:10px;font-size:0.9rem;display:none;}
+    .success {color:#2ecc71;margin-top:10px;font-size:0.9rem;display:none;}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Acceso al Editor de MenuLab</h2>
+    <label for="user">ID del restaurante</label>
+    <input id="user" placeholder="Ej: cafe_central" autocomplete="username" />
+
+    <label for="pass">Contraseña</label>
+    <input id="pass" type="password" autocomplete="current-password" />
+
+    <button id="btn">Entrar</button>
+    <div id="err" class="error">Usuario o contraseña inválidos</div>
+    <div id="ok" class="success">Accediendo...</div>
+  </div>
+
+  <script>
+    // 🚀 CONFIGURACIÓN
+    const SCRIPT_ID = "AKfycbyswfpcLHgKj1zAvHgGCpYs6EWLqwfqjEM-mxFErwp_g8jTPr8qi-5tVGfNyXzqGgYG"; 
+    const ENDPOINT = `https://script.google.com/macros/s/${SCRIPT_ID}/exec`;
+
+    // === AUTENTICAR USUARIO ===
+    async function checkAuth(id, pass) {
+        const url = `${ENDPOINT}?action=auth&id=${encodeURIComponent(id)}&token=${encodeURIComponent(pass)}`;
+        console.log("Verificando:", url);
+
+      return new Promise((resolve) => {
+        const iframe = document.createElement("iframe");
+        iframe.style.display = "none";
+        iframe.src = url;
+        document.body.appendChild(iframe);
+
+        function listener(e) {
+          if (e.data && typeof e.data.ok !== "undefined") {
+            console.log("✅ Respuesta:", e.data);
+            window.removeEventListener("message", listener);
+            iframe.remove();
+            resolve(e.data.ok);
+          }
+        }
+
+        window.addEventListener("message", listener);
+        setTimeout(() => {
+          console.warn("⏰ Timeout de login");
+          resolve(false);
+          iframe.remove();
+        }, 7000);
+      });
+    }
+
+    // === BOTÓN LOGIN ===
+    document.getElementById("btn").addEventListener("click", async () => {
+      const id = document.getElementById("user").value.trim();
+      const pass = document.getElementById("pass").value.trim();
+      const err = document.getElementById("err");
+      const ok = document.getElementById("ok");
+      err.style.display = "none";
+      ok.style.display = "none";
+
+      if (!id || !pass) {
+        err.textContent = "Completá ambos campos";
+        err.style.display = "block";
+        return;
+      }
+
+      ok.textContent = "Verificando...";
+      ok.style.display = "block";
+
+      const valid = await checkAuth(id, pass);
+
+      if (valid) {
+        ok.textContent = "Acceso concedido ✅";
+        setTimeout(() => {
+          window.location.href = `https://menulab.com.ar/editor.html?tenant=${encodeURIComponent(id)}`;
+        }, 1000);
+      } else {
+        ok.style.display = "none";
+        err.textContent = "Usuario o contraseña inválidos";
+        err.style.display = "block";
+      }
+    });
+
+    // === ENTER para enviar ===
+    document.getElementById("pass").addEventListener("keydown", e => {
+      if (e.key === "Enter") document.getElementById("btn").click();
+    });
+  </script>
+</body>
+</html>

@@ -62,6 +62,9 @@
     letter-spacing: var(--tracking);
     color: var(--color-plato);
     transition: all 0.25s ease;
+    background-position: center center; /* 🔹 Centrado vertical y horizontal */
+    background-repeat: no-repeat;
+    background-size: cover; /* o “contain” si querés que no recorte */
   }
 
   /* === FONDO === */
@@ -81,47 +84,62 @@
 /* Bloque general del encabezado */
 .resto-top {
   display: flex;
-  align-items: center;       /* centra verticalmente logo y texto */
-  justify-content: center;   /* centra todo el conjunto horizontalmente */
-  gap: 1.5rem;
-  text-align: left;
-  column-span: all;
-  margin-bottom: 1.5rem;
+  justify-content: center;
+  width: 100%;
+  align-items: center;
+  gap: var(--logo-gap, 10px); /* ← valor base por si no se define */
+  width: 100%;
 }
 
-/* Logo */
+.resto-header {
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  width: auto;
+  transform-origin: center center;
+  transition: padding-top 0.25s ease; /* 🟢 agrega transición suave */  
+}
+
 .resto-header img {
   width: var(--logo-size, 110px);
   height: var(--logo-size, 110px);
   border-radius: 50%;
   object-fit: cover;
-  flex-shrink: 0;
+  opacity: var(--logo-opacity, 1);
+  transition: transform 0.25s ease, opacity 0.25s ease;
+  transform-origin: center center;
 }
 
 /* Texto */
 .resto-info {
   display: flex;
   flex-direction: column;
-  justify-content: center;   /* alinea verticalmente el texto al centro del logo */
-  text-align: left;
+  justify-content: center;
+  align-items: flex-start;
+  line-height: 1.1;
 }
 
 .resto-info h1 {
   font-family: var(--font-nombre-resto);
   font-size: var(--size-nombre-resto);
-  margin: 0;
   color: var(--color-nombre-resto);
+  margin: 0;
   font-weight: 700;
+  line-height: 1.1;
 }
 
 .resto-info .resto-slogan {
   font-family: var(--font-nombre-slogan);
   font-size: var(--size-nombre-slogan);
+  color: var(--color-nombre-slogan);
   font-style: italic;
   margin: 0.3rem 0 0;
-  color: var(--color-nombre-slogan);
+  line-height: 1.1;
 }
-
+body .resto-top {
+  width: 100%;
+  justify-content: center;
+}
   #menuTable h3 {
     font-family: var(--font-subcategoria);
     font-size: var(--size-subcategoria);
@@ -216,9 +234,8 @@
     font-size: var(--size-info-resto);
     color: var(--color-info-resto);
     text-align: center;
-    border-top: 1px solid #ddd;
-    margin-top: 2rem;
-    padding: 10px 0;
+    margin-top: 0 !important;
+    padding: 10px;
     column-span: all;
     position: fixed;
   }
@@ -363,7 +380,6 @@
     border-width: var(--cat-frame-width, 0px);
     border-radius: 8px;
     box-sizing: border-box;
-    background-color: rgba(255, 255, 255, 0.9); /* leve fondo anti-solapamiento */
     backdrop-filter: blur(1px);
     overflow: hidden;
 
@@ -505,6 +521,15 @@ body.header-en-primera .resto-top {
   margin-top: 10px;
   font-weight: 500;
 }
+.hide-frame .menu-container {
+  border: none !important;
+}
+/* Ocultar el marco del menú cuando se exporta a PDF */
+.exporting-pdf .menu-container,
+.exporting-pdf body {
+  border: none !important;
+  box-shadow: none !important;
+}
 
 
 </style>
@@ -611,6 +636,13 @@ async function loadMenu() {
     if (Array.isArray(data.menu)) {
       renderMenu(data.menu);
       setTimeout(capturarBloquesOriginales, 200);
+      if (Array.isArray(data.menu)) {
+        renderMenu(data.menu);
+        setTimeout(() => {
+            capturarBloquesOriginales();
+            setTimeout(() => aplicarEstilosGuardados(estiloGlobal || {}), 300);
+        }, 300);
+        }
     } else {
       document.getElementById("menuTable").innerHTML =
         "<p style='text-align:center;color:#999'>Menú no disponible.</p>";
@@ -736,12 +768,7 @@ function showLoading(msg = "Cargando menú...") {
 // 3️⃣ Ejecutar al cargar
 loadMenu();
 loadSavedStyle();
-// 🧭 Forzar formato inicial: 1 Col - Encabezado Centro
-window.addEventListener("load", () => {
-  if (typeof aplicarFormatoLayout === "function") {
-    aplicarFormatoLayout("1"); // 2 = 1 Columna - Encabezado Centro
-  }
-});
+
 
 function renderInfo(info = {}) {
   const get = (k) => info[k] || "";
@@ -1080,6 +1107,67 @@ window.addEventListener("message", (e) => {
       if (data === "centro") document.body.classList.add("cat-center");
       if (data === "der")    document.body.classList.add("cat-right");
       break;
+
+    case "bg-url":
+      const bgDiv = document.querySelector(".print-background");
+      if (bgDiv) {
+        bgDiv.style.backgroundImage = `url('${data}')`;
+        bgDiv.style.backgroundSize = "cover";
+        bgDiv.style.backgroundRepeat = "no-repeat";
+        bgDiv.style.backgroundPosition = "center center";
+      }
+      break;
+
+    case "bg-size":
+      document.documentElement.style.setProperty("--bg-size-scale", `${data}%`);
+      const bgDiv2 = document.querySelector(".print-background");
+      if (bgDiv2) bgDiv2.style.backgroundSize = `${data}%`;
+      break;
+
+    // === 🏪 Logo ===
+    case "logo-url":
+      const logoEl = document.getElementById("logo-resto");
+      if (logoEl) logoEl.src = data;
+      break;
+
+    case "logo-size":
+    const logo = document.getElementById("logo-resto");
+    if (logo) {
+        const scale = parseFloat(data) / 100; // 100 → 1.0, 50 → 0.5, 150 → 1.5
+        logo.style.transition = "transform 0.25s ease";
+        logo.style.transform = `scale(${scale})`;
+        logo.style.transformOrigin = "center center"; // 🔹 mantiene centrado el escalado
+    }
+    break;
+
+    case "logo-opacity":
+      const logoOpacity = document.getElementById("logo-resto");
+      if (logoOpacity) logoOpacity.style.opacity = data;
+      break;
+
+    case "logo-margin-top":
+    const restoTop = document.querySelector(".resto-top");
+    if (restoTop) {
+        restoTop.style.marginTop = `${data}px`; // ✅ aplica a todo el bloque
+        restoTop.style.transition = "margin-top 0.25s ease";
+    }
+    break;
+    case "logo-gap":
+        const restoTopGap = document.querySelector(".resto-top");
+        const restoInfo = document.querySelector(".resto-info");
+
+        if (restoTopGap) {
+            const val = parseInt(data);
+            restoTopGap.style.gap = val >= 0 ? `${val}px` : "0px"; // solo aplica gap si es positivo
+            restoTopGap.style.transition = "gap 0.25s ease";
+        }
+
+        if (restoInfo) {
+            const val = parseInt(data);
+            restoInfo.style.marginLeft = val < 0 ? `${val}px` : "0px"; // si es negativo, mueve el texto
+            restoInfo.style.transition = "margin-left 0.25s ease";
+        }
+        break;
     }
   });
 
@@ -1160,7 +1248,7 @@ function aplicarFormatoLayout(layout) {
       break;
 
     case "5": // 3 Cols - Header 1° Col
-8      go(3, 'first');
+      go(3, 'first');
       if (restoTop) {
         restoTop.style.justifyContent = "center"; // centrado dentro de la primera col
         restoTop.style.textAlign = "center";
