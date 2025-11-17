@@ -1327,8 +1327,13 @@ function aplicarEstilosGuardados(estilo = {}) {
   // 🧩 7. Columnas
   if (estilo.columns) {
     const cols = parseInt(estilo.columns);
-    if (cols === 1) restaurarAnchoCompleto();
-    else distribuirColumnas(cols, "full");
+    const headerMode = estilo.headerMode || "full";
+    distribuirColumnas(cols, headerMode);
+  }
+
+  // 🧩 8. Formato de columnas y distribución
+  if (estilo.layout) {
+    aplicarFormatoLayout(estilo.layout);
   }
 
   console.log("✅ Estilos guardados aplicados:", estilo);
