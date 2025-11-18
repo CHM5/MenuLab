@@ -892,32 +892,14 @@
     <!-- 🖨️ Vista previa -->
     <section id="previewControls">
       <button id="printBtn">🖨️ Vista Previa</button>
+      <button id="printA3">🖨️ Imprimir A3</button>
+      <button id="printA4">🖨️ Imprimir A4</button>
+      <button id="printA5">🖨️ Imprimir A5</button>
     </section>
     <section id="saveControls">
       <button id="saveBtn">💾 Guardar</button>
     </section>
-    <!-- 📥 Descargar -->
-    <section id="downloadControls">
-      <button id="downloadBtn">📥 Descargar</button>
 
-      <!-- Menú desplegable -->
-      <div id="downloadMenu" style="
-        display:none;
-        background:#f8f9fa;
-        border:1px solid #ccc;
-        border-radius:8px;
-        margin-top:0.5rem;
-        padding:0.6rem;
-        text-align:left;
-        box-shadow:0 3px 8px #0002;
-      ">
-        <p style="margin:0 0 0.4rem;font-weight:600;">Elegí formato:</p>
-        <button class="sizeOption" data-w="297" data-h="420">📄 A3</button>
-        <button class="sizeOption" data-w="210" data-h="297">📄 A4</button>
-        <button class="sizeOption" data-w="148" data-h="210">📄 A5</button>
-        <button id="customSize">⚙️ Personalizado</button>
-      </div>
-    </section>
   </aside>
 
   <main id="previewArea">
@@ -1498,6 +1480,30 @@ if (printBtn) {
   });
 }
 
+/* === NUEVOS BOTONES DE IMPRESIÓN ESCALADA === */
+
+function setPrintMode(mode) {
+  const doc = preview.contentDocument.body;
+  doc.classList.remove("print-A3", "print-A4", "print-A5");
+  doc.classList.add(mode);
+  preview.contentWindow.print();
+}
+
+// Si querés botón para imprimir A4
+document.getElementById("printA4")?.addEventListener("click", () => {
+  setPrintMode("print-A4");
+});
+
+// Si querés botón para imprimir A3
+document.getElementById("printA3")?.addEventListener("click", () => {
+  setPrintMode("print-A3");
+});
+
+// Si querés botón para imprimir A5
+document.getElementById("printA5")?.addEventListener("click", () => {
+  setPrintMode("print-A5");
+});
+
 /* === Menú mobile === */
 menuBtn.addEventListener("click", () => {
   sideMenu.classList.toggle("open");
@@ -1668,7 +1674,7 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("load", () => {
     const overlay = document.getElementById("loading-overlay");
     setTimeout(() => {
-      overlay.classList.add("hide");
+      //overlay.classList.add("hide");
       document.body.style.overflow = "auto"; // ✅ vuelve a mostrar el resto
     }, 700);
   });
@@ -1694,170 +1700,6 @@ document.addEventListener("click", (e) => {
     menu.style.display = "none";
   }
 });
-
-document.querySelectorAll(".sizeOption").forEach(btn => {
-  btn.addEventListener("click", () => {
-    const anchoMM = parseFloat(btn.dataset.w);
-    const altoMM = parseFloat(btn.dataset.h);
-    generarPDF(anchoMM, altoMM, btn.textContent.trim().replace("📄", "").trim());
-    menu.style.display = "none";
-  });
-});
-
-document.getElementById("customSize").addEventListener("click", () => {
-  const anchoMM = parseFloat(prompt("Ingresá el ancho (mm):", "210"));
-  const altoMM = parseFloat(prompt("Ingresá el alto (mm):", "297"));
-  if (isNaN(anchoMM) || isNaN(altoMM)) return alert("Valores inválidos.");
-  generarPDF(anchoMM, altoMM, "Personalizado");
-  menu.style.display = "none";
-});
-
-async function generarPDF(anchoMM, altoMM, formato) {
-  const { jsPDF } = window.jspdf;
-
-  const loadingMsg = document.createElement("div");
-  loadingMsg.textContent = "⏳ Generando PDF...";
-  loadingMsg.style = `
-    position:fixed;top:50%;left:50%;
-    transform:translate(-50%,-50%);
-    background:#000a;color:#fff;
-    padding:12px 20px;border-radius:8px;
-    font-family:sans-serif;z-index:9999;
-  `;
-  document.body.appendChild(loadingMsg);
-
-    // 📄 Documento dentro del iframe
-    const iframeDoc = preview.contentDocument;
-    const body = iframeDoc.body;
-
-    // 💡 Desactivar temporalmente el marco interno del menú (dentro del iframe)
-    iframeDoc.documentElement.classList.add("exporting-pdf");
-
-    // 🦶 Capturar el footer real
-    const footerEl = iframeDoc.querySelector(".footer");
-  let footerImg = null;
-  if (footerEl) {
-    const footerCanvas = await html2canvas(footerEl, {
-      scale: 2,
-      useCORS: true,
-      backgroundColor: null
-    });
-    footerImg = footerCanvas.toDataURL("image/png");
-  }
-    iframeDoc.body.classList.add("hide-frame");
-
-  // 🧾 Capturar solo el contenido del menú, ignorando el footer
-  const canvas = await html2canvas(body, {
-    scale: 2,
-    useCORS: true,
-    backgroundColor: "#ffffff",
-    ignoreElements: el => el.classList.contains("footer")
-  });
-
-  const pdf = new jsPDF({
-    orientation: altoMM > anchoMM ? "p" : "l",
-    unit: "mm",
-    format: [anchoMM, altoMM]
-  });
-
-  // 📏 Medidas
-  const pageWidth = pdf.internal.pageSize.getWidth();
-  const pageHeight = pdf.internal.pageSize.getHeight();
-  const marginBottom = 8; // espacio reservado para el footer (mm)
-
-  const imgWidth = (canvas.width * 25.4) / 96;
-  const imgHeight = (canvas.height * 25.4) / 96;
-
-  const ratio = pageWidth / imgWidth;
-  const scaledHeight = imgHeight * ratio;
-  const usableHeight = pageHeight - marginBottom;
-
-// 📄 Crear páginas con el footer al final
-let y = 0;
-const frameStyle = localStorage.getItem("pdf-frame-style") || "solid";
-
-while (y < scaledHeight) {
-  const srcY = (y / ratio) * (96 / 25.4);
-  const pageCanvas = document.createElement("canvas");
-  pageCanvas.width = canvas.width;
-  pageCanvas.height = (usableHeight / ratio) * (96 / 25.4);
-  const ctx = pageCanvas.getContext("2d");
-
-  ctx.drawImage(
-    canvas,
-    0, srcY, canvas.width, pageCanvas.height,
-    0, 0, canvas.width, pageCanvas.height
-  );
-
-  const pageImg = pageCanvas.toDataURL("image/png");
-  if (y > 0) pdf.addPage();
-  const marginX = 5;  // margen izquierdo/derecho (mm)
-  const marginY = 5;  // margen superior (mm)
-  const usableW = pageWidth - marginX * 2;
-  const usableH = usableHeight - marginY * 2;
-
-  // 🧾 Insertar la imagen con márgenes
-  pdf.addImage(pageImg, "PNG", marginX, marginY, usableW, usableH);
-
-  // === 🖼️ Marco por hoja (dinámico según selección) ===
-  pdf.setDrawColor(0);
-  pdf.setLineWidth(0.6);
-
-  switch (frameStyle) {
-    case "dotted":
-      pdf.setLineDashPattern([1, 2], 0);
-      break;
-    case "dashed":
-      pdf.setLineDashPattern([4, 2], 0);
-      break;
-    case "double":
-      pdf.setLineDashPattern([], 0);
-      pdf.rect(4, 4, pageWidth - 8, pageHeight - 8);
-      pdf.rect(6, 6, pageWidth - 12, pageHeight - 12);
-      break;
-    case "groove":
-      pdf.setDrawColor(180, 0, 45);
-      pdf.setLineWidth(1.2);
-      pdf.setLineDashPattern([], 0);
-      pdf.rect(4, 4, pageWidth - 8, pageHeight - 8);
-      pdf.setDrawColor(90, 0, 25);
-      pdf.rect(5, 5, pageWidth - 10, pageHeight - 10);
-      break;
-    default:
-      pdf.setLineDashPattern([], 0);
-      pdf.rect(4, 4, pageWidth - 8, pageHeight - 8);
-  }
-
-  pdf.setLineDashPattern([], 0); // limpiar patrón
-
-  // === Footer en cada hoja ===
-  if (footerImg) {
-    const tempImg = new Image();
-    tempImg.src = footerImg;
-    await new Promise(res => { tempImg.onload = res; });
-
-    const footerWmm = (tempImg.width * 25.4) / 96;
-    const footerHmm = (tempImg.height * 25.4) / 96;
-    let drawW = footerWmm, drawH = footerHmm;
-
-    if (drawW > pageWidth) {
-      const ratio = pageWidth / drawW;
-      drawW = pageWidth;
-      drawH = footerHmm * ratio;
-    }
-
-    const x = (pageWidth - drawW) / 2;
-    const yFooter = pageHeight - drawH - 5;
-    pdf.addImage(footerImg, "PNG", x, yFooter, drawW, drawH);
-  }
-
-  y += usableHeight;
-}
-iframeDoc.documentElement.classList.remove("exporting-pdf");
-pdf.save(`menu_${formato}.pdf`);
-loadingMsg.remove();
-}
-
   </script>
   <script src="presets.js"></script>
 

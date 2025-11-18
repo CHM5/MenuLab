@@ -74,11 +74,11 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: url("") no-repeat center center;
+    background-position: center center;
+    background-repeat: no-repeat;
+    opacity: var(--bg-opacity) !important;
     background-size: var(--bg-size-scale);
-    opacity: var(--bg-opacity);
     z-index: -1;
-    pointer-events: none;
   }
 
 /* Bloque general del encabezado */
@@ -279,6 +279,8 @@ body .resto-top {
     left: 0;
     right: 0;
     bottom: 0;
+    background-position: center center;
+    background-repeat: no-repeat;
     opacity: var(--bg-opacity) !important;
     background-size: var(--bg-size-scale);
     z-index: -1;
@@ -531,11 +533,14 @@ body.header-en-primera .resto-top {
   box-shadow: none !important;
 }
 
-
+.exporting-pdf .print-background {
+    display: none !important;
+}
 </style>
 
 </head>
 <body>
+  
   <div id="menu-frame">
     <div id="menu-inner">
       <!-- 🌄 Fondo -->
@@ -596,6 +601,7 @@ const tenant = params.get("tenant") || "cafe_central"; // por defecto Café Cent
 const API_URL = "https://script.google.com/macros/s/AKfycbyswfpcLHgKj1zAvHgGCpYs6EWLqwfqjEM-mxFErwp_g8jTPr8qi-5tVGfNyXzqGgYG/exec";
 // === 🔹 CARGAR ESTILO GUARDADO DEL RESTAURANTE ===
 async function loadSavedStyle() {
+  if (document.documentElement.dataset.busy === "1") return;
   try {
     const url = `${API_URL}?action=get_style&tenant=${tenant}&_=${Date.now()}`;
 
@@ -617,6 +623,8 @@ async function loadSavedStyle() {
     } catch {
       estilo = {};
     }
+    console.log("🎨 ESTILO RAW RECIBIDO:", text);
+    console.log("🎨 ESTILO PARSEADO:", estilo);
 
     aplicarEstilosGuardados(estilo);
     console.log("🎨 Estilo aplicado desde hoja users:", estilo);
@@ -944,8 +952,6 @@ function restaurarAnchoCompleto() {
   console.log("🔙 Restaurado layout de 1 columna (visual correcto)");
 }
 
-
-
 window.addEventListener("message", (e) => {
   const { type, data } = e.data || {};
   if (!type) return;
@@ -1004,10 +1010,6 @@ window.addEventListener("message", (e) => {
       document.documentElement.style.setProperty("--bg-opacity", data);
       break;
 
-    case "bg-size":
-      document.documentElement.style.setProperty("--bg-size-scale", `${data}%`);
-      break;
-
     case "frame-style":
       document.documentElement.style.setProperty("--frame-style", data);
       break;
@@ -1019,21 +1021,12 @@ window.addEventListener("message", (e) => {
       break;
     case "cat-frame-style":
       document.documentElement.style.setProperty("--cat-frame-style", data);
-      // aplicar instantáneamente
       document.querySelectorAll(".categoria-bloque").forEach(b => {
         b.style.borderStyle = data === "none" ? "none" : data;
         b.style.borderColor = "rgba(0,0,0,0.2)";
         b.style.borderWidth = data === "none" ? "0" : "1.5px";
-        b.style.borderRadius = "8px";
-        b.style.padding = "8px 10px";
-        b.style.marginBottom = "1rem";
       });
-      break;
-    case "cat-frame-style":
-      document.documentElement.style.setProperty("--cat-frame-style", data);
-      document.querySelectorAll(".categoria-bloque").forEach(b => {
-        b.style.borderStyle = data === "none" ? "none" : data;
-      });
+
       break;
 
     case "cat-frame-color":
@@ -1088,6 +1081,26 @@ window.addEventListener("message", (e) => {
           width: cs.getPropertyValue("--frame-width").trim(),
         }
       };
+      // Extraer fondo real
+      const bgDiv = document.querySelector(".print-background");
+      let bgUrl = "", bgPosition = "", bgSizeCss = "", bgOpacityCss = "";
+
+      if (bgDiv) {
+        const csBg = getComputedStyle(bgDiv);
+
+        bgUrl = csBg.backgroundImage.replace(/^url\(["']?|["']?\)$/g, "");
+        bgPosition = csBg.backgroundPosition;
+        bgSizeCss = csBg.backgroundSize;
+        bgOpacityCss = csBg.opacity;
+      }
+
+      styles.background = {
+        url: bgUrl,
+        size: bgSizeCss,
+        position: bgPosition,
+        opacity: bgOpacityCss
+      };
+
       window.parent.postMessage({ type: "current-styles-response", data: styles }, "*");
       break;
           /* === NUEVO: FORMATO / CATEGORÍAS === */
@@ -1109,19 +1122,14 @@ window.addEventListener("message", (e) => {
       break;
 
     case "bg-url":
-      const bgDiv = document.querySelector(".print-background");
-      if (bgDiv) {
-        bgDiv.style.backgroundImage = `url('${data}')`;
-        bgDiv.style.backgroundSize = "cover";
-        bgDiv.style.backgroundRepeat = "no-repeat";
-        bgDiv.style.backgroundPosition = "center center";
-      }
+      const bgDivUrl  = document.querySelector(".print-background");
+      if (bgDivUrl ) bgDivUrl .style.backgroundImage = `url('${data}')`;
       break;
 
     case "bg-size":
       document.documentElement.style.setProperty("--bg-size-scale", `${data}%`);
-      const bgDiv2 = document.querySelector(".print-background");
-      if (bgDiv2) bgDiv2.style.backgroundSize = `${data}%`;
+      const bgDivSize  = document.querySelector(".print-background");
+      if (bgDivSize ) bgDivSize .style.backgroundSize = `${data}%`;
       break;
 
     // === 🏪 Logo ===
