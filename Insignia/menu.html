@@ -491,12 +491,24 @@ body.header-en-primera .resto-top {
 
 /* === 🔄 Indicador de carga con porcentaje === */
 #loadingMenu {
+  position: fixed;           
+  top: 50%;                     
+  left: 50%;                   
+  transform: translate(-50%, -50%);
+  z-index: 99999 !important;
+  background: rgba(255,255,255,0.9);
+  padding: 20px 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
   text-align: center;
-  color: #333;
-  font-family: 'Montserrat', sans-serif;
-  padding: 60px 10px;
-  font-size: 1.1rem;
-  letter-spacing: 0.5px;
+}
+
+body.preload #loadingMenu {
+  opacity: 1 !important;
+}
+
+body.preload #menu-frame {
+  opacity: 0 !important;
 }
 
 #progress-bar {
@@ -539,7 +551,7 @@ body.header-en-primera .resto-top {
 </style>
 
 </head>
-<body>
+<body class="preload">
   
   <div id="menu-frame">
     <div id="menu-inner">
@@ -627,6 +639,7 @@ async function loadSavedStyle() {
     console.log("🎨 ESTILO PARSEADO:", estilo);
 
     aplicarEstilosGuardados(estilo);
+
     console.log("🎨 Estilo aplicado desde hoja users:", estilo);
   } catch (err) {
     console.error("⚠️ No se pudo cargar estilo guardado:", err);
@@ -634,23 +647,26 @@ async function loadSavedStyle() {
 }
 
 async function loadMenu() {
-  const stopProgress = showLoading(); // 🔹 Inicia loader con barra
+  const stopProgress = showLoading(); 
 
   try {
     const res = await fetch(`${API_URL}?tenant=${tenant}`);
     const data = await res.json();
 
     if (data.info) renderInfo(data.info);
+
     if (Array.isArray(data.menu)) {
       renderMenu(data.menu);
-      setTimeout(capturarBloquesOriginales, 200);
-      if (Array.isArray(data.menu)) {
-        renderMenu(data.menu);
-        setTimeout(() => {
-            capturarBloquesOriginales();
-            setTimeout(() => aplicarEstilosGuardados(estiloGlobal || {}), 300);
-        }, 300);
-        }
+
+      // solo UNA captura, después del render REAL
+      setTimeout(() => {
+        capturarBloquesOriginales();
+
+        // ahora sí se aplican estilos guardados
+        setTimeout(() => loadSavedStyle(), 200);
+
+      }, 200);
+
     } else {
       document.getElementById("menuTable").innerHTML =
         "<p style='text-align:center;color:#999'>Menú no disponible.</p>";
@@ -661,10 +677,10 @@ async function loadMenu() {
     document.getElementById("menuTable").innerHTML =
       "<p style='text-align:center;color:#999'>Error al conectar con el servidor.</p>";
   } finally {
-    // 🔹 Finaliza y oculta el loader
     if (typeof stopProgress === "function") stopProgress();
   }
 }
+
 
 function renderMenu(rows) {
   const container = document.getElementById("menuTable");
@@ -728,7 +744,6 @@ Object.entries(grouped).forEach(([cat, subs]) => {
 });
 }
 
-// === Indicador de carga ===
 // === Indicador de carga con progreso simulado ===
 function showLoading(msg = "Cargando menú...") {
   const container = document.getElementById("menuTable");
@@ -776,7 +791,7 @@ function showLoading(msg = "Cargando menú...") {
 // 3️⃣ Ejecutar al cargar
 loadMenu();
 loadSavedStyle();
-
+window.onload = () => document.body.classList.remove("preload");
 
 function renderInfo(info = {}) {
   const get = (k) => info[k] || "";
