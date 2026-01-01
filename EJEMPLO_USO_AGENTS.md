@@ -11,7 +11,7 @@ Los agents en MenuLab son workflows automatizados de GitHub Actions que generan 
 MenuLab ofrece 4 planes diferentes, cada uno con características específicas:
 
 | ID Plan | Nombre | Descripción |
-|---------|--------|-------------|
+|:--------|:-------|:------------|
 | 0 | Plan Base | Menú online gratuito con hasta 25 ítems |
 | 1 | Plan Emprendedor | Menú imprimible + edición en Google Sheets |
 | 2 | Plan Profesional | Menú imprimible + online + código QR |
@@ -158,7 +158,7 @@ else:
 El `client_payload` debe contener los siguientes campos:
 
 | Campo | Tipo | Requerido | Descripción |
-|-------|------|-----------|-------------|
+|:------|:-----|:----------|:------------|
 | `plan` | string | Sí | ID del plan: "0", "1", "2", o "3" |
 | `email` | string | Sí | Email del cliente (para enviar el menú) |
 | `nombreCompleto` | string | Sí | Nombre completo del cliente |
