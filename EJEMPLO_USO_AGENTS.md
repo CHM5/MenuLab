@@ -195,26 +195,40 @@ Aquí hay un ejemplo completo de cómo integrar MenuLab en un sistema de pagos:
 
 ```javascript
 // Webhook de MercadoPago u otro procesador de pagos
+// NOTA: Este es un ejemplo simplificado. En producción, debes:
+// - Validar la firma del webhook
+// - Verificar el estado del pago
+// - Manejar errores apropiadamente
+// - Agregar validación de entrada
 app.post('/webhook/pago-confirmado', async (req, res) => {
-  const { payment_id, external_reference, payer_email } = req.body;
-  
-  // 1. Obtener datos del pedido desde tu base de datos
-  const pedido = await obtenerPedidoPorReferencia(external_reference);
-  
-  // 2. Crear Google Sheet para el cliente
-  const sheetUrl = await crearGoogleSheetParaCliente(pedido.negocio);
-  
-  // 3. Disparar generación de menú
-  await generarMenu({
-    plan: pedido.planId.toString(),
-    email: payer_email,
-    nombreCompleto: pedido.nombreCliente,
-    negocio: pedido.nombreNegocio,
-    external_reference: external_reference,
-    sheet_url: sheetUrl
-  });
-  
-  res.status(200).send('OK');
+  try {
+    const { payment_id, external_reference, payer_email } = req.body;
+    
+    // 1. Obtener datos del pedido desde tu base de datos
+    const pedido = await obtenerPedidoPorReferencia(external_reference);
+    
+    if (!pedido) {
+      return res.status(404).json({ error: 'Pedido no encontrado' });
+    }
+    
+    // 2. Crear Google Sheet para el cliente
+    const sheetUrl = await crearGoogleSheetParaCliente(pedido.negocio);
+    
+    // 3. Disparar generación de menú
+    await generarMenu({
+      plan: pedido.planId.toString(),
+      email: payer_email,
+      nombreCompleto: pedido.nombreCliente,
+      negocio: pedido.nombreNegocio,
+      external_reference: external_reference,
+      sheet_url: sheetUrl
+    });
+    
+    res.status(200).send('OK');
+  } catch (error) {
+    console.error('Error procesando webhook:', error);
+    res.status(500).json({ error: 'Error interno del servidor' });
+  }
 });
 ```
 
