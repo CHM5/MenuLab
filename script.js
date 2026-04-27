@@ -249,7 +249,7 @@ document.querySelectorAll('.cart-checkbox').forEach(checkbox => {
         observer.unobserve(entry.target);
       }
     });
-  }, { threshold: 0.12 });
+  }, { threshold: 0.05 });
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 })();
 
