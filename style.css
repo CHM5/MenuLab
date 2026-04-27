@@ -936,3 +936,289 @@
 .select-btn.demo-btn:hover {
   background: #c02785;
 }
+
+/* =====================================================
+   mlab – WhatsApp AI Section
+   ===================================================== */
+.mlab-section {
+  background: linear-gradient(160deg, #0a0a1a 0%, #0d1b2e 60%, #1a0d2e 100%);
+  color: #fff;
+  padding: 80px 24px;
+  font-family: 'Inter', sans-serif;
+}
+
+.mlab-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 48px;
+  text-align: center;
+}
+
+.mlab-badge {
+  display: inline-block;
+  background: rgba(230,57,166,0.15);
+  border: 1px solid rgba(230,57,166,0.5);
+  color: #E639A6;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 5px 16px;
+  border-radius: 50px;
+  text-transform: uppercase;
+}
+
+.mlab-heading {
+  font-family: 'Unbounded', sans-serif;
+  font-size: clamp(24px, 5vw, 42px);
+  font-weight: 700;
+  line-height: 1.25;
+  margin: 0;
+}
+
+.mlab-gradient {
+  background: linear-gradient(90deg, #E639A6, #457BD9);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.mlab-sub {
+  font-size: clamp(15px, 2vw, 18px);
+  color: #aab4c0;
+  max-width: 640px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Stats */
+.mlab-stats {
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+}
+
+.mlab-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  padding: 20px 32px;
+  min-width: 140px;
+}
+
+.mlab-stat-num {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  background: linear-gradient(90deg, #E639A6, #457BD9);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.mlab-stat-label {
+  font-size: 12px;
+  color: #7a8a9a;
+  letter-spacing: 0.04em;
+}
+
+/* Blocks */
+.mlab-block {
+  width: 100%;
+}
+
+.mlab-block-title {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: #E639A6;
+  margin: 0 0 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* Rubros grid */
+.mlab-rubros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+}
+
+.mlab-rubro {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  padding: 12px 18px;
+  font-size: 14px;
+  min-width: 200px;
+  flex: 1 1 180px;
+  max-width: 260px;
+}
+.mlab-rubro strong { color: #fff; }
+.mlab-rubro span { color: #7a8a9a; font-size: 12px; display: block; margin-top: 2px; }
+.mlab-rubro { flex-direction: column; align-items: flex-start; }
+
+/* Features grid */
+.mlab-features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 12px;
+  text-align: left;
+}
+
+.mlab-feature {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-size: 14px;
+  color: #c5d0db;
+  line-height: 1.5;
+}
+
+/* Plans */
+.mlab-plans {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  width: 100%;
+  text-align: left;
+}
+
+.mlab-plan {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 20px;
+  padding: 28px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.mlab-plan--pro {
+  border-color: rgba(230,57,166,0.4);
+  background: rgba(230,57,166,0.06);
+  position: relative;
+}
+
+.mlab-plan-badge {
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 700;
+  color: #aab4c0;
+}
+
+.mlab-plan-badge--pro {
+  color: #E639A6;
+}
+
+.mlab-plan-title {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0;
+}
+
+.mlab-plan-ideal {
+  font-size: 13px;
+  color: #7a8a9a;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.mlab-plan-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mlab-plan-list li {
+  font-size: 14px;
+  color: #c5d0db;
+  line-height: 1.5;
+}
+
+.mlab-plan-quote {
+  font-size: 13px;
+  color: #E639A6;
+  font-style: italic;
+  border-left: 3px solid rgba(230,57,166,0.4);
+  padding-left: 12px;
+  line-height: 1.5;
+}
+
+/* Why */
+.mlab-why {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  width: 100%;
+}
+
+.mlab-why-item {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 50px;
+  padding: 10px 20px;
+  font-size: 14px;
+  color: #aab4c0;
+}
+
+/* CTA */
+.mlab-cta-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.mlab-cta-quote {
+  font-size: 18px;
+  color: #e0e8f0;
+  font-style: italic;
+  margin: 0;
+}
+
+.mlab-cta-btn {
+  display: inline-block;
+  background: linear-gradient(90deg, #E639A6, #457BD9);
+  color: #fff;
+  text-decoration: none;
+  font-family: 'Unbounded', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 16px 36px;
+  border-radius: 50px;
+  box-shadow: 0 6px 30px rgba(230,57,166,0.4);
+  transition: transform 0.18s, box-shadow 0.18s;
+}
+.mlab-cta-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 40px rgba(230,57,166,0.6);
+}
+
+@media (max-width: 600px) {
+  .mlab-stats { gap: 12px; }
+  .mlab-stat { padding: 16px 20px; min-width: 100px; }
+  .mlab-plans { grid-template-columns: 1fr; }
+}
