@@ -653,6 +653,10 @@
     overflow-y: auto;
   }
 
+  .navbar8-mobile-menu.open {
+    display: flex !important;
+  }
+
   .navbar8-mobile-menu nav {
     display: flex;
     flex-direction: column;

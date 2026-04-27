@@ -641,7 +641,7 @@
   display: none;
 }
 
-.navbar8-mobile-menu.active {
+.navbar8-mobile-menu.open {
   display: flex;
 }
 
