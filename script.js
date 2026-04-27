@@ -60,71 +60,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   ];
 
-  const tiendaVirtual = [
-    {
-      name: 'Plan Base',
-      prices: { monthly: 'GRATIS', yearly: 'GRATIS' }, ids: { monthly: 0, yearly: 0 },
-      intro:'de por vida',
-      features: [
-        { label: '<br></br>🍽️ Tienda MenuLab Online', info: 'Tené ya mismo tu Menú online' },
-        { label: '🔄 Actualizaciones', info: 'Actualizá tu tienda en tiempo real' },
-        { label: '📱Diseño Responsivo', info: 'Compatible con móviles y tablets' },
-        { label: '🍝 Hasta 25 Productos', info: 'Podés cargar hasta 25 productos' },
-        { label: '🏪 Data Negocio', info: 'Dirección, horarios de atencion, etc' },
-        { label: '🔐 Certificado web segura', info: 'Certificado SSL incluido' }
-      ]
-    },
-    {
-      name: 'Plan Emprendedor',
-      prices: { monthly: '$15.000', yearly: '$180.000' }, ids: { monthly: 1, yearly: 4 },
-      intro:'todo lo anterior, más:',
-      features: [
-        { label: '<br></br>🤳 Código QR', info: 'Código QR único para tu menú' },
-        { label: '🪧 Sin Publicidad', info: 'Menú sin banners ni anuncios externos' },
-        { label: '🌐 Traducción Automática', info: 'Traducción al inglés y portugués por Google' },
-        { label: '🛏️ Hosting 24/7', info: 'Acceso permanente a la menú online' },
-        { label: '🍝 Productos Ilimitados', info: 'Sin límite de carga de ítems' },
-        { label: '🔎 Búsqueda de Productos', info: 'Buscar rápidamente productos dentro de tu tienda' },
-        { label: '📞 Atención Virtual', info: 'Tiempo de respuesta en menos de 72h' },
-        { label: '<div style="text-align:center;"><b><br></br></b></div>' },
-        { label: '<div style="text-align:center;">✅5%OFF en <a href="#productos" style="color:#1976d2;text-decoration:underline;cursor:pointer;">Productos</a></div>', modes: ['monthly']},
-        { label: '<div style="text-align:center;">✅<b>10%OFF</b> en <a href="#productos" style="color:#1976d2;text-decoration:underline;cursor:pointer;">Productos</a></div>', modes: ['yearly']}
-      ]
-    },
-    {
-      name: 'Plan Profesional',
-      prices: { monthly: '$30.000', yearly: '$360.000' }, ids: { monthly: 2, yearly: 5 },
-      intro:'Todo lo anterior, más:',
-      features: [
-        { label: '<br></br>💬 Integración WhatsApp', info: 'Contacto directo vía WhatsApp' },
-        { label: '🛵 Integración Rappi/PedidosYa', info: 'Enlaces a aplicaciones de delivery' },
-        { label: '🗣️ Integración Instagram/Facebook', info: 'Enlaces a redes sociales desde tu menú' },
-        { label: '📍 Integración Google Maps', info: 'Enlace con dirección de tu negocio' },
-        { label: '🎨 Tema Personalizable', info: 'Elegí tipo de letra y paleta de colores' },
-        { label: '📞 Atención Personalizada', info: 'Tiempo de respuesta en menos de 42h' },
-        { label: '<div style="text-align:center;"><b><br></br></b></div>' },
-        { label: '<div style="text-align:center;">✅10%OFF en <a href="#productos" style="color:#1976d2;text-decoration:underline;cursor:pointer;">Productos</a></div>', modes: ['monthly']},
-        { label: '<div style="text-align:center;">✅<b>20%OFF</b> en <a href="#productos" style="color:#1976d2;text-decoration:underline;cursor:pointer;">Productos</a></div>', modes: ['yearly']}
-      ]
-    },
-    {
-      name: 'Plan Corporativo',
-      prices: { monthly: '$45.000', yearly: '$720.000' }, ids: { monthly: 3, yearly: 6 },
-      intro:'todo lo anterior, más:',
-      features: [
-        { label: '<br></br>📷 Integración de Fotos', info: 'Integración de galería fotográfica para mostrar tus productos' },
-        { label: '🛍️ Promos por Temporada', info: 'Mensajes pop up promocionales' },
-        { label: '📅 Integración de Reservas', info: 'Permití que tus clientes reserven mesas un Google forms' },
-        { label: '🛒 Pedidos por Web', info: 'Permití que tus clientes hagan pedidos directamente desde la menú online' },
-        { label: '📞 Atención Prioritaria', info: 'Tiempo de respuesta en menos de 24h' },
-        { label: '🛵 Integración Delivery', info: 'Al hacer clic, tus clientes podrán enviar un mensaje de WhatsApp pidiendo delivery' },
-        { label: '<div style="text-align:center;"><b><br></br></b></div>' },
-        { label: '<div style="text-align:center;">✅15%OFF en <a href="#productos" style="color:#1976d2;text-decoration:underline;cursor:pointer;">Productos</a></div>', modes: ['monthly']},
-        { label: '<div style="text-align:center;">✅<b>30%OFF</b> en <a href="#productos" style="color:#1976d2;text-decoration:underline;cursor:pointer;">Productos</a></div>', modes: ['yearly']}
-      ]
-    }
-  ];
-  
   let currentMode = 'monthly';
   
   function togglePricing(mode) {
@@ -189,107 +124,58 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('yearlyBtn').addEventListener('click', () => togglePricing('yearly'));
   
   togglePricing('monthly');
-  
-  
-  // General button handlers
-  document.querySelectorAll('.navbar8-action11, .navbar8-action21, .hero17-button1, .hero17-button2').forEach(button => {
-    button.addEventListener('click', function() {
-      const text = this.textContent.trim();
-      alert(`Botón "${text}" clickeado - Agrega aquí la funcionalidad deseada`);
-    });
-  });
-  
-  // Mobile menu handlers
-  document.querySelector('.navbar8-burger-menu').addEventListener('click', function() {
-    const mobileMenu = document.querySelector('.navbar8-mobile-menu');
-    mobileMenu.style.display = mobileMenu.style.display === 'block' ? 'none' : 'block';
-  });
-  
-  document.querySelector('.navbar8-close-menu').addEventListener('click', function() {
-    document.querySelector('.navbar8-mobile-menu').style.display = 'none';
-  });
-  
-  // Debugging all buttons
-  document.querySelectorAll('button, a').forEach(element => {
-    element.addEventListener('click', function(e) {
-      console.log('Elemento clickeado:', this);
-    });
-  });
-    
+
+  // Mobile menu
   const burger = document.querySelector('[data-thq="thq-burger-menu"]');
   const mobileMenu = document.querySelector('[data-thq="thq-mobile-menu"]');
   const closeBtn = document.querySelector('[data-thq="thq-close-menu"]');
 
   burger.addEventListener('click', () => {
-    mobileMenu.style.display = 'block';
+    mobileMenu.classList.add('open');
   });
 
   closeBtn.addEventListener('click', () => {
-    mobileMenu.style.display = 'none';
+    mobileMenu.classList.remove('open');
   });
 
   // Cerrar menú si se hace clic fuera
   document.addEventListener('click', (e) => {
-    if (mobileMenu.style.display === 'block' &&
+    if (mobileMenu.classList.contains('open') &&
         !mobileMenu.contains(e.target) &&
         !burger.contains(e.target)) {
-      mobileMenu.style.display = 'none';
+      mobileMenu.classList.remove('open');
     }
   });
 
   // Cerrar al hacer clic en un link
   mobileMenu.querySelectorAll('a').forEach(link => {
     link.addEventListener('click', () => {
-      mobileMenu.style.display = 'none';
+      mobileMenu.classList.remove('open');
     });
   });
 
   
-  // Verificar específicamente los botones de pricing
-  const monthlyBtn = document.getElementById('monthlyBtn');
-  const yearlyBtn = document.getElementById('yearlyBtn');
-  
-  if (monthlyBtn) {
-    monthlyBtn.addEventListener('click', function() {
-      console.log('Monthly button clicked');
-    });
-  }
-  
-  if (yearlyBtn) {
-    yearlyBtn.addEventListener('click', function() {
-      console.log('Yearly button clicked');
-    });
-  }
   // Cargar fechas ocupadas desde el endpoint
-  let fechasOcupadas = [];
-  
-  // 1. Referencia al botón
+  // Referencia al botón de reservas
   const btn2 = document.getElementById('btnReserva');
   const loader = document.getElementById('noPayLoader');
 
-  // 2. Asegurarse de que el botón existe
-  if (!btn2) {
-    console.warn("⚠️ No se encontró el botón #btnReserva");
-    return;
-  } else {
+  if (btn2) {
     btn2.addEventListener('click', (e) => {
       e.preventDefault();
-      loader.style.display = 'inline-block';
-      // 3. Cargar fechas ocupadas y guardar en variable
+      if (loader) loader.style.display = 'inline-block';
       fetch('https://script.google.com/macros/s/AKfycbwuJtQJxCthv-prpaGWYAK-Gp6iibmwbMsjyicufZjqj8vDqbpULkDj7sVoCrgCiJ-x/exec')
         .then(res => res.json())
         .then(data => {
-          console.log("📅 Fechas ocupadas:", fechasOcupadas);
           localStorage.setItem('fechasOcupadas', JSON.stringify(data));
-          window.location.href = "reserva.html";
+          window.location.href = 'reserva.html';
         })
-        .catch(err => {
-        console.error("❌ Error al cargar fechas ocupadas:", err);
-        // Navega igual aunque falle el fetch
-        window.location.href = "reserva.html";
+        .catch(() => {
+          // Navega igual aunque falle el fetch
+          window.location.href = 'reserva.html';
         });
-      })
-    }
+    });
+  }
 });
 
 // Inicializar carrito desde localStorage
@@ -300,7 +186,10 @@ function setCart(cart) {
   localStorage.setItem('cart', JSON.stringify(cart));
 }
 function updateCartCount() {
-  document.getElementById('cart-count').textContent = getCart().length;
+  const count = getCart().length;
+  document.getElementById('cart-count').textContent = count;
+  const checkoutBtn = document.getElementById('cartCheckoutBtn');
+  if (checkoutBtn) checkoutBtn.style.display = count > 0 ? 'inline-block' : 'none';
 }
 
 // Al cargar la página, marcar los checkboxes ya seleccionados
@@ -323,13 +212,7 @@ document.querySelectorAll('.cart-checkbox').forEach(checkbox => {
 });
 
 
-// Cierra el menú al hacer clic en cualquier enlace
-document.querySelectorAll('#mobileMenu a').forEach(link => {
-  link.addEventListener('click', function() {
-    document.getElementById('mobileMenu').classList.remove('open');
-  });
-}
-);
+
 
   let activeCategory = 'Sitio Web'; // inicial
   
@@ -356,3 +239,35 @@ document.querySelectorAll('#mobileMenu a').forEach(link => {
       card.style.display = (cat === category) ? 'block' : 'none';
     });
   }
+
+// ── Scroll-reveal animation ─────────────────────────
+(function initReveal() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+})();
+
+// ── Scroll-spy navbar active link ───────────────────
+(function initScrollSpy() {
+  const sections = document.querySelectorAll('section[id], div[id]');
+  const navLinks = document.querySelectorAll('.navbar8-links a');
+  if (!navLinks.length) return;
+
+  const spy = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const id = entry.target.id;
+      navLinks.forEach(a => {
+        a.classList.toggle('nav-active', a.getAttribute('href') === `#${id}`);
+      });
+    });
+  }, { rootMargin: '-40% 0px -55% 0px' });
+
+  sections.forEach(s => spy.observe(s));
+})();

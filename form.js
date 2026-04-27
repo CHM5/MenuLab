@@ -8,8 +8,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const progressSteps = document.querySelectorAll('.step');
     const nextButtons = document.querySelectorAll('.next-btn');
     const prevButtons = document.querySelectorAll('.prev-btn');
-    const submitButton = document.querySelector('.submit-btn');
-    const formSuccess = document.getElementById('formSuccess');
     const resetFormButton = document.getElementById('resetForm');
     const sponsorshipLevel = document.getElementById('sponsorshipLevel');
     const customAmountContainer = document.getElementById('customAmountContainer');
@@ -176,20 +174,17 @@ document.addEventListener('DOMContentLoaded', function() {
     cb.addEventListener('change', updateTotalAmount);
   });
 
-
-
-
-document.addEventListener('DOMContentLoaded', () => {
+  // Actualizar total al cambiar plan de suscripción
   const radios = document.querySelectorAll('.plan');
   const totalDisplay = document.getElementById('totalAmount');
-
-  radios.forEach(radio => {
-    radio.addEventListener('change', () => {
-      const selected = document.querySelector('.plan:checked');
-      const price = selected ? parseInt(selected.dataset.price || 0, 10) : 0;
-      totalDisplay.innerHTML = `<strong>Total: $${price.toLocaleString()}</strong>`;
+  if (radios.length && totalDisplay) {
+    radios.forEach(radio => {
+      radio.addEventListener('change', () => {
+        const selected = document.querySelector('.plan:checked');
+        const price = selected ? parseInt(selected.dataset.price || 0, 10) : 0;
+        totalDisplay.innerHTML = `<strong>Total: $${price.toLocaleString()}</strong>`;
+      });
     });
-  });
-});
+  }
 
 });
