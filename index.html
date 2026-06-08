@@ -602,69 +602,154 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://res.cloudinary.com">
-    <link rel="dns-prefetch" href="https://unpkg.com">
-    <!-- Todas las fuentes en una sola petición -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Inter:wght@400;600;700&family=Noto+Sans:wght@400;600;700&family=STIX+Two+Text:wght@400;600&family=Unbounded:wght@400;600;700&display=swap">
-    <!-- animate.css no-bloquea render -->
-    <link rel="stylesheet" href="https://unpkg.com/animate.css@4.1.1/animate.min.css" media="print" onload="this.media='all'">
-    <noscript><link rel="stylesheet" href="https://unpkg.com/animate.css@4.1.1/animate.min.css"></noscript>
-    <link rel="stylesheet" href="./style.css" />
-    <link rel="stylesheet" href="./index.css" />
-    <link rel="stylesheet" href="reserva.css" />
-    <style>
-    .whatsapp-float {
-      position: fixed;
-      right: 22px;
-      bottom: 22px;
-      z-index: 9999;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 62px;
-      height: 62px;
-      background: #25d366;
-      border-radius: 50%;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.18);
-      transition: box-shadow 0.2s, transform 0.2s;
-      animation: wa-pop 0.7s cubic-bezier(.4,2,.6,1);
-    }
-    .whatsapp-float img {
-      width: 38px;
-      height: 38px;
-      filter: drop-shadow(0 1px 2px #0002);
-    }
-    .whatsapp-float:hover {
-      box-shadow: 0 8px 32px rgba(30,30,60,0.18);
-      transform: scale(1.08);
-    }
-    @media (max-width: 600px) {
-      .whatsapp-float {
-        right: 12px;
-        bottom: 12px;
-        width: 54px;
-        height: 54px;
-      }
-      .whatsapp-float img {
-        width: 32px;
-        height: 32px;
-      }
-    }
-    @keyframes wa-pop {
-      0% { transform: scale(0.7); opacity: 0; }
-      80% { transform: scale(1.1); opacity: 1; }
-      100% { transform: scale(1); }
-    }
-    .plan-intro {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      width: 100%;
-      min-height: 32px;
-    }
-    </style>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Unbounded:wght@500;700&display=swap">
+    <link rel="stylesheet" href="./home-v2.css" />
   </head>
   <body>
+    <a href="#main" class="skip-link">Saltar al contenido</a>
+
+    <header class="nav" role="banner">
+      <div class="container nav-row">
+        <a href="#" class="brand" aria-label="MenuLab inicio">MenuLab</a>
+        <nav class="nav-links" aria-label="Navegación principal">
+          <a href="#como-funciona">Cómo funciona</a>
+          <a href="#demo">Demo</a>
+          <a href="#casos">Casos</a>
+          <a href="#faq">FAQ</a>
+          <a class="btn btn-primary" data-cta="demo" data-location="nav" href="https://wa.me/5491130625858?text=Hola%2C%20quiero%20solicitar%20una%20demo%20de%20la%20Carta%20Digital%20QR%20de%20MenuLab" target="_blank" rel="noopener">Solicitar Demo</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="hero">
+        <div class="container hero-grid">
+          <div>
+            <span class="badge">Producto principal</span>
+            <h1>Carta Digital QR para restaurantes, <span>simple de actualizar</span> y lista para vender más.</h1>
+            <p>Un solo foco: reemplazar complejidad por una carta QR rápida, clara y fácil de mantener. Tus clientes escanean, ven el menú al instante y vos actualizás en minutos.</p>
+            <div class="hero-ctas">
+              <a class="btn btn-primary" data-cta="demo" data-location="hero" href="https://wa.me/5491130625858?text=Hola%2C%20quiero%20solicitar%20una%20demo%20de%20la%20Carta%20Digital%20QR%20de%20MenuLab" target="_blank" rel="noopener">Solicitar Demo</a>
+              <a class="btn btn-secondary" href="#demo">Ver Demo Real</a>
+            </div>
+            <div class="kpis" aria-label="Prueba social">
+              <span>+50 locales en Argentina</span>
+              <span>Implementación en 24h</span>
+              <span>Actualización simple</span>
+            </div>
+          </div>
+          <article class="hero-card" aria-label="Vista previa de carta digital">
+            <img src="https://res.cloudinary.com/drxznqm61/image/upload/f_auto,q_auto,w_900/v1756259613/Pro_Site_4_gpcx9r.jpg" width="900" height="560" alt="Vista de carta digital QR de MenuLab" fetchpriority="high" />
+            <div class="caption">Ejemplo real de carta digital QR en producción.</div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="problema">
+        <div class="container">
+          <h2>El problema que resolvemos</h2>
+          <p class="lead">La mayoría de restaurantes pierde tiempo y ventas por menús desactualizados, cambios lentos y consultas repetitivas.</p>
+          <div class="grid-3">
+            <article class="card"><h3>Menú viejo</h3><p>Precios desactualizados generan fricción y dudas en mesa.</p></article>
+            <article class="card"><h3>Cambios lentos</h3><p>Actualizar una carta no debería tomar días ni depender de terceros.</p></article>
+            <article class="card"><h3>Menos conversiones</h3><p>Sin claridad visual, el cliente decide peor y compra menos.</p></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section steps" id="como-funciona">
+        <div class="container">
+          <h2>Cómo funciona en 3 pasos</h2>
+          <p class="lead">Proceso diseñado para convertir rápido y sin complejidad.</p>
+          <div class="grid-3">
+            <article class="card"><span class="step-n">01</span><h3>Solicitás demo</h3><p>Nos escribís por WhatsApp y evaluamos tu caso en minutos.</p></article>
+            <article class="card"><span class="step-n">02</span><h3>Configuramos tu carta</h3><p>Te dejamos una versión funcional y lista para validar.</p></article>
+            <article class="card"><span class="step-n">03</span><h3>Publicás y actualizás fácil</h3><p>Tu QR queda activo y podés editar contenido de forma simple.</p></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="demo">
+        <div class="container">
+          <h2>Demo funcional</h2>
+          <p class="lead">Mostramos una carta real para que evalúes la experiencia final en móvil y desktop.</p>
+          <div class="demo-wrap">
+            <iframe title="Demo Carta Digital QR" loading="lazy" src="https://www.menulab.com.ar/demo/corporativo.html"></iframe>
+            <img loading="lazy" width="1200" height="700" src="https://res.cloudinary.com/drxznqm61/image/upload/f_auto,q_auto,w_1200/v1756259486/Pro_Site_3_nlds1q.jpg" alt="Captura de demo MenuLab" />
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="casos">
+        <div class="container">
+          <h2>Casos de éxito</h2>
+          <p class="lead">Confianza basada en resultados reales.</p>
+          <div class="grid-3">
+            <article class="card"><h3>Rústica</h3><p>"Ahora actualizamos el menú todos los días sin depender de imprenta."</p></article>
+            <article class="card"><h3>La Botiga</h3><p>"Pasamos a QR en sala y mejoró la coherencia entre carta física y digital."</p></article>
+            <article class="card"><h3>Club Lunch</h3><p>"Con el menú QR evitamos fricción y los clientes acceden más rápido."</p></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section extras" id="extras">
+        <div class="container">
+          <h2>Complementos opcionales</h2>
+          <p class="lead">Solo si te aportan valor. El foco principal sigue siendo la Carta Digital QR.</p>
+          <details>
+            <summary>Ver complementos</summary>
+            <ul>
+              <li>Diseño de piezas impresas para mesa</li>
+              <li>Adaptaciones visuales de marca</li>
+              <li>Asistencia para campañas puntuales</li>
+            </ul>
+          </details>
+        </div>
+      </section>
+
+      <section class="section faq" id="faq">
+        <div class="container">
+          <h2>Preguntas frecuentes</h2>
+          <details>
+            <summary>¿Cuánto tarda tener mi carta QR lista?</summary>
+            <p>Normalmente dentro de 24 horas hábiles, según la información del local.</p>
+          </details>
+          <details>
+            <summary>¿Necesito conocimientos técnicos?</summary>
+            <p>No. Está pensado para gestión simple y acompañada por soporte humano.</p>
+          </details>
+          <details>
+            <summary>¿Puedo actualizar precios y productos cuando quiera?</summary>
+            <p>Sí. Podés hacer cambios en minutos sin fricción operativa.</p>
+          </details>
+          <details>
+            <summary>¿Funciona en cualquier celular?</summary>
+            <p>Sí, la experiencia está optimizada para móvil y escritorio.</p>
+          </details>
+        </div>
+      </section>
+
+      <section class="cta-final" id="contacto">
+        <div class="container">
+          <h2>Listo para simplificar tu menú digital</h2>
+          <p>Un único paso para empezar: hablá con nosotros por WhatsApp y coordinamos tu demo.</p>
+          <a class="btn btn-primary" data-cta="demo" data-location="final" href="https://wa.me/5491130625858?text=Hola%2C%20quiero%20solicitar%20una%20demo%20de%20la%20Carta%20Digital%20QR%20de%20MenuLab" target="_blank" rel="noopener">Solicitar Demo</a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container footer-row">
+        <span>© 2026 MenuLab — Carta Digital QR para gastronomía</span>
+        <a href="legal.html">Legal</a>
+      </div>
+    </footer>
+
+    <a class="wa-float" href="https://wa.me/5491130625858?text=Hola%2C%20quiero%20solicitar%20una%20demo%20de%20la%20Carta%20Digital%20QR%20de%20MenuLab" target="_blank" rel="noopener" aria-label="Abrir WhatsApp de MenuLab">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" width="32" height="32" loading="lazy" />
+    </a>
+
+    <template id="legacy-home">
     <!-- skip nav for accessibility -->
     <a href="#main-content" class="skip-link">Saltar al contenido</a>
 
@@ -2084,6 +2169,7 @@
         <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" />
       </a>
 
-    <script src="script.js"></script>
+    </template>
+    <script defer src="home-v2.js"></script>
   </body>
 </html>
