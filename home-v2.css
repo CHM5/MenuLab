@@ -207,6 +207,17 @@ body {
 .card h3 { margin: 0 0 8px; font-size: 1.05rem; }
 .card p { margin: 0; color: var(--muted); line-height: 1.6; }
 
+.card-media {
+  overflow: hidden;
+}
+.card-media img {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  display: block;
+}
+
 .steps .card {
   position: relative;
   padding-top: 34px;
