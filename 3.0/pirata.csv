@@ -1,0 +1,49 @@
+Item,TipoDato,X_px,Y_px
+PARRILLA - EL PIRATA,branding,206,327
+ENTRADAS,categoria,119,441
+EMPANADAS,plato,117,495
+"Carne, Pollo, Jamón y Muzza",descripcion,117,540
+PAPAS FRITAS,plato,117,643
+Con cheddar fundido (Comen 2),descripcion,117,687
+BASTONES DE MUZZARELLA,plato,117,818
+Rebozados fritos (Comen 2),descripcion,117,861
+SANDWICHES,categoria,484,248
+(Todos incluyen papas),nota,508,292
+LOMITO,plato,447,381
+"Lechuga, tomate, jamón, queso, huevo",descripcion,447,420
+BONDIOLA,plato,447,494
+"Lechuga, tomate, jamón, queso, huevo (B)",descripcion,447,536
+MILANESA,plato,447,607
+"Lechuga, tomate, jamón, queso, huevoa de tomate)",descripcion,447,646
+HAMBURGUESAS,categoria,760,186
+(Todas incluyen papas),nota,757,228
+SIMPLE,plato,685,323
+Jamón y queso,descripcion,705,362
+COMPLETA,plato,685,436
+Lechuga tomate jamón queso huevo cebolla,descripcion,684,476
+BLACK BURGUER,plato,685,586
+Lechuga tomate cheddar panceta cebolla,descripcion,685,626
+VEGETARIANA,plato,685,739
+Lechuga tomate queso huevo cebolla,descripcion,685,779
+MILANESAS AL PLATO,categoria,498,683
+(Todas incluyen guarnición),nota,487,722
+A CABALLO,plato,392,795
+Con 2 huevos fritos,descripcion,391,835
+NAPOLITANA,plato,392,927
+"jamón, queso, salsa de tomate",descripcion,392,966
+FUGAZZETTA,plato,392,1048
+con cebolla y muzzarella,descripcion,392,1088
+MILANESA SOLA,plato,392,1181
+GUARNICIONES,categoria,129,815
+PAPAS FRITAS (G),plato,117,868
+ENSALADA MIXTA,plato,117,953
+"lechuga, tomate, cebolla",descripcion,117,994
+ENSALADA COMPLETA,plato,117,1077
+"Lechuga, tomate, zanahoria, huevo",descripcion,117,1119
+ENSALADA RUSA,plato,117,1207
+"(Papas, arvejas y zanahoria)",descripcion,117,1246
+PURÉ,plato,117,1338
+EXTRAS,categoria,891,763
+CHEDDAR,extra,830,841
+PANCETA,extra,830,921
+HUEVO FRITO,extra,830,1028

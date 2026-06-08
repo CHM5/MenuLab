@@ -1,0 +1,49 @@
+Item,TipoDato,X_px,Y_px,W_px,Align,Font,Size,LineHeightMult
+PARRILLA - EL PIRATA,branding,206,327,320,left,pirata,0,1.4
+ENTRADAS,categoria,119,441,320,left,pirata,20,1.55
+EMPANADAS,plato,117,495,320,left,marxiana,13,1.4
+"Carne, Pollo, Jamón y Muzza",descripcion,117,540,320,left,marxiana_italic,13,1.4
+PAPAS FRITAS,plato,117,643,320,left,marxiana,13,1.4
+Con cheddar fundido (Comen 2),descripcion,117,687,320,left,marxiana_italic,13,1.4
+BASTONES DE MUZZARELLA,plato,117,818,320,left,marxiana,13,1.4
+Rebozados fritos (Comen 2),descripcion,117,861,320,left,marxiana_italic,13,1.4
+SANDWICHES,categoria,484,248,380,left,pirata,20,1.55
+(Todos incluyen papas),nota,508,292,380,left,marxiana_italic,13,1.4
+LOMITO,plato,447,381,380,left,marxiana,13,1.4
+"Lechuga, tomate, jamón, queso, huevo",descripcion,447,420,380,left,marxiana_italic,13,1.4
+BONDIOLA,plato,447,494,380,left,marxiana,13,1.4
+"Lechuga, tomate, jamón, queso, huevo (B)",descripcion,447,536,380,left,marxiana_italic,13,1.4
+MILANESA,plato,447,607,380,left,marxiana,13,1.4
+"Lechuga, tomate, jamón, queso, huevoa de tomate)",descripcion,447,646,380,left,marxiana_italic,13,1.4
+HAMBURGUESAS,categoria,760,186,260,left,pirata,20,1.55
+(Todas incluyen papas),nota,757,228,260,left,marxiana_italic,13,1.4
+SIMPLE,plato,685,323,260,left,marxiana,13,1.4
+Jamón y queso,descripcion,705,362,260,left,marxiana_italic,13,1.4
+COMPLETA,plato,685,436,260,left,marxiana,13,1.4
+Lechuga tomate jamón queso huevo cebolla,descripcion,684,476,260,left,marxiana_italic,13,1.4
+BLACK BURGUER,plato,685,586,260,left,marxiana,13,1.4
+Lechuga tomate cheddar panceta cebolla,descripcion,685,626,260,left,marxiana_italic,13,1.4
+VEGETARIANA,plato,685,739,260,left,marxiana,13,1.4
+Lechuga tomate queso huevo cebolla,descripcion,685,779,260,left,marxiana_italic,13,1.4
+MILANESAS AL PLATO,categoria,498,683,380,left,pirata,20,1.55
+(Todas incluyen guarnición),nota,487,722,380,left,marxiana_italic,13,1.4
+A CABALLO,plato,392,795,380,left,marxiana,13,1.4
+Con 2 huevos fritos,descripcion,391,835,380,left,marxiana_italic,13,1.4
+NAPOLITANA,plato,392,927,380,left,marxiana,13,1.4
+"jamón, queso, salsa de tomate",descripcion,392,966,380,left,marxiana_italic,13,1.4
+FUGAZZETTA,plato,392,1048,380,left,marxiana,13,1.4
+con cebolla y muzzarella,descripcion,392,1088,380,left,marxiana_italic,13,1.4
+MILANESA SOLA,plato,392,1181,380,left,marxiana,13,1.4
+GUARNICIONES,categoria,129,815,320,left,pirata,20,1.55
+PAPAS FRITAS (G),plato,117,868,320,left,marxiana,13,1.4
+ENSALADA MIXTA,plato,117,953,320,left,marxiana,13,1.4
+"lechuga, tomate, cebolla",descripcion,117,994,320,left,marxiana_italic,13,1.4
+ENSALADA COMPLETA,plato,117,1077,320,left,marxiana,13,1.4
+"Lechuga, tomate, zanahoria, huevo",descripcion,117,1119,320,left,marxiana_italic,13,1.4
+ENSALADA RUSA,plato,117,1207,320,left,marxiana,13,1.4
+"(Papas, arvejas y zanahoria)",descripcion,117,1246,320,left,marxiana_italic,13,1.4
+PURÉ,plato,117,1338,320,left,marxiana,13,1.4
+EXTRAS,categoria,891,763,260,left,pirata,20,1.55
+CHEDDAR,extra,830,841,260,left,marxiana,13,1.4
+PANCETA,extra,830,921,260,left,marxiana,13,1.4
+HUEVO FRITO,extra,830,1028,260,left,marxiana,13,1.4
