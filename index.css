@@ -641,11 +641,12 @@
     position: fixed;
     top: 0;
     left: 0;
-    background: #f3f3f3;
+    background: #0d1520;
+    color: #e0e8f0;
     width: 240px;
     height: auto;
     padding: 2rem 1.5rem;
-    box-shadow: 2px 0 12px rgba(0,0,0,0.1);
+    box-shadow: 2px 0 24px rgba(0,0,0,0.5);
     display: none;
     flex-direction: column;
     z-index: 9999;
