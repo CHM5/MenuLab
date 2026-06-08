@@ -1,3 +1,61 @@
+/* =====================================================
+   Skip link (accessibility)
+   ===================================================== */
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 16px;
+  background: #1976d2;
+  color: #fff;
+  padding: 8px 18px;
+  border-radius: 0 0 8px 8px;
+  font-weight: 700;
+  font-size: 14px;
+  z-index: 99999;
+  transition: top 0.2s;
+  text-decoration: none;
+}
+.skip-link:focus {
+  top: 0;
+}
+
+/* =====================================================
+   Trust bar
+   ===================================================== */
+.trust-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px 20px;
+  background: linear-gradient(90deg, #e3f2fd, #fce4ec);
+  padding: 10px 24px;
+  font-size: 13px;
+  font-family: 'Inter', sans-serif;
+  color: #333;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+.trust-bar strong { color: #1976d2; }
+.trust-sep { color: #bbb; }
+@media (max-width: 480px) {
+  .trust-bar { font-size: 11px; gap: 6px 12px; }
+  .trust-sep { display: none; }
+}
+
+/* =====================================================
+   Sticky navbar with backdrop blur
+   ===================================================== */
+.navbar8-wrapper {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: rgba(255,255,255,0.88);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+}
+
 :root {
   --dl-layout-size-large: 144px;
   --dl-layout-size-small: 48px;

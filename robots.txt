@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+
+# Block irrelevant paths
+Disallow: /3.0/
+Disallow: /tests/
+Disallow: /node_modules/
+Disallow: /coverage/
+Disallow: /scripts/
+
+Sitemap: https://www.menulab.com.ar/sitemap.xml
